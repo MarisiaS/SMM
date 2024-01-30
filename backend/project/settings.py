@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     "corsheaders", #cors
     "rest_framework", #drf
     "rest_framework_simplejwt.token_blacklist", #authentification
-    "drf_spectacular", #spectucular
     "SMMapp", #ourapp
+    "drf_spectacular", #spectacular
 ]
 
 MIDDLEWARE = [
@@ -134,6 +134,13 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
-    # YOUR SETTINGS
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Swim Meet Management API',
+    'DESCRIPTION': 'An API for managing swim meets, participants, and results.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
+
