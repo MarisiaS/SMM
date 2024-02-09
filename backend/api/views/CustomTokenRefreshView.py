@@ -1,4 +1,4 @@
-from SMMapp.serializers.CustomTokenRefreshSerializer import CustomTokenRefreshSerializer
+from api.serializers.CustomTokenRefreshSerializer import CustomTokenRefreshSerializer
 from rest_framework_simplejwt.views import TokenRefreshView
 
 
