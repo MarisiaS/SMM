@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "corsheaders", #cors
     "rest_framework", #drf
     "rest_framework_simplejwt.token_blacklist", #authentification
-    "SMMapp", #ourapp
+    "api", #ourapp
     "drf_spectacular", #spectacular
     'djoser',
 ]
@@ -136,6 +136,8 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
+
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -161,3 +163,4 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
 }
+AUTH_USER_MODEL = 'api.CustomUser'

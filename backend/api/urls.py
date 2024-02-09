@@ -1,7 +1,8 @@
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView
-from SMMapp.views.CustomTokenRefreshView import CustomTokenRefreshView
-from SMMapp.views.LogoutView import LogoutView
+from api.views.CustomTokenRefreshView import CustomTokenRefreshView
+from api.views.LogoutView import LogoutView
+
 
 urlpatterns = [
     path("login/", TokenObtainPairView.as_view()),

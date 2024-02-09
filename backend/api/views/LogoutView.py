@@ -23,4 +23,4 @@ class LogoutView(APIView):
                 return Response(status=status.HTTP_205_RESET_CONTENT)
             except Exception as e:
                 logger.error(f'LogoutView:Error logging out  : {e}')
-                return Response({'error': 'Error Logging out'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response({'error': 'Error Logging out'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)               
