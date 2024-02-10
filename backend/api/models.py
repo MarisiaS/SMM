@@ -24,7 +24,7 @@ class Site(models.Model):
         YARDS = "yd"
         METERS = "m"
 
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True, db_collation='case_insensitive')
     num_lanes = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
     pool_len = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
     len_unit = models.CharField(max_length=20, choices=Len_unit.choices, default=Len_unit.YARDS)

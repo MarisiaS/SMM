@@ -4,6 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from api.models import Site
 from api.serializers.SiteSerializer import SiteSerializer
 from drf_spectacular.utils import extend_schema
+from rest_framework.response import Response
+from django.db.models.functions import Collate
 import logging
 
 logger = logging.getLogger('django')
@@ -17,5 +19,15 @@ class SiteViewSet(viewsets.ModelViewSet):
     filter_backends = [OrderingFilter, SearchFilter]
     ordering_fields = ['name']
     ordering = ['name']
-    search_fields = ['^name']
+    search_fields = ['^name_search']
     http_method_names = ['get', 'post', 'delete']
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        # Create an deterministic field for search
+        queryset = queryset.annotate(name_search=Collate("name", "und-x-icu"))
+        # Eliminate duplicate rows
+        queryset = queryset.distinct()
+        filter_query_set = self.filter_queryset(queryset)
+        serializer = self.get_serializer_class()(filter_query_set, many=True)
+        return Response(serializer.data)
