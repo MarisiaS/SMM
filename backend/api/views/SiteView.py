@@ -8,6 +8,7 @@ import logging
 
 logger = logging.getLogger('django')
 
+
 @extend_schema(tags=['Site'])
 class SiteViewSet(viewsets.ModelViewSet):
     queryset = Site.objects.all()
@@ -18,5 +19,3 @@ class SiteViewSet(viewsets.ModelViewSet):
     ordering = ['name']
     search_fields = ['^name']
     http_method_names = ['get', 'post', 'delete']
-    
-
