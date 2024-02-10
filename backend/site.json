@@ -1,0 +1,12 @@
+[
+    {
+        "model": "api.site",
+        "pk": 1,
+        "fields": {
+            "name": "Flying Fish",
+            "num_lanes": 5,
+            "pool_len": 20,
+            "len_unit": "yards"
+        }
+    }
+]
