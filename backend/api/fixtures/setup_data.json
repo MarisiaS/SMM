@@ -1,0 +1,12 @@
+[   
+    {
+      "model": "api.customuser",
+      "pk": 1,
+      "fields": {
+        "password": "pbkdf2_sha256$600000$rsbJ4IrEpN5r8qOYEluWzx$eUGi3TN6w0m+Ve5oSv+yekDYYI++wdXtINxfPfckrZg=",
+        "email": "coach@email.com",
+        "first_name": "Michael",
+        "last_name": "Fish"
+      }
+    }
+]
