@@ -7,4 +7,4 @@ class SiteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Site
-        fields = ('name', 'num_lanes', 'pool_len', 'len_unit')
+        fields = ('id', 'name', 'num_lanes', 'pool_len', 'len_unit')
