@@ -7,7 +7,7 @@ from api.views.SiteView import SiteViewSet
 from rest_framework.routers import SimpleRouter
 
 router = SimpleRouter()
-router.register(r'sites', SiteViewSet, basename='sites')
+router.register(r'site', SiteViewSet, basename='sites')
 
 
 urlpatterns = [
