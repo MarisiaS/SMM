@@ -4,7 +4,6 @@ from rest_framework.permissions import IsAuthenticated
 from api.models import School
 from api.serializers.SchoolSerializer import SchoolSerializer
 from drf_spectacular.utils import extend_schema
-from rest_framework.response import Response
 from django.db.models.functions import Collate
 from rest_framework.pagination import LimitOffsetPagination
 import logging
@@ -21,7 +20,7 @@ class SchoolViewSet(viewsets.ModelViewSet):
     ordering_fields = ['name']
     ordering = ['name']
     search_fields = ['^name_search']
-    http_method_names = ['get', 'post', 'delete']
+    http_method_names = ['get', 'post', 'delete', 'patch']
 
 
     def list(self, request):
