@@ -10,6 +10,13 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = ('id', 'name', 'gender', 'min_age', 'max_age')
+        
+    def validate(self, data):
+        data = super().validate(data)
+        data = self.validate_age(data)
+        data = self.validate_unique_group(data)
+
+        return data
 
     def validate_age(self, data):
         """
@@ -17,8 +24,8 @@ class GroupSerializer(serializers.ModelSerializer):
         """
         min_age = data.get('min_age', None)
         max_age = data.get('max_age', None)
-        if min_age and max_age and min_age > max_age:
-            raise serializers.ValidationError("Minimum age can not be greater that maximum age")
+        if min_age and max_age and min_age >= max_age:
+            raise serializers.ValidationError("Minimum age cannot be greater or equal to maximum age")
         return data
 
     def validate_unique_group(self, data):
@@ -32,5 +39,5 @@ class GroupSerializer(serializers.ModelSerializer):
             max_age=max_age,
             gender=gender
         ).exists():
-            raise serializers.ValidationError("A group qith this caracteristics already exists.")
+            raise serializers.ValidationError("A group with this caracteristics already exists.")
         return data
