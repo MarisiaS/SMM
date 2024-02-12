@@ -27,5 +27,68 @@
         "open_hour": "15:00:00",
         "close_hour": "20:00:00"
     }
+  },
+  {
+    "model": "api.group",
+    "pk": 1,
+    "fields": {
+        "gender": "F",
+        "min_age": null,
+        "max_age": null
+    }
+  },
+  {
+      "model": "api.group",
+      "pk": 2,
+      "fields": {
+          "gender": "M",
+          "min_age": null,
+          "max_age": null
+      }
+  },
+  {
+      "model": "api.group",
+      "pk": 3,
+      "fields": {
+          "gender": "MX",
+          "min_age": null,
+          "max_age": null
+      }
+  },
+  {
+      "model": "api.group",
+      "pk": 4,
+      "fields": {
+          "gender": "F",
+          "min_age": 11,
+          "max_age": null
+      }
+  },
+  {
+      "model": "api.group",
+      "pk": 5,
+      "fields": {
+          "gender": "F",
+          "min_age": null,
+          "max_age": 10
+      }
+  },
+  {
+      "model": "api.group",
+      "pk": 6,
+      "fields": {
+          "gender": "M",
+          "min_age": null,
+          "max_age": 10
+      }
+  },
+  {
+      "model": "api.group",
+      "pk": 7,
+      "fields": {
+          "gender": "M",
+          "min_age": 11,
+          "max_age": null
+      }
   }
 ]
