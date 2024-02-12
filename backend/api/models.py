@@ -31,7 +31,7 @@ class Site(models.Model):
     len_unit = models.CharField(max_length=20, choices=Len_unit.choices, default=Len_unit.YARDS)
 
 class School(models.Model):
-    name = models.CharField(max_length=255, null=False, blank=False)
+    name = models.CharField(max_length=255, null=False, blank=False, unique=True, db_collation='case_insensitive')
     open_hour = models.TimeField(null=True, blank=True)
     close_hour = models.TimeField(null=True, blank=True)
 
