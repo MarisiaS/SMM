@@ -2,6 +2,7 @@ from api.models import Group
 from rest_framework import serializers
 from api.CustomField import BlankableIntegerField
 
+
 class GroupSerializer(serializers.ModelSerializer):
     name = serializers.CharField(read_only=True)
     min_age = BlankableIntegerField(required=False)
@@ -10,7 +11,7 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = ('id', 'name', 'gender', 'min_age', 'max_age')
-        
+
     def validate(self, data):
         data = super().validate(data)
         data = self.validate_age(data)
