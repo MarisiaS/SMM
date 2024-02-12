@@ -28,3 +28,8 @@ class Site(models.Model):
     num_lanes = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
     pool_len = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
     len_unit = models.CharField(max_length=20, choices=Len_unit.choices, default=Len_unit.YARDS)
+
+class School(models.Model):
+    name = models.CharField(max_length=255, null=False, blank=False)
+    open_hour = models.TimeField(null=True, blank=True)
+    close_hour = models.TimeField(null=True, blank=True)

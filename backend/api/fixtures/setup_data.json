@@ -18,5 +18,14 @@
           "pool_len": 25,
           "len_unit": "yd"
       }
+  },
+  {
+    "model": "api.school",
+    "pk": 1,
+    "fields": {
+        "name": "Flying Fish",
+        "open_hour": "15:00:00",
+        "close_hour": "20:00:00"
+    }
   }
 ]
