@@ -48,10 +48,8 @@ class Group(models.Model):
     @property
     def name(self):
         gender_display = self.get_gender_display()
-
         if gender_display != "Mixed":
             gender_display += "s"
-
         age_range = ""
         if self.min_age is not None and self.max_age is not None:
             age_range = f"{self.min_age}to{self.max_age}"
@@ -59,7 +57,6 @@ class Group(models.Model):
             age_range = f"{self.min_age}&Above"
         elif self.max_age is not None:
             age_range = f"{self.max_age}&Under"
-
         return f"{gender_display}{age_range}"
 
     class Meta:
