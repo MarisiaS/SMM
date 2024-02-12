@@ -10,8 +10,8 @@ from rest_framework.routers import SimpleRouter
 
 router = SimpleRouter()
 router.register(r'site', SiteViewSet, basename='site')
-router.register(r'group', GroupViewSet, basename='group')
 router.register(r'school', SchoolViewSet, basename='school')
+router.register(r'group', GroupViewSet, basename='group')
 
 urlpatterns = [
     path("login/", TokenObtainPairView.as_view()),
