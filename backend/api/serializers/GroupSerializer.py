@@ -1,23 +1,22 @@
 from api.models import Group
 from rest_framework import serializers
 from api.CustomField import BlankableIntegerField
+from django.core.validators import MinValueValidator
 
 
 class GroupSerializer(serializers.ModelSerializer):
     name = serializers.CharField(read_only=True)
-    min_age = BlankableIntegerField(required=False)
-    max_age = BlankableIntegerField(required=False)
+    min_age = BlankableIntegerField(required=False, validators=[MinValueValidator(5)])
+    max_age = BlankableIntegerField(required=False, validators=[MinValueValidator(6)])
 
     class Meta:
         model = Group
         fields = ('id', 'name', 'gender', 'min_age', 'max_age')
 
     def validate(self, data):
-        data = super().validate(data)
         data = self.validate_age(data)
         data = self.validate_unique_group(data)
-
-        return data
+        return super().validate(data)
 
     def validate_age(self, data):
         """
