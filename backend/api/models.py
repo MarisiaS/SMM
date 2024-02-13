@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import 
+from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator
@@ -36,15 +36,16 @@ class School(models.Model):
     close_hour = models.TimeField(null=True, blank=True)
 
 
-class session(models.Model):
+class Session(models.Model):
     days_of_week = ArrayField(models.BooleanField(default=False), size=7)
     time = models.TimeField()
-    coach = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, related_name='coach_group')
-    school = models.ForeignKey(School, on_delete=models.SET_NULL, related_name='school_group')
+    coach = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='coach_group')
+    school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True, related_name='school_group')
     
     @property
     def name(self):
         abbreviations = ["M", "T", "W", "Th", "F", "Sa", "Su"]
         selected_days = [abbreviations[i] for i in range(7) if self.days_of_week[i]==True]
         hour_part = f"{self.time.hour:02d}"
-        return f"{"".join(selected_days)}{hour_part}"
+        days_part = "".join(selected_days)
+        return f"{days_part}{hour_part}"
