@@ -12,5 +12,5 @@ logger = logging.getLogger('django')
 class SessionViewSet(viewsets.ModelViewSet):
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     http_method_names = ['get', 'post', 'delete', 'patch']
