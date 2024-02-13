@@ -117,3 +117,13 @@ class Session(models.Model):
         hour_part = f"{self.time.hour:02d}"
         days_part = "".join(selected_days)
         return f"{days_part}{hour_part}"
+
+class session(models.Model):
+    days_of_week = ArrayField(models.BooleanField(default=False,size=7))
+    time = models.TimeField()
+    coach = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, related_name='group_coach')
+    school = models.ForeignKey(School, on_delete=models.SET_NULL, related_name='school_group')
+    
+    @property
+    def name(self):
+        pass
