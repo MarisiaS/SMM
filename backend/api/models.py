@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import 
+from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator
 from .managers import CustomUserManager
@@ -33,3 +34,14 @@ class School(models.Model):
     name = models.CharField(max_length=255, null=False, blank=False, unique=True, db_collation='case_insensitive')
     open_hour = models.TimeField(null=True, blank=True)
     close_hour = models.TimeField(null=True, blank=True)
+
+
+class session(models.Model):
+    days_of_week = ArrayField(models.BooleanField(default=False,size=7))
+    time = models.TimeField()
+    coach = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, related_name='group_coach')
+    school = models.ForeignKey(School, on_delete=models.SET_NULL, related_name='school_group')
+    
+    @property
+    def name(self):
+        pass
