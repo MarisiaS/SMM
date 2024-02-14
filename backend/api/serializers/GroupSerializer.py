@@ -29,7 +29,7 @@ class GroupSerializer(serializers.ModelSerializer):
         if max_age is not None and max_age <= 0:
             raise serializers.ValidationError({'max_age': "Max age must be greater than 0."})
 
-        if min_age is not None and max_age is not None and min_age >= max_age:
+        if min_age is not None and max_age is not None and min_age > max_age:
             raise serializers.ValidationError({
                     'min_age': "Min age must be less than or equal to max age.",
                     'max_age': "Max age must be greater than or equal to min age."

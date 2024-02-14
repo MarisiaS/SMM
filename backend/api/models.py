@@ -53,7 +53,9 @@ class Group(models.Model):
         if gender_display != "Mixed":
             gender_display += "s"
         age_range = ""
-        if self.min_age is not None and self.max_age is not None:
+        if self.min_age is not None and self.max_age is not None and self.min_age == self.max_age:
+            age_range = f"{self.min_age}"
+        elif self.min_age is not None and self.max_age is not None:
             age_range = f"{self.min_age}to{self.max_age}"
         elif self.min_age is not None:
             age_range = f"{self.min_age}&Above"
