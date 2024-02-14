@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from .managers import CustomUserManager
 
 
@@ -37,7 +37,7 @@ class School(models.Model):
 
 
 class Session(models.Model):
-    days_of_week = ArrayField(models.BooleanField(default=False), size=7)
+    days_of_week = ArrayField(models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(1)] ), size=7)
     time = models.TimeField()
     coach = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='coach_group')
     school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True, related_name='school_group')
@@ -45,7 +45,7 @@ class Session(models.Model):
     @property
     def name(self):
         abbreviations = ["M", "T", "W", "Th", "F", "Sa", "Su"]
-        selected_days = [abbreviations[i] for i in range(7) if self.days_of_week[i]==True]
+        selected_days = [abbreviations[i] for i in range(7) if self.days_of_week[i]==1]
         hour_part = f"{self.time.hour:02d}"
         days_part = "".join(selected_days)
         return f"{days_part}{hour_part}"
