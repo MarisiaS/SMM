@@ -17,12 +17,10 @@ class EventTypeSerializer(serializers.ModelSerializer):
         return super().validate(data)
     
     def validate_unique_event_type(self, data):
-        print("VALIDATE UNIQUE TYPE")
         # Check if the combination of min_age, max_age, and gender is unique
         distance = data.get('distance')
         stroke = data.get('stroke')
         type = data.get('type')
-        print(distance, stroke, type)
 
         if EventType.objects.filter(
             distance=distance,
