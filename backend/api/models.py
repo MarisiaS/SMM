@@ -38,7 +38,6 @@ class School(models.Model):
     close_hour = models.TimeField(null=True, blank=True)
 
 
-<<<<<<< HEAD
 class Group(models.Model):
     class Gender(models.TextChoices):
         FEMALE = "F", _("Girl")
@@ -105,10 +104,7 @@ class EventType(models.Model):
         ]
 
 
-class session(models.Model):
-=======
 class Session(models.Model):
->>>>>>> 9defb72 (Changes to days_of_week validation)
     days_of_week = ArrayField(models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(1)] ), size=7)
     time = models.TimeField()
     coach = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='coach_group')
