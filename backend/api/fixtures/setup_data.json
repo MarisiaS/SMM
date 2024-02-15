@@ -90,5 +90,87 @@
           "min_age": 11,
           "max_age": null
       }
+  },
+  {
+    "model": "api.eventtype",
+    "pk": 1,
+    "fields": {
+        "distance": 50,
+        "stroke": "M",
+        "type": "INDIVIDUAL"
+    }
+  },
+  {
+    "model": "api.eventtype",
+    "pk": 2,
+    "fields": {
+        "distance": 50,
+        "stroke": "M",
+        "type": "RELAY"
+    }
+  },
+  {
+    "model": "api.eventtype",
+    "pk": 3,
+    "fields": {
+        "distance": 50,
+        "stroke": "FR",
+        "type": "INDIVIDUAL"
+    }
+  },
+  {
+    "model": "api.eventtype",
+    "pk": 4,
+    "fields": {
+        "distance": 100,
+        "stroke": "M",
+        "type": "INDIVIDUAL"
+    }
+  },
+  {
+    "model": "api.eventtype",
+    "pk": 5,
+    "fields": {
+        "distance": 200,
+        "stroke": "M",
+        "type": "INDIVIDUAL"
+    }
+  },
+  {
+    "model": "api.eventtype",
+    "pk": 6,
+    "fields": {
+        "distance": 200,
+        "stroke": "FR",
+        "type": "INDIVIDUAL"
+    }
+  },
+  {
+    "model": "api.eventtype",
+    "pk": 7,
+    "fields": {
+        "distance": 50,
+        "stroke": "BK",
+        "type": "INDIVIDUAL"
+    }
+  },
+  {
+    "model": "api.eventtype",
+    "pk": 8,
+    "fields": {
+        "distance": 50,
+        "stroke": "BR",
+        "type": "INDIVIDUAL"
+    }
+  },
+  {
+    "model": "api.eventtype",
+    "pk": 9,
+    "fields": {
+        "distance": 50,
+        "stroke": "FR",
+        "type": "RELAY"
+    }
   }
+ 
 ]
