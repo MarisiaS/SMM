@@ -6,3 +6,9 @@ class BlankableTimeField(serializers.TimeField):
         if value == '':
             return None
         return super().to_internal_value(value)
+    
+class BlankableIntegerField(serializers.IntegerField):
+    def to_internal_value(self, value):
+        if value == '':
+            return None
+        return super().to_internal_value(value)
