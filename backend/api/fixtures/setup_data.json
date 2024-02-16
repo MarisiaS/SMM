@@ -96,7 +96,7 @@
     "pk": 1,
     "fields": {
         "distance": 50,
-        "stroke": "M",
+        "stroke": "FLY",
         "type": "INDIVIDUAL"
     }
   },
