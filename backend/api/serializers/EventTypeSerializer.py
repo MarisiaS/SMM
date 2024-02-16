@@ -32,5 +32,5 @@ class EventTypeSerializer(serializers.ModelSerializer):
     
     def validate_distance(self, value):
         if value <= 0:
-            raise serializers.ValidationError("Distance must be a positive number greater than zero.")
+            raise serializers.ValidationError("Distance must be a number greater than zero.")
         return value
