@@ -1,6 +1,32 @@
 from rest_framework import serializers
 from api.models import EventType  
+from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 
+
+@extend_schema_serializer(
+    examples=[
+        OpenApiExample(
+            name='respose',
+            value={
+                "id": 1,
+                "name": "4x50 Medley Relay",
+                "distance": 50,
+                "stroke": "M",
+                "type": "RELAY"
+            },
+            response_only=True,  # signal that example only applies to responses
+            ),
+        OpenApiExample(
+            name='request',
+            value={
+                "distance": 50,
+                "stroke": "M",
+                "type": "RELAY"
+            },
+            request_only=True,  # signal that example only applies to request
+            ),
+    ]
+)
 class EventTypeSerializer(serializers.ModelSerializer):
     name = serializers.CharField(read_only=True)
     distance = serializers.IntegerField(required=True)
