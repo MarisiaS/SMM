@@ -171,8 +171,6 @@
         "stroke": "FR",
         "type": "RELAY"
     }
-  }
- 
   },
   {"model": "api.session",
   "pk": 1,

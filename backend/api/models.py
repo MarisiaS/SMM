@@ -114,7 +114,7 @@ class Session(models.Model):
     @property
     def name(self):
         abbreviations = ["MON", "TUE", "WED", "THU", "FRI", "SAN", "SUN"]
-        selected_days = [abbreviations[i] for i in range(7) if self.days_of_week[i]==1]
+        selected_days = [f"{abbreviations[i]}-" for i in range(7) if self.days_of_week[i]==1]
         hour_part = f"{self.time.hour:02d}"
         days_part = "".join(selected_days)
         return f"{days_part}{hour_part}"

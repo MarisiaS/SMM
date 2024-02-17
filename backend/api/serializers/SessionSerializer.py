@@ -8,8 +8,8 @@ from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
         OpenApiExample(
             name='respose',
             value={
-                "id": 232,
-                "name": "MWF19",
+                "id": 2,
+                "name": "MON-WED-FRI-19",
                 "label": "Pink",
                 "days_of_week": [
                     1,
@@ -29,7 +29,7 @@ from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
         OpenApiExample(
             name='request',
             value={
-                "label": "Pink"
+                "label": "Pink",
                 "days_of_week": [
                     1,
                     0,
