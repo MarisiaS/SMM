@@ -72,3 +72,32 @@ class Group(models.Model):
                 name='unique_group'
             )
         ]
+
+class EventType(models.Model):
+    class Stroke(models.TextChoices):
+        FREESTYLE = "FR", _("Freestyle")
+        BREASTSTROKE = "BR", _("Breaststroke")
+        BACKSTROKE = "BK", _("Backstroke")
+        BUTTERFLY = "FLY", _("Butterfly")
+        MEDLEY = "M", _("Medley")
+
+    class Type(models.TextChoices):
+        INDIVIDUAL = "INDIVIDUAL", _("Individual")
+        RELAY = "RELAY", _("Relay")
+        
+    stroke = models.CharField(max_length=20, choices=Stroke.choices, blank=False, null=False)
+    distance = models.PositiveSmallIntegerField(blank=False, null=False)
+    type = models.CharField(max_length=20, choices=Type.choices, blank=False, null=False, default=Type.INDIVIDUAL)
+
+    @property
+    def name(self):
+        if self.type == "RELAY":
+            return f"4x{self.distance} {self.stroke} {self.get_type_display()}"
+        elif self.type == "INDIVIDUAL" and self.stroke == "M":
+            return f"{self.distance} I.M"
+        return f"{self.distance} {self.stroke}"
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['stroke', 'distance', 'type'], name='unique_event_type')
+        ]

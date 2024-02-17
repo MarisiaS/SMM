@@ -5,6 +5,8 @@ from api.views.LogoutView import LogoutView
 from api.views.SiteView import SiteViewSet
 from api.views.SchoolView import SchoolViewSet
 from api.views.GroupView import GroupViewSet
+from api.views.EventTypeView import EventTypeViewSet
+
 
 from rest_framework.routers import SimpleRouter
 
@@ -12,6 +14,7 @@ router = SimpleRouter()
 router.register(r'site', SiteViewSet, basename='site')
 router.register(r'school', SchoolViewSet, basename='school')
 router.register(r'group', GroupViewSet, basename='group')
+router.register(r'eventtype', EventTypeViewSet, basename='type')
 
 urlpatterns = [
     path("login/", TokenObtainPairView.as_view()),
