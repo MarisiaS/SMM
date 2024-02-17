@@ -177,6 +177,7 @@
   {"model": "api.session",
   "pk": 1,
   "fields": {
+     "label": "Pink",
      "days_of_week": "[\"1\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\"]",
      "time": "18:00:00",
      "coach": 1,
@@ -187,6 +188,7 @@
      "model": "api.session",
      "pk": 2,
      "fields": {
+         "label": "Green",
          "days_of_week": "[\"1\", \"0\", \"1\", \"0\", \"1\", \"0\", \"0\"]",
          "time": "19:00:00",
          "coach": 1,
