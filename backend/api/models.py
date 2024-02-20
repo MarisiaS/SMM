@@ -105,16 +105,8 @@ class EventType(models.Model):
 
 
 class Session(models.Model):
-    label = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, blank=False, null=False)
     days_of_week = ArrayField(models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(1)] ), size=7)
     time = models.TimeField()
-    coach = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='coach_group')
+    coach = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='coach_group')
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='school_group')
-    
-    @property
-    def name(self):
-        abbreviations = ["MON", "TUE", "WED", "THU", "FRI", "SAN", "SUN"]
-        selected_days = [f"{abbreviations[i]}-" for i in range(7) if self.days_of_week[i]==1]
-        hour_part = f"{self.time.hour:02d}"
-        days_part = "".join(selected_days)
-        return f"{days_part}{hour_part}"

@@ -10,7 +10,6 @@ from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
             value={
                 "id": 2,
                 "name": "MON-WED-FRI-19",
-                "label": "Pink",
                 "days_of_week": [
                     1,
                     0,
@@ -29,7 +28,7 @@ from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
         OpenApiExample(
             name='request',
             value={
-                "label": "Pink",
+                "name": "MON-WED-FRI-19",
                 "days_of_week": [
                     1,
                     0,
@@ -48,11 +47,10 @@ from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
     ]
 )
 class SessionSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(read_only=True)
 
     class Meta:
         model = Session
-        fields = ('id', 'name', 'label', 'days_of_week', 'time', 'coach', 'school')
+        fields = ('id', 'name', 'days_of_week', 'time', 'coach', 'school')
 
     def validate_days_of_week(self, value):
         if len(value) != 7:
