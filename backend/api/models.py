@@ -109,7 +109,7 @@ class Session(models.Model):
     days_of_week = ArrayField(models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(1)] ), size=7)
     time = models.TimeField()
     coach = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='coach_group')
-    school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True, related_name='school_group')
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='school_group')
     
     @property
     def name(self):
