@@ -15,6 +15,7 @@ class SwimMeetViewSet(viewsets.ModelViewSet):
     serializer_class = SwimMeetSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [OrderingFilter, SearchFilter]
+    search_fields = ['^name']
     ordering_fields = ['date']
     ordering = ['date']
     http_method_names = ['get', 'post', 'delete', 'patch']

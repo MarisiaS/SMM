@@ -17,7 +17,7 @@ router.register(r'school', SchoolViewSet, basename='school')
 router.register(r'group', GroupViewSet, basename='group')
 router.register(r'eventtype', EventTypeViewSet, basename='type')
 router.register(r'session', SessionViewSet, basename='session')
-router.register(r'swimmweet', SwimMeetViewSet, basename='school')
+router.register(r'swimmweet', SwimMeetViewSet, basename='swimmeet')
 
 urlpatterns = [
     path("login/", TokenObtainPairView.as_view()),
