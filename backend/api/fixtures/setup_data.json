@@ -171,6 +171,26 @@
         "stroke": "FR",
         "type": "RELAY"
     }
-  }
- 
+  },
+  {"model": "api.session",
+  "pk": 1,
+  "fields": {
+     "name": "MON-18",
+     "days_of_week": "[\"1\", \"0\", \"0\", \"0\", \"0\", \"0\", \"0\"]",
+     "time": "18:00:00",
+     "coach": 1,
+     "school": 1
+     }
+ },
+ {
+     "model": "api.session",
+     "pk": 2,
+     "fields": {
+         "name": "MON-WED-FRI-19",
+         "days_of_week": "[\"1\", \"0\", \"1\", \"0\", \"1\", \"0\", \"0\"]",
+         "time": "19:00:00",
+         "coach": 1,
+         "school": 1
+     }
+ }
 ]

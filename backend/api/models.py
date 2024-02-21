@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models.functions import Coalesce
 from .managers import CustomUserManager
 
@@ -101,3 +102,11 @@ class EventType(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['stroke', 'distance', 'type'], name='unique_event_type')
         ]
+
+
+class Session(models.Model):
+    name = models.CharField(max_length=50, blank=False, null=False)
+    days_of_week = ArrayField(models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(1)] ), size=7)
+    time = models.TimeField()
+    coach = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='coach_group')
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='school_group')
