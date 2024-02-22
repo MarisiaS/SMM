@@ -126,8 +126,8 @@ class Atlethe(models.Model):
     date_of_birth = models.DateField()
     gender = models.CharField(max_length=20, choices=Gender.choices)
     status = models.CharField(max_length=20, choices=Status.choices)
-    session = models.ForeignKey(Session, on_delete=models.SET_NULL, related_name='session_group')
-    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='school_group')
+    session = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, related_name='atlethe_session_group')
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='atlethe_school_group')
     email = models.EmailField()
     notes = models.TextField(blank=True, null=True)
 
