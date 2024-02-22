@@ -111,7 +111,7 @@ class Session(models.Model):
     coach = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='coach_group')
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='school_group')
 
-class Atlethe(models.Model):
+class Athlete(models.Model):
     class Status(models.TextChoices):
         ACTIVE = "ACTIVE", _("Active")
         INACTIVE = "INACTIVE", _("Inactive")
@@ -128,7 +128,7 @@ class Atlethe(models.Model):
     status = models.CharField(max_length=20, choices=Status.choices)
     session = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, related_name='atlethe_session_group')
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='atlethe_school_group')
-    email = models.EmailField()
+    email = models.EmailField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
