@@ -111,7 +111,7 @@ class Session(models.Model):
     coach = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='coach_group')
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='school_group')
 
-class EventType(models.Model):
+class Atlethe(models.Model):
     class Status(models.TextChoices):
         ACTIVE = "ACTIVE", _("Active")
         INACTIVE = "INACTIVE", _("Inactive")
@@ -127,7 +127,7 @@ class EventType(models.Model):
     gender = models.CharField(max_length=20, choices=Gender.choices)
     status = models.CharField(max_length=20, choices=Status.choices)
     session = models.ForeignKey(Session, on_delete=models.SET_NULL, related_name='session_group')
-    school = models.ForeignKey(School, on_delete=models.SET_NULL, related_name='school_group')
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='school_group')
     email = models.EmailField()
     notes = models.TextField(blank=True, null=True)
 
