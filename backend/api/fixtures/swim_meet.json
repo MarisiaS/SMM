@@ -1,0 +1,22 @@
+[
+    {
+        "model": "api.swimmeet",
+        "pk": 1,
+        "fields": {
+            "name": "Spring Swim Meet",
+            "date": "2024-03-16",
+            "time": "17:00:00",
+            "site": 1
+        }
+    },
+    {
+        "model": "api.swimmeet",
+        "pk": 2,
+        "fields": {
+            "name": "Flying Fish Swim Meet",
+            "date": "2024-04-29",
+            "time": "12:00:00",
+            "site": 1
+        }
+    }
+]
