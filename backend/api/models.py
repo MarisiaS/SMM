@@ -113,8 +113,8 @@ class Session(models.Model):
 
 class SwimMeet(models.Model):
     name = models.CharField(max_length=255, null=False, blank=False)
-    date = models.DateField(null=True, blank=True)
+    date = models.DateField(null=False, blank=False)
     time = models.TimeField(null=True, blank=True)
     site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='swim_meet_site')
-    
+
     
