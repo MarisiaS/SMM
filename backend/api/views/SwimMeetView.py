@@ -9,7 +9,7 @@ import logging
 logger = logging.getLogger('django')
 
 
-@extend_schema(tags=['SwimMeet'])
+@extend_schema(tags=['Swim Meet'])
 class SwimMeetViewSet(viewsets.ModelViewSet):
     queryset = SwimMeet.objects.all()
     serializer_class = SwimMeetSerializer
