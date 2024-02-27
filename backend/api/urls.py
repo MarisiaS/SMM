@@ -8,6 +8,7 @@ from api.views.GroupView import GroupViewSet
 from api.views.EventTypeView import EventTypeViewSet
 from api.views.SessionView import SessionViewSet
 from api.views.SwimMeetView import SwimMeetViewSet
+from api.views.MeetSchoolView import MeetSchoolListView, AddSchoolsToMeetView, DeleteSchoolsFromMeetView
 
 from rest_framework.routers import SimpleRouter
 
@@ -17,13 +18,16 @@ router.register(r'school', SchoolViewSet, basename='school')
 router.register(r'group', GroupViewSet, basename='group')
 router.register(r'eventtype', EventTypeViewSet, basename='type')
 router.register(r'session', SessionViewSet, basename='session')
-router.register(r'swimmweet', SwimMeetViewSet, basename='swimmeet')
+router.register(r'swimmeet', SwimMeetViewSet, basename='swimmeet')
 
 urlpatterns = [
     path("login/", TokenObtainPairView.as_view()),
     path("login/refresh/", CustomTokenRefreshView.as_view()),
     path('logout/', LogoutView.as_view()),
     path('auth/', include('djoser.urls')),
+    path('meet_schools/<int:meet_id>/', MeetSchoolListView.as_view(), name='meet-schools-list'),
+    path('schools_to_meet/<int:meet_id>/', AddSchoolsToMeetView.as_view(), name='add-schools-to-meet'),
+    path('delete_schools_from_meet/<int:meet_id>/', DeleteSchoolsFromMeetView.as_view(), name='delete-schools-from-meet'),
 ]
 
 urlpatterns += router.urls
