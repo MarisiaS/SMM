@@ -117,4 +117,14 @@ class SwimMeet(models.Model):
     time = models.TimeField(null=True, blank=True)
     site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='swim_meet_site')
 
+class MeetEvent(models.Model):
+    meet = models.ForeignKey(SwimMeet, on_delete=models.CASCADE, related_name='event_meet')
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='event_group')
+    event_type = models.ForeignKey(EventType, on_delete=models.CASCADE, related_name='event_type')
+    num_event = models.PositiveSmallIntegerField()
+    
+    @property
+    def name(self):
+        return f"#{self.num_event} {self.group.name} {self.event_type.name}"
+    
     
