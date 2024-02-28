@@ -8,6 +8,7 @@ from api.views.GroupView import GroupViewSet
 from api.views.EventTypeView import EventTypeViewSet
 from api.views.SessionView import SessionViewSet
 from api.views.SwimMeetView import SwimMeetViewSet
+from api.views.AthleteView import AthleteViewSet
 
 from rest_framework.routers import SimpleRouter
 
@@ -18,6 +19,8 @@ router.register(r'group', GroupViewSet, basename='group')
 router.register(r'eventtype', EventTypeViewSet, basename='type')
 router.register(r'session', SessionViewSet, basename='session')
 router.register(r'swimmweet', SwimMeetViewSet, basename='swimmeet')
+router.register(r'athlete', AthleteViewSet, basename='athlete')
+
 
 urlpatterns = [
     path("login/", TokenObtainPairView.as_view()),
