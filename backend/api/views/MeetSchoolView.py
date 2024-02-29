@@ -17,7 +17,7 @@ class MeetSchoolListView(APIView):
         return Response(serializer.data)
 
 @extend_schema(tags=['Swim Meet - School'], request=SchoolsListSerializer)    
-class AddSchoolsToMeetView(APIView):
+class SchoolsToMeetView(APIView):
     def post(self, request, meet_id):
         try:
             swim_meet = SwimMeet.objects.get(id=meet_id)
@@ -36,10 +36,7 @@ class AddSchoolsToMeetView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-@extend_schema(tags=['Swim Meet - School'], request=SchoolsListSerializer)         
-class DeleteSchoolsFromMeetView(APIView):
-    def post(self, request, meet_id):
+    def delete(self, request, meet_id):
         try:
             swim_meet = SwimMeet.objects.get(id=meet_id)
         except SwimMeet.DoesNotExist:

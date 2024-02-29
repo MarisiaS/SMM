@@ -8,8 +8,7 @@ from api.views.GroupView import GroupViewSet
 from api.views.EventTypeView import EventTypeViewSet
 from api.views.SessionView import SessionViewSet
 from api.views.SwimMeetView import SwimMeetViewSet
-from api.views.MeetSchoolView import MeetSchoolListView, AddSchoolsToMeetView, DeleteSchoolsFromMeetView
-
+from api.views.MeetSchoolView import MeetSchoolListView, SchoolsToMeetView
 from rest_framework.routers import SimpleRouter
 
 router = SimpleRouter()
@@ -26,8 +25,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view()),
     path('auth/', include('djoser.urls')),
     path('meet_schools/<int:meet_id>/', MeetSchoolListView.as_view(), name='meet-schools-list'),
-    path('schools_to_meet/<int:meet_id>/', AddSchoolsToMeetView.as_view(), name='add-schools-to-meet'),
-    path('delete_schools_from_meet/<int:meet_id>/', DeleteSchoolsFromMeetView.as_view(), name='delete-schools-from-meet'),
+    path('schools_to_meet/<int:meet_id>/', SchoolsToMeetView.as_view(), name='schools-to-meet'),
 ]
 
 urlpatterns += router.urls
