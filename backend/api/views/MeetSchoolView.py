@@ -5,8 +5,12 @@ from api.models import SwimMeet, School
 from api.serializers.MeetSchoolSerializer import MeetSchoolListSerializer, SchoolsListSerializer
 from drf_spectacular.utils import extend_schema
 
-@extend_schema(tags=['Swim Meet - School'])
-class MeetSchoolListView(APIView):
+
+@extend_schema(tags=['Swim Meet - School'], request=SchoolsListSerializer, methods=['PATCH', 'POST'])
+@extend_schema(tags=['Swim Meet - School'], methods=['GET'], summary="Lists all the schools participating on a specific meet")
+@extend_schema(methods=['POST'], summary="Add a list of schools to a specific meet")
+@extend_schema(methods=['PATCH'], summary="Deletes a list of schools from a specific meet")       
+class MeetSchoolView(APIView):
     def get(self, request, meet_id):
         try:
             swim_meet = SwimMeet.objects.get(id=meet_id)
@@ -15,9 +19,7 @@ class MeetSchoolListView(APIView):
 
         serializer = MeetSchoolListSerializer(swim_meet)
         return Response(serializer.data)
-
-@extend_schema(tags=['Swim Meet - School'], request=SchoolsListSerializer)    
-class SchoolsToMeetView(APIView):
+    
     def post(self, request, meet_id):
         try:
             swim_meet = SwimMeet.objects.get(id=meet_id)
@@ -36,7 +38,7 @@ class SchoolsToMeetView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, meet_id):
+    def patch(self, request, meet_id):
         try:
             swim_meet = SwimMeet.objects.get(id=meet_id)
         except SwimMeet.DoesNotExist:
