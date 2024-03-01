@@ -127,4 +127,9 @@ class MeetEvent(models.Model):
     def name(self):
         return f"#{self.num_event} {self.group.name} {self.event_type.name}"
     
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['meet', 'num_event'], name='unique_num_event_meet')
+        ]
+    
     
