@@ -119,8 +119,8 @@ class SwimMeet(models.Model):
 
 class MeetEvent(models.Model):
     meet = models.ForeignKey(SwimMeet, on_delete=models.CASCADE, related_name='event_meet')
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='event_group')
-    event_type = models.ForeignKey(EventType, on_delete=models.CASCADE, related_name='event_type')
+    group = models.ForeignKey(Group, on_delete=models.PROTECT, related_name='event_group')
+    event_type = models.ForeignKey(EventType, on_delete=models.PROTECT, related_name='event_type')
     num_event = models.PositiveSmallIntegerField()
     
     @property
