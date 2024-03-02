@@ -2,13 +2,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from api.models import MeetEvent, SwimMeet
-from api.serializers.MeetEventSerializer import MeetEventSerializer, MeetEventPostSerializer, MeetEventPatchSerializer
+from api.serializers.MeetEventSerializer import MeetEventSerializer, MeetEventPatchSerializer
 from django.db.models import F
 from drf_spectacular.utils import extend_schema
 
 @extend_schema(tags=['Meet Events'])
-@extend_schema(request=MeetEventPostSerializer, methods=['GET'], summary="Displays all events in a specific meet")
-@extend_schema(request=MeetEventPostSerializer, methods=['POST'], summary="Add an event to a specific meet")
+@extend_schema(request=MeetEventSerializer, methods=['GET'], summary="Displays all events in a specific meet")
+@extend_schema(request=MeetEventSerializer, methods=['POST'], summary="Add an event to a specific meet")
 @extend_schema(request=MeetEventPatchSerializer, methods=['PATCH'], summary="Deletes an event from a specific meet and updates the event number for the next events")
 class MeetEventView(APIView):
     def get(self, request, meet_id):
@@ -26,7 +26,7 @@ class MeetEventView(APIView):
         except SwimMeet.DoesNotExist:
             return Response({'error': 'SwimMeet not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = MeetEventPostSerializer(data=request.data)
+        serializer = MeetEventSerializer(data=request.data)
         if serializer.is_valid():
             num_event = MeetEvent.objects.filter(meet_id=meet_id).count()
             serializer.validated_data['num_event'] = num_event + 1
