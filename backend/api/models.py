@@ -140,8 +140,13 @@ class Athlete(models.Model):
     email = models.EmailField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
 
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+    
     
 class TimeRecord(models.Model):
     athlete = models.ForeignKey(Athlete, on_delete=models.CASCADE, related_name='time_record_athlete_group')
