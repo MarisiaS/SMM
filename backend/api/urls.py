@@ -8,12 +8,8 @@ from api.views.GroupView import GroupViewSet
 from api.views.EventTypeView import EventTypeViewSet
 from api.views.SessionView import SessionViewSet
 from api.views.SwimMeetView import SwimMeetViewSet
-<<<<<<< HEAD
 from api.views.MeetSchoolView import MeetSchoolView
-=======
 from api.views.AthleteView import AthleteViewSet
-
->>>>>>> main
 from rest_framework.routers import SimpleRouter
 
 router = SimpleRouter()
@@ -22,13 +18,9 @@ router.register(r'school', SchoolViewSet, basename='school')
 router.register(r'group', GroupViewSet, basename='group')
 router.register(r'eventtype', EventTypeViewSet, basename='type')
 router.register(r'session', SessionViewSet, basename='session')
-<<<<<<< HEAD
 router.register(r'swimmeet', SwimMeetViewSet, basename='swimmeet')
-=======
-router.register(r'swimmweet', SwimMeetViewSet, basename='swimmeet')
 router.register(r'athlete', AthleteViewSet, basename='athlete')
 
->>>>>>> main
 
 urlpatterns = [
     path("login/", TokenObtainPairView.as_view()),
