@@ -111,6 +111,8 @@ class Session(models.Model):
     coach = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='coach_group')
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='school_group')
 
+    
+      
 class SwimMeet(models.Model):
     name = models.CharField(max_length=255, null=False, blank=False)
     date = models.DateField(null=False, blank=False)
@@ -118,3 +120,25 @@ class SwimMeet(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='swim_meet_site')
     school = models.ManyToManyField(School, related_name="swim_meets")
     
+class Athlete(models.Model):
+    class Status(models.TextChoices):
+        ACTIVE = "ACTIVE", _("Active")
+        INACTIVE = "INACTIVE", _("Inactive")
+
+
+    class Gender(models.TextChoices):
+        FEMALE = "F", _("Girl")
+        MALE = "M", _("Boy")
+    
+    first_name = models.CharField (max_length=150, blank=False, db_collation="case_insensitive")
+    last_name = models.CharField(max_length=150, blank=False, db_collation="case_insensitive")    
+    date_of_birth = models.DateField()
+    gender = models.CharField(max_length=20, choices=Gender.choices)
+    status = models.CharField(max_length=20, choices=Status.choices)
+    session = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, related_name='atlethe_session_group')
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='atlethe_school_group')
+    email = models.EmailField(blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
