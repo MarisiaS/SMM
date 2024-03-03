@@ -19,7 +19,7 @@ class MeetSchoolListSerializer(serializers.ModelSerializer):
 
 
 class SchoolsListSerializer(serializers.Serializer):
-    school_ids = serializers.ListField(child=serializers.IntegerField())
+    school_ids = serializers.ListField(child=serializers.IntegerField(), allow_empty=False)
 
     def validate_school_ids(self, value):
         # Check if all school_ids exist
