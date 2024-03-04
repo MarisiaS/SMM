@@ -34,10 +34,11 @@ class TimeRecordViewSet(viewsets.ModelViewSet):
                 Q(first_name_deterministic__startswith=athlete_name)|
                 Q(last_name_deterministic__startswith=athlete_name)
             )
-        if event_type_id and EventType.objects.filter(pk=event_type_id).exists():
-            queryset = queryset.filter(event_type = event_type_id)
-        else:
-            raise ValidationError({'error':"Event type with this ID does not exist."}, code=status.HTTP_400_BAD_REQUEST)
+        if event_type_id:
+            if EventType.objects.filter(pk=event_type_id).exists():
+                queryset = queryset.filter(event_type = event_type_id)
+            else:
+                raise ValidationError({'error':"Event type with this ID does not exist."}, code=status.HTTP_400_BAD_REQUEST)
         return queryset
     
     @extend_schema(parameters =[OpenApiParameter(name="athlete_name", type=str),
