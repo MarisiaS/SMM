@@ -30,12 +30,18 @@ class TimeRecordViewSet(viewsets.ModelViewSet):
 
         if athlete_name:
             # Add deterministic collation to full name (concatenation of first_name and last_name)
+            
             queryset = queryset.annotate(full_name_deterministic=Collate(
                 Concat(F('athlete__first_name'), Value(' '), F('athlete__last_name')),
                 'und-x-icu'
             ))
+            # Add deterministic collation to first_name and last_name
+            queryset = queryset.annotate(first_name_deterministic=Collate("athlete__first_name", "und-x-icu"), last_name_deterministic=Collate("athlete__last_name", "und-x-icu"))
             queryset = queryset.filter(
-                full_name_deterministic__istartswith=athlete_name)
+                Q(full_name_deterministic__istartswith=athlete_name)|
+                 Q(first_name_deterministic__startswith=athlete_name)|
+                Q(last_name_deterministic__startswith=athlete_name)
+            )
 
         if event_type_id:
             if EventType.objects.filter(pk=event_type_id).exists():
