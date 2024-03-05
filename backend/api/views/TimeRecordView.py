@@ -8,7 +8,6 @@ from django.db.models.functions import Collate, Concat
 from rest_framework.exceptions import ValidationError
 from rest_framework import status
 from django.utils import timezone
-from api.utils import filter_by_group_id
 
 import logging
 
