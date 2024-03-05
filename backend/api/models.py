@@ -118,7 +118,7 @@ class SwimMeet(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='swim_meet_site')
 
 class MeetEvent(models.Model):
-    meet = models.ForeignKey(SwimMeet, on_delete=models.CASCADE, related_name='event_meet')
+    swim_meet = models.ForeignKey(SwimMeet, on_delete=models.CASCADE, related_name='event_meet')
     group = models.ForeignKey(Group, on_delete=models.PROTECT, related_name='event_group')
     event_type = models.ForeignKey(EventType, on_delete=models.PROTECT, related_name='event_type')
     num_event = models.PositiveSmallIntegerField()
@@ -129,7 +129,8 @@ class MeetEvent(models.Model):
     
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['meet', 'num_event'], name='unique_num_event_meet')
+            models.UniqueConstraint(fields=['swim_meet', 'num_event'], name='unique_num_event_swim_meet'),
+            models.UniqueConstraint(fields=['swim_meet', 'event_type', 'group'], name='unique_group_event_type_swim_meet')
         ]
     
     
