@@ -29,8 +29,7 @@ class TimeRecordViewSet(viewsets.ModelViewSet):
         group_id = self.request.query_params.get('group_id', None)
 
         if athlete_name:
-            # Add deterministic collation to full name (concatenation of first_name and last_name)
-            
+            # Add deterministic collation to full name (concatenation of first_name and last_name)     
             queryset = queryset.annotate(full_name_deterministic=Collate(
                 Concat(F('athlete__first_name'), Value(' '), F('athlete__last_name')),
                 'und-x-icu'
@@ -72,8 +71,11 @@ class TimeRecordViewSet(viewsets.ModelViewSet):
                 queryset = queryset.filter(age__lte=max_age)
             if min_age is not None:
                 queryset = queryset.filter(age__gte=min_age)
-        return queryset
 
+        # Order the queryset by first_name by default
+        return queryset.order_by('athlete__first_name')
+    
+    
     @extend_schema(parameters=[OpenApiParameter(name="athlete_name", type=str),
                                OpenApiParameter(
                                    name="event_type_id", type=int),
