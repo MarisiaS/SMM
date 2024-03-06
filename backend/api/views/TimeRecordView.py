@@ -39,8 +39,8 @@ class TimeRecordViewSet(viewsets.ModelViewSet):
             queryset = queryset.annotate(first_name_deterministic=Collate("athlete__first_name", "und-x-icu"), last_name_deterministic=Collate("athlete__last_name", "und-x-icu"))
             queryset = queryset.filter(
                 Q(full_name_deterministic__istartswith=athlete_name)|
-                 Q(first_name_deterministic__startswith=athlete_name)|
-                Q(last_name_deterministic__startswith=athlete_name)
+                 Q(first_name_deterministic__istartswith=athlete_name)|
+                Q(last_name_deterministic__istartswith=athlete_name)
             )
 
         if event_type_id:
