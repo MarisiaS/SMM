@@ -45,7 +45,6 @@ class MeetEventView(APIView):
             'event_type': data.get('event_type'),
             'num_event': num_event + 1
         }
-        print(event_data)
         serializer = MeetEventSerializer(data=event_data)
         if serializer.is_valid():
             serializer.save()
