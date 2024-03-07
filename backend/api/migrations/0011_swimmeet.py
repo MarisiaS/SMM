@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=255)),
                 ('date', models.DateField()),
                 ('time', models.TimeField(blank=True, null=True)),
-                ('school', models.ManyToManyField(to='api.school')),
+                ('school', models.ManyToManyField(related_name="swim_meet_schools", to='api.school')),
                 ('site', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='swim_meet_site', to='api.site')),
             ],
         ),

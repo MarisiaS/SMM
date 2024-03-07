@@ -118,7 +118,7 @@ class SwimMeet(models.Model):
     date = models.DateField(null=False, blank=False)
     time = models.TimeField(null=True, blank=True)
     site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='swim_meet_site')
-    school = models.ManyToManyField(School, related_name="swim_meets")
+    school = models.ManyToManyField(School, related_name="swim_meet_schools")
     
 class Athlete(models.Model):
     class Status(models.TextChoices):
