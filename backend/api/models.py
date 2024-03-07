@@ -111,18 +111,56 @@ class Session(models.Model):
     coach = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='coach_group')
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='school_group')
 
+    
+      
 class SwimMeet(models.Model):
     name = models.CharField(max_length=255, null=False, blank=False)
     date = models.DateField(null=False, blank=False)
     time = models.TimeField(null=True, blank=True)
     site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='swim_meet_site')
+    school = models.ManyToManyField(School, related_name="swim_meets")
+    
+class Athlete(models.Model):
+    class Status(models.TextChoices):
+        ACTIVE = "ACTIVE", _("Active")
+        INACTIVE = "INACTIVE", _("Inactive")
+    
+    class Gender(models.TextChoices):
+        FEMALE = "F", _("Girl")
+        MALE = "M", _("Boy")
+    
+    first_name = models.CharField (max_length=150, blank=False, db_collation="case_insensitive")
+    last_name = models.CharField(max_length=150, blank=False, db_collation="case_insensitive")    
+    date_of_birth = models.DateField()
+    gender = models.CharField(max_length=20, choices=Gender.choices)
+    status = models.CharField(max_length=20, choices=Status.choices)
+    session = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True, related_name='atlethe_session_group')
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='atlethe_school_group')
+    email = models.EmailField(blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
 
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+    
+    
+class TimeRecord(models.Model):
+    athlete = models.ForeignKey(Athlete, on_delete=models.CASCADE, related_name='time_record_athlete_group')
+    event_type = models.ForeignKey(EventType, on_delete=models.CASCADE, related_name='time_record_event_type_group')
+    swim_meet = models.ForeignKey(SwimMeet, on_delete=models.SET_NULL, blank=True, null=True, related_name='time_record_swim_meet_group')
+    time = models.CharField(max_length=15, help_text='Time in minutes:seconds.milliseconds format')
+    date = models.DateField(null=True, blank=True)
+
+    
 class MeetEvent(models.Model):
     swim_meet = models.ForeignKey(SwimMeet, on_delete=models.CASCADE, related_name='event_meet')
     group = models.ForeignKey(Group, on_delete=models.PROTECT, related_name='event_group')
     event_type = models.ForeignKey(EventType, on_delete=models.PROTECT, related_name='event_type')
     num_event = models.PositiveSmallIntegerField()
-    
+
     @property
     def name(self):
         return f"#{self.num_event} {self.group.name} {self.event_type.name}"
@@ -132,5 +170,3 @@ class MeetEvent(models.Model):
             models.UniqueConstraint(fields=['swim_meet', 'num_event'], name='unique_num_event_swim_meet'),
             models.UniqueConstraint(fields=['swim_meet', 'event_type', 'group'], name='unique_group_event_type_swim_meet')
         ]
-    
-    
