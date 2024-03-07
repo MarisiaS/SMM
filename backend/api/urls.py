@@ -11,6 +11,8 @@ from api.views.SwimMeetView import SwimMeetViewSet
 from api.views.MeetSchoolView import MeetSchoolView
 from api.views.AthleteView import AthleteViewSet
 from api.views.TimeRecordView import TimeRecordViewSet
+from api.views.MeetEventView import MeetEventView
+
 from rest_framework.routers import SimpleRouter
 
 router = SimpleRouter()
@@ -31,6 +33,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view()),
     path('auth/', include('djoser.urls')),
     path('meet_schools/<int:meet_id>/', MeetSchoolView.as_view(), name='meet-schools'),
+    path('meet_event/<int:meet_id>/', MeetEventView.as_view(), name='events-meet'),
 ]
 
 urlpatterns += router.urls
