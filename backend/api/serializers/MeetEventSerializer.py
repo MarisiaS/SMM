@@ -27,11 +27,11 @@ class MeetEventSerializer(serializers.ModelSerializer):
 
         # Check unique constraint: 'unique_num_event_swim_meet'
         if MeetEvent.objects.filter(swim_meet=swim_meet, num_event=num_event).exists():
-            raise serializers.ValidationError({'num_event': 'Event with this number already exists for the swim meet.'})
+            raise serializers.ValidationError({'Event with this number already exists for the swim meet.'})
 
         # Check unique constraint: 'unique_group_event_type_swim_meet'
         if MeetEvent.objects.filter(swim_meet=swim_meet, group=group, event_type=event_type).exists():
-            raise serializers.ValidationError({'group': 'Event with this group and event_type already exists for the swim meet.'})
+            raise serializers.ValidationError({'Event with this group and event_type already exists for the swim meet.'})
 
         return data
 
