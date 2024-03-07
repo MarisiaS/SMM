@@ -6,7 +6,7 @@ from api.serializers.MeetEventSerializer import MeetEventSerializer, MeetEventPa
 from django.db.models import F
 from drf_spectacular.utils import extend_schema, OpenApiExample
 
-@extend_schema(tags=['Meet Events'])
+@extend_schema(tags=['Swim Meet - Events'])
 class MeetEventView(APIView):
     
     @extend_schema(methods=['GET'], request=MeetEventSerializer, summary="Displays all events in a specific meet")
