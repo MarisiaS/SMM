@@ -155,6 +155,8 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'An API for managing swim meets, participants, and results.',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    'SWAGGER_UI_DIST': 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.11.7',
+
 }
 
 SIMPLE_JWT = {

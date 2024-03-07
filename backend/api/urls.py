@@ -10,6 +10,7 @@ from api.views.SessionView import SessionViewSet
 from api.views.SwimMeetView import SwimMeetViewSet
 from api.views.MeetSchoolView import MeetSchoolView
 from api.views.AthleteView import AthleteViewSet
+from api.views.TimeRecordView import TimeRecordViewSet
 from rest_framework.routers import SimpleRouter
 
 router = SimpleRouter()
@@ -20,6 +21,8 @@ router.register(r'eventtype', EventTypeViewSet, basename='type')
 router.register(r'session', SessionViewSet, basename='session')
 router.register(r'swimmeet', SwimMeetViewSet, basename='swimmeet')
 router.register(r'athlete', AthleteViewSet, basename='athlete')
+router.register(r'timerecord', TimeRecordViewSet, basename='timerecord')
+
 
 
 urlpatterns = [
