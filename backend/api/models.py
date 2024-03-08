@@ -170,3 +170,18 @@ class MeetEvent(models.Model):
             models.UniqueConstraint(fields=['swim_meet', 'num_event'], name='unique_num_event_swim_meet'),
             models.UniqueConstraint(fields=['swim_meet', 'event_type', 'group'], name='unique_group_event_type_swim_meet')
         ]
+        
+class Heat(models.Model):
+    event = models.ForeignKey(MeetEvent, on_delete=models.CASCADE, related_name='heat_event')
+    athlete = models.ForeignKey(Athlete, on_delete=models.SET_NULL, blank=True, null=True, related_name='heat_athlete')
+    lane_num = models.PositiveSmallIntegerField()
+    seed_time = models.CharField(max_length=15, help_text='Time in minutes:seconds.milliseconds format')
+    heat_time = models.CharField(max_length=15, help_text='Time in minutes:seconds.milliseconds format')
+    num_heat = models.PositiveSmallIntegerField()
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['event', 'lane_num', 'num_heat'], name='unique_event_lane_heat'),
+        ]
+    
+    
