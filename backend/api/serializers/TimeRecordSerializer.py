@@ -2,6 +2,7 @@ from api.models import TimeRecord, EventType
 from rest_framework import serializers
 import re
 from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
+from datetime import timedelta
 
 
 @extend_schema_serializer(
@@ -42,9 +43,10 @@ class TimeRecordSerializer(serializers.ModelSerializer):
         model = TimeRecord
         fields = ('id', 'athlete', 'athlete_full_name','event_type', 'event_type_name', 'swim_meet', 'time', 'date')
 
+    
     def validate_time(self, value):
-        # validation for time format MM:SS.mm
-        if not re.match(r'^([0-5]?\d:)?([0-5]?\d\.\d{1,2})$', value):
-
-            raise serializers.ValidationError("Invalid time format. Use [M:]S.mm")
+        # timedelta object with zero duration for comparasion purposes
+        zero_duration = timedelta()
+        if value < zero_duration:
+            raise serializers.ValidationError("Time cannot be negative.")
         return value

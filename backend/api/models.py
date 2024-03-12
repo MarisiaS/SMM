@@ -151,7 +151,7 @@ class TimeRecord(models.Model):
     athlete = models.ForeignKey(Athlete, on_delete=models.CASCADE, related_name='time_record_athlete_group')
     event_type = models.ForeignKey(EventType, on_delete=models.CASCADE, related_name='time_record_event_type_group')
     swim_meet = models.ForeignKey(SwimMeet, on_delete=models.SET_NULL, blank=True, null=True, related_name='time_record_swim_meet_group')
-    time = models.CharField(max_length=15, help_text='Time in minutes:seconds.milliseconds format')
+    time = models.DurationField()
     date = models.DateField(null=True, blank=True)
 
     
