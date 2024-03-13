@@ -175,8 +175,8 @@ class Heat(models.Model):
     event = models.ForeignKey(MeetEvent, on_delete=models.CASCADE, related_name='heat_event')
     athlete = models.ForeignKey(Athlete, on_delete=models.SET_NULL, blank=True, null=True, related_name='heat_athlete')
     lane_num = models.PositiveSmallIntegerField()
-    seed_time = models.DurationField()
-    heat_time = models.DurationField()
+    seed_time = models.DurationField(blank=True, null=True)
+    heat_time = models.DurationField(blank=True, null=True)
     num_heat = models.PositiveSmallIntegerField()
     
     class Meta:
