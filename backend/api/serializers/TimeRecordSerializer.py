@@ -1,6 +1,5 @@
-from api.models import TimeRecord, EventType
+from api.models import TimeRecord
 from rest_framework import serializers
-import re
 from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 from datetime import timedelta
 
