@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from api.models import Athlete, TimeRecord, MeetEvent, Group, EventType
-from api.serializers.AthleteSeedTime import AthleteSeedTimeSerializer
+from api.serializers.AthleteSeedTimeSerializer import AthleteSeedTimeSerializer
 from django.db.models import F, Value, Func, IntegerField
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
@@ -35,9 +35,9 @@ class AthleteSeedTimeView(APIView):
             time_records = TimeRecord.objects.filter(athlete=athlete, event_type=event_type_instance).order_by('time')
             if time_records.exists():
                 seed_time = time_records.first()
-                seed_times.append({'athlete': athlete.id, 'athlete_full_name': athlete.full_name, 'seed_time': seed_time.time})
+                seed_times.append({'athlete': athlete, 'athlete_full_name': athlete.full_name, 'seed_time': seed_time.time})
             else:
-                seed_times.append({'athlete': athlete.id, 'athlete_full_name': athlete.full_name, 'seed_time': ""})
+                seed_times.append({'athlete': athlete, 'athlete_full_name': athlete.full_name, 'seed_time': ""})
 
         serializer = AthleteSeedTimeSerializer(data=seed_times, many=True)
         serializer.is_valid()
