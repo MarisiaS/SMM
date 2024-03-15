@@ -4,9 +4,9 @@
         "pk": 1,
         "fields": {
             "athlete": 1,
-            "event_type": 4,
+            "event_type": 1,
             "swim_meet": null,
-            "time": "18.35",
+            "time": "34.59",
             "date": "2024-03-01"
         }
     },
@@ -17,7 +17,7 @@
             "athlete": 2,
             "event_type": 3,
             "swim_meet": null,
-            "time": "25.12",
+            "time": "31.39",
             "date": "2024-03-01"
         }
     },
@@ -26,9 +26,9 @@
         "pk": 3,
         "fields": {
             "athlete": 3,
-            "event_type": 7,
+            "event_type": 6,
             "swim_meet": null,
-            "time": "32.45",
+            "time": "2:22.69",
             "date": "2024-03-01"
         }
     },
@@ -44,13 +44,14 @@
         }
     },
     {
+    
         "model": "api.timerecord",
         "pk": 5,
         "fields": {
             "athlete": 5,
             "event_type": 6,
             "swim_meet": null,
-            "time": "22.18",
+            "time": "3:09.79",
             "date": "2024-03-01"
         }
     },
@@ -59,9 +60,9 @@
         "pk": 6,
         "fields": {
             "athlete": 6,
-            "event_type": 9,
+            "event_type": 1,
             "swim_meet": null,
-            "time": "28.36",
+            "time": "51.79",
             "date": "2024-03-01"
         }
     },
@@ -73,7 +74,7 @@
             "event_type": 1,
             "swim_meet": 1,
             "time": "45.35",
-            "date": "2024-03-01"
+            "date": "2024-03-02"
         }
     },
     {
@@ -84,7 +85,7 @@
             "event_type": 1,
             "swim_meet": 1,
             "time": "45.1",
-            "date": "2024-03-01"
+            "date": "2024-03-02"
         }
     },
     {
@@ -95,7 +96,7 @@
             "event_type": 1,
             "swim_meet": 1,
             "time": "47.1",
-            "date": "2024-03-01"
+            "date": "2024-03-02"
         }
     },
     {
@@ -106,7 +107,7 @@
             "event_type": 1,
             "swim_meet": 1,
             "time": "50.5",
-            "date": "2024-03-01"
+            "date": "2024-03-02"
         }
     },
     {
@@ -128,7 +129,7 @@
             "event_type": 1,
             "swim_meet": 1,
             "time": "44.8",
-            "date": "2024-03-01"
+            "date": "2024-03-02"
         }
     },
     {
@@ -161,7 +162,7 @@
             "event_type": 3,
             "swim_meet": 1,
             "time": "49.65",
-            "date": "2024-03-01"
+            "date": "2024-03-02"
         }
     },
     {
@@ -172,7 +173,7 @@
             "event_type": 3,
             "swim_meet": 1,
             "time": "38.66",
-            "date": "2024-03-01"
+            "date": "2024-03-02"
         }
     },
     {
@@ -183,7 +184,7 @@
             "event_type": 3,
             "swim_meet": 1,
             "time": "39.67",
-            "date": "2024-03-01"
+            "date": "2024-03-02"
         }
     },
     {
@@ -194,7 +195,7 @@
             "event_type": 3,
             "swim_meet": 1,
             "time": "44.95",
-            "date": "2024-03-01"
+            "date": "2024-03-02"
         }
     },
     {
@@ -202,7 +203,7 @@
         "pk": 19,
         "fields": {
             "athlete": 1,
-            "event_type": 4,
+            "event_type": 6,
             "swim_meet": 1,
             "time": "2:04.19",
             "date": "2024-03-01"
@@ -213,9 +214,9 @@
         "pk": 20,
         "fields": {
             "athlete": 2,
-            "event_type": 4,
+            "event_type": 6,
             "swim_meet": 1,
-            "time": "1:41.74",
+            "time": "2:41.74",
             "date": "2024-03-01"
         }
     },
@@ -224,10 +225,10 @@
         "pk": 21,
         "fields": {
             "athlete": 3,
-            "event_type": 4,
+            "event_type": 6,
             "swim_meet": 1,
-            "time": "1:41.74",
-            "date": "2024-03-01"
+            "time": "2:41.75",
+            "date": "2024-03-02"
         }
     },
     {
@@ -235,9 +236,9 @@
         "pk": 22,
         "fields": {
             "athlete": 4,
-            "event_type": 4,
+            "event_type": 6,
             "swim_meet": 1,
-            "time": "1:47.92",
+            "time": "2:07.92",
             "date": "2024-03-01"
         }
     },
@@ -246,9 +247,9 @@
         "pk": 23,
         "fields": {
             "athlete": 5,
-            "event_type": 4,
+            "event_type": 6,
             "swim_meet": 1,
-            "time": "1:42.70",
+            "time": "2:02.70",
             "date": "2024-03-01"
         }
     },
@@ -257,10 +258,10 @@
         "pk": 24,
         "fields": {
             "athlete": 6,
-            "event_type": 4,
+            "event_type": 6,
             "swim_meet": 1,
-            "time": "1:44.95",
-            "date": "2024-03-01"
+            "time": "2:04.95",
+            "date": "2024-03-02"
         }
     },
     {
@@ -268,10 +269,10 @@
         "pk": 25,
         "fields": {
             "athlete": 1,
-            "event_type": 4,
+            "event_type": 6,
             "swim_meet": 1,
-            "time": "1:15.35",
-            "date": "2024-03-01"
+            "time": "2:15.35",
+            "date": "2024-03-02"
         }
     },
     {
@@ -279,10 +280,10 @@
         "pk": 26,
         "fields": {
             "athlete": 1,
-            "event_type": 8,
+            "event_type": 6,
             "swim_meet": 1,
-            "time": "54.06",
-            "date": "2024-03-01"
+            "time": "1:54.06",
+            "date": "2024-03-03"
         }
     },
     {
@@ -290,10 +291,10 @@
         "pk": 27,
         "fields": {
             "athlete": 2,
-            "event_type": 8,
+            "event_type": 6,
             "swim_meet": 1,
-            "time": "49.5",
-            "date": "2024-03-01"
+            "time": "1:49.5",
+            "date": "2024-03-02"
         }
     },
     {
@@ -301,10 +302,10 @@
         "pk": 28,
         "fields": {
             "athlete": 3,
-            "event_type": 8,
+            "event_type": 6,
             "swim_meet": 1,
-            "time": "46.94",
-            "date": "2024-03-01"
+            "time": "1:46.94",
+            "date": "2024-03-02"
         }
     },
     {
@@ -312,10 +313,10 @@
         "pk": 29,
         "fields": {
             "athlete": 4,
-            "event_type": 8,
+            "event_type": 6,
             "swim_meet": 1,
-            "time": "47.53",
-            "date": "2024-03-01"
+            "time": "1:47.53",
+            "date": "2024-03-02"
         }
     },
     {
@@ -323,10 +324,10 @@
         "pk": 30,
         "fields": {
             "athlete": 5,
-            "event_type": 8,
+            "event_type": 6,
             "swim_meet": 1,
-            "time": "48.78",
-            "date": "2024-03-01"
+            "time": "1:48.78",
+            "date": "2024-03-03"
         }
     },
     {
@@ -334,10 +335,10 @@
         "pk": 31,
         "fields": {
             "athlete": 6,
-            "event_type": 8,
+            "event_type": 6,
             "swim_meet": 1,
-            "time": "51.64",
-            "date": "2024-03-01"
+            "time": "1:51.64",
+            "date": "2024-03-02"
         }
     },
     {
@@ -347,8 +348,8 @@
             "athlete": 2,
             "event_type": 3,
             "swim_meet": 1,
-            "time": "21.12",
-            "date": "2024-03-01"
+            "time": "41.12",
+            "date": "2024-03-02"
         }
     },
     {
@@ -356,10 +357,10 @@
         "pk": 33,
         "fields": {
             "athlete": 3,
-            "event_type": 7,
+            "event_type": 3,
             "swim_meet": 1,
-            "time": "28.45",
-            "date": "2024-03-01"
+            "time": "38.45",
+            "date": "2024-03-02"
         }
     },
     {
@@ -380,7 +381,7 @@
             "athlete": 5,
             "event_type": 6,
             "swim_meet": 2,
-            "time": "19.18",
+            "time": "1:19.18",
             "date": "2024-03-02"
         }
     },
@@ -389,9 +390,9 @@
         "pk": 36,
         "fields": {
             "athlete": 6,
-            "event_type": 9,
+            "event_type": 3,
             "swim_meet": 1,
-            "time": "27.36",
+            "time": "47.36",
             "date": "2024-03-03"
         }
     },
@@ -402,7 +403,7 @@
             "athlete": 6,
             "event_type": 1,
             "swim_meet": 1,
-            "time": "27.36",
+            "time": "31.36",
             "date": "2024-03-03"
         }
     },
@@ -412,10 +413,240 @@
         "fields": {
             "athlete": 5,
             "event_type": 1,
-            "swim_meet": 2,
+            "swim_meet": 1,
             "time": "29.18",
             "date": "2024-03-02"
         }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 39,
+        "fields": {
+            "athlete": 7,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "39.18",
+            "date": "2024-03-02"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 40,
+        "fields": {
+            "athlete": 7,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "38.28",
+            "date": "2024-03-02"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 41,
+        "fields": {
+            "athlete": 8,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "49.18",
+            "date": "2024-03-02"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 42,
+        "fields": {
+            "athlete": 8,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "41.54",
+            "date": "2024-03-03"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 43,
+        "fields": {
+            "athlete": 8,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "45.65",
+            "date": "2024-03-04"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 44,
+        "fields": {
+            "athlete": 9,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "43.18",
+            "date": "2024-03-02"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 45,
+        "fields": {
+            "athlete": 9,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "39.54",
+            "date": "2024-03-03"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 46,
+        "fields": {
+            "athlete": 9,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "38.55",
+            "date": "2024-03-04"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 47,
+        "fields": {
+            "athlete": 10,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "42.18",
+            "date": "2024-03-02"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 48,
+        "fields": {
+            "athlete": 10,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "38.54",
+            "date": "2024-03-03"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 49,
+        "fields": {
+            "athlete": 12,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "41.84",
+            "date": "2024-03-05"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 50,
+        "fields": {
+            "athlete": 14,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "41.18",
+            "date": "2024-03-05"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 51,
+        "fields": {
+            "athlete": 15,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "39.18",
+            "date": "2024-03-02"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 52,
+        "fields": {
+            "athlete": 15,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "38.54",
+            "date": "2024-03-03"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 53,
+        "fields": {
+            "athlete": 15,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "41.18",
+            "date": "2024-03-05"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 54,
+        "fields": {
+            "athlete": 16,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "37.81",
+            "date": "2024-03-02"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 55,
+        "fields": {
+            "athlete": 16,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "38.54",
+            "date": "2024-03-03"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 56,
+        "fields": {
+            "athlete": 17,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "40.34",
+            "date": "2024-03-05"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 57,
+        "fields": {
+            "athlete": 19,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "39.34",
+            "date": "2024-03-05"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 58,
+        "fields": {
+            "athlete": 18,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "38.34",
+            "date": "2024-03-03"
+        }
+    },
+    {
+        "model": "api.timerecord",
+        "pk": 59,
+        "fields": {
+            "athlete": 18,
+            "event_type": 1,
+            "swim_meet": 1,
+            "time": "39.4",
+            "date": "2024-03-05"
+        }
     }
-
 ]

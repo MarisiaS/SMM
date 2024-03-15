@@ -1,0 +1,52 @@
+[
+    {
+        "model": "api.meetevent",
+        "pk": 1,
+        "fields": {
+            "swim_meet": 1,
+            "group": 1,
+            "event_type": 1,
+            "num_event": 1
+        }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 2,
+        "fields": {
+            "swim_meet": 1,
+            "group": 2,
+            "event_type": 3,
+            "num_event": 2
+        }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 3,
+        "fields": {
+            "swim_meet": 1,
+            "group": 3,
+            "event_type": 1,
+            "num_event": 3
+        }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 4,
+        "fields": {
+            "swim_meet": 1,
+            "group": 5,
+            "event_type": 6,
+            "num_event": 4
+        }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 5,
+        "fields": {
+            "swim_meet": 1,
+            "group": 7,
+            "event_type": 3,
+            "num_event": 5
+            }
+    }
+]

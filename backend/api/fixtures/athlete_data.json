@@ -8,10 +8,10 @@
             "date_of_birth": "2004-02-22",
             "gender": "M",
             "status": "ACTIVE",
-            "email": "",
-            "notes": "",
             "session": 2,
-            "school": 1
+            "school": 1,
+            "email": "",
+            "notes": ""
         }
     },
     {
@@ -21,16 +21,15 @@
             "first_name": "Ana",
             "last_name": "Gomez",
             "date_of_birth": "2009-05-10",
-            "gender": "F",
-            "status": "ACTIVE",
-            "email": "ana@email.com",
-            "notes": "Experience in county competitions",
+            "gender": "F", "status": "ACTIVE",
             "session": 2,
-            "school": 1
+            "school": 1,
+            "email": "ana@email.com",
+            "notes": "Experience in county competitions"
         }
     },
     {
-        "model": "api.athlete",
+        "model": "api.athlete", 
         "pk": 3,
         "fields": {
             "first_name": "Carlos",
@@ -38,10 +37,10 @@
             "date_of_birth": "2017-11-15",
             "gender": "M",
             "status": "ACTIVE",
-            "email": "",
-            "notes": "",
             "session": 1,
-            "school": 1
+            "school": 1,
+            "email": "",
+            "notes": ""
         }
     },
     {
@@ -53,10 +52,10 @@
             "date_of_birth": "2014-08-30",
             "gender": "F",
             "status": "ACTIVE",
-            "email": "elena@email.com",
-            "notes": "",
             "session": 1,
-            "school": 1
+            "school": 1,
+            "email": "elena@email.com",
+            "notes": ""
         }
     },
     {
@@ -68,10 +67,10 @@
             "date_of_birth": "2011-04-05",
             "gender": "M",
             "status": "INACTIVE",
-            "email": "javier@email.com",
-            "notes": "Record in BF 100",
             "session": 1,
-            "school": 1
+            "school": 1,
+            "email": "javier@email.com",
+            "notes": "Record in BF 100"
         }
     },
     {
@@ -83,10 +82,205 @@
             "date_of_birth": "2015-07-20",
             "gender": "F",
             "status": "ACTIVE",
-            "email": "",
-            "notes": "",
             "session": 2,
-            "school": 1
+            "school": 1,
+            "email": "",
+            "notes": ""
+        }
+    },
+    {
+        "model": "api.athlete",
+        "pk": 7,
+        "fields": {
+            "first_name": "Andrew",
+            "last_name": "Chen",
+            "date_of_birth": "2009-06-17",
+            "gender": "M",
+            "status": "ACTIVE",
+            "session": 1,
+            "school": 1,
+            "email": "",
+            "notes": ""
+        }
+    },
+    {
+        "model": "api.athlete",
+        "pk": 8,
+        "fields": {
+            "first_name": "Kyla",
+            "last_name": "Smith",
+            "date_of_birth": "2008-05-03",
+            "gender": "F",
+            "status": "ACTIVE",
+            "session": 1,
+            "school": 1,
+            "email": "",
+            "notes": ""
+        }
+    },
+    {
+        "model": "api.athlete",
+        "pk": 9,
+        "fields": {
+            "first_name": "Ryan",
+            "last_name": "French",
+            "date_of_birth": "2014-11-29",
+            "gender": "M",
+            "status": "ACTIVE",
+            "session": 2,
+            "school": 1,
+            "email": "",
+            "notes": ""
+        }
+    },
+    {
+        "model": "api.athlete",
+        "pk": 10,
+        "fields": {
+            "first_name": "Anna",
+            "last_name": "Anderson",
+            "date_of_birth": "2014-10-25",
+            "gender": "F",
+            "status": "ACTIVE",
+            "session": 1,
+            "school": 1,
+            "email": "",
+            "notes": ""
+        }
+    },
+    {
+        "model": "api.athlete",
+        "pk": 11,
+        "fields": {
+            "first_name": "Sofia",
+            "last_name": "Avila",
+            "date_of_birth": "2015-03-21",
+            "gender": "F",
+            "status": "ACTIVE",
+            "session": 1,
+            "school": 1,
+            "email": "",
+            "notes": ""
+        }
+    },
+    {
+        "model": "api.athlete",
+        "pk": 12,
+        "fields": {
+            "first_name": "Ellie",
+            "last_name": "Yuan",
+            "date_of_birth": "2010-04-12",
+            "gender": "F",
+            "status": "ACTIVE",
+            "session": 1,
+            "school": 1,
+            "email": "",
+            "notes": ""
+        }
+    },
+    {
+        "model": "api.athlete",
+        "pk": 13,
+        "fields": {
+            "first_name": "Luke",
+            "last_name": "Collins",
+            "date_of_birth": "2010-08-02",
+            "gender": "M",
+            "status": "ACTIVE",
+            "session": 1,
+            "school": 1,
+            "email": "",
+            "notes": ""
+        }
+    },
+    {
+        "model": "api.athlete",
+        "pk": 14,
+        "fields": {
+            "first_name": "Ethan",
+            "last_name": "Miller",
+            "date_of_birth": "2010-07-15",
+            "gender": "M",
+            "status": "ACTIVE",
+            "session": 1,
+            "school": 1,
+            "email": "",
+            "notes": ""
+        }
+    },
+    {
+        "model": "api.athlete",
+        "pk": 15,
+        "fields": {
+            "first_name": "Olivia",
+            "last_name": "Davis",
+            "date_of_birth": "2016-02-15",
+            "gender": "F",
+            "status": "ACTIVE",
+            "session": 1,
+            "school": 1,
+            "email": "",
+            "notes": ""
+        }
+    },
+    {
+        "model": "api.athlete",
+        "pk": 16,
+        "fields": {
+            "first_name": "Ava",
+            "last_name": "Wilson",
+            "date_of_birth": "2015-08-11",
+            "gender": "F",
+            "status": "ACTIVE",
+            "session": 1,
+            "school": 1,
+            "email": "",
+            "notes": ""
+        }
+    },
+    {
+        "model": "api.athlete",
+        "pk": 17,
+        "fields": {
+            "first_name": "Noah",
+            "last_name": "Brown",
+            "date_of_birth": "2016-04-13",
+            "gender": "M",
+            "status": "ACTIVE",
+            "session": 1,
+            "school": 1,
+            "email": "",
+            "notes": ""
+        }
+    },
+    {
+        "model": "api.athlete",
+        "pk": 18,
+        "fields": {
+            "first_name": "Benjamin",
+            "last_name": "Anderson",
+            "date_of_birth": "2017-12-13",
+            "gender": "M",
+            "status": "ACTIVE",
+            "session": 1,
+            "school": 1,
+            "email": "",
+            "notes": ""
+        }
+    },
+    {
+        "model": "api.athlete",
+        "pk": 19,
+        "fields": {
+            "first_name": "Owen",
+            "last_name": "Williams",
+            "date_of_birth": "2005-12-13",
+            "gender": "M",
+            "status": "ACTIVE",
+            "session": 1,
+            "school": 1,
+            "email": "",
+            "notes": ""
         }
     }
 ]
