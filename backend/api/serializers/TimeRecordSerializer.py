@@ -47,6 +47,6 @@ class TimeRecordSerializer(serializers.ModelSerializer):
     def validate_time(self, value):
         # timedelta object with zero duration for comparasion purposes
         zero_duration = timedelta()
-        if value < zero_duration:
-            raise serializers.ValidationError("Time cannot be negative.")
+        if value <= zero_duration:
+            raise serializers.ValidationError("Time cannot be zero or negative.")
         return value
