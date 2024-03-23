@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from api.models import Athlete, TimeRecord, MeetEvent, Group, EventType
-from api.serializers.AthleteSeedTimeSerializer import AthleteSeedTimeSerializer
+from api.serializers.AthleteSeedTimeSerializer import AthleteSeedTimeSerializer, UpdateAthleteSeedTimeSerializer
 from django.db.models import F, Value, Func, IntegerField
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
@@ -11,39 +11,6 @@ from datetime import timedelta
 
 @extend_schema(tags=['Seed times'])
 class AthleteSeedTimeView(APIView):
-    def get(self, request, event_id):
-        try:
-            event_instance = MeetEvent.objects.get(id=event_id)
-        except MeetEvent.DoesNotExist:
-            return Response({'error': 'Event not found'}, status=status.HTTP_404_NOT_FOUND)
-        
-        #Getting the group and event_type
-        group_id = event_instance.group.id
-        event_type_id = event_instance.event_type.id
-        
-        #Checking that the event type exists
-        try:
-            event_type_instance = EventType.objects.get(id=event_type_id)
-        except EventType.DoesNotExist:
-            return Response({'error': 'Event type not found'}, status=status.HTTP_404_NOT_FOUND)
-
-        #On get_queryset we validate if the group exists and filter by group
-        athletes = self.get_queryset(group_id)
-        seed_times = []
-
-        for athlete in athletes:
-            time_records = TimeRecord.objects.filter(athlete=athlete, event_type=event_type_instance).order_by('time')
-            if time_records.exists():
-                seed_time = time_records.first()
-                seed_times.append({'athlete': athlete, 'athlete_full_name': athlete.full_name, 'seed_time': seed_time.time})
-            else:
-                # 200 days are 17280000 seconds. The serializer interpretes 200 days as NT (No time)
-                seed_times.append({'athlete': athlete, 'athlete_full_name': athlete.full_name, 'seed_time': timedelta(seconds=17280000)})
-
-        serializer = AthleteSeedTimeSerializer(data=seed_times, many=True)
-        serializer.is_valid()
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
     def get_queryset(self, group_id):
         try:
             group_instance = Group.objects.get(id=group_id)
@@ -69,3 +36,55 @@ class AthleteSeedTimeView(APIView):
             queryset = queryset.filter(age__gte=min_age)
             
         return queryset.order_by('first_name')
+
+
+    def get(self, request, event_id):
+        try:
+            event_instance = MeetEvent.objects.get(id=event_id)
+        except MeetEvent.DoesNotExist:
+            return Response({'error': 'Event not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        #Getting the group and event_type
+        group_id = event_instance.group.id
+        event_type_id = event_instance.event_type.id
+        
+        #Checking that the event type exists
+        try:
+            event_type_instance = EventType.objects.get(id=event_type_id)
+        except EventType.DoesNotExist:
+            return Response({'error': 'Event type not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        #On get_queryset we validate if the group exists and filter by group
+        athletes = self.get_queryset(group_id)
+        seed_times = []
+
+        for athlete in athletes:
+            time_records = TimeRecord.objects.filter(athlete=athlete, event_type=event_type_instance).order_by('time')
+            if time_records.exists():
+                seed_time = time_records.first()
+                seed_times.append({'athlete': athlete.id, 'athlete_full_name': athlete.full_name, 'seed_time': seed_time.time})
+            else:
+                # 200 days are 17280000 seconds. The serializer interpretes 200 days as NT (No time)
+                seed_times.append({'athlete': athlete.id, 'athlete_full_name': athlete.full_name, 'seed_time': timedelta(seconds=17280000)})
+
+        serializer = AthleteSeedTimeSerializer(data=seed_times, many=True)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @extend_schema(request=UpdateAthleteSeedTimeSerializer)
+    def post(self, request, event_id):
+        try:
+            event_instance = MeetEvent.objects.get(id=event_id)
+        except MeetEvent.DoesNotExist:
+            return Response({'error': 'Event not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        #Checking that the event type exists
+        try:
+            event_type_instance = EventType.objects.get(id=event_instance.event_type.id)
+        except EventType.DoesNotExist:
+            return Response({'error': 'Event type not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = UpdateAthleteSeedTimeSerializer(data=request.data, context={'event_type':event_type_instance})
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
