@@ -7,6 +7,7 @@ from django.db.models import F, Value, Func, IntegerField
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 from drf_spectacular.utils import extend_schema
+from datetime import timedelta
 
 @extend_schema(tags=['Seed times'])
 class AthleteSeedTimeView(APIView):
@@ -19,7 +20,6 @@ class AthleteSeedTimeView(APIView):
         #Getting the group and event_type
         group_id = event_instance.group.id
         event_type_id = event_instance.event_type.id
-        print(group_id,event_type_id)
         
         #Checking that the event type exists
         try:
@@ -37,7 +37,8 @@ class AthleteSeedTimeView(APIView):
                 seed_time = time_records.first()
                 seed_times.append({'athlete': athlete, 'athlete_full_name': athlete.full_name, 'seed_time': seed_time.time})
             else:
-                seed_times.append({'athlete': athlete, 'athlete_full_name': athlete.full_name, 'seed_time': ""})
+                # 200 days are 17280000 seconds. The serializer interpretes 200 days as NT (No time)
+                seed_times.append({'athlete': athlete, 'athlete_full_name': athlete.full_name, 'seed_time': timedelta(seconds=17280000)})
 
         serializer = AthleteSeedTimeSerializer(data=seed_times, many=True)
         serializer.is_valid()
