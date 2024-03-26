@@ -64,8 +64,8 @@ class AthleteSeedTimeView(APIView):
                 seed_time = time_records.first()
                 seed_times.append({'athlete': athlete.id, 'athlete_full_name': athlete.full_name, 'seed_time': seed_time.time})
             else:
-                # 200 days are 17280000 seconds. The serializer interpretes 200 days as NT (No time)
-                seed_times.append({'athlete': athlete.id, 'athlete_full_name': athlete.full_name, 'seed_time': timedelta(seconds=17280000)})
+                # The serializer interpretes 200 days as NT (No time)
+                seed_times.append({'athlete': athlete.id, 'athlete_full_name': athlete.full_name, 'seed_time': timedelta(days=200)})
 
         serializer = AthleteSeedTimeSerializer(data=seed_times, many=True)
         serializer.is_valid(raise_exception=True)
