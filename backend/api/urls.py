@@ -36,6 +36,7 @@ urlpatterns = [
     path('meet_schools/<int:meet_id>/', MeetSchoolView.as_view(), name='meet-schools'),
     path('meet_event/<int:meet_id>/', MeetEventView.as_view(), name='events-meet'),
     path('seed_times/<int:event_id>/', AthleteSeedTimeView.as_view(), name='seed_times'),
+    path('event_heat/<int:event_id>/', GenerateHeatView.as_view(), name='heats-event'),
 ]
 
 urlpatterns += router.urls
