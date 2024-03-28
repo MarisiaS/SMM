@@ -13,6 +13,7 @@ from api.views.AthleteView import AthleteViewSet
 from api.views.TimeRecordView import TimeRecordViewSet
 from api.views.MeetEventView import MeetEventView
 from api.views.AtheleteSeedTimeView import AthleteSeedTimeView
+from api.views.GenerateHeatView import GenerateHeatView
 
 from rest_framework.routers import SimpleRouter
 
