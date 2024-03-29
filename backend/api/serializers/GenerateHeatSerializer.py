@@ -1,27 +1,24 @@
-from api.models import Athlete, Heat
+from api.models import Athlete, Heat, Group
 from rest_framework import serializers
 from django.db import transaction
+from rest_framework.exceptions import ValidationError
 from api.CustomField import HeatDurationField
 import math
 
 
 class AthleteSeedSerializer(serializers.Serializer):
-    athlete_id = serializers.PrimaryKeyRelatedField(queryset=Athlete.objects.all())
+    athlete = serializers.PrimaryKeyRelatedField(queryset=Athlete.objects.all())
     seed_time = HeatDurationField()
-
-
 
 
 class GenerateHeatSerializer(serializers.Serializer):
     athletes = AthleteSeedSerializer(many=True)
 
-
     def validate_athletes(self, value):
-        athlete_ids = [athlete['athlete_id'].id for athlete in value]
+        athlete_ids = [athlete['athlete'].id for athlete in value]
         if len(athlete_ids) != len(set(athlete_ids)):
             raise serializers.ValidationError("Athletes must not be repeated.")
         return value
-
 
     @transaction.atomic
     def create(self, validated_data):
@@ -40,7 +37,7 @@ class GenerateHeatSerializer(serializers.Serializer):
                 num_lane = self.calculate_lane_num(i,num_lanes)
                 Heat.objects.create(
                     event=event_instance,
-                    athlete=current_heat_athletes[i-num_empty_athletes_current_heat]["athlete_id"],
+                    athlete=current_heat_athletes[i-num_empty_athletes_current_heat]["athlete"],
                     lane_num= num_lane,
                     seed_time=current_heat_athletes[i-num_empty_athletes_current_heat]["seed_time"],
                     heat_time=None,
