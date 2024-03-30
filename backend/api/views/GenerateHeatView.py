@@ -30,7 +30,8 @@ class GenerateHeatView(APIView):
         except:
             return Response({'error': 'Not able to retrieve number of lanes'}, status=status.HTTP_404_NOT_FOUND)
         
-        #Get group_id
+        #Get group_id 
+        # TODO: Mover despues del is_valid()
         try:
             group_instance = event_instance.group
         except:
@@ -46,9 +47,11 @@ class GenerateHeatView(APIView):
        
         serializer = GenerateHeatSerializer(data=request.data, context={'num_lanes': num_lanes, 'event': event_instance})
         if serializer.is_valid(raise_exception=True):
+
             serializer.save()
         return Response({'success': 'Heats generated'}, status=status.HTTP_200_OK)
     
+    #TODO: Delete method
 
     def get_queryset(self, group_id):
         try:

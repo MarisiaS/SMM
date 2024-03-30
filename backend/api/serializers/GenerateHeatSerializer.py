@@ -30,7 +30,7 @@ class GenerateHeatSerializer(serializers.Serializer):
         current_num_heat = 1
         num_empty_athletes = (num_lanes - num_athletes%num_lanes) %num_lanes
         num_empty_athletes_current_heat = math.ceil(num_empty_athletes/2) if num_athletes > num_lanes else num_empty_athletes
-        while(len(athletes_sorted)>0):
+        while(athletes_sorted):
             current_heat_athletes = athletes_sorted[:num_lanes-num_empty_athletes_current_heat]
             athletes_sorted = athletes_sorted[num_lanes-num_empty_athletes_current_heat:]
             for i in range(num_empty_athletes_current_heat, num_lanes):
