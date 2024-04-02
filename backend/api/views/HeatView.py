@@ -4,6 +4,7 @@ from rest_framework import status
 from api.models import MeetEvent, Heat
 from api.serializers.HeatDisplaySerializer import CompleteHeatSerializer, ResumeHeatSerializer
 from drf_spectacular.utils import extend_schema
+from django.db import transaction
 from django.db.models import Max
 from datetime import timedelta
 
@@ -52,7 +53,7 @@ class HeatView(APIView):
         else:
             return Response({'message': 'This event does not have heats yet'}, status=status.HTTP_200_OK)
         
-@extend_schema(tags=['Heat'])
+@extend_schema(tags=['Heat'], request=ResumeHeatSerializer(many=True))
 class LaneView(APIView):
     def get(self, request, event_id, lane_num):
         #Get event instance
@@ -94,4 +95,8 @@ class LaneView(APIView):
                 return Response({'error': 'There is not a lane whit that number'}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({'message': 'This event does not have heats yet'}, status=status.HTTP_200_OK)
-    
+
+    @transaction.atomic
+    def put(self, request, event_id, lane_num): 
+        # Given all the athletes on a lane, update the heat_time and register the time on TimeRecord.
+        pass
