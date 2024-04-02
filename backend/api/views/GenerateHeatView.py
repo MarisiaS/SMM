@@ -6,7 +6,6 @@ from api.models import MeetEvent, Heat, Group, Athlete
 from api.serializers.GenerateHeatSerializer import GenerateHeatSerializer
 from rest_framework.exceptions import ValidationError
 from drf_spectacular.utils import extend_schema
-from rest_framework.permissions import IsAuthenticated
 from django.db import transaction
 from django.db.models import F, Value, Func, IntegerField
 from django.utils import timezone

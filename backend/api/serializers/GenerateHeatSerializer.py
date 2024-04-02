@@ -3,6 +3,7 @@ from rest_framework import serializers
 from django.db import transaction
 from rest_framework.exceptions import ValidationError
 from api.CustomField import HeatDurationField
+from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 import math
 
 
@@ -10,7 +11,30 @@ class AthleteSeedSerializer(serializers.Serializer):
     athlete = serializers.PrimaryKeyRelatedField(queryset=Athlete.objects.all())
     seed_time = HeatDurationField()
 
-
+@extend_schema_serializer(
+    examples=[
+        OpenApiExample(
+            name='Generate heat request body',
+            value={
+                "athletes": [
+                    {
+                        "athlete": 1,
+                        "seed_time": "45.00"
+                    },
+                    {
+                        "athlete": 2,
+                        "seed_time": "26.09"
+                    },
+                    {
+                        "athlete": 3,
+                        "seed_time": "NT"
+                    }
+                ]
+            },
+            request_only=True, 
+            )
+    ]
+)
 class GenerateHeatSerializer(serializers.Serializer):
     athletes = AthleteSeedSerializer(many=True)
 
