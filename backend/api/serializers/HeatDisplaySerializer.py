@@ -4,13 +4,15 @@ from api.CustomField import HeatDurationField
 from django.db import transaction
 
 
-class CompleteHeatSerializer(serializers.ModelSerializer):
+class HeatSerializer(serializers.ModelSerializer):
     athlete_full_name = serializers.SerializerMethodField()
     seed_time = HeatDurationField()
+    heat_time = HeatDurationField()
+
 
     class Meta:
         model = Heat
-        fields = ('id', 'lane_num', 'athlete', 'athlete_full_name', 'seed_time')
+        fields = ('id', 'lane_num', 'athlete', 'athlete_full_name', 'seed_time', 'heat_time')
 
     def get_athlete_full_name(self, instance):
         if isinstance(instance, Heat):
@@ -19,7 +21,7 @@ class CompleteHeatSerializer(serializers.ModelSerializer):
                 return athlete.full_name
         return None
 
-class ResumeHeatSerializer(serializers.ModelSerializer):
+class LaneSerializer(serializers.ModelSerializer):
     athlete_full_name = serializers.SerializerMethodField()
     heat_time = HeatDurationField(write_only=True)
 
@@ -39,7 +41,9 @@ class ResumeHeatSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def update(self, instance, validated_data):
         #Updates heat_time
-        instance.heat_time = validated_data.get('heat_time', instance.heat_time)
+        instance.heat_time = validated_data.get('heat_time')
+        instance.save()
+
     
         #Register the time on TimeRecord
         athlete = validated_data.get('athlete', instance.athlete)

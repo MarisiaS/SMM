@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from api.models import MeetEvent, Heat
-from api.serializers.HeatDisplaySerializer import CompleteHeatSerializer, ResumeHeatSerializer
+from api.serializers.HeatDisplaySerializer import HeatSerializer, LaneSerializer
 from drf_spectacular.utils import extend_schema
 from django.db import transaction
 from django.db.models import Max
@@ -41,11 +41,12 @@ class HeatView(APIView):
                             "id": None,
                             "lane_num": lane_num,
                             "athlete": None,
-                            "seed_time": timedelta(days=500)
+                            "seed_time": None,
+                            "heat_time": None
                     })
         
                 # Serialize the heats using CompleteHeatSerializer
-                serializer = CompleteHeatSerializer(lanes_data, many=True)
+                serializer = HeatSerializer(lanes_data, many=True)
         
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
@@ -53,7 +54,7 @@ class HeatView(APIView):
         else:
             return Response({'message': 'This event does not have heats yet'}, status=status.HTTP_200_OK)
         
-@extend_schema(tags=['Heat'], request=ResumeHeatSerializer(many=True))
+@extend_schema(tags=['Heat'], request=LaneSerializer(many=True))
 class LaneView(APIView):
     def get(self, request, event_id, lane_num):
         #Get event instance
@@ -85,10 +86,11 @@ class LaneView(APIView):
                             "id": None,
                             "num_heat": heat,
                             "athlete": None,
+                            "seed_time": None
                     })
         
                 # Serialize the heats using CompleteHeatSerializer
-                serializer = ResumeHeatSerializer(heats_data, many=True)
+                serializer = LaneSerializer(heats_data, many=True)
         
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
@@ -118,7 +120,7 @@ class LaneView(APIView):
                     num_heat = heat_record['num_heat']
                     try:
                         heat_instance = Heat.objects.get(event=event_instance,num_heat=num_heat, lane_num=lane_num)
-                        serializer = ResumeHeatSerializer(instance=heat_instance, data=heat_record, context={'event': event_instance}, partial=True)
+                        serializer = LaneSerializer(instance=heat_instance, data=heat_record, context={'event': event_instance}, partial=True)
                         if serializer.is_valid(raise_exception=True):
                             serializer.save()
                     except Heat.DoesNotExist:
