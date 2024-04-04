@@ -92,11 +92,38 @@ class LaneView(APIView):
         
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
-                return Response({'error': 'There is not a lane whit that number'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'error': 'There is not a lane with that number'}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({'message': 'This event does not have heats yet'}, status=status.HTTP_200_OK)
 
     @transaction.atomic
     def put(self, request, event_id, lane_num): 
         # Given all the athletes on a lane, update the heat_time and register the time on TimeRecord.
-        pass
+        try:
+            event_instance = MeetEvent.objects.get(id=event_id)
+        except MeetEvent.DoesNotExist:
+            return Response({'error': 'Event not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        #Get num_lanes
+        try:
+            swim_meet_instance = event_instance.swim_meet
+            num_lanes = swim_meet_instance.site.num_lanes
+        except:
+            return Response({'error': 'Not able to retrieve number of lanes'}, status=status.HTTP_404_NOT_FOUND)
+        
+        if 1<= lane_num <= num_lanes: 
+            result_data = request.data
+            for heat_record in result_data:
+                if heat_record['athlete'] is not None:
+                    num_heat = heat_record['num_heat']
+                    try:
+                        heat_instance = Heat.objects.get(event=event_instance,num_heat=num_heat, lane_num=lane_num)
+                        serializer = ResumeHeatSerializer(instance=heat_instance, data=heat_record, context={'event': event_instance}, partial=True)
+                        if serializer.is_valid(raise_exception=True):
+                            serializer.save()
+                    except Heat.DoesNotExist:
+                        return Response({'error': 'Heat not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'message': 'Heats updated successfully'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'There is not a lane with that number'}, status=status.HTTP_404_NOT_FOUND)
+

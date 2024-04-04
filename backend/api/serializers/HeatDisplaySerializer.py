@@ -1,6 +1,7 @@
-from api.models import Heat
+from api.models import Heat, TimeRecord
 from rest_framework import serializers
 from api.CustomField import HeatDurationField
+from django.db import transaction
 
 
 class CompleteHeatSerializer(serializers.ModelSerializer):
@@ -34,3 +35,25 @@ class ResumeHeatSerializer(serializers.ModelSerializer):
             if athlete:
                 return athlete.full_name
         return None
+    
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        #Updates heat_time
+        instance.heat_time = validated_data.get('heat_time', instance.heat_time)
+    
+        #Register the time on TimeRecord
+        athlete = validated_data.get('athlete', instance.athlete)
+        event_instance = self.context['event']
+        event_type = event_instance.event_type
+        swim_meet = event_instance.swim_meet
+        TimeRecord.objects.create(
+            athlete = athlete,
+            event_type = event_type,
+            swim_meet = swim_meet,
+            date = swim_meet.date,
+            time = instance.heat_time
+        )
+        return instance
+
+
+
