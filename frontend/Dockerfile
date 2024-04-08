@@ -1,5 +1,7 @@
 FROM node:21.6.2
 
+ENV CHOKIDAR_USEPOLLING=true
+
 WORKDIR /frontend/
 
 COPY package*.json /frontend/
