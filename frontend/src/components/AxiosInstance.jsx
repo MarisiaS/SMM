@@ -1,14 +1,40 @@
 import axios from 'axios'
 
-const baseUrl = 'http://localhost:8000'
+const baseUrl = 'http://localhost:8000/api/'
 
 const AxiosInstance = axios.create({
-    baseUrl: baseUrl,
-    timeout: 5000,
+    baseURL: baseUrl,
+    timeout: 5000, 
     headers:{
         "Content-Type":"application/json",
          accept: "application/json"
     }
 })
 
-export default AxiosInstance
+AxiosInstance.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('Token')
+        if(token){
+            config.headers.Authorization = `Token ${token}`
+        }
+        else{
+            config.headers.Authorization = ``
+        }
+        return config;
+    }
+)
+
+AxiosInstance.interceptors.response.use(
+    (response) => {
+        return response
+    }, 
+    (error) => {
+        if(error.response && error.response.status === 401){
+            localStorage.removeItem('Token')
+            window.location.href = '/'
+        }
+
+    }
+)
+
+export default AxiosInstance;

@@ -1,5 +1,8 @@
 FROM node:21.6.2
 
+# Set environment variable
+ENV CHOKIDAR_USEPOLLING=true
+
 WORKDIR /frontend/
 
 COPY package*.json /frontend/
