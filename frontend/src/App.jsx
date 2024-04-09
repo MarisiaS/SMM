@@ -5,7 +5,7 @@ import Login from './components/Login'
 import NavBar from './components/NavBar'
 import AthletesList from './components/AthleteLists'
 import {Routes, Route, useLocation} from 'react-router-dom'
-
+import ProtectedRoute from './components/ProtectecRoutes'
 
 
 function App() {
@@ -19,17 +19,18 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />}/>
         </Routes>
-
         :
-      <NavBar 
-        content = {
-          <Routes>
-            
-            <Route path="/home" element={<Home />}/>
-            <Route path="/athlete" element={<AthletesList />}/>
-          </Routes> 
-        }
-      />
+        <NavBar 
+          content = {
+            <Routes>
+              <Route element={<ProtectedRoute/>}>
+                <Route path="/home" element={<Home />}/>
+                <Route path="/athlete" element={<AthletesList />}/>
+              </Route>
+
+            </Routes> 
+          }
+        />
       }
     </>
   )

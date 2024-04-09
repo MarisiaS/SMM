@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = 'http://localhost:8000/api/'
+const baseUrl = 'http://localhost:8000/api'
 
 const AxiosInstance = axios.create({
     baseURL: baseUrl,
@@ -15,7 +15,7 @@ AxiosInstance.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('Token')
         if(token){
-            config.headers.Authorization = `Token ${token}`
+            config.headers.Authorization = `Bearer ${token}`
         }
         else{
             config.headers.Authorization = ``

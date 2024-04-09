@@ -17,11 +17,11 @@ const Login = () =>{
             password: data.password,
         })
         .then((response) => {
-            console.log('Response received:', response);
-            localStorage.setItem('Token', response.data.token);
+            localStorage.setItem('Token', response.data.access);
             navigate(`/home`);
         })
         .catch((error) => {
+            //Need to send a message of error
             console.error('Error during login:', error);
         });
     }

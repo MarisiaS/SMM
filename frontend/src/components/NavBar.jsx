@@ -33,11 +33,11 @@ export default function NavBar(props) {
         sx={{
           width: drawerWidth,
           flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', backgroundColor: 'ghostwhite'},
         }}
       >
         <Toolbar />
-        <Box sx={{ overflow: 'auto' }}>
+        <Box sx={{ overflow: 'auto'}}>
           <List>
               <ListItem key={1} disablePadding>
                 <ListItemButton component = {Link} to ="/home" selected={"/home" === path}>
