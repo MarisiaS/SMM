@@ -1,8 +1,8 @@
 import '../App.css'
 import { Box } from '@mui/material'
-import MyTextField from './forms/MyTextField'
-import MyPassField from './forms/MyPassField'
-import MyButton from './forms/MyButton'
+import MyTextField from './FormElements/MyTextField'
+import MyPasswordField from './FormElements/MyPasswordField'
+import MyButton from './FormElements/MyButton'
 
 const Login = () =>{
     return(
@@ -17,7 +17,7 @@ const Login = () =>{
                         />
                     </Box>
                     <Box className={"itemBox"}>
-                        <MyPassField
+                        <MyPasswordField
                         label={"Password"}
                         />
                     </Box>
