@@ -21,6 +21,7 @@ export default function MyPasswordField(props) {
         <Controller 
             name = {name}
             control = {control}
+            defaultValue={''}
             render = {({
             field: {onChange, value},
             fieldState: {error}
