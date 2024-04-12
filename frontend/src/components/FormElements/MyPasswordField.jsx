@@ -6,33 +6,31 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import {Controller} from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { FormHelperText } from '@mui/material';
 
-export default function MyPasswordField(props) {
+const MyPasswordField = React.forwardRef((props, ref) => {
     const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event) => {
-            event.preventDefault();
-        };
-    const {label, name, control} = props
+        event.preventDefault();
+    };
+    const { label, name, control } = props;
 
     return (
-        <Controller 
-            name = {name}
-            control = {control}
+        <Controller
+            name={name}
+            control={control}
             defaultValue={''}
-            render = {({
-            field: {onChange, value},
-            fieldState: {error}
-            }) => (
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <FormControl variant="outlined" className={"myForm"}>
                     <InputLabel htmlFor="outlined-adornment-password">{label}</InputLabel>
                     <OutlinedInput
+                        ref={ref} 
                         id="outlined-adornment-password"
-                        onChange = {onChange}
-                        value = {value}
-                        error = {!!error}
+                        onChange={onChange}
+                        value={value}
+                        error={!!error}
                         type={showPassword ? 'text' : 'password'}
                         endAdornment={
                             <InputAdornment position="end">
@@ -48,11 +46,13 @@ export default function MyPasswordField(props) {
                         }
                         label={label}
                     />
-                    <FormHelperText sx={{color:"#d32f2f"}}> 
+                    <FormHelperText sx={{ color: "#d32f2f" }}>
                         {error?.message}
                     </FormHelperText>
                 </FormControl>
-        )}
-      />
+            )}
+        />
     );
-}
+});
+
+export default MyPasswordField;

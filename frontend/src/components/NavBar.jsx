@@ -1,7 +1,7 @@
 const NavBar = () => {
     return (
         <div>
-            This is the home page, tests
+            One day!
         </div>
     )
 }

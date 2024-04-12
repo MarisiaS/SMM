@@ -3,9 +3,9 @@ import axios from 'axios';
 const BASE_URL = 'http://localhost:8000/api';
 
 const getConfig = () => {
-    let { access } = JSON.parse(sessionStorage.getItem("token"));
+    let token = JSON.parse(sessionStorage.getItem("token"));
     return {
-      Authorization: `Bearer ${access}`,
+      Authorization: `Bearer ${token.access}`,
       "Content-Type": "application/json",
     };
   };

@@ -9,19 +9,22 @@ import { useNavigate } from 'react-router-dom'
 import { SmmApi } from '../SmmApi.jsx'
 
 const Login = () =>{
-    const {handleSubmit, control, reset} = useForm()
+    const {handleSubmit, control, reset, register} = useForm()
     const [error, setError] = useState(null);
     const navigate = useNavigate()
 
     const submission = async (data) => {
         try {
+            console.log(data)
             const response = await SmmApi.login(data);
-            const { access } = response.data;
-            sessionStorage.setItem("token", JSON.stringify({ access }));
+            sessionStorage.setItem("token", JSON.stringify(response.data));
             navigate(`/NavBar`)
         } catch (error) {
-            console.log(error.response.data)
-            setError(error.response.data.detail);
+            if (error.response.status === 401) {
+                setError("Email and/or password are invalid.");
+            } else {
+                setError("Error conecting, try again!");
+            }
             reset();
         }
     }
@@ -33,11 +36,15 @@ const Login = () =>{
                     <Box className={"itemBox"}>
                         <Box className={"title"}> Login </Box>
                     </Box>
+                    <Box >
+                        {error && <span className={"errorText"}>{error}</span>}
+                    </Box>
                     <Box className={"itemBox"}>
                         <MyTextField
                             label = {"Email"}
                             name = {"email"}
                             control = {control}
+                            {...register("email", {required: "Email is required"})}
                         />
                     </Box>
                     <Box className={"itemBox"}>
@@ -45,6 +52,7 @@ const Login = () =>{
                             label={"Password"}
                             name = {"password"}
                             control = {control}
+                            {...register("password", {required: "Password is required"})}
                         />
                     </Box>
                     <Box className={"itemBox"}>
