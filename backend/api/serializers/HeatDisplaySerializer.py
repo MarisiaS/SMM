@@ -23,11 +23,17 @@ class HeatSerializer(serializers.ModelSerializer):
 
 class LaneSerializer(serializers.ModelSerializer):
     athlete_full_name = serializers.SerializerMethodField()
+    # Setting write_only directly on the field as HeatDurationField is not a model field
     heat_time = HeatDurationField(write_only=True)
 
     class Meta:
         model = Heat
         fields = ('id', 'num_heat', 'athlete', 'athlete_full_name', 'heat_time')
+
+        extra_kwargs = {
+            'athlete': {'read_only': True},
+            'athlete_full_name': {'read_only': True},
+        }
 
 
 
