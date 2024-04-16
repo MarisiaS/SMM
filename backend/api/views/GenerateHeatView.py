@@ -31,7 +31,7 @@ class GenerateHeatView(APIView):
             swim_meet_instance = event_instance.swim_meet
             num_lanes = swim_meet_instance.site.num_lanes
         except:
-            return Response({'error': 'Not able to retrieve number of lanes'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Number of lanes not found for the swim meet site.'}, status=status.HTTP_404_NOT_FOUND)
         
         #Get group_id
         try:
