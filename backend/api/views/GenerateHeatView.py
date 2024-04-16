@@ -14,6 +14,7 @@ from django.utils import timezone
 @extend_schema(tags=['Heat'])
 @extend_schema(request=GenerateHeatSerializer, methods=['POST'])
 class GenerateHeatView(APIView):
+    @extend_schema(summary="Given an event and a list of participants with their seed times, generates the heats")
     def post(self, request, event_id):
         #Get event instance
         try:
@@ -51,6 +52,7 @@ class GenerateHeatView(APIView):
             serializer.save()
         return Response({'success': 'Heats generated'}, status=status.HTTP_200_OK)
     
+    @extend_schema(summary="Deletes the heats for a given event")
     @transaction.atomic
     def delete(self, request, event_id):
         try:

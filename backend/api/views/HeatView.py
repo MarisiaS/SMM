@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from api.models import MeetEvent, Heat
 from api.serializers.HeatDisplaySerializer import HeatSerializer, LaneSerializer
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiExample
 from django.db import transaction
 from django.db.models import Max
 from datetime import timedelta
@@ -11,6 +11,7 @@ from datetime import timedelta
 
 @extend_schema(tags=['Heat'])
 class HeatView(APIView):
+    @extend_schema(summary="Displays all lanes on a specific heat for a given event")
     def get(self, request, event_id, heat_num):
         #Get event instance
         try:
@@ -23,7 +24,7 @@ class HeatView(APIView):
             swim_meet_instance = event_instance.swim_meet
             num_lanes = swim_meet_instance.site.num_lanes
         except:
-            return Response({'error': 'Not able to retrieve number of lanes'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Number of lanes not found for the swim meet site.'}, status=status.HTTP_404_NOT_FOUND)
         
         max_num_heat = Heat.objects.filter(event_id=event_id).aggregate(max_num_heat=Max('num_heat'))['max_num_heat']
 
@@ -54,8 +55,9 @@ class HeatView(APIView):
         else:
             return Response({'message': 'This event does not have heats yet'}, status=status.HTTP_200_OK)
         
-@extend_schema(tags=['Heat'], request=LaneSerializer(many=True))
+@extend_schema(tags=['Heat'], request=LaneSerializer())
 class LaneView(APIView):
+    @extend_schema(summary="Displays all heats on a specific lane for a given event")
     def get(self, request, event_id, lane_num):
         #Get event instance
         try:
@@ -98,6 +100,27 @@ class LaneView(APIView):
         else:
             return Response({'message': 'This event does not have heats yet'}, status=status.HTTP_200_OK)
 
+    @extend_schema(examples=[
+                        OpenApiExample(
+                            "Example Value",
+                            summary="Example of a PUT request",
+                            value=[
+                                    {
+                                        "num_heat": 1,
+                                        "heat_time": "45.90"
+                                    },
+                                    {
+                                        "num_heat": 2,
+                                        "heat_time": "NS"
+                                    },
+                                    {
+                                        "num_heat": 3,
+                                        "heat_time": "36.67"
+                                    }
+                            ]
+                        )
+                    ], 
+                   summary="Updates the recorded times for all heats on a specific lane for a given event")
     @transaction.atomic
     def put(self, request, event_id, lane_num): 
         # Given all the athletes on a lane, update the heat_time and register the time on TimeRecord.
