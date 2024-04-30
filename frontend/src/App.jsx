@@ -6,6 +6,7 @@ import NavBar from './components/NavBar'
 import AthletesList from './components/AthleteLists'
 import {Routes, Route, useLocation} from 'react-router-dom'
 import ProtectedRoute from './components/ProtectecRoutes'
+import SwimMeet from './components/SwimMeet/SwimMeet'
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/home" element={<Home />}/>
                 <Route path="/athlete" element={<AthletesList />}/>
               </Route>
+              <Route path="/SwimMeet" element={<SwimMeet />}/>
 
             </Routes> 
           }
