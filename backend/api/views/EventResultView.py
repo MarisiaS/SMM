@@ -11,7 +11,7 @@ from api.CustomFilter import filter_by_group
 @extend_schema(tags=['Swim Meet - Events'])
 class EventResultView(APIView):
 
-    @extend_schema(parameters =[OpenApiParameter(name="group_id", type=int), summary="Displays the results of an event"])
+    @extend_schema(parameters =[OpenApiParameter(name="group_id", type=int)], summary="Displays the results of an event")
     def get(self, request, event_id):
         #Get event instance
         try:
