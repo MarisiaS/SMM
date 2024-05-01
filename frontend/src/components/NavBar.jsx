@@ -56,6 +56,14 @@ export default function NavBar(props) {
                   <ListItemText primary={"Athlete"} />
                 </ListItemButton>
               </ListItem>
+              <ListItem key={3} disablePadding>
+                <ListItemButton component = {Link} to ="/swimmeet" selected={"/swimmeet" === path}>
+                  <ListItemIcon>
+                    <InboxIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={"Swim Meet"} />
+                </ListItemButton>
+              </ListItem>
           </List>
         </Box>
       </Drawer>
