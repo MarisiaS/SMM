@@ -15,7 +15,6 @@ const Login = () =>{
 
     const submission = async (data) => {
         try {
-            console.log(data)
             const response = await SmmApi.login(data);
             sessionStorage.setItem("token", JSON.stringify(response.data));
             navigate(`/NavBar`)
