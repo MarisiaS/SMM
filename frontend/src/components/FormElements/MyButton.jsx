@@ -5,7 +5,7 @@ export default function MyButton(props) {
     const {label,type, disabled} = props
   return (
       <Button type={type} variant="contained" className={"myButton"} >
-            {label}
+            {label ?? props.children}
       </Button>
 
   );
