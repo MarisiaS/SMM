@@ -16,6 +16,7 @@ const getConfig = () => {
       return Promise.resolve(response);
     },
     function (error) {
+      console.log(error);
       const { response, message} = error;
       const detail =
         response.data?.detail ||
