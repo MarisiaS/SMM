@@ -86,7 +86,7 @@ const SwimMeetDisplay = () => {
 
   const handleAddNew = () => {
     console.log("Add new...");
-    navigate("/NavBar");
+    navigate("/AddNewSwimMeet");
   };
 
   return (
