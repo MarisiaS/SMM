@@ -16,7 +16,6 @@ axios.interceptors.response.use(
     return Promise.resolve(response);
   },
   function (error) {
-    console.log(error);
     const { response, message } = error;
     const detail =
       response.data?.detail ||

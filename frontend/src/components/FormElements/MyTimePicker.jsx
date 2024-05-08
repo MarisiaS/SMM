@@ -4,6 +4,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { Controller } from "react-hook-form";
+import { useState } from "react";
 
 const MyTimePicker = React.forwardRef((props, ref) => {
   const { label, name, control } = props;
@@ -12,17 +13,19 @@ const MyTimePicker = React.forwardRef((props, ref) => {
     <Controller
       name={name}
       control={control}
-      defaultValue={dayjs('2022-04-17T12:00')}
+      defaultValue={dayjs("2022-04-17T12:00")}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <TimePicker
-              ref={ref}
-              label={label}
-              value={value}
-              onChange={onChange}
-              error={!!error}
-              helperText={error?.message}
-            />
+          <TimePicker
+            ampm={false}
+            format={"HH:mm"}
+            ref={ref}
+            label={label}
+            value={value}
+            onChange={onChange}
+            error={!!error}
+            helperText={error?.message}
+          />
         </LocalizationProvider>
       )}
     />

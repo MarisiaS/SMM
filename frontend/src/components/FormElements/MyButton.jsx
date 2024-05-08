@@ -8,7 +8,7 @@ export default function MyButton(props) {
     <Button
       type={type}
       variant="contained"
-      className={"myButton"}
+      //className={"myButton"}
       onClick={onClick}
       style={{ background: "lightskyblue", color: "black" }}
     >

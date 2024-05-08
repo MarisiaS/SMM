@@ -13,6 +13,7 @@ import {
 import MyButton from "../FormElements/MyButton";
 import { Stack, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 const columns = [
   {
@@ -72,9 +73,16 @@ const SwimMeetDisplay = () => {
     let ignore = false;
     async function fetching() {
       const json = await SmmApi.getSwimMeetList(searchPar, offset, limit);
-      console.log(json);
+      const data = json.results;
+      const formatData = data.map((swimmeet)=>{
+        return {
+          ...swimmeet,
+          date: dayjs(swimmeet.date).format("MM-DD-YYYY"),
+          time: swimmeet.time.slice(0,5),
+        }
+      });
       if (!ignore) {
-        setData(json.results);
+        setData(formatData);
         setCount(json.count);
       }
     }
