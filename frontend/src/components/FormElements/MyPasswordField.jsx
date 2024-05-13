@@ -21,7 +21,6 @@ const MyPasswordField = React.forwardRef((props, ref) => {
         <Controller
             name={name}
             control={control}
-            defaultValue={''}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <FormControl variant="outlined" className={"myForm"}>
                     <InputLabel htmlFor="outlined-adornment-password">{label}</InputLabel>

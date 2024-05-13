@@ -1,128 +1,147 @@
 import "../../App.css";
 import { Box, Stack } from "@mui/material";
-import MyTextField from "../FormElements/MyTextField";
-import MyButton from "../FormElements/MyButton";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { SmmApi } from "../../SmmApi.jsx";
-import MyDatePicker from "../FormElements/MyDatePicker.jsx";
-import MyTimePicker from "../FormElements/MyTimePicker.jsx";
-import MySelect from "../FormElements/MySelect.jsx";
 import dayjs from "dayjs";
+import SwimMeetForm from "./SwimMeetForm.jsx";
+import AlertBox from "../Common/AlertBox.jsx";
 
 const AddNewSwimMeet = () => {
-  const { handleSubmit, control, reset, register } = useForm();
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   const navigate = useNavigate();
+  const [submitted, setSubmitted] = useState(false);
+  const [sites, setSites] = useState([{id:"", name:""}]);
+  const [defaultSite, setDefaultSite] = useState("");
+  const [lastSwimMeetId, setLastSwimMeetId] = useState(null);
 
-  const getSites = async () => {
-    try {
-      let response = await SmmApi.getSites();
-      let sites = response.data.results.map((site) => {
-        return {
-          id: site.id,
-          name: site.name,
-        };
-      });
-      return sites;
-    } catch (error) {
-      setErrorOnLoading(true);
+  const {
+    handleSubmit,
+    control,
+    reset,
+    register,
+    formState: { isDirty },
+  } = useForm({
+    defaultValues: useMemo(() => {
+      return {
+        name: "",
+        date: dayjs(Date.now()),
+        time: dayjs(Date.now()),
+        site: defaultSite,
+      };
+    }, [defaultSite]),
+    mode: "onChange",
+  });
+
+  let typeAlert = error ? "error" : "success";
+  let message = error
+    ? "Unable to create the Swim Meet. Please try again!"
+    : "Swim meet created successfully.";
+
+  useEffect(() => {
+    if (isDirty) {
+      setSubmitted(false);
+      setError(false);
     }
-  };
+  }, [isDirty]);
+
+  useEffect(() => {
+    let ignore = false;
+    async function fetchOptions() {
+      try {
+        const response = await SmmApi.getSites();
+        const _sites = response.data.results.map((site) => {
+          return {
+            id: site.id,
+            name: site.name,
+          };
+        });
+        if (!ignore) {
+          setSites(_sites);
+          if (_sites.length > 0) {
+            setDefaultSite(_sites[0].id);
+          }
+        }
+      } catch (error) {
+        setErrorOnLoading(true);
+      }
+    }
+    fetchOptions();
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const handleCancel = () => {
     navigate(`/SwimMeet`);
   };
 
+  const handleAddEvents = () => {
+    //Change it to add events for the swim meet generated
+    navigate(`/NavBar`);
+  };
+
   /*
   Por hacer:
-    Decidir que hacer en caso de error cargando los sites y error al guardar
-    Agregar cancel, "create and details"
+    Componente: error cargando los sites y error al guardar
+    Separar la form en un componente
+
     Arreglar el estilo
   
   */
+  let actionButtonsSuccess = [
+    { label: "Add events", onClick: handleAddEvents },
+  ];
+
+  let actionButtons = error ? [] : actionButtonsSuccess;
 
   const submission = async (data) => {
-    const time = dayjs(data.time).format("HH:mm:ss");
+    console.log(data);
+    const time = dayjs(data.time).format("HH:mm");
+    //Para generar error usar esta date
+    //const date = dayjs(data.date);
     const date = dayjs(data.date).format("YYYY-MM-DD");
     const formatData = {
       ...data,
       date: date,
       time: time,
     };
+    setSubmitted(true);
     try {
       const response = await SmmApi.createSwimMeet(formatData);
-      //We want to navegate to event details
-      navigate(`/SwimMeet`);
+      setLastSwimMeetId(response.data.id);
     } catch (error) {
-      if (error.response.status === 400) {
-        setError("Error creating swim meet");
-      } else {
-        setError("Error conecting, try again!");
-      }
-      reset();
+      console.log("hola");
+      setError(true);
     }
+    reset({
+      name: "",
+      date: dayjs(Date.now()),
+      time: dayjs(Date.now()),
+      site: defaultSite,
+    });
   };
 
   return (
     <div>
       {errorOnLoading && <h1>Error loading sites</h1>}
+      {submitted && (
+        <AlertBox
+          type={typeAlert}
+          message={message}
+          actionButtons={actionButtons}
+        />
+      )}
       {!errorOnLoading && (
-        <form onSubmit={handleSubmit(submission)}>
-          <Box>
-            <Box className={"itemBox"}>
-              <MyTextField
-                label={"Name"}
-                name={"name"}
-                control={control}
-                {...register("name", { required: "Name is required" })}
-              />
-            </Box>
-            <Box className={"itemBox"}>
-              <MyDatePicker
-                label={"Date"}
-                name={"date"}
-                control={control}
-                {...register("date", { required: "Date is required" })}
-              />
-            </Box>
-            <Box className={"itemBox"}>
-              <MyTimePicker
-                label={"Time"}
-                name={"time"}
-                control={control}
-                {...register("time", { required: "Time is required" })}
-              />
-            </Box>
-            <Box className={"itemBox"}>
-              <MySelect
-                label={"Site"}
-                name={"site"}
-                control={control}
-                getOptions={getSites}
-                {...register("site", { required: "Site is required" })}
-              />
-            </Box>
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <Box className={"itemBox"} sx={{ marginLeft: 5 }}>
-                <MyButton
-                  key={"cancel"}
-                  label={"Cancel"}
-                  onClick={handleCancel}
-                />
-              </Box>
-              <Box className={"itemBox"} sx={{ marginRight: 5 }}>
-                <MyButton key={"create"} label={"Create"} type={"submit"} />
-              </Box>
-            </Stack>
-          </Box>
-        </form>
+        <SwimMeetForm
+          handleSubmit={handleSubmit(submission)}
+          control={control}
+          register={register}
+          handleCancel={handleCancel}
+          options={sites}
+        />
       )}
     </div>
   );

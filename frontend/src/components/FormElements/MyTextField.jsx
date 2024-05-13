@@ -9,7 +9,7 @@ const MyTextField = React.forwardRef((props, ref) => {
         <Controller
             name={name}
             control={control}
-            defaultValue={''}
+            //defaultValue={''}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <TextField
                     ref={ref}
@@ -18,7 +18,7 @@ const MyTextField = React.forwardRef((props, ref) => {
                     value={value}
                     label={label}
                     variant="outlined"
-                    //className={"myForm"}
+                    className={"myForm"}
                     error={!!error}
                     helperText={error?.message}
                 />

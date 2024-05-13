@@ -3,14 +3,16 @@ import Button from "@mui/material/Button";
 import "../../App.css";
 
 export default function MyButton(props) {
-  const { label, type, onClick } = props;
+  const { label, type, onClick, disabled } = props;
+  const backgroundColor = disabled ? "lightgrey" : "lightskyblue";
   return (
     <Button
       type={type}
       variant="contained"
-      //className={"myButton"}
+      className={"myButton"}
       onClick={onClick}
-      style={{ background: "lightskyblue", color: "black" }}
+      disabled={disabled}
+      style={{ background: backgroundColor, color: "black" }}
     >
       {label ?? props.children}
     </Button>

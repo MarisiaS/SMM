@@ -13,13 +13,13 @@ const MyTimePicker = React.forwardRef((props, ref) => {
     <Controller
       name={name}
       control={control}
-      defaultValue={dayjs("2022-04-17T12:00")}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <TimePicker
             ampm={false}
-            format={"HH:mm"}
             ref={ref}
+            format="HH:mm"
+            views={['hours', 'minutes']} 
             label={label}
             value={value}
             onChange={onChange}
