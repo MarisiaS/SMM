@@ -1,10 +1,9 @@
 import * as React from "react";
 import TextField from "@mui/material/TextField";
-import MenuItem from '@mui/material/MenuItem';
+import MenuItem from "@mui/material/MenuItem";
 import { Controller } from "react-hook-form";
 import { useEffect, useState } from "react";
 
-//change to recive options as props 
 const MySelect = React.forwardRef((props, ref) => {
   const { label, name, control, options } = props;
 
@@ -24,11 +23,12 @@ const MySelect = React.forwardRef((props, ref) => {
           error={!!error}
           helperText={error?.message}
         >
-          {options && options.map((option) => (
-            <MenuItem key={option.id} value={option.id}>
-              {option.name}
-            </MenuItem>
-          ))}
+          {options &&
+            options.map((option) => (
+              <MenuItem key={option.id} value={option.id}>
+                {option.name}
+              </MenuItem>
+            ))}
         </TextField>
       )}
     />

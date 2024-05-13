@@ -6,7 +6,13 @@ import MyDatePicker from "../FormElements/MyDatePicker.jsx";
 import MyTimePicker from "../FormElements/MyTimePicker.jsx";
 import MySelect from "../FormElements/MySelect.jsx";
 
-const SwimMeetForm = ({ handleSubmit, control, register, handleCancel, options }) => {
+const SwimMeetForm = ({
+  handleSubmit,
+  control,
+  register,
+  handleCancel,
+  options,
+}) => {
   return (
     <form onSubmit={handleSubmit}>
       <Box>
