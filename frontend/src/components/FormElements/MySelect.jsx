@@ -19,7 +19,7 @@ const MySelect = React.forwardRef((props, ref) => {
           value={value}
           label={label}
           variant="outlined"
-          //className={"myForm"}
+          className={"myForm"}
           error={!!error}
           helperText={error?.message}
         >
