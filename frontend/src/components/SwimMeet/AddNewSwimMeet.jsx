@@ -13,7 +13,7 @@ const AddNewSwimMeet = () => {
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false);
-  const [sites, setSites] = useState([{id:"", name:""}]);
+  const [sites, setSites] = useState([{ id: "", name: "" }]);
   const [defaultSite, setDefaultSite] = useState("");
   const [lastSwimMeetId, setLastSwimMeetId] = useState(null);
 
@@ -84,11 +84,10 @@ const AddNewSwimMeet = () => {
   };
 
   /*
-  Por hacer:
-    Componente: error cargando los sites y error al guardar
-    Separar la form en un componente
+  TODO:
+    Component to display error while loading sites
 
-    Arreglar el estilo
+    Fix style
   
   */
   let actionButtonsSuccess = [
@@ -100,9 +99,9 @@ const AddNewSwimMeet = () => {
   const submission = async (data) => {
     console.log(data);
     const time = dayjs(data.time).format("HH:mm");
-    //Para generar error usar esta date
-    //const date = dayjs(data.date);
-    const date = dayjs(data.date).format("YYYY-MM-DD");
+    //To get an error use this date
+    const date = dayjs(data.date);
+    //const date = dayjs(data.date).format("YYYY-MM-DD");
     const formatData = {
       ...data,
       date: date,
@@ -127,22 +126,28 @@ const AddNewSwimMeet = () => {
   return (
     <div>
       {errorOnLoading && <h1>Error loading sites</h1>}
-      {submitted && (
-        <AlertBox
-          type={typeAlert}
-          message={message}
-          actionButtons={actionButtons}
-        />
-      )}
-      {!errorOnLoading && (
-        <SwimMeetForm
-          handleSubmit={handleSubmit(submission)}
-          control={control}
-          register={register}
-          handleCancel={handleCancel}
-          options={sites}
-        />
-      )}
+      <Stack alignItems="center" justifyContent="space-between">
+        <Stack>
+          <div style={{ minHeight: !submitted ? "100px" : "0" }}>
+          </div>
+          {submitted && (
+            <AlertBox
+              type={typeAlert}
+              message={message}
+              actionButtons={actionButtons}
+            />
+          )}
+          {!errorOnLoading && (
+            <SwimMeetForm
+              handleSubmit={handleSubmit(submission)}
+              control={control}
+              register={register}
+              handleCancel={handleCancel}
+              options={sites}
+            />
+          )}
+        </Stack>
+      </Stack>
     </div>
   );
 };
