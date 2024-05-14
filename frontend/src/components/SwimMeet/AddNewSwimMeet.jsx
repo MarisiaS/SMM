@@ -14,7 +14,6 @@ const AddNewSwimMeet = () => {
   const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false);
   const [sites, setSites] = useState([{ id: "", name: "" }]);
-  const [defaultSite, setDefaultSite] = useState("");
   const [lastSwimMeetId, setLastSwimMeetId] = useState(null);
 
   const {
@@ -24,14 +23,12 @@ const AddNewSwimMeet = () => {
     register,
     formState: { isDirty },
   } = useForm({
-    defaultValues: useMemo(() => {
-      return {
-        name: "",
-        date: dayjs(Date.now()),
-        time: dayjs(Date.now()),
-        site: defaultSite,
-      };
-    }, [defaultSite]),
+    defaultValues: {
+      name: "",
+      date: dayjs(Date.now()),
+      time: dayjs(Date.now()),
+      site: "",
+    },
     mode: "onChange",
   });
 
@@ -60,9 +57,12 @@ const AddNewSwimMeet = () => {
         });
         if (!ignore) {
           setSites(_sites);
-          if (_sites.length > 0) {
-            setDefaultSite(_sites[0].id);
-          }
+          reset({
+            name: "",
+            date: dayjs(Date.now()),
+            time: dayjs(Date.now()),
+            site: _sites[0]?.id || "",
+          })
         }
       } catch (error) {
         setErrorOnLoading(true);
@@ -112,14 +112,13 @@ const AddNewSwimMeet = () => {
       const response = await SmmApi.createSwimMeet(formatData);
       setLastSwimMeetId(response.data.id);
     } catch (error) {
-      console.log("hola");
       setError(true);
     }
     reset({
       name: "",
       date: dayjs(Date.now()),
       time: dayjs(Date.now()),
-      site: defaultSite,
+      site: sites[0].id,
     });
   };
 
@@ -128,8 +127,7 @@ const AddNewSwimMeet = () => {
       {errorOnLoading && <h1>Error loading sites</h1>}
       <Stack alignItems="center" justifyContent="space-between">
         <Stack>
-          <div style={{ minHeight: !submitted ? "100px" : "0" }}>
-          </div>
+          <div style={{ minHeight: !submitted ? "100px" : "0" }}></div>
           {submitted && (
             <AlertBox
               type={typeAlert}
