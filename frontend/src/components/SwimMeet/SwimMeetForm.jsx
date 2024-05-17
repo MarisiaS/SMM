@@ -9,7 +9,6 @@ import MySelect from "../FormElements/MySelect.jsx";
 const SwimMeetForm = ({
   handleSubmit,
   control,
-  register,
   handleCancel,
   options,
 }) => {

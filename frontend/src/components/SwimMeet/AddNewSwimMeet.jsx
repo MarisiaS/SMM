@@ -20,7 +20,6 @@ const AddNewSwimMeet = () => {
     handleSubmit,
     control,
     reset,
-    register,
     formState: { isDirty },
   } = useForm({
     defaultValues: {
@@ -150,7 +149,6 @@ const AddNewSwimMeet = () => {
             <SwimMeetForm
               handleSubmit={handleSubmit(submission)}
               control={control}
-              register={register}
               handleCancel={handleCancel}
               options={sites}
             />
