@@ -4,7 +4,7 @@ import "../../App.css";
 
 export default function MyButton(props) {
   const { label, type, onClick, disabled } = props;
-  const backgroundColor = disabled ? "lightgrey" : "lightskyblue";
+  const backgroundColor = disabled ? "lightgrey" : "#1769aa";
   return (
     <Button
       type={type}
@@ -12,7 +12,7 @@ export default function MyButton(props) {
       className={"myButton"}
       onClick={onClick}
       disabled={disabled}
-      style={{ background: backgroundColor, color: "black" }}
+      style={{ background: backgroundColor, color: "white" }}
     >
       {label ?? props.children}
     </Button>

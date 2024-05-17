@@ -4,16 +4,16 @@ import MenuItem from "@mui/material/MenuItem";
 import { Controller } from "react-hook-form";
 import { useEffect, useState } from "react";
 
-const MySelect = React.forwardRef((props, ref) => {
-  const { label, name, control, options } = props;
+const MySelect = (props) => {
+  const { label, name, control, options, rules } = props;
 
   return (
     <Controller
       name={name}
       control={control}
+      rules={rules}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <TextField
-          ref={ref}
           select
           onChange={onChange}
           value={value}
@@ -33,6 +33,6 @@ const MySelect = React.forwardRef((props, ref) => {
       )}
     />
   );
-});
+};
 
 export default MySelect;

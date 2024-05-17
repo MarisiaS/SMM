@@ -6,20 +6,20 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { Controller } from "react-hook-form";
 import { useState } from "react";
 
-const MyTimePicker = React.forwardRef((props, ref) => {
-  const { label, name, control } = props;
+const MyTimePicker = (props) => {
+  const { label, name, control, rules } = props;
 
   return (
     <Controller
       name={name}
       control={control}
+      rules={rules}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <TimePicker
             ampm={false}
-            ref={ref}
             format="HH:mm"
-            views={['hours', 'minutes']} 
+            views={["hours", "minutes"]}
             label={label}
             value={value}
             onChange={onChange}
@@ -30,6 +30,6 @@ const MyTimePicker = React.forwardRef((props, ref) => {
       )}
     />
   );
-});
+};
 
 export default MyTimePicker;

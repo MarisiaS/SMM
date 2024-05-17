@@ -3,23 +3,22 @@ import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Controller } from 'react-hook-form';
+import { Controller } from "react-hook-form";
 
-const MyDatePicker = React.forwardRef((props, ref) => {
-    const { label, name, control, disablePast, disableFuture} = props;
+const MyDatePicker = (props) => {
+  const { label, name, control, disablePast, disableFuture, rules } = props;
 
   return (
     <Controller
       name={name}
       control={control}
+      rules={rules}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
-            ref={ref}
             label={label}
             value={value}
             onChange={onChange}
-            views={['month', 'day', 'year']}
             disablePast={disablePast}
             disableFuture={disableFuture}
             error={!!error}
@@ -29,6 +28,6 @@ const MyDatePicker = React.forwardRef((props, ref) => {
       )}
     />
   );
-});
+};
 
 export default MyDatePicker;

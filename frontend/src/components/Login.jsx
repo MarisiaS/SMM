@@ -43,7 +43,7 @@ const Login = () =>{
                             label = {"Email"}
                             name = {"email"}
                             control = {control}
-                            {...register("email", {required: "Email is required"})}
+                            rules ={{required: "Email is required"}}
                         />
                     </Box>
                     <Box className={"itemBox"}>

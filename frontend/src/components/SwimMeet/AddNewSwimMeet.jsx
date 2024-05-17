@@ -37,6 +37,11 @@ const AddNewSwimMeet = () => {
     ? "Unable to create the Swim Meet. Please try again!"
     : "Swim meet created successfully.";
 
+  let typeAlertLoading = errorOnLoading ? "error" : "success";
+  let messageOnLoading = errorOnLoading
+    ? "Data upload failed. Please try again!"
+    : "";
+
   useEffect(() => {
     if (isDirty) {
       setSubmitted(false);
@@ -62,7 +67,7 @@ const AddNewSwimMeet = () => {
             date: dayjs(Date.now()),
             time: dayjs(Date.now()),
             site: _sites[0]?.id || "",
-          })
+          });
         }
       } catch (error) {
         setErrorOnLoading(true);
@@ -83,16 +88,7 @@ const AddNewSwimMeet = () => {
     navigate(`/NavBar`);
   };
 
-  /*
-  TODO:
-    Component to display error while loading sites
-
-    Fix style
-  
-  */
-  let actionButtonsSuccess = [
-    { label: "Add events", onClick: handleAddEvents },
-  ];
+  let actionButtonsSuccess = [{ label: "+ events", onClick: handleAddEvents }];
 
   let actionButtons = error ? [] : actionButtonsSuccess;
 
@@ -100,8 +96,8 @@ const AddNewSwimMeet = () => {
     console.log(data);
     const time = dayjs(data.time).format("HH:mm");
     //To get an error use this date
-    const date = dayjs(data.date);
-    //const date = dayjs(data.date).format("YYYY-MM-DD");
+    //const date = dayjs(data.date);
+    const date = dayjs(data.date).format("YYYY-MM-DD");
     const formatData = {
       ...data,
       date: date,
@@ -122,20 +118,35 @@ const AddNewSwimMeet = () => {
     });
   };
 
-  return (
-    <div>
-      {errorOnLoading && <h1>Error loading sites</h1>}
-      <Stack alignItems="center" justifyContent="space-between">
-        <Stack>
-          <div style={{ minHeight: !submitted ? "100px" : "0" }}></div>
-          {submitted && (
-            <AlertBox
-              type={typeAlert}
-              message={message}
-              actionButtons={actionButtons}
-            />
-          )}
-          {!errorOnLoading && (
+  if (errorOnLoading) {
+    return (
+      <Stack style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "16px",
+        width: "300px",
+        margin: "auto",
+        backgroundColor: "white",
+        padding: "20px",
+        borderRadius: "8px",
+        boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+      }}>
+        <AlertBox type={typeAlertLoading} message={messageOnLoading} />
+      </Stack>
+    );
+  } else {
+    return (
+      <div>
+        <Stack alignItems="center" justifyContent="space-between">
+          <Stack>
+            <div style={{ minHeight: !submitted ? "100px" : "0" }}></div>
+            {submitted && (
+              <AlertBox
+                type={typeAlert}
+                message={message}
+                actionButtons={actionButtons}
+              />
+            )}
             <SwimMeetForm
               handleSubmit={handleSubmit(submission)}
               control={control}
@@ -143,11 +154,11 @@ const AddNewSwimMeet = () => {
               handleCancel={handleCancel}
               options={sites}
             />
-          )}
+          </Stack>
         </Stack>
-      </Stack>
-    </div>
-  );
+      </div>
+    );
+  }
 };
 
 export default AddNewSwimMeet;
