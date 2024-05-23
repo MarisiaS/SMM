@@ -17,7 +17,7 @@ const Login = () =>{
         try {
             const response = await SmmApi.login(data);
             sessionStorage.setItem("token", JSON.stringify(response.data));
-            navigate(`/NavBar`)
+            navigate(`/swim-meet`)
         } catch (error) {
             if (error.response.status === 401) {
                 setError("Email and/or password are invalid.");
