@@ -23,7 +23,7 @@ const SearchBar = ({setSearchPar}) => {
             <MyTextField label={"Search"} name={"search"} control={control} />
           </Box>
           <Box className={"iconButton"} sx={{marginLeft:2}}>
-            <MyButton type={"submit"}>
+            <MyButton type={"submit"} label={"Search"} >
               <SearchIcon />
             </MyButton>
           </Box>

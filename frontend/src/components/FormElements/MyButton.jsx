@@ -13,8 +13,9 @@ export default function MyButton(props) {
       onClick={onClick}
       disabled={disabled}
       style={{ background: backgroundColor, color: "white" }}
+      startIcon={props.children}
     >
-      {label ?? props.children}
+      {label} 
     </Button>
   );
 }
