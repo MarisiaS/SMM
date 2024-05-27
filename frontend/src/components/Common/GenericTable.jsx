@@ -2,7 +2,7 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
-import { Box, IconButton } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 
 const GenericTable = ({ data, columns, actions }) => {
   const enableActions = actions;
@@ -26,9 +26,28 @@ const GenericTable = ({ data, columns, actions }) => {
       <Box>
         {actions &&
           actions.map((action, index) => (
-            <IconButton key={index} onClick={() => action.onClick(row.id)}>
-              {action.icon}
-            </IconButton>
+            <Tooltip
+              key={index}
+              title={action.tip}
+              placement="top"
+              arrow
+              slotProps={{
+                popper: {
+                  modifiers: [
+                    {
+                      name: "offset",
+                      options: {
+                        offset: [0, -20],
+                      },
+                    },
+                  ],
+                },
+              }}
+            >
+              <IconButton onClick={() => action.onClick(row.id)}>
+                {action.icon}
+              </IconButton>
+            </Tooltip>
           ))}
       </Box>
     ),

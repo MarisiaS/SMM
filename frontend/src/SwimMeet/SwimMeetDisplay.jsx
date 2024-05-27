@@ -62,10 +62,10 @@ const SwimMeetDisplay = () => {
   };
 
   const actions = [
-    { name: "Details", icon: <DetailsIcon />, onClick: handleDetailsClick },
-    { name: "Edit", icon: <EditIcon />, onClick: handleEditClick },
-    { name: "Delete", icon: <DeleteIcon />, onClick: handleDeleteClick },
-    { name: "Ranking", icon: <RankingIcon />, onClick: handleRankingClick },
+    { name: "Details", icon: <DetailsIcon />, onClick: handleDetailsClick, tip:"Go to events" },
+    { name: "Edit", icon: <EditIcon />, onClick: handleEditClick, tip:"Edit basic information" },
+    { name: "Delete", icon: <DeleteIcon />, onClick: handleDeleteClick, tip: "Delete" },
+    { name: "Ranking", icon: <RankingIcon />, onClick: handleRankingClick, tip: "Go to ranking" },
   ];
 
   useEffect(() => {
