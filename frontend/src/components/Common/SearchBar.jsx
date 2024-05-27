@@ -4,11 +4,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useForm } from "react-hook-form";
 import "../../App.css";
 import { Stack, Box } from "@mui/material";
-import MyTextField from "../FormElements/MyTextField";
+import CleanableTextField from "../FormElements/CleanableTextField";
 import MyButton from "../FormElements/MyButton";
 
 const SearchBar = ({setSearchPar}) => {
-  const { handleSubmit, control } = useForm();
+  const { handleSubmit, control, setValue } = useForm();
 
   const search = (data) => {
     console.log("Searching...", data);
@@ -20,7 +20,7 @@ const SearchBar = ({setSearchPar}) => {
       <form onSubmit={handleSubmit(search)}>
         <Stack direction="row" spacing={2}>
           <Box className={"itemBox"}>
-            <MyTextField label={"Search"} name={"search"} control={control} />
+            <CleanableTextField label={"Search"} name={"search"} control={control} setValue={setValue}  onSubmit={handleSubmit(search)}/>
           </Box>
           <Box className={"iconButton"} sx={{marginLeft:2}}>
             <MyButton type={"submit"} label={"Search"}>
