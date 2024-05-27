@@ -42,3 +42,12 @@
 .errorText{
   color: red;
 }
+
+.iconButton{
+  display: flex;
+  align-items: center;
+}
+
+.searchBox{
+  width: 40%
+}
