@@ -3,6 +3,7 @@ import Login from "./components/Login";
 import { Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import PrivateRoutes from "./utils/privateRoutes";
+import SwimMeetDisplay from "./SwimMeet/SwimMeetDisplay";
 
 function App() {
   const NotFound = () => {
@@ -23,7 +24,7 @@ function App() {
       <Route path="*" element={<NotFound />} />
       <Route element={<PrivateRoutes />}>
         <Route element={<NavBar menuOptions={menuOptions} />}>
-          <Route path="/swim-meet" element={<H1 />} />
+          <Route path="/swim-meet" element={<SwimMeetDisplay />} />
         </Route>
       </Route>
     </Routes>
