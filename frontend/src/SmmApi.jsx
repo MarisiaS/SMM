@@ -78,8 +78,24 @@ export class SmmApi {
         });
     }
 
-    static async getSwimMeetList() {
-      let res = await axios.get(`${BASE_URL}/swimmeet/`, {
+    static async getSwimMeetList(search, offset, limit) {
+      let url = `${BASE_URL}/swimmeet/?`;
+      const extraParams = new URLSearchParams();
+
+      if (search) {
+        extraParams.set("search", search);
+      }
+      if (offset) {
+        extraParams.set("offset", offset);
+      }
+      if (limit) {
+        extraParams.set("limit", limit);
+      }
+
+      url += extraParams.toString();
+      console.log(url);
+      
+      let res = await axios.get(url, {
         headers: getConfig(),
       });
       return res.data;
