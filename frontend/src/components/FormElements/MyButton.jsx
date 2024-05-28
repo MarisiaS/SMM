@@ -10,6 +10,7 @@ export default function MyButton(props) {
       className={"myButton"}
       onClick={onClick}
       startIcon={props.children}
+      color="primary"
     >
       {label}
     </Button>
