@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from 'react';
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import AppBar from "@mui/material/AppBar";
@@ -17,14 +17,12 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import MyButton from "./FormElements/MyButton";
 
-
 const drawerWidth = 240;
 
 export default function NavBar(props) {
-  const {menuOptions} = props;
+  const { menuOptions } = props;
   const location = useLocation();
   const path = location.pathname;
-  
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -61,7 +59,7 @@ export default function NavBar(props) {
                 component={Link}
                 to={option.path}
                 selected={option.path === path}
-                onClick={handleOptionClick} 
+                onClick={handleOptionClick}
               >
                 <ListItemIcon>
                   <InboxIcon />
@@ -82,7 +80,7 @@ export default function NavBar(props) {
         position="fixed"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
-        <Toolbar>
+        <Toolbar color="primary">
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -130,7 +128,7 @@ export default function NavBar(props) {
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-          <Outlet/>
+        <Outlet />
       </Box>
     </Box>
   );
