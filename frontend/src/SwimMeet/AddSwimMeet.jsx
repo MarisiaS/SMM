@@ -7,6 +7,7 @@ import { SmmApi } from "../SmmApi.jsx";
 import dayjs from "dayjs";
 import SwimMeetForm from "./SwimMeetForm.jsx";
 import AlertBox from "../components/Common/AlertBox.jsx";
+import { Add as AddIcon } from "@mui/icons-material";
 
 const AddSwimMeet = () => {
   const [error, setError] = useState(false);
@@ -79,15 +80,17 @@ const AddSwimMeet = () => {
   }, []);
 
   const handleCancel = () => {
-    navigate(`/SwimMeet`);
+    navigate(`/swim-meet`);
   };
 
   const handleAddEvents = () => {
     //Change it to add events for the swim meet generated
-    navigate(`/NavBar`);
+    navigate(`/events`);
   };
 
-  let actionButtonsSuccess = [{ label: "+ events", onClick: handleAddEvents }];
+  let actionButtonsSuccess = [
+    { label: "events", onClick: handleAddEvents, icon: <AddIcon /> },
+  ];
 
   let actionButtons = error ? [] : actionButtonsSuccess;
 
@@ -119,17 +122,19 @@ const AddSwimMeet = () => {
 
   if (errorOnLoading) {
     return (
-      <Stack style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "16px",
-        width: "300px",
-        margin: "auto",
-        backgroundColor: "white",
-        padding: "20px",
-        borderRadius: "8px",
-        boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-      }}>
+      <Stack
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "16px",
+          width: "300px",
+          margin: "auto",
+          backgroundColor: "white",
+          padding: "20px",
+          borderRadius: "8px",
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+        }}
+      >
         <AlertBox type={typeAlertLoading} message={messageOnLoading} />
       </Stack>
     );

@@ -11,9 +11,14 @@ export default function AlertBox({ type, message, actionButtons }) {
         severity={type}
         className={"myForm"}
         style={{ width: "100%" }}
-        action={actionButtons && actionButtons.map((button, index) => (
-          <MyButton key={index} label={button.label} onClick={button.onClick} />
-        ))}
+        action={
+          actionButtons &&
+          actionButtons.map((button, index) => (
+            <MyButton key={index} label={button.label} onClick={button.onClick}>
+              {button.icon}
+            </MyButton>
+          ))
+        }
       >
         {message}
       </Alert>

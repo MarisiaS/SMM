@@ -1,12 +1,13 @@
 import * as React from "react";
 import dayjs from "dayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { Controller } from "react-hook-form";
+import { useState } from "react";
 
-const MyDatePicker = (props) => {
-  const { label, name, control, disablePast, disableFuture, rules } = props;
+const MyTimePicker = (props) => {
+  const { label, name, control, rules } = props;
 
   return (
     <Controller
@@ -15,12 +16,13 @@ const MyDatePicker = (props) => {
       rules={rules}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
+          <TimePicker
+            ampm={false}
+            format="HH:mm"
+            views={["hours", "minutes"]}
             label={label}
             value={value}
             onChange={onChange}
-            disablePast={disablePast}
-            disableFuture={disableFuture}
             error={!!error}
             helperText={error?.message}
           />
@@ -30,4 +32,4 @@ const MyDatePicker = (props) => {
   );
 };
 
-export default MyDatePicker;
+export default MyTimePicker;
