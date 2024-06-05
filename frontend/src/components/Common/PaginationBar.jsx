@@ -1,7 +1,10 @@
 import { useState } from "react";
 import TablePagination from "@mui/material/TablePagination";
 
+import { useTheme } from "@mui/material";
+
 export default function PaginationBar({ count, setOffset, setLimit }) {
+  const theme = useTheme();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -26,6 +29,9 @@ export default function PaginationBar({ count, setOffset, setLimit }) {
       rowsPerPage={rowsPerPage}
       onRowsPerPageChange={handleChangeRowsPerPage}
       rowsPerPageOptions={[5,10,20,30]}
+      sx={{
+        color: theme.palette.text.primary,
+      }}
     />
   );
 }
