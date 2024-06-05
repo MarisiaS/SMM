@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Controller } from "react-hook-form";
-import { Select, MenuItem, InputLabel } from "@mui/material";
+import { Select, MenuItem, InputLabel, FormControl, FormHelperText } from "@mui/material";
 
 const MySelect = (props) => {
   const { label, name, control, options, rules } = props;
@@ -11,7 +11,7 @@ const MySelect = (props) => {
       control={control}
       rules={rules}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
-        <div>
+        <FormControl fullWidth error={!!error} variant="outlined">
           <InputLabel>{label}</InputLabel>
           <Select value={value} onChange={onChange} label={label}>
             {options &&
@@ -21,7 +21,8 @@ const MySelect = (props) => {
                 </MenuItem>
               ))}
           </Select>
-        </div>
+          {error && <FormHelperText>{error.message}</FormHelperText>}
+        </FormControl>
       )}
     />
   );

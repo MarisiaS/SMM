@@ -140,8 +140,14 @@ const AddSwimMeet = () => {
     );
   } else {
     return (
-      <div>
-        <Stack alignItems="center" justifyContent="space-between">
+      <Box
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Stack spacing={2}>
           <Stack>
             <div style={{ minHeight: !submitted ? "100px" : "0" }}></div>
             {submitted && (
@@ -159,7 +165,7 @@ const AddSwimMeet = () => {
             />
           </Stack>
         </Stack>
-      </div>
+      </Box>
     );
   }
 };
