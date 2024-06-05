@@ -28,7 +28,3 @@ const MySelect = (props) => {
 };
 
 export default MySelect;
-
-// SelectComponent.jsx
-import React from "react";
-
