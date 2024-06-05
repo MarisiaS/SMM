@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { SmmApi } from '../SmmApi.jsx'
 
 const Login = () =>{
-    const {handleSubmit, control, reset, register} = useForm()
+    const {handleSubmit, control, reset, register, formState: { errors, isValid}} = useForm({ mode: 'onChange' })
     const [error, setError] = useState(null);
     const navigate = useNavigate()
 
@@ -58,6 +58,7 @@ const Login = () =>{
                         <MyButton 
                             label={"Login"}
                             type={"submit"}
+                            disabled ={!isValid}
                         />
                     </Box>
                 </Box>
