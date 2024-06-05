@@ -140,16 +140,10 @@ const AddSwimMeet = () => {
     );
   } else {
     return (
-      <Box
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Stack spacing={2}>
-          <Stack>
-            <div style={{ minHeight: !submitted ? "100px" : "0" }}></div>
+      <div>
+        <div style={{ minHeight: !submitted ? "100px" : "0" }}></div>
+        <Stack alignItems="center" justifyContent="space-between">
+          <Stack alignItems="center" justifyContent="space-between">
             {submitted && (
               <AlertBox
                 type={typeAlert}
@@ -157,6 +151,8 @@ const AddSwimMeet = () => {
                 actionButtons={actionButtons}
               />
             )}
+          </Stack>
+          <Stack alignItems="center" justifyContent="space-between">
             <SwimMeetForm
               handleSubmit={handleSubmit(submission)}
               control={control}
@@ -165,7 +161,7 @@ const AddSwimMeet = () => {
             />
           </Stack>
         </Stack>
-      </Box>
+      </div>
     );
   }
 };
