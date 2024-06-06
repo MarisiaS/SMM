@@ -3,7 +3,7 @@ import { TextField, InputAdornment, IconButton } from "@mui/material";
 import { Controller } from "react-hook-form";
 import ClearIcon from "@mui/icons-material/Clear";
 
-const MyTextField = (props) => {
+const CleanableTextField = (props) => {
   const { label, name, control, setValue, onSubmit } = props;
 
 
@@ -41,4 +41,4 @@ const MyTextField = (props) => {
   );
 };
 
-export default MyTextField;
+export default CleanableTextField;
