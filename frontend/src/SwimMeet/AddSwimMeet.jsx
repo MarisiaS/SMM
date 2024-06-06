@@ -129,10 +129,6 @@ const AddSwimMeet = () => {
           gap: "16px",
           width: "300px",
           margin: "auto",
-          backgroundColor: "white",
-          padding: "20px",
-          borderRadius: "8px",
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
         }}
       >
         <AlertBox type={typeAlertLoading} message={messageOnLoading} />
