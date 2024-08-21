@@ -92,8 +92,7 @@ const SwimMeetDisplay = () => {
   }, [searchPar, offset, limit]);
 
   const handleAddNew = () => {
-    console.log("Add new...");
-    navigate("/NavBar");
+    navigate("/add-swim-meet");
   };
 
   return (

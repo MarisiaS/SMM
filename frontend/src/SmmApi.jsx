@@ -100,6 +100,18 @@ export class SmmApi {
       });
       return res.data;
     }
+
+    static async getSites() {
+      return await axios.get(`${BASE_URL}/site/`, {
+        headers: getConfig(),
+      });
+    }
+  
+    static async createSwimMeet(data) {
+      return await axios.post(`${BASE_URL}/swimmeet/`, data, {
+        headers: getConfig(),
+      });
+    }
 }
 
 
