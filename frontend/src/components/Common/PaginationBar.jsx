@@ -28,7 +28,7 @@ export default function PaginationBar({ count, setOffset, setLimit }) {
       onPageChange={handleChangePage}
       rowsPerPage={rowsPerPage}
       onRowsPerPageChange={handleChangeRowsPerPage}
-      rowsPerPageOptions={[5,10,20,30]}
+      rowsPerPageOptions={[5,10,15,20]}
       sx={{
         color: theme.palette.text.primary,
       }}

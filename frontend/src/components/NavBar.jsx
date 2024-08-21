@@ -11,11 +11,10 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
+import PoolIcon from '@mui/icons-material/Pool';
 import { Link, useLocation, Outlet } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import MyButton from "./FormElements/MyButton";
 
 const drawerWidth = 240;
 
@@ -62,7 +61,7 @@ export default function NavBar(props) {
                 onClick={handleOptionClick}
               >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <PoolIcon />
                 </ListItemIcon>
                 <ListItemText primary={option.label} />
               </ListItemButton>

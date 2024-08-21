@@ -24,6 +24,7 @@ const GenericTable = ({ data, columns, actions }) => {
     enableTopToolbar: false,
     enableBottomToolbar: false,
     enableColumnActions: false,
+    enablePagination: false,
 
     renderRowActions: ({ row }) => (
       <Box>

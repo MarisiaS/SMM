@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
+import dayjs from "dayjs";
 import { SmmApi } from "../SmmApi";
 import GenericTable from "../components/Common/GenericTable";
 import SearchBar from "../components/Common/SearchBar";
@@ -6,7 +7,7 @@ import PaginationBar from "../components/Common/PaginationBar";
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
-  ContentPasteSearch as DetailsIcon,
+  ContentPaste as DetailsIcon,
   EmojiEvents as RankingIcon,
   Add as AddIcon
 } from "@mui/icons-material";
@@ -74,8 +75,14 @@ const SwimMeetDisplay = () => {
       const json = await SmmApi.getSwimMeetList(searchPar, offset, limit);
       console.log(json);
       if (!ignore) {
-        setData(json.results);
-        setCount(json.count);
+        const formattedData = json.results.map(item => ({
+          ...item,
+          date: dayjs(item.date).format('MM/DD/YYYY'),
+          time: item.time.slice(0, 5),
+        }));
+
+        setData(formattedData);
+        setCount(json.count)
       }
     }
     fetching();
