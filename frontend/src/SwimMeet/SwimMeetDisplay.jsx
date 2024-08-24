@@ -9,7 +9,7 @@ import {
   Delete as DeleteIcon,
   ContentPaste as DetailsIcon,
   EmojiEvents as RankingIcon,
-  Add as AddIcon
+  Add as AddIcon,
 } from "@mui/icons-material";
 import MyButton from "../components/FormElements/MyButton";
 import { Stack, Box } from "@mui/material";
@@ -39,12 +39,16 @@ const columns = [
 ];
 
 const SwimMeetDisplay = () => {
-  const [data, setData] = useState([]);
-  const [searchPar, setSearchPar] = useState("");
   const navigate = useNavigate();
-  const [offset, setOffset] = useState(0);
+  //Controls the data
+  const [data, setData] = useState([]);
+  //Use to control the search parameter
+  const [searchPar, setSearchPar] = useState("");
+  //Variables needed for the pagination bar
   const [count, setCount] = useState(0);
+  const [offset, setOffset] = useState(0); //search bar needs to restart this
   const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(0); //search bar needs to restart this
 
   const handleDetailsClick = (id) => {
     console.log("Details ...", id);
@@ -63,10 +67,30 @@ const SwimMeetDisplay = () => {
   };
 
   const actions = [
-    { name: "Details", icon: <DetailsIcon />, onClick: handleDetailsClick, tip:"Go to events" },
-    { name: "Edit", icon: <EditIcon />, onClick: handleEditClick, tip:"Edit basic information" },
-    { name: "Delete", icon: <DeleteIcon />, onClick: handleDeleteClick, tip: "Delete" },
-    { name: "Ranking", icon: <RankingIcon />, onClick: handleRankingClick, tip: "Go to ranking" },
+    {
+      name: "Details",
+      icon: <DetailsIcon />,
+      onClick: handleDetailsClick,
+      tip: "Go to events",
+    },
+    {
+      name: "Edit",
+      icon: <EditIcon />,
+      onClick: handleEditClick,
+      tip: "Edit basic information",
+    },
+    {
+      name: "Delete",
+      icon: <DeleteIcon />,
+      onClick: handleDeleteClick,
+      tip: "Delete",
+    },
+    {
+      name: "Ranking",
+      icon: <RankingIcon />,
+      onClick: handleRankingClick,
+      tip: "Go to ranking",
+    },
   ];
 
   useEffect(() => {
@@ -75,14 +99,14 @@ const SwimMeetDisplay = () => {
       const json = await SmmApi.getSwimMeetList(searchPar, offset, limit);
       console.log(json);
       if (!ignore) {
-        const formattedData = json.results.map(item => ({
+        const formattedData = json.results.map((item) => ({
           ...item,
-          date: dayjs(item.date).format('MM/DD/YYYY'),
+          date: dayjs(item.date).format("MM/DD/YYYY"),
           time: item.time.slice(0, 5),
         }));
 
         setData(formattedData);
-        setCount(json.count)
+        setCount(json.count);
       }
     }
     fetching();
@@ -100,15 +124,25 @@ const SwimMeetDisplay = () => {
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Box sx={{ marginLeft: 5 }}>
           <MyButton label={"Swim Meet"} onClick={handleAddNew}>
-            <AddIcon/>
+            <AddIcon />
           </MyButton>
         </Box>
         <Box className={"searchBox"} sx={{ marginRight: 5 }}>
-          <SearchBar setSearchPar={setSearchPar}></SearchBar>
+          <SearchBar
+            setSearchPar={setSearchPar}
+            setOffset={setOffset}
+            setPage={setPage}
+          ></SearchBar>
         </Box>
       </Stack>
       <GenericTable data={data} columns={columns} actions={actions} />
-      <PaginationBar count={count} setOffset={setOffset} setLimit={setLimit}></PaginationBar>
+      <PaginationBar
+        count={count}
+        setOffset={setOffset}
+        setLimit={setLimit}
+        page={page}
+        setPage={setPage}
+      ></PaginationBar>
     </div>
   );
 };
