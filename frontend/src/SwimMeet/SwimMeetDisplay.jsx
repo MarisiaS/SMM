@@ -111,6 +111,7 @@ const SwimMeetDisplay = () => {
 
           setData(formattedData);
           setCount(json.count);
+          setErrorOnLoading(false);
         }
       } catch (error) {
         setErrorOnLoading(true);
