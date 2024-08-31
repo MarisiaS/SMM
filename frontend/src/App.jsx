@@ -5,6 +5,7 @@ import NavBar from "./components/NavBar";
 import PrivateRoutes from "./utils/privateRoutes";
 import SwimMeetDisplay from "./SwimMeet/SwimMeetDisplay";
 import AddSwimMeet from "./SwimMeet/AddSwimMeet";
+import MeetEventDisplay from "./SwimMeet/MeetEventDisplay";
 
 function App() {
   const NotFound = () => {
@@ -27,6 +28,10 @@ function App() {
         <Route element={<NavBar menuOptions={menuOptions} />}>
           <Route path="/swim-meet" element={<SwimMeetDisplay />} />
           <Route path="/add-swim-meet" element={<AddSwimMeet />} />
+          <Route
+            path="/swim-meet/:meetId/events"
+            element={<MeetEventDisplay />}
+          />
         </Route>
       </Route>
     </Routes>

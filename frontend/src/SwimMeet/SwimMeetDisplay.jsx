@@ -51,7 +51,8 @@ const SwimMeetDisplay = () => {
   const [page, setPage] = useState(0); //search bar needs to restart this
 
   const handleDetailsClick = (id) => {
-    console.log("Details ...", id);
+    console.log(data[id])
+    navigate(`/swim-meet/${data[id].id}/events`, { state: data[id] });
   };
 
   const handleEditClick = () => {
@@ -97,7 +98,6 @@ const SwimMeetDisplay = () => {
     let ignore = false;
     async function fetching() {
       const json = await SmmApi.getSwimMeetList(searchPar, offset, limit);
-      console.log(json);
       if (!ignore) {
         const formattedData = json.results.map((item) => ({
           ...item,

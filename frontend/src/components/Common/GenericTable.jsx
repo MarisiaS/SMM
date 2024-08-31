@@ -7,7 +7,6 @@ import { Box, IconButton, Tooltip, useTheme } from "@mui/material";
 const GenericTable = ({ data, columns, actions }) => {
   const enableActions = actions;
   const theme = useTheme();
-  console.log(theme.palette.primary);
   const table = useMaterialReactTable({
     columns: columns,
     data: data,

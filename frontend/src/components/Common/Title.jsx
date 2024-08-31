@@ -1,16 +1,21 @@
-import { Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import { useTheme } from "@mui/material";
 
-export default function Title({ message }) {
+export default function Title({ data, fields }) {
   const theme = useTheme();
 
   return (
-    <Typography
-      variant="h4"
-      component="div"
-      sx={{ padding: 2, textAlign: "center", color: "text.secondary" }}
-    >
-      {message}
-    </Typography>
+    <Box sx={{ textAlign: "center", padding: 2 }}>
+      {fields.map((field, index) => (
+        <Typography
+          key={index}
+          variant={index === 0 ? "h4" : "h6"}
+          component="div"
+          sx={{ color: "text.secondary" }}
+        >
+          {data[field]}
+        </Typography>
+      ))}
+    </Box>
   );
 }
