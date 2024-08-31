@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { SmmApi } from "../SmmApi";
 import GenericTable from "../components/Common/GenericTable";
+import PaginationBar from "../components/Common/PaginationBar";
+import Title from "../components/Common/Title";
 import {
   ContentPaste as DetailsIcon,
   EmojiEvents as RankingIcon,
@@ -9,7 +11,7 @@ import {
 import MyButton from "../components/FormElements/MyButton";
 import { Stack, Box } from "@mui/material";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import Title from "../components/Common/Title";
+
 
 const columns = [
   {
@@ -21,10 +23,15 @@ const columns = [
 
 const MeetEventDisplay = () => {
   const { meetId } = useParams();
-  const [eventData, setEventData] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   const meetData = location.state;
+  const [eventData, setEventData] = useState([]);
+  //Variables needed for the pagination bar
+  const [count, setCount] = useState(0);
+  const [offset, setOffset] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(0);
 
   const handleDetailsClick = (id) => {
     console.log("Details ...", id);
@@ -52,17 +59,17 @@ const MeetEventDisplay = () => {
   useEffect(() => {
     let ignore = false;
     async function fetching() {
-      const meetEvents = await SmmApi.getSwimMeetEvents(meetId);
-      console.log(meetEvents);
+      const json = await SmmApi.getSwimMeetEvents(meetId, offset, limit);
       if (!ignore) {
-        setEventData(meetEvents);
+        setEventData(json.results);
+        setCount(json.count);
       }
     }
     fetching();
     return () => {
       ignore = true;
     };
-  }, []);
+  }, [offset, limit]);
 
   const handleAddNew = () => {
     console.log("Add new event");
@@ -87,6 +94,13 @@ const MeetEventDisplay = () => {
         actions={actions}
         notRecordsMessage={"This swim meet does not have events yet"}
       />
+      <PaginationBar
+        count={count}
+        setOffset={setOffset}
+        setLimit={setLimit}
+        page={page}
+        setPage={setPage}
+      ></PaginationBar>
     </div>
   );
 };
