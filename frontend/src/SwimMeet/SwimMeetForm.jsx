@@ -13,7 +13,7 @@ const SwimMeetForm = ({ handleSubmit, control, handleCancel, options }) => {
         <Stack>
           <Box className={"itemBox"}>
             <MyTextField
-              label={"Name"}
+              label={"Swim Meet Name"}
               name={"name"}
               control={control}
               rules={{ required: "Name is required" }}

@@ -6,7 +6,9 @@ from api.serializers.AthleteSeedTimeSerializer import AthleteSeedTimeSerializer,
 from django.db.models import F, Value, Func, IntegerField
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiParameter
+from drf_spectacular.types import OpenApiTypes
+from rest_framework.pagination import LimitOffsetPagination
 from datetime import timedelta
 
 @extend_schema(tags=['Seed times'])
@@ -37,7 +39,23 @@ class AthleteSeedTimeView(APIView):
             
         return queryset.order_by('first_name')
 
-
+    @extend_schema(methods=['GET'],
+                   request=AthleteSeedTimeSerializer,
+                   parameters=[
+                        OpenApiParameter(
+                            name='limit',
+                            type=OpenApiTypes.INT,
+                            location=OpenApiParameter.QUERY,
+                            description='Number of results to return per page.',
+                        ),
+                        OpenApiParameter(
+                            name='offset',
+                            type=OpenApiTypes.INT,
+                            location=OpenApiParameter.QUERY,
+                            description='The initial index from which to return the results.',
+                        ),
+                   ],
+                   summary="Retrieve a list of eligible athletes for a specific event along with their seed times")
     def get(self, request, event_id):
         try:
             event_instance = MeetEvent.objects.get(id=event_id)
@@ -67,9 +85,15 @@ class AthleteSeedTimeView(APIView):
                 # The serializer interpretes 200 days as NT (No time)
                 seed_times.append({'athlete': athlete.id, 'athlete_full_name': athlete.full_name, 'seed_time': timedelta(days=200)})
 
-        serializer = AthleteSeedTimeSerializer(data=seed_times, many=True)
+        paginator = LimitOffsetPagination()
+        paginated_seed_times = paginator.paginate_queryset(seed_times, request)
+
+        # Serialize the paginated data
+        serializer = AthleteSeedTimeSerializer(data=paginated_seed_times, many=True)
         serializer.is_valid(raise_exception=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        # Return the paginated response
+        return paginator.get_paginated_response(serializer.data)
 
     @extend_schema(request=UpdateAthleteSeedTimeSerializer)
     def post(self, request, event_id):

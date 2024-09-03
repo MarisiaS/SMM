@@ -41,12 +41,16 @@ const columns = [
 
 const SwimMeetDisplay = () => {
   const [errorOnLoading, setErrorOnLoading] = useState(false);
-  const [data, setData] = useState([]);
-  const [searchPar, setSearchPar] = useState("");
   const navigate = useNavigate();
-  const [offset, setOffset] = useState(0);
+  //Controls the data
+  const [data, setData] = useState([]);
+  //Use to control the search parameter
+  const [searchPar, setSearchPar] = useState("");
+  //Variables needed for the pagination bar
   const [count, setCount] = useState(0);
+  const [offset, setOffset] = useState(0); //search bar needs to restart this
   const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(0); //search bar needs to restart this
 
   let typeAlertLoading = errorOnLoading ? "error" : "success";
   let messageOnLoading = errorOnLoading
