@@ -5,6 +5,7 @@ import PaginationBar from "../components/Common/PaginationBar";
 import Title from "../components/Common/Title";
 import {
   ContentPaste as DetailsIcon,
+  Delete as DeleteIcon,
   EmojiEvents as RankingIcon,
   Add as AddIcon,
 } from "@mui/icons-material";
@@ -34,10 +35,14 @@ const MeetEventDisplay = () => {
   const [page, setPage] = useState(0);
 
   const handleDetailsClick = (id) => {
-    console.log("Details ...", id);
+    console.log("Heats ...");
   };
 
-  const handleRankingClick = () => {
+  const handleDeleteClick = (id) => {
+    console.log("Delete ...");
+  };
+
+  const handleRankingClick = (id) => {
     console.log("Ranking ...");
   };
 
@@ -47,6 +52,12 @@ const MeetEventDisplay = () => {
       icon: <DetailsIcon />,
       onClick: handleDetailsClick,
       tip: "Go to heats",
+    },
+    {
+      name: "Delete",
+      icon: <DeleteIcon />,
+      onClick: handleDeleteClick,
+      tip: "Delete",
     },
     {
       name: "Ranking",
