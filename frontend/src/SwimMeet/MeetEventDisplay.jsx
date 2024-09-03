@@ -3,6 +3,7 @@ import { SmmApi } from "../SmmApi";
 import GenericTable from "../components/Common/GenericTable";
 import PaginationBar from "../components/Common/PaginationBar";
 import Title from "../components/Common/Title";
+import AlertBox from "../components/Common/AlertBox.jsx";
 import {
   ContentPaste as DetailsIcon,
   Delete as DeleteIcon,
@@ -12,7 +13,6 @@ import {
 import MyButton from "../components/FormElements/MyButton";
 import { Stack, Box } from "@mui/material";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-
 
 const columns = [
   {
@@ -28,11 +28,17 @@ const MeetEventDisplay = () => {
   const location = useLocation();
   const meetData = location.state;
   const [eventData, setEventData] = useState([]);
+  const [errorOnLoading, setErrorOnLoading] = useState(false);
   //Variables needed for the pagination bar
   const [count, setCount] = useState(0);
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
+
+  let typeAlertLoading = errorOnLoading ? "error" : "success";
+  let messageOnLoading = errorOnLoading
+    ? "Data upload failed. Please try again!"
+    : "";
 
   const handleDetailsClick = (id) => {
     console.log("Heats ...");
@@ -70,10 +76,15 @@ const MeetEventDisplay = () => {
   useEffect(() => {
     let ignore = false;
     async function fetching() {
-      const json = await SmmApi.getSwimMeetEvents(meetId, offset, limit);
-      if (!ignore) {
-        setEventData(json.results);
-        setCount(json.count);
+      try {
+        const json = await SmmApi.getSwimMeetEvents(meetId, offset, limit);
+        if (!ignore) {
+          setEventData(json.results);
+          setCount(json.count);
+          setErrorOnLoading(false);
+        }
+      } catch (error) {
+        setErrorOnLoading(true);
       }
     }
     fetching();
@@ -87,33 +98,53 @@ const MeetEventDisplay = () => {
     navigate("/add-event");
   };
 
-  return (
-    <div>
-      <Title data={meetData} fields={["name", "date", "site_name"]} />
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Box sx={{ marginLeft: 5 }}>
-          <MyButton label={"Event"} onClick={handleAddNew}>
-            <AddIcon />
-          </MyButton>
-        </Box>
-        <Box className={"searchBox"} sx={{ marginRight: 5 }}></Box>
+  if (errorOnLoading) {
+    return (
+      <Stack
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "16px",
+          width: "300px",
+          margin: "auto",
+        }}
+      >
+        <AlertBox type={typeAlertLoading} message={messageOnLoading} />
       </Stack>
-      <br></br>
-      <GenericTable
-        data={eventData}
-        columns={columns}
-        actions={actions}
-        notRecordsMessage={"This swim meet does not have events yet"}
-      />
-      <PaginationBar
-        count={count}
-        setOffset={setOffset}
-        setLimit={setLimit}
-        page={page}
-        setPage={setPage}
-      ></PaginationBar>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div>
+        <Title data={meetData} fields={["name", "date", "site_name"]} />
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Box sx={{ marginLeft: 5 }}>
+            <MyButton label={"Event"} onClick={handleAddNew}>
+              <AddIcon />
+            </MyButton>
+          </Box>
+          <Box className={"searchBox"} sx={{ marginRight: 5 }}></Box>
+        </Stack>
+        <br></br>
+        <GenericTable
+          data={eventData}
+          columns={columns}
+          actions={actions}
+          notRecordsMessage={"This swim meet does not have events yet"}
+        />
+        <PaginationBar
+          count={count}
+          setOffset={setOffset}
+          setLimit={setLimit}
+          page={page}
+          setPage={setPage}
+        ></PaginationBar>
+      </div>
+    );
+  }
 };
 
 export default MeetEventDisplay;
