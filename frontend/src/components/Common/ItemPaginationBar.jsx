@@ -8,11 +8,6 @@ import {
   NavigateNext as NextIcon,
 } from "@mui/icons-material";
 
-const LabelText = styled("h3")({
-  whiteSpace: "nowrap",
-  overflow: "visible",
-  margin: 0,
-});
 
 const ItemPagination = ({
   label,
@@ -25,8 +20,8 @@ const ItemPagination = ({
   return (
     <div>
       <Stack direction="row" alignItems="center" spacing={2}>
-        <Box className={"itemBox"} sx={{ marginLeft: 5 }}>
-          <LabelText>{label}</LabelText>
+        <Box className={"labelBox"} sx={{ marginLeft: 5 }}>
+          <h2>{label}</h2>
         </Box>
         <Box sx={{ marginLeft: 5 }}>
           <MyIconButton onClick={onPrevious} disabled={disablePrevious}>
