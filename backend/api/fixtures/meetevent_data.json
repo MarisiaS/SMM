@@ -48,5 +48,115 @@
             "event_type": 3,
             "num_event": 5
             }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 6,
+        "fields": {
+            "swim_meet": 2,
+            "group": 1,
+            "event_type": 1,
+            "num_event": 1
+        }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 7,
+        "fields": {
+            "swim_meet": 2,
+            "group": 2,
+            "event_type": 3,
+            "num_event": 2
+        }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 8,
+        "fields": {
+            "swim_meet": 2,
+            "group": 3,
+            "event_type": 1,
+            "num_event": 3
+        }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 9,
+        "fields": {
+            "swim_meet": 2,
+            "group": 5,
+            "event_type": 6,
+            "num_event": 4
+        }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 10,
+        "fields": {
+            "swim_meet": 2,
+            "group": 7,
+            "event_type": 3,
+            "num_event": 5
+            }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 11,
+        "fields": {
+            "swim_meet": 2,
+            "group": 2,
+            "event_type": 1,
+            "num_event": 6
+        }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 12,
+        "fields": {
+            "swim_meet": 2,
+            "group": 1,
+            "event_type": 3,
+            "num_event": 7
+        }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 13,
+        "fields": {
+            "swim_meet": 2,
+            "group": 3,
+            "event_type": 3,
+            "num_event": 8
+        }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 14,
+        "fields": {
+            "swim_meet": 2,
+            "group": 7,
+            "event_type": 6,
+            "num_event": 9
+        }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 15,
+        "fields": {
+            "swim_meet": 2,
+            "group": 5,
+            "event_type": 3,
+            "num_event": 10
+            }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 16,
+        "fields": {
+            "swim_meet": 2,
+            "group": 6,
+            "event_type": 3,
+            "num_event": 11
+            }
     }
 ]
