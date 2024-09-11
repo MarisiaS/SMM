@@ -134,4 +134,22 @@ export class SmmApi {
     });
     return res.data;
   }
+
+  static async getGroups() {
+    return await axios.get(`${BASE_URL}/group/`, {
+      headers: getConfig(),
+    });
+  }
+
+  static async getEventTypes() {
+    return await axios.get(`${BASE_URL}/eventtype/`, {
+      headers: getConfig(),
+    });
+  }
+
+  static async createEvent(meetId, data) {
+    return await axios.post(`${BASE_URL}/meet_event/${meetId}/`, data, {
+      headers: getConfig(),
+    });
+  }
 }
