@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { SmmApi } from "../SmmApi";
-import GenericTable from "../components/Common/GenericTable";
-import PaginationBar from "../components/Common/PaginationBar";
-import Title from "../components/Common/Title";
+import { SmmApi } from "../SmmApi.jsx";
+import GenericTable from "../components/Common/GenericTable.jsx";
+import PaginationBar from "../components/Common/PaginationBar.jsx";
+import Title from "../components/Common/Title.jsx";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import {
   ContentPaste as DetailsIcon,
@@ -10,7 +10,7 @@ import {
   EmojiEvents as RankingIcon,
   Add as AddIcon,
 } from "@mui/icons-material";
-import MyButton from "../components/FormElements/MyButton";
+import MyButton from "../components/FormElements/MyButton.jsx";
 import { Stack, Box } from "@mui/material";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 

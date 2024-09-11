@@ -5,7 +5,7 @@ import NavBar from "./components/NavBar";
 import PrivateRoutes from "./utils/privateRoutes";
 import SwimMeetDisplay from "./SwimMeet/SwimMeetDisplay";
 import AddSwimMeet from "./SwimMeet/AddSwimMeet";
-import MeetEventDisplay from "./SwimMeet/MeetEventDisplay";
+import MeetEventDisplay from "./Event/MeetEventDisplay";
 
 function App() {
   const NotFound = () => {
