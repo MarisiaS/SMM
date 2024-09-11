@@ -14,6 +14,7 @@ import {
 import MyButton from "../components/FormElements/MyButton";
 import { Stack, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import AlertBox from "../components/Common/AlertBox.jsx";
 
 const columns = [
   {
@@ -39,6 +40,7 @@ const columns = [
 ];
 
 const SwimMeetDisplay = () => {
+  const [errorOnLoading, setErrorOnLoading] = useState(false);
   const navigate = useNavigate();
   //Controls the data
   const [data, setData] = useState([]);
@@ -49,6 +51,11 @@ const SwimMeetDisplay = () => {
   const [offset, setOffset] = useState(0); //search bar needs to restart this
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0); //search bar needs to restart this
+
+  let typeAlertLoading = errorOnLoading ? "error" : "success";
+  let messageOnLoading = errorOnLoading
+    ? "Data upload failed. Please try again!"
+    : "";
 
   const handleDetailsClick = (id) => {
     console.log(data[id])
@@ -104,9 +111,12 @@ const SwimMeetDisplay = () => {
           date: dayjs(item.date).format("MM/DD/YYYY"),
           time: item.time.slice(0, 5),
         }));
-
-        setData(formattedData);
-        setCount(json.count);
+          setData(formattedData);
+          setCount(json.count);
+          setErrorOnLoading(false);
+        }
+      } catch (error) {
+        setErrorOnLoading(true);
       }
     }
     fetching();
@@ -119,32 +129,46 @@ const SwimMeetDisplay = () => {
     navigate("/add-swim-meet");
   };
 
-  return (
-    <div>
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Box sx={{ marginLeft: 5 }}>
-          <MyButton label={"Swim Meet"} onClick={handleAddNew}>
-            <AddIcon />
-          </MyButton>
-        </Box>
-        <Box className={"searchBox"} sx={{ marginRight: 5 }}>
-          <SearchBar
-            setSearchPar={setSearchPar}
-            setOffset={setOffset}
-            setPage={setPage}
-          ></SearchBar>
-        </Box>
+  if (errorOnLoading) {
+    return (
+      <Stack
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "16px",
+          width: "300px",
+          margin: "auto",
+        }}
+      >
+        <AlertBox type={typeAlertLoading} message={messageOnLoading} />
       </Stack>
-      <GenericTable data={data} columns={columns} actions={actions} />
-      <PaginationBar
-        count={count}
-        setOffset={setOffset}
-        setLimit={setLimit}
-        page={page}
-        setPage={setPage}
-      ></PaginationBar>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Box sx={{ marginLeft: 5 }}>
+            <MyButton label={"Swim Meet"} onClick={handleAddNew}>
+              <AddIcon />
+            </MyButton>
+          </Box>
+          <Box className={"searchBox"} sx={{ marginRight: 5 }}>
+            <SearchBar setSearchPar={setSearchPar}></SearchBar>
+          </Box>
+        </Stack>
+        <GenericTable data={data} columns={columns} actions={actions} />
+        <PaginationBar
+          count={count}
+          setOffset={setOffset}
+          setLimit={setLimit}
+        ></PaginationBar>
+      </div>
+    );
+  }
 };
 
 export default SwimMeetDisplay;
