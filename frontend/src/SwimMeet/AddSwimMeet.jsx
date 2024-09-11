@@ -85,7 +85,7 @@ const AddSwimMeet = () => {
 
   const handleAddEvents = () => {
     //Change it to add events for the swim meet generated
-    navigate(`/events`);
+    navigate(`/add-event/${lastSwimMeetId}`);
   };
 
   let actionButtonsSuccess = [
