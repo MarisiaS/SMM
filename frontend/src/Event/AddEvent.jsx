@@ -2,15 +2,15 @@ import "../App.css";
 import { Stack } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useState, useEffect, useMemo } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { SmmApi } from "../SmmApi.jsx";
 import AddEventForm from "./AddEventForm.jsx";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import { Build as BuildIcon } from "@mui/icons-material";
+import Title from "../components/Common/Title.jsx";
 
 const AddEvent = () => {
   const { meetId } = useParams();
-
   const [error, setError] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   const navigate = useNavigate();
@@ -18,7 +18,8 @@ const AddEvent = () => {
   const [groups, setGroups] = useState([{ id: "", name: "", gender: "" }]);
   const [eventTypes, setEventTypes] = useState([{ id: "", name: "" }]);
   const [lastEventId, setLastEventId] = useState(null);
-
+  const location = useLocation();
+  const meetData = location.state;
   const {
     handleSubmit,
     control,
@@ -33,9 +34,7 @@ const AddEvent = () => {
   });
 
   let typeAlert = error ? "error" : "success";
-  let message = error
-    ? "Unable to create the Event. Please try again!"
-    : "Event created successfully.";
+  let message = error ? error : "Event created successfully.";
 
   let typeAlertLoading = errorOnLoading ? "error" : "success";
   let messageOnLoading = errorOnLoading
@@ -89,7 +88,7 @@ const AddEvent = () => {
   }, []);
 
   const handleCancel = () => {
-    navigate(`/events`);
+    navigate(`/swim-meet/${meetId}/events`, { state: meetData });
   };
 
   const handleAddHeats = () => {
@@ -109,7 +108,16 @@ const AddEvent = () => {
       const response = await SmmApi.createEvent(meetId, data);
       setLastEventId(response.data.id);
     } catch (error) {
-      setError(true);
+      if (error.response && error.response.status === 400) {
+        const nonFieldErrorMessage = error.response.data.non_field_errors
+          ? "Event with this group and event type already exists for the swim meet."
+          : "Unable to create the Event, an unexpected error occurred. Please try again!";
+        setError(nonFieldErrorMessage);
+      } else {
+        setError(
+          "Unable to create the Event, an unexpected error occurred. Please try again!"
+        );
+      }
       console.log(error);
     }
     reset({
@@ -135,7 +143,7 @@ const AddEvent = () => {
   } else {
     return (
       <div>
-        <div style={{ minHeight: !submitted ? "100px" : "0" }}></div>
+        <Title data={meetData} fields={["name", "date", "site_name"]} />
         <Stack alignItems="center" justifyContent="space-between">
           <Stack alignItems="center" justifyContent="space-between">
             {submitted && (
