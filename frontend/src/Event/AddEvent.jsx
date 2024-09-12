@@ -110,7 +110,7 @@ const AddEvent = () => {
     } catch (error) {
       if (error.response && error.response.status === 400) {
         const nonFieldErrorMessage = error.response.data.non_field_errors
-          ? "Event with this group and event type already exists for the swim meet."
+          ? "An Event with this group and event type already exists for the swim meet."
           : "Unable to create the Event, an unexpected error occurred. Please try again!";
         setError(nonFieldErrorMessage);
       } else {
