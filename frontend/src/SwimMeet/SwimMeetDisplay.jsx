@@ -58,7 +58,7 @@ const SwimMeetDisplay = () => {
     : "";
 
   const handleDetailsClick = (id) => {
-    console.log(data[id])
+    console.log(data[id]);
     navigate(`/swim-meet/${data[id].id}/events`, { state: data[id] });
   };
 
@@ -104,13 +104,14 @@ const SwimMeetDisplay = () => {
   useEffect(() => {
     let ignore = false;
     async function fetching() {
-      const json = await SmmApi.getSwimMeetList(searchPar, offset, limit);
-      if (!ignore) {
-        const formattedData = json.results.map((item) => ({
-          ...item,
-          date: dayjs(item.date).format("MM/DD/YYYY"),
-          time: item.time.slice(0, 5),
-        }));
+      try {
+        const json = await SmmApi.getSwimMeetList(searchPar, offset, limit);
+        if (!ignore) {
+          const formattedData = json.results.map((item) => ({
+            ...item,
+            date: dayjs(item.date).format("MM/DD/YYYY"),
+            time: item.time.slice(0, 5),
+          }));
           setData(formattedData);
           setCount(json.count);
           setErrorOnLoading(false);
