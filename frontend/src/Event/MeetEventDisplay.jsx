@@ -94,8 +94,7 @@ const MeetEventDisplay = () => {
   }, [offset, limit]);
 
   const handleAddNew = () => {
-    console.log("Add new event");
-    navigate("/add-event");
+    navigate(`/add-event/${meetId}`, { state: meetData });
   };
 
   if (errorOnLoading) {
