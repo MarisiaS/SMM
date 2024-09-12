@@ -84,7 +84,6 @@ const AddSwimMeet = () => {
   };
 
   const handleAddEvents = () => {
-    //Change it to add events for the swim meet generated
     navigate(`/add-event/${lastSwimMeetId}`);
   };
 
