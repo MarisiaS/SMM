@@ -58,7 +58,6 @@ const SwimMeetDisplay = () => {
     : "";
 
   const handleDetailsClick = (id) => {
-    console.log(data[id]);
     navigate(`/swim-meet/${data[id].id}/events`, { state: data[id] });
   };
 
