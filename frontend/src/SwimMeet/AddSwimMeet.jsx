@@ -15,7 +15,7 @@ const AddSwimMeet = () => {
   const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false);
   const [sites, setSites] = useState([{ id: "", name: "" }]);
-  const [lastSwimMeetId, setLastSwimMeetId] = useState(null);
+  const [lastSwimMeetData, setLastSwimMeetData] = useState(null);
 
   const {
     handleSubmit,
@@ -84,7 +84,7 @@ const AddSwimMeet = () => {
   };
 
   const handleAddEvents = () => {
-    navigate(`/add-event/${lastSwimMeetId}`);
+    navigate(`/add-event/${lastSwimMeetData.id}`, { state: lastSwimMeetData });
   };
 
   let actionButtonsSuccess = [
@@ -107,7 +107,11 @@ const AddSwimMeet = () => {
     setSubmitted(true);
     try {
       const response = await SmmApi.createSwimMeet(formatData);
-      setLastSwimMeetId(response.data.id);
+      const formattedResponse = {
+        ...response.data,
+        date: dayjs(response.data.date).format("MM/DD/YYYY"),
+      };
+      setLastSwimMeetData(formattedResponse);
     } catch (error) {
       setError(true);
     }
