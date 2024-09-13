@@ -30,17 +30,18 @@ const AddEventForm = ({ handleSubmit, control, handleCancel, options }) => {
           </Box>
         </Stack>
         <Stack
-          direction="row"
+          direction="column"
           alignItems="center"
           justifyContent="space-between"
         >
-          <Box className={"itemBox"} sx={{ marginLeft: 5 }}>
-            <MyButton key={"cancel"} label={"Cancel"} onClick={handleCancel} />
-          </Box>
-          <Box sx={{ marginLeft: 5, marginRight: 5 }}></Box>
-          <Box className={"itemBox"} sx={{ marginRight: 5 }}>
-            <MyButton key={"create"} label={"Create"} type={"submit"} />
-          </Box>
+          <MyButton key={"create"} label={"Create"} type={"submit"} />
+          <Box sx={{ marginTop: 2 }}></Box>
+
+          <MyButton
+            key={"cancel"}
+            label={"Go to Events"}
+            onClick={handleCancel}
+          />
         </Stack>
       </Stack>
     </form>
