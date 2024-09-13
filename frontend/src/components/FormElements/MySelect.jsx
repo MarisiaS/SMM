@@ -23,7 +23,7 @@ const MySelect = (props) => {
             value={value}
             onChange={onChange}
             label={label}
-            sx={{ minWidth: 150 }}
+            sx={{ minWidth: 250 }}
           >
             {options &&
               options.map((option) => (
