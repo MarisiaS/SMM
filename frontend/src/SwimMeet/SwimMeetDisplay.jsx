@@ -157,7 +157,11 @@ const SwimMeetDisplay = () => {
             </MyButton>
           </Box>
           <Box className={"searchBox"} sx={{ marginRight: 5 }}>
-            <SearchBar setSearchPar={setSearchPar}></SearchBar>
+            <SearchBar
+              setSearchPar={setSearchPar}
+              setOffset={setOffset}
+              setPage={setPage}
+            ></SearchBar>
           </Box>
         </Stack>
         <GenericTable data={data} columns={columns} actions={actions} />
@@ -165,6 +169,8 @@ const SwimMeetDisplay = () => {
           count={count}
           setOffset={setOffset}
           setLimit={setLimit}
+          page={page}
+          setPage={setPage}
         ></PaginationBar>
       </div>
     );

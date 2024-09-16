@@ -20,6 +20,7 @@ const MyTextField = (props) => {
           className={"myForm"}
           error={!!error}
           helperText={error?.message}
+          sx={{ minWidth: 250 }}
         />
       )}
     />

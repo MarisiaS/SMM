@@ -1,13 +1,13 @@
-.myBackground{
+.myBackground {
   width: 100vw;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: linear-gradient( 135deg, #FFD26F 10%, #3677FF 100%);
+  background-image: linear-gradient(135deg, #ffd26f 10%, #3677ff 100%);
 }
 
-.whiteBox{
+.whiteBox {
   background-color: white;
   padding: 20px;
   min-width: 300px;
@@ -17,7 +17,7 @@
   border-radius: 5px;
 }
 
-.itemBox{
+.itemBox {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,9 +25,9 @@
   height: 100px;
 }
 
-.title{
+.title {
   font-size: 30px;
-  color: #3677FF;
+  color: #3677ff;
 }
 
 .myForm,
@@ -35,15 +35,15 @@
   width: 100%;
 }
 
-.errorText{
+.errorText {
   color: red;
 }
 
-.iconButton{
+.iconButton {
   display: flex;
   align-items: center;
 }
 
-.searchBox{
-  width: 40%
+.searchBox {
+  width: 40%;
 }

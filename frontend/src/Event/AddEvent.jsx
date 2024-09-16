@@ -1,22 +1,25 @@
 import "../App.css";
-import { Box, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { SmmApi } from "../SmmApi.jsx";
-import dayjs from "dayjs";
-import SwimMeetForm from "./SwimMeetForm.jsx";
+import AddEventForm from "./AddEventForm.jsx";
 import AlertBox from "../components/Common/AlertBox.jsx";
-import { Add as AddIcon } from "@mui/icons-material";
+import { Build as BuildIcon } from "@mui/icons-material";
+import Title from "../components/Common/Title.jsx";
 
-const AddSwimMeet = () => {
+const AddEvent = () => {
+  const { meetId } = useParams();
   const [error, setError] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false);
-  const [sites, setSites] = useState([{ id: "", name: "" }]);
-  const [lastSwimMeetData, setLastSwimMeetData] = useState(null);
-
+  const [groups, setGroups] = useState([{ id: "", name: "", gender: "" }]);
+  const [eventTypes, setEventTypes] = useState([{ id: "", name: "" }]);
+  const [lastEventId, setLastEventId] = useState(null);
+  const location = useLocation();
+  const meetData = location.state;
   const {
     handleSubmit,
     control,
@@ -24,18 +27,14 @@ const AddSwimMeet = () => {
     formState: { isDirty },
   } = useForm({
     defaultValues: {
-      name: "",
-      date: dayjs(Date.now()),
-      time: dayjs(Date.now()),
-      site: "",
+      group: "",
+      event_type: "",
     },
     mode: "onChange",
   });
 
   let typeAlert = error ? "error" : "success";
-  let message = error
-    ? "Unable to create the Swim Meet. Please try again!"
-    : "Swim meet created successfully.";
+  let message = error ? error : "Event created successfully.";
 
   let typeAlertLoading = errorOnLoading ? "error" : "success";
   let messageOnLoading = errorOnLoading
@@ -53,24 +52,33 @@ const AddSwimMeet = () => {
     let ignore = false;
     async function fetchOptions() {
       try {
-        const response = await SmmApi.getSites();
-        const _sites = response.data.results.map((site) => {
+        const responseGroups = await SmmApi.getGroups();
+        const _groups = responseGroups.data.results.map((groups) => {
           return {
-            id: site.id,
-            name: site.name,
+            id: groups.id,
+            name: groups.name,
+          };
+        });
+
+        const responseEvents = await SmmApi.getEventTypes();
+        const _eventTypes = responseEvents.data.results.map((eventTypes) => {
+          return {
+            id: eventTypes.id,
+            name: eventTypes.name,
           };
         });
         if (!ignore) {
-          setSites(_sites);
+          setGroups(_groups);
+          setEventTypes(_eventTypes);
+
           reset({
-            name: "",
-            date: dayjs(Date.now()),
-            time: dayjs(Date.now()),
-            site: _sites[0]?.id || "",
+            event_type: _eventTypes[0]?.id || "",
+            group: _groups[0]?.id || "",
           });
         }
       } catch (error) {
         setErrorOnLoading(true);
+        console.log(error);
       }
     }
     fetchOptions();
@@ -80,46 +88,41 @@ const AddSwimMeet = () => {
   }, []);
 
   const handleCancel = () => {
-    navigate(`/swim-meet`);
+    navigate(`/swim-meet/${meetId}/events`, { state: meetData });
   };
 
-  const handleAddEvents = () => {
-    navigate(`/add-event/${lastSwimMeetData.id}`, { state: lastSwimMeetData });
+  const handleAddHeats = () => {
+    //Change it to add heats for the new event
+    navigate(`/heats`);
   };
 
   let actionButtonsSuccess = [
-    { label: "events", onClick: handleAddEvents, icon: <AddIcon /> },
+    { label: "heats", onClick: handleAddHeats, icon: <BuildIcon /> },
   ];
 
   let actionButtons = error ? [] : actionButtonsSuccess;
 
   const submission = async (data) => {
-    console.log(data);
-    const time = dayjs(data.time).format("HH:mm");
-    //To get an error use this date
-    //const date = dayjs(data.date);
-    const date = dayjs(data.date).format("YYYY-MM-DD");
-    const formatData = {
-      ...data,
-      date: date,
-      time: time,
-    };
     setSubmitted(true);
     try {
-      const response = await SmmApi.createSwimMeet(formatData);
-      const formattedResponse = {
-        ...response.data,
-        date: dayjs(response.data.date).format("MM/DD/YYYY"),
-      };
-      setLastSwimMeetData(formattedResponse);
+      const response = await SmmApi.createEvent(meetId, data);
+      setLastEventId(response.data.id);
     } catch (error) {
-      setError(true);
+      if (error.response && error.response.status === 400) {
+        const nonFieldErrorMessage = error.response.data.non_field_errors
+          ? "An Event with this group and event type already exists for the swim meet."
+          : "Unable to create the Event, an unexpected error occurred. Please try again!";
+        setError(nonFieldErrorMessage);
+      } else {
+        setError(
+          "Unable to create the Event, an unexpected error occurred. Please try again!"
+        );
+      }
+      console.log(error);
     }
     reset({
-      name: "",
-      date: dayjs(Date.now()),
-      time: dayjs(Date.now()),
-      site: sites[0].id,
+      group: groups[0]?.id || "",
+      event_type: eventTypes[0]?.id || "",
     });
   };
 
@@ -140,7 +143,7 @@ const AddSwimMeet = () => {
   } else {
     return (
       <div>
-        <div style={{ minHeight: !submitted ? "100px" : "0" }}></div>
+        <Title data={meetData} fields={["name", "date", "site_name"]} />
         <Stack alignItems="center" justifyContent="space-between">
           <Stack alignItems="center" justifyContent="space-between">
             {submitted && (
@@ -152,11 +155,11 @@ const AddSwimMeet = () => {
             )}
           </Stack>
           <Stack alignItems="center" justifyContent="space-between">
-            <SwimMeetForm
+            <AddEventForm
               handleSubmit={handleSubmit(submission)}
               control={control}
               handleCancel={handleCancel}
-              options={sites}
+              options={{ groups, eventTypes }}
             />
           </Stack>
         </Stack>
@@ -165,4 +168,4 @@ const AddSwimMeet = () => {
   }
 };
 
-export default AddSwimMeet;
+export default AddEvent;

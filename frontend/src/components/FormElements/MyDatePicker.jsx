@@ -23,6 +23,7 @@ const MyDatePicker = (props) => {
             disableFuture={disableFuture}
             error={!!error}
             helperText={error?.message}
+            sx={{ minWidth: 250 }}
           />
         </LocalizationProvider>
       )}
