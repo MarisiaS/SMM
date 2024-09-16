@@ -8,7 +8,6 @@ const AddEventForm = ({ handleSubmit, control, handleCancel, options }) => {
 
   return (
     <form onSubmit={handleSubmit} className={"whiteBox"}>
-      <Stack alignItems="center" justifyContent="space-between">
         <Stack>
           <Box className={"itemBox"}>
             <MySelect
@@ -38,7 +37,6 @@ const AddEventForm = ({ handleSubmit, control, handleCancel, options }) => {
             onClick={handleCancel}
           />
         </Stack>
-      </Stack>
     </form>
   );
 };
