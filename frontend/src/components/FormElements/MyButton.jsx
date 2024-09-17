@@ -1,8 +1,9 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
+import { Button, useTheme } from "@mui/material";
 
 export default function MyButton(props) {
   const { label, type, onClick, disabled } = props;
+  const theme = useTheme();
   return (
     <Button
       type={type}
@@ -11,7 +12,14 @@ export default function MyButton(props) {
       onClick={onClick}
       disabled={disabled}
       startIcon={props.children}
-      color="primary"
+      sx={{
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+        "&:hover": {
+          backgroundColor: theme.palette.primary.dark,
+        },
+        minWidth: "32px",
+      }}
     >
       {label}
     </Button>

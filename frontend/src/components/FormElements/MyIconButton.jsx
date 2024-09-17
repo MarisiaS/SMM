@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Button, useTheme} from "@mui/material";
+import { Button, useTheme } from "@mui/material";
 
 export default function MyIconButton(props) {
   const { onClick, disabled } = props;
@@ -9,8 +9,12 @@ export default function MyIconButton(props) {
       variant="contained"
       onClick={onClick}
       disabled={disabled}
-      color={theme.secondary}
       sx={{
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+        "&:hover": {
+          backgroundColor: theme.palette.primary.dark,
+        },
         minWidth: "32px",
       }}
     >
