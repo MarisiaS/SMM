@@ -7,6 +7,7 @@ import SwimMeetDisplay from "./SwimMeet/SwimMeetDisplay";
 import AddSwimMeet from "./SwimMeet/AddSwimMeet";
 import MeetEventDisplay from "./Event/MeetEventDisplay";
 import AddEvent from "./Event/AddEvent";
+import TestTabPanel from "../Tests/TestTabPanel";
 
 function App() {
   const NotFound = () => {
@@ -36,6 +37,8 @@ function App() {
           <Route path="/add-event/:meetId" element={<AddEvent />} />
         </Route>
       </Route>
+      // Routes for testing component behavior during development
+      <Route path="/tests/test-tab-panel" element={<TestTabPanel />} />
     </Routes>
   );
 }
