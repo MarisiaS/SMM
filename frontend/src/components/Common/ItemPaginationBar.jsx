@@ -9,7 +9,7 @@ import {
 } from "@mui/icons-material";
 
 
-const ItemPagination = ({
+const ItemPaginationBar = ({
   label,
   onPrevious,
   onNext,
@@ -46,4 +46,4 @@ const ItemPagination = ({
   );
 };
 
-export default ItemPagination;
+export default ItemPaginationBar;

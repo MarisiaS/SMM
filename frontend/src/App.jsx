@@ -5,7 +5,7 @@ import NavBar from "./components/NavBar";
 import PrivateRoutes from "./utils/privateRoutes";
 import SwimMeetDisplay from "./SwimMeet/SwimMeetDisplay";
 import AddSwimMeet from "./SwimMeet/AddSwimMeet";
-import TestItemPagination from "./Tests/TestItemPagination";
+import TestItemPaginationBar from "./Tests/TestItemPaginationBar";
 
 function App() {
   const NotFound = () => {
@@ -31,7 +31,7 @@ function App() {
         </Route>
       </Route>
       // Routes for testing component behavior during development
-      <Route path="/test" element={<TestItemPagination />} />
+      <Route path="/test/test-itempaginationbar" element={<TestItemPaginationBar />} />
     </Routes>
   );
 }
