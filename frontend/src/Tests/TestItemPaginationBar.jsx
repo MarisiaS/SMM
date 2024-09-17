@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ItemPagination from "../components/Common/ItemPaginationBar";
+import ItemPaginationBar from "../components/Common/ItemPaginationBar";
 import { MoveUp as BackIcon, Add as AddIcon } from "@mui/icons-material";
 
 const data = [
@@ -50,7 +50,7 @@ const data = [
   },
 ];
 
-const TestItemPagination = () => {
+const TestItemPaginationBar = () => {
   const [itemIndex, setItemIndex] = useState(0);
 
   const handleBackClick = () => {
@@ -87,16 +87,16 @@ const TestItemPagination = () => {
 
   return (
     <div className={"test"}>
-      <ItemPagination
+      <ItemPaginationBar
         label={data[itemIndex].name}
         onPrevious={handlePrevious}
         onNext={handleNext}
         disablePrevious={isFirstItem}
         disableNext={isLastItem}
         extraActions={extraActions}
-      ></ItemPagination>
+      ></ItemPaginationBar>
     </div>
   );
 };
 
-export default TestItemPagination;
+export default TestItemPaginationBar;
