@@ -52,18 +52,19 @@ class GenerateHeatSerializer(serializers.Serializer):
         athletes_sorted = sorted(athletes, key=lambda x: -x['seed_time'])
         num_athletes = len(athletes_sorted)
         current_num_heat = 1
-        num_empty_athletes = (num_lanes - num_athletes%num_lanes) %num_lanes
-        num_empty_athletes_current_heat = math.ceil(num_empty_athletes/2) if num_athletes > num_lanes else num_empty_athletes
+        num_empty_athletes = (num_lanes - num_athletes%num_lanes) % num_lanes
+        num_empty_athletes_current_heat = math.ceil(num_empty_athletes / 2) if num_athletes > num_lanes else num_empty_athletes
         while(athletes_sorted):
-            current_heat_athletes = athletes_sorted[:num_lanes-num_empty_athletes_current_heat]
-            athletes_sorted = athletes_sorted[num_lanes-num_empty_athletes_current_heat:]
+            current_heat_athletes = athletes_sorted[:num_lanes - num_empty_athletes_current_heat]
+            athletes_sorted = athletes_sorted[num_lanes - num_empty_athletes_current_heat:]
             for i in range(num_empty_athletes_current_heat, num_lanes):
                 num_lane = self.calculate_lane_num(i,num_lanes)
                 Heat.objects.create(
-                    event=event_instance,
-                    athlete=current_heat_athletes[i-num_empty_athletes_current_heat]["athlete"],
-                    lane_num= num_lane,
-                    seed_time=current_heat_athletes[i-num_empty_athletes_current_heat]["seed_time"],
+                    event = event_instance,
+                    athlete = current_heat_athletes[i - num_empty_athletes_current_heat]["athlete"],
+                    lane_num = num_lane,
+                    seed_time = current_heat_athletes[i - num_empty_athletes_current_heat]["seed_time"],
+
                     heat_time=None,
                     num_heat=current_num_heat
                 )
@@ -75,8 +76,8 @@ class GenerateHeatSerializer(serializers.Serializer):
    
     def calculate_lane_num(self, index, num_lanes):
         #Calculates the corresponding lane number for an athlete at a given index on the list of athletes.
-        remainder = index%num_lanes
-        half_lane = math.ceil(num_lanes/2)
+        remainder = index % num_lanes
+        half_lane = math.ceil(num_lanes / 2)
         side = math.pow(-1,remainder)
-        distance_to_half = (num_lanes-remainder)//2
-        return int(half_lane + side*distance_to_half)
+        distance_to_half = (num_lanes - remainder) // 2
+        return int(half_lane + side * distance_to_half)

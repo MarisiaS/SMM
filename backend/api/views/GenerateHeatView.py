@@ -52,6 +52,7 @@ class GenerateHeatView(APIView):
             serializer.save()
         return Response({'success': 'Heats generated'}, status=status.HTTP_200_OK)
     
+    
     @extend_schema(summary="Deletes the heats for a given event")
     @transaction.atomic
     def delete(self, request, event_id):

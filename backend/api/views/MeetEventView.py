@@ -4,20 +4,42 @@ from rest_framework import status
 from api.models import MeetEvent, SwimMeet
 from api.serializers.MeetEventSerializer import MeetEventSerializer, MeetEventPatchSerializer
 from django.db.models import F
-from drf_spectacular.utils import extend_schema, OpenApiExample
+from drf_spectacular.utils import extend_schema, OpenApiExample, OpenApiParameter
+from drf_spectacular.types import OpenApiTypes
+from rest_framework.pagination import LimitOffsetPagination
 
 @extend_schema(tags=['Swim Meet - Events'])
 class MeetEventView(APIView):
     
-    @extend_schema(methods=['GET'], request=MeetEventSerializer, summary="Displays all events in a specific meet")
+    @extend_schema(methods=['GET'],
+                   request=MeetEventSerializer,
+                   parameters=[
+                        OpenApiParameter(
+                            name='limit',
+                            type=OpenApiTypes.INT,
+                            location=OpenApiParameter.QUERY,
+                            description='Number of results to return per page.',
+                        ),
+                        OpenApiParameter(
+                            name='offset',
+                            type=OpenApiTypes.INT,
+                            location=OpenApiParameter.QUERY,
+                            description='The initial index from which to return the results.',
+                        ),
+                   ],
+                   summary="Displays all events in a specific meet")
     def get(self, request, meet_id):
         try:
-            meet_events = MeetEvent.objects.filter(swim_meet_id=meet_id).order_by('num_event')
+            query_set = MeetEvent.objects.filter(swim_meet_id=meet_id).order_by('num_event')
         except MeetEvent.DoesNotExist:
             return Response({'error': 'MeetEvent not found'}, status=status.HTTP_404_NOT_FOUND)
+        paginator = LimitOffsetPagination()
+        paginated_query_set = paginator.paginate_queryset(query_set, request)
+        # Serialize the paginated queryset
+        serializer = MeetEventSerializer(paginated_query_set, many=True)
+        # Return paginated response
+        return paginator.get_paginated_response(serializer.data)
 
-        serializer = MeetEventSerializer(meet_events, many=True)
-        return Response(serializer.data)
 
     @extend_schema(methods=['POST'],
                    request=MeetEventSerializer,
