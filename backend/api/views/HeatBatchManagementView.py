@@ -4,15 +4,69 @@ from rest_framework.response import Response
 from rest_framework import status
 from api.models import MeetEvent, Heat, Group, Athlete
 from api.serializers.GenerateHeatSerializer import GenerateHeatSerializer
+from api.serializers.HeatDisplaySerializer import HeatSerializer
 from rest_framework.exceptions import ValidationError
 from drf_spectacular.utils import extend_schema
 from django.db import transaction
 from django.db.models import F, Value, Func, IntegerField
 from django.utils import timezone
+from django.db.models import Max
 
 
 @extend_schema(tags=['Heat'])
 class HeatBatchManagementView(APIView):
+
+    @extend_schema(summary="Displays all heats distributions for a given event")
+    def get(self, request, event_id):
+        #Get event instance
+        try:
+            event_instance = MeetEvent.objects.get(id=event_id)
+        except MeetEvent.DoesNotExist:
+            return Response({'error': 'Event not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        #Get num_lanes
+        try:
+            swim_meet_instance = event_instance.swim_meet
+            num_lanes = swim_meet_instance.site.num_lanes
+        except:
+            return Response({'error': 'Number of lanes not found for the swim meet site.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        max_num_heat = Heat.objects.filter(event_id=event_id).aggregate(max_num_heat=Max('num_heat'))['max_num_heat']
+
+        if max_num_heat is not None:
+            heats_data = []
+            for heat_num in range (1,max_num_heat+1):
+                # Retrieve all heats for the given event_id and heat_num
+                heats = Heat.objects.filter(event_id=event_id, num_heat=heat_num)
+                lanes_data = []
+                for lane_num in range(1, num_lanes + 1):
+                    lane_data = heats.filter(lane_num=lane_num).first()
+                    if lane_data is not None:
+                        lanes_data.append(lane_data)
+                    else:
+                        lanes_data.append({
+                            "id": None,
+                            "lane_num": lane_num,
+                            "athlete": None,
+                            "seed_time": None,
+                            "heat_time": None
+                    })
+                serializer = HeatSerializer(lanes_data, many=True)
+                heats_data.append({
+                "heat_name": f"Heat {heat_num}",
+                "lanes": serializer.data
+            })
+            return Response({
+            'count': max_num_heat,
+            'heats': heats_data
+        }, status=status.HTTP_200_OK)
+        else:
+            return Response({
+            'count': 0,
+            'heats': []
+        }, status=status.HTTP_200_OK)
+
+
     @extend_schema(request=GenerateHeatSerializer, methods=['POST'],summary="Given an event and a list of participants with their seed times, generates the heats")
     def post(self, request, event_id):
         #Get event instance
