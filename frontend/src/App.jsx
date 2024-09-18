@@ -31,7 +31,7 @@ function App() {
         </Route>
       </Route>
       // Routes for testing component behavior during development
-      <Route path="/test/test-itempaginationbar" element={<TestItemPaginationBar />} />
+      <Route path="/test/test-item-pagination-bar" element={<TestItemPaginationBar />} />
     </Routes>
   );
 }
