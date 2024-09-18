@@ -11,7 +11,7 @@ from datetime import timedelta
 
 @extend_schema(tags=['Heat'])
 class HeatDetailView(APIView):
-    @extend_schema(summary="Displays all lanes on a specific heat for a given event")
+    @extend_schema(summary="Displays lanes distribution on a specific heat for a given event")
     def get(self, request, event_id, heat_num):
         #Get event instance
         try:
@@ -19,13 +19,14 @@ class HeatDetailView(APIView):
         except MeetEvent.DoesNotExist:
             return Response({'error': 'Event not found'}, status=status.HTTP_404_NOT_FOUND)
         
-        #Get num_lanes
+        #Get number of lanes on the event
         try:
             swim_meet_instance = event_instance.swim_meet
             num_lanes = swim_meet_instance.site.num_lanes
         except:
             return Response({'error': 'Number of lanes not found for the swim meet site.'}, status=status.HTTP_404_NOT_FOUND)
         
+        #Get number of heats on the event
         max_num_heat = Heat.objects.filter(event_id=event_id).aggregate(max_num_heat=Max('num_heat'))['max_num_heat']
 
         if max_num_heat is not None:
@@ -46,7 +47,7 @@ class HeatDetailView(APIView):
                             "heat_time": None
                     })
         
-                # Serialize the heats using CompleteHeatSerializer
+                # Serialize the lanes_data using HeatSerializer
                 serializer = HeatSerializer(lanes_data, many=True)
         
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -57,7 +58,7 @@ class HeatDetailView(APIView):
         
 @extend_schema(tags=['Heat'], request=LaneSerializer())
 class LaneDetailView(APIView):
-    @extend_schema(summary="Displays all heats on a specific lane for a given event")
+    @extend_schema(summary="Displays heats distribution on a specific lane for a given event")
     def get(self, request, event_id, lane_num):
         #Get event instance
         try:
@@ -65,18 +66,19 @@ class LaneDetailView(APIView):
         except MeetEvent.DoesNotExist:
             return Response({'error': 'Event not found'}, status=status.HTTP_404_NOT_FOUND)
         
-        #Get num_lanes
+        #Get number of lanes on the event
         try:
             swim_meet_instance = event_instance.swim_meet
             num_lanes = swim_meet_instance.site.num_lanes
         except:
             return Response({'error': 'Not able to retrieve number of lanes'}, status=status.HTTP_404_NOT_FOUND)
         
+        #Get number of heats on the event
         max_num_heat = Heat.objects.filter(event_id=event_id).aggregate(max_num_heat=Max('num_heat'))['max_num_heat']
 
         if max_num_heat is not None:
             if 1<= lane_num <= num_lanes:
-                # Retrieve all heats for the given event_id and heat_num
+                # Retrieve all heats for the given event_id and lane_num
                 heats = Heat.objects.filter(event_id=event_id, lane_num=lane_num)
                 heats_data = []
                 for heat in range(1, max_num_heat + 1):
@@ -91,7 +93,7 @@ class LaneDetailView(APIView):
                             "seed_time": None
                     })
         
-                # Serialize the heats using CompleteHeatSerializer
+                # Serialize the heats using LaneSerializer
                 serializer = LaneSerializer(heats_data, many=True)
         
                 return Response(serializer.data, status=status.HTTP_200_OK)
