@@ -1,5 +1,5 @@
 import "../App.css";
-import { Box, Stack, Container } from "@mui/material";
+import { Box, Stack} from "@mui/material";
 import MyButton from "../components/FormElements/MyButton.jsx";
 import MySelect from "../components/FormElements/MySelect.jsx";
 
@@ -8,7 +8,6 @@ const AddEventForm = ({ handleSubmit, control, handleCancel, options }) => {
 
   return (
     <form onSubmit={handleSubmit} className={"whiteBox"}>
-      <Stack alignItems="center" justifyContent="space-between">
         <Stack>
           <Box className={"itemBox"}>
             <MySelect
@@ -38,7 +37,6 @@ const AddEventForm = ({ handleSubmit, control, handleCancel, options }) => {
             onClick={handleCancel}
           />
         </Stack>
-      </Stack>
     </form>
   );
 };
