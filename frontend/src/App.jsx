@@ -7,6 +7,8 @@ import SwimMeetDisplay from "./SwimMeet/SwimMeetDisplay";
 import AddSwimMeet from "./SwimMeet/AddSwimMeet";
 import MeetEventDisplay from "./Event/MeetEventDisplay";
 import AddEvent from "./Event/AddEvent";
+import TestItemPaginationBar from "./Tests/TestItemPaginationBar";
+
 
 function App() {
   const NotFound = () => {
@@ -36,6 +38,8 @@ function App() {
           <Route path="/add-event/:meetId" element={<AddEvent />} />
         </Route>
       </Route>
+      // Routes for testing component behavior during development
+      <Route path="/tests/test-item-pagination-bar" element={<TestItemPaginationBar />} />
     </Routes>
   );
 }

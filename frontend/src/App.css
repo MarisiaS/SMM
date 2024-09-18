@@ -47,3 +47,17 @@
 .searchBox {
   width: 40%;
 }
+
+.labelBox{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  height: 100px;
+}
+
+
+.test {
+  border: 1px solid red;
+  outline: 2px dashed blue;
+}
