@@ -25,6 +25,7 @@ const MyTimePicker = (props) => {
             onChange={onChange}
             error={!!error}
             helperText={error?.message}
+            sx={{ minWidth: 250 }}
           />
         </LocalizationProvider>
       )}

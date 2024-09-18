@@ -58,7 +58,7 @@ const SwimMeetDisplay = () => {
     : "";
 
   const handleDetailsClick = (id) => {
-    console.log("Details ...", id);
+    navigate(`/swim-meet/${data[id].id}/events`, { state: data[id] });
   };
 
   const handleEditClick = () => {
@@ -105,14 +105,12 @@ const SwimMeetDisplay = () => {
     async function fetching() {
       try {
         const json = await SmmApi.getSwimMeetList(searchPar, offset, limit);
-        console.log(json);
         if (!ignore) {
           const formattedData = json.results.map((item) => ({
             ...item,
             date: dayjs(item.date).format("MM/DD/YYYY"),
             time: item.time.slice(0, 5),
           }));
-
           setData(formattedData);
           setCount(json.count);
           setErrorOnLoading(false);
@@ -159,7 +157,11 @@ const SwimMeetDisplay = () => {
             </MyButton>
           </Box>
           <Box className={"searchBox"} sx={{ marginRight: 5 }}>
-            <SearchBar setSearchPar={setSearchPar}></SearchBar>
+            <SearchBar
+              setSearchPar={setSearchPar}
+              setOffset={setOffset}
+              setPage={setPage}
+            ></SearchBar>
           </Box>
         </Stack>
         <GenericTable data={data} columns={columns} actions={actions} />
@@ -167,6 +169,8 @@ const SwimMeetDisplay = () => {
           count={count}
           setOffset={setOffset}
           setLimit={setLimit}
+          page={page}
+          setPage={setPage}
         ></PaginationBar>
       </div>
     );

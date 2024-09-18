@@ -27,6 +27,7 @@ const MyPasswordField = (props) => {
           <InputLabel htmlFor="outlined-adornment-password">{label}</InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
+            sx={{ minWidth: 250 }}
             onChange={onChange}
             value={value}
             error={!!error}

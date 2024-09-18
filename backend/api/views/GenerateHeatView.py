@@ -14,6 +14,7 @@ from django.utils import timezone
 @extend_schema(tags=['Heat'])
 @extend_schema(request=GenerateHeatSerializer, methods=['POST'])
 class GenerateHeatView(APIView):
+    @extend_schema(summary="Given an event and a list of participants with their seed times, generates the heats")
     def post(self, request, event_id):
         #Get event instance
         try:
@@ -30,7 +31,7 @@ class GenerateHeatView(APIView):
             swim_meet_instance = event_instance.swim_meet
             num_lanes = swim_meet_instance.site.num_lanes
         except:
-            return Response({'error': 'Not able to retrieve number of lanes'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Number of lanes not found for the swim meet site.'}, status=status.HTTP_404_NOT_FOUND)
         
         #Get group_id
         try:
@@ -51,6 +52,8 @@ class GenerateHeatView(APIView):
             serializer.save()
         return Response({'success': 'Heats generated'}, status=status.HTTP_200_OK)
     
+    
+    @extend_schema(summary="Deletes the heats for a given event")
     @transaction.atomic
     def delete(self, request, event_id):
         try:

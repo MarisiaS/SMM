@@ -6,7 +6,6 @@ import ClearIcon from "@mui/icons-material/Clear";
 const CleanableTextField = (props) => {
   const { label, name, control, setValue, onSubmit } = props;
 
-
   const clearTextField = () => {
     setValue(name, "");
     onSubmit();
@@ -19,6 +18,7 @@ const CleanableTextField = (props) => {
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <TextField
           id="outlined-basic"
+          sx={{ minWidth: 250 }}
           onChange={onChange}
           value={value}
           label={label}
@@ -27,14 +27,14 @@ const CleanableTextField = (props) => {
           error={!!error}
           helperText={error?.message}
           InputProps={{
-            endAdornment:(
-                <InputAdornment position="end">
+            endAdornment: (
+              <InputAdornment position="end">
                 <IconButton onClick={clearTextField}>
-                    <ClearIcon />
+                  <ClearIcon />
                 </IconButton>
-                </InputAdornment>
-      ),
-    }}
+              </InputAdornment>
+            ),
+          }}
         />
       )}
     />
