@@ -45,7 +45,7 @@ const SwimMeetForm = ({ handleSubmit, control, handleCancel, options }) => {
           />
         </Box>
       </Stack>
-      <Stack Stack className={"itemBox"}>
+      <Stack className={"itemBox"}>
         <MyButton key={"create"} label={"Create"} type={"submit"} />
         <Box sx={{ marginTop: 2 }}></Box>
         <MyButton
