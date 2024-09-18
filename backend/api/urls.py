@@ -16,9 +16,6 @@ from api.views.AtheleteSeedTimeView import AthleteSeedTimeView
 from api.views.HeatBatchManagementView import HeatBatchManagementView
 from api.views.LaneBatchManagementView import LaneBatchManagementView
 from api.views.HeatDetailView import HeatDetailView, LaneDetailView
-from api.views.HeatBatchManagementView import HeatBatchManagementView
-from api.views.LaneBatchManagementView import LaneBatchManagementView
-from api.views.HeatDetailView import HeatDetailView, LaneDetailView
 
 from rest_framework.routers import SimpleRouter
 
