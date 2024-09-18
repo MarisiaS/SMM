@@ -7,7 +7,7 @@ import SwimMeetDisplay from "./SwimMeet/SwimMeetDisplay";
 import AddSwimMeet from "./SwimMeet/AddSwimMeet";
 import MeetEventDisplay from "./Event/MeetEventDisplay";
 import AddEvent from "./Event/AddEvent";
-import TestTabPanel from "../Tests/TestTabPanel";
+import TestTabPanel from "./Tests/TestTabPanel";
 
 function App() {
   const NotFound = () => {

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { MoveUp as BackIcon, Add as AddIcon } from "@mui/icons-material";
-import TabPanel from "../src/components/Common/TabPanel";
-import SwimMeetDisplay from "../src/SwimMeet/SwimMeetDisplay";
-import AddSwimMeet from "../src/SwimMeet/AddSwimMeet";
+import TabPanel from "../components/Common/TabPanel";
+import SwimMeetDisplay from "../SwimMeet/SwimMeetDisplay";
+import AddSwimMeet from "../SwimMeet/AddSwimMeet";
 
 const TestTabs = () => {
   const handleByHeatsClick = () => {
