@@ -60,10 +60,11 @@ class GenerateHeatSerializer(serializers.Serializer):
             for i in range(num_empty_athletes_current_heat, num_lanes):
                 num_lane = self.calculate_lane_num(i,num_lanes)
                 Heat.objects.create(
-                    event=event_instance,
-                    athlete=current_heat_athletes[i - num_empty_athletes_current_heat]["athlete"],
-                    lane_num= num_lane,
-                    seed_time=current_heat_athletes[i - num_empty_athletes_current_heat]["seed_time"],
+                    event = event_instance,
+                    athlete = current_heat_athletes[i - num_empty_athletes_current_heat]["athlete"],
+                    lane_num = num_lane,
+                    seed_time = current_heat_athletes[i - num_empty_athletes_current_heat]["seed_time"],
+
                     heat_time=None,
                     num_heat=current_num_heat
                 )

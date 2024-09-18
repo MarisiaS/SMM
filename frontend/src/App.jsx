@@ -8,6 +8,8 @@ import AddSwimMeet from "./SwimMeet/AddSwimMeet";
 import MeetEventDisplay from "./Event/MeetEventDisplay";
 import AddEvent from "./Event/AddEvent";
 import TestTabPanel from "./Tests/TestTabPanel";
+import TestItemPaginationBar from "./Tests/TestItemPaginationBar";
+
 
 function App() {
   const NotFound = () => {
@@ -39,6 +41,7 @@ function App() {
       </Route>
       // Routes for testing component behavior during development
       <Route path="/tests/test-tab-panel" element={<TestTabPanel />} />
+      <Route path="/tests/test-item-pagination-bar" element={<TestItemPaginationBar />} />
     </Routes>
   );
 }

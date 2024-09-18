@@ -25,10 +25,10 @@ class HeatDurationField(serializers.DurationField):
             -DQ represents that the athlete was disquialified
             -A positive duration
         """
-        # No show
+        # Disqualified
         if value == 'DQ':
             return serializers.DurationField().to_internal_value('400 0:0.0') 
-        # Disqualified
+        # No show
         elif value == 'NS':
             return serializers.DurationField().to_internal_value('300 0:0.0')
         # No Time
