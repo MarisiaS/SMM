@@ -16,7 +16,7 @@ from django.db.models import Max
 @extend_schema(tags=['Heat'])
 class HeatBatchManagementView(APIView):
 
-    @extend_schema(summary="Displays all heats distributions for a given event")
+    @extend_schema(summary="Retrieves the lane assignments for each heat for a given event")
     def get(self, request, event_id):
         #Get event instance
         try:
