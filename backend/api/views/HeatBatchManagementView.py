@@ -58,12 +58,12 @@ class HeatBatchManagementView(APIView):
             })
             return Response({
             'count': max_num_heat,
-            'heats': heats_data
+            'results': heats_data
         }, status=status.HTTP_200_OK)
         else:
             return Response({
             'count': 0,
-            'heats': []
+            'results': []
         }, status=status.HTTP_200_OK)
 
 
