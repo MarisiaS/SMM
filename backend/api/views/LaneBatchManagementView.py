@@ -51,10 +51,10 @@ class LaneBatchManagementView(APIView):
             })
             return Response({
             'count': num_lanes,
-            'lanes': lanes_data
+            'results': lanes_data
         }, status=status.HTTP_200_OK)
         else:
             return Response({
             'count': num_lanes,
-            'lanes': []
+            'results': []
         }, status=status.HTTP_200_OK)
