@@ -14,7 +14,7 @@ from django.db.models import Max
 
 
 @extend_schema(tags=['Heat'])
-class HeatBatchManagementView(APIView):
+class HeatBatchView(APIView):
 
     @extend_schema(summary="Retrieves the lane assignments for each heat for a given event")
     def get(self, request, event_id):
@@ -148,3 +148,50 @@ class HeatBatchManagementView(APIView):
             queryset = queryset.filter(age__gte=min_age)
             
         return queryset
+    
+@extend_schema(tags=['Heat'])
+class HeatDetailView(APIView):
+    @extend_schema(summary="Displays lanes distribution on a specific heat for a given event")
+    def get(self, request, event_id, heat_num):
+        #Get event instance
+        try:
+            event_instance = MeetEvent.objects.get(id=event_id)
+        except MeetEvent.DoesNotExist:
+            return Response({'error': 'Event not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        #Get number of lanes on the event
+        try:
+            swim_meet_instance = event_instance.swim_meet
+            num_lanes = swim_meet_instance.site.num_lanes
+        except:
+            return Response({'error': 'Number of lanes not found for the swim meet site.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        #Get number of heats on the event
+        max_num_heat = Heat.objects.filter(event_id=event_id).aggregate(max_num_heat=Max('num_heat'))['max_num_heat']
+
+        if max_num_heat is not None:
+            if 1<= heat_num <= max_num_heat:
+                # Retrieve all heats for the given event_id and heat_num
+                heats = Heat.objects.filter(event_id=event_id, num_heat=heat_num)
+                lanes_data = []
+                for lane_num in range(1, num_lanes + 1):
+                    lane_data = heats.filter(lane_num=lane_num).first()
+                    if lane_data is not None:
+                        lanes_data.append(lane_data)
+                    else:
+                        lanes_data.append({
+                            "id": None,
+                            "lane_num": lane_num,
+                            "athlete": None,
+                            "seed_time": None,
+                            "heat_time": None
+                    })
+        
+                # Serialize the lanes_data using HeatSerializer
+                serializer = HeatSerializer(lanes_data, many=True)
+        
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'There is not a heat with that number'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'message': 'This event does not have heats yet'}, status=status.HTTP_200_OK)
