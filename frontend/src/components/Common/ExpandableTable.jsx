@@ -18,11 +18,11 @@ const ExpandableTable = ({
     columns: columns,
     data: data,
     enableExpanding: true,
-    enableExpandAll: false,
+    enableExpandAll: true,
     muiTableHeadCellProps: {
       sx: {
         //Does not show the header
-        display: "none",
+        //display: "none",
       },
     },
     enableSorting: false,
