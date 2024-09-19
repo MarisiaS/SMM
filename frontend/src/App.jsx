@@ -9,7 +9,7 @@ import MeetEventDisplay from "./Event/MeetEventDisplay";
 import AddEvent from "./Event/AddEvent";
 import TestTabPanel from "./Tests/TestTabPanel";
 import TestItemPaginationBar from "./Tests/TestItemPaginationBar";
-import TestExpandableTable from "./Tests/TestExpandibleTable";
+import TestExpandableTable from "./Tests/TestExpandableTable";
 
 function App() {
   const NotFound = () => {
