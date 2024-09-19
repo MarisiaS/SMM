@@ -9,7 +9,7 @@ import MeetEventDisplay from "./Event/MeetEventDisplay";
 import AddEvent from "./Event/AddEvent";
 import TestTabPanel from "./Tests/TestTabPanel";
 import TestItemPaginationBar from "./Tests/TestItemPaginationBar";
-
+import TestExpandableTable from "./Tests/TestExpandableTable";
 
 function App() {
   const NotFound = () => {
@@ -42,6 +42,7 @@ function App() {
       // Routes for testing component behavior during development
       <Route path="/tests/test-tab-panel" element={<TestTabPanel />} />
       <Route path="/tests/test-item-pagination-bar" element={<TestItemPaginationBar />} />
+      <Route path="/tests/test-expandable-table" element={<TestExpandableTable />} />
     </Routes>
   );
 }
