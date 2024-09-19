@@ -14,8 +14,7 @@ from api.views.TimeRecordView import TimeRecordViewSet
 from api.views.MeetEventView import MeetEventView
 from api.views.AtheleteSeedTimeView import AthleteSeedTimeView
 from api.views.HeatView import HeatBatchView, HeatDetailView
-from api.views.LaneBatchManagementView import LaneBatchManagementView
-from api.views.HeatDetailView import LaneDetailView
+from api.views.LaneView import LaneBatchView, LaneDetailView
 
 from rest_framework.routers import SimpleRouter
 
@@ -41,7 +40,7 @@ urlpatterns = [
     path('seed_times/<int:event_id>/', AthleteSeedTimeView.as_view(), name='seed-times'),
     path('event_heat/<int:event_id>/', HeatBatchView.as_view(), name='heats-event'),
     path('event_heat/<int:event_id>/<int:heat_num>/', HeatDetailView.as_view(), name='heat-detail'),
-    path('event_lane/<int:event_id>/', LaneBatchManagementView.as_view(), name='lanes-event'),
+    path('event_lane/<int:event_id>/', LaneBatchView.as_view(), name='lanes-event'),
     path('event_lane/<int:event_id>/<int:lane_num>/', LaneDetailView.as_view(), name='lane-detail'),
 ]
 
