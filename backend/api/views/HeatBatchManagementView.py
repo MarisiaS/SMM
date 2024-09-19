@@ -53,17 +53,18 @@ class HeatBatchManagementView(APIView):
                     })
                 serializer = HeatSerializer(lanes_data, many=True)
                 heats_data.append({
+                "id": heat_num,
                 "heat_name": f"Heat {heat_num}",
                 "lanes": serializer.data
             })
             return Response({
-            'count': max_num_heat,
-            'results': heats_data
+            "count": max_num_heat,
+            "results": heats_data
         }, status=status.HTTP_200_OK)
         else:
             return Response({
-            'count': 0,
-            'results': []
+            "count": 0,
+            "results": []
         }, status=status.HTTP_200_OK)
 
 
