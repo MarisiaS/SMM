@@ -46,6 +46,7 @@ class LaneBatchManagementView(APIView):
                 # Serialize the heats using LaneSerializer
                 serializer = LaneSerializer(heats_data, many=True)
                 lanes_data.append({
+                "id": lane_num,
                 "lane_name": f"Lane {lane_num}",
                 "heats": serializer.data
             })
