@@ -189,8 +189,12 @@ class HeatDetailView(APIView):
         
                 # Serialize the lanes_data using HeatSerializer
                 serializer = HeatSerializer(lanes_data, many=True)
+                response_data = {
+                    'count': len(lanes_data),
+                    'results': serializer.data
+                }
         
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response(response_data, status=status.HTTP_200_OK)
             else:
                 return Response({'error': 'There is not a heat with that number'}, status=status.HTTP_404_NOT_FOUND)
         else:
