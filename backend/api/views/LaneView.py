@@ -58,7 +58,7 @@ class LaneBatchView(APIView):
         }, status=status.HTTP_200_OK)
         else:
             return Response({
-            'count': num_lanes,
+            'count': 0,
             'results': []
         }, status=status.HTTP_200_OK)
 
