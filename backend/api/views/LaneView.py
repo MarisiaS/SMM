@@ -102,8 +102,11 @@ class LaneDetailView(APIView):
         
                 # Serialize the heats using LaneSerializer
                 serializer = LaneSerializer(heats_data, many=True)
-        
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                response_data = {
+                    'count': len(heats_data),
+                    'results': serializer.data
+                }
+                return Response(response_data, status=status.HTTP_200_OK)
             else:
                 return Response({'error': 'There is not a lane with that number'}, status=status.HTTP_404_NOT_FOUND)
         else:
