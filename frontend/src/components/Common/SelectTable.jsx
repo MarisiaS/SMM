@@ -45,6 +45,9 @@ const SelectTable = ({ data, columns, rowSelection, setRowSelection }) => {
         overflowX: "hidden", // Disable horizontal scrolling
       },
     },
+    localization: {
+        noRecordsToDisplay: "", //No message when the table is empty
+      },
   });
 
   return <MaterialReactTable table={table} />;
