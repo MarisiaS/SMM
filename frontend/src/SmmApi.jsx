@@ -152,4 +152,40 @@ export class SmmApi {
       headers: getConfig(),
     });
   }
+
+  static async getEventHeats(eventId) {
+    return await axios.get(`${BASE_URL}/event_heat/${eventId}/`, {
+      headers: getConfig(),
+    });
+  }
+
+  static async createHeats(eventId, data) {
+    return await axios.post(`${BASE_URL}/event_heat/${eventId}/`, data, {
+      headers: getConfig(),
+    });
+  }
+
+  static async deleteHeats(eventId) {
+    return await axios.delete(`${BASE_URL}/event_heat/${eventId}/`, {
+      headers: getConfig(),
+    });
+  }
+
+  static async getHeatDetails(eventId, heatNum) {
+    return await axios.get(`${BASE_URL}/event_heat/${eventId}/${heatNum}/`, {
+      headers: getConfig(),
+    });
+  }
+
+  static async getEventLanes(eventId) {
+    return await axios.get(`${BASE_URL}/event_lane/${eventId}/`, {
+      headers: getConfig(),
+    });
+  }
+
+  static async getLaneDetails(eventId, laneNum) {
+    return await axios.get(`${BASE_URL}/event_lane/${eventId}/${laneNum}/`, {
+      headers: getConfig(),
+    });
+  }
 }
