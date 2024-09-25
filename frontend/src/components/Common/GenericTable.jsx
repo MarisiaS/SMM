@@ -30,44 +30,44 @@ const GenericTable = ({ data, columns, actions, notRecordsMessage }) => {
 
     renderRowActions: ({ row }) => (
       <Box>
-      {actions &&
-        actions.map((action, index) => {
-          let shouldRender = true;
-          if (action.visible) {
-            shouldRender = action.visible(row);
-          }
-          return (
-            shouldRender && (
-              <Tooltip
-                key={index}
-                title={action.tip}
-                placement="top"
-                arrow
-                slotProps={{
-                  popper: {
-                    modifiers: [
-                      {
-                        name: "offset",
-                        options: {
-                          offset: [0, -20],
+        {actions &&
+          actions.map((action, index) => {
+            let shouldRender = true;
+            if (action.visible) {
+              shouldRender = action.visible(row);
+            }
+            return (
+              shouldRender && (
+                <Tooltip
+                  key={index}
+                  title={action.tip}
+                  placement="top"
+                  arrow
+                  slotProps={{
+                    popper: {
+                      modifiers: [
+                        {
+                          name: "offset",
+                          options: {
+                            offset: [0, -20],
+                          },
                         },
-                      },
-                    ],
-                  },
-                }}
-              >
-                <IconButton onClick={() => action.onClick(row.id)}>
-                  {action.icon}
-                </IconButton>
-              </Tooltip>
-            )
-          );
-        })}
-    </Box>
+                      ],
+                    },
+                  }}
+                >
+                  <IconButton onClick={() => action.onClick(row.id)}>
+                    {action.icon}
+                  </IconButton>
+                </Tooltip>
+              )
+            );
+          })}
+      </Box>
     ),
   });
 
-  return <MaterialReactTable table={table}  />;
+  return <MaterialReactTable table={table} />;
 };
 
 export default GenericTable;
