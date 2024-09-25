@@ -42,9 +42,18 @@ function App() {
       </Route>
       // Routes for testing component behavior during development
       <Route path="/tests/test-tab-panel" element={<TestTabPanel />} />
-      <Route path="/tests/test-item-pagination-bar" element={<TestItemPaginationBar />} />
-      <Route path="/tests/test-expandable-table" element={<TestExpandableTable />} />
-      <Route path="/tests/test-conditional-render" element={<TestConditionalRender />} />
+      <Route
+        path="/tests/test-item-pagination-bar"
+        element={<TestItemPaginationBar />}
+      />
+      <Route
+        path="/tests/test-expandable-table"
+        element={<TestExpandableTable />}
+      />
+      <Route
+        path="/tests/test-conditional-render"
+        element={<TestConditionalRender />}
+      />
     </Routes>
   );
 }
