@@ -106,7 +106,7 @@ const TestConditionalRender = () => {
       icon: <EditIcon />,
       onClick: handleEditClick,
       tip: "Edit athletes",
-      visible: (row) => row.original.name == "Heat 1",
+      visible: (row) => row.original.name === "Heat 1",
     },
     {
       name: "Delete",
