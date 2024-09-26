@@ -6,7 +6,7 @@ import Title from "../components/Common/Title.jsx";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import EventDetails from "./EventDetails.jsx";
 import {
-  ContentPaste as DetailsIcon,
+  FormatAlignCenter as HeatIcon,
   Delete as DeleteIcon,
   EmojiEvents as RankingIcon,
   Add as AddIcon,
@@ -65,7 +65,7 @@ const MeetEventDisplay = () => {
   const actions = [
     {
       name: "Heats",
-      icon: <DetailsIcon />,
+      icon: <HeatIcon />,
       onClick: handleDetailsClick,
       tip: "Go to heats",
     },
