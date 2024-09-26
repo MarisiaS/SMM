@@ -124,7 +124,6 @@ export class SmmApi {
     let res = await axios.get(url, {
       headers: getConfig(),
     });
-    console.log(res.data);
     return res.data;
   }
 
