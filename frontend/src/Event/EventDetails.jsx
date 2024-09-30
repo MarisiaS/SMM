@@ -3,11 +3,11 @@ import { SmmApi } from "../SmmApi.jsx";
 import ItemPaginationBar from "../components/Common/ItemPaginationBar";
 import TabPanel from "../components/Common/TabPanel";
 import ExpandableTable from "../components/Common/ExpandableTable";
-import { useTheme } from "@mui/material";
 import { ContentPaste as BackIcon } from "@mui/icons-material";
+import AlertBox from "../components/Common/AlertBox.jsx";
+import { Stack } from "@mui/material";
 
 const formatSeedTime = (seedTime) => {
-
   if (!seedTime) return null;
   if (seedTime === "NT") return "NT";
   const timeParts = seedTime.split(":");
@@ -36,7 +36,11 @@ const EventDetails = ({
   const [laneData, setLaneData] = useState([]);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0); // Manage selected tab
-  const theme = useTheme();
+
+  let typeAlertLoading = errorOnLoading ? "error" : "success";
+  let messageOnLoading = errorOnLoading
+    ? "Data upload failed. Please try again!"
+    : "";
 
   useEffect(() => {
     setSelectedTab(0); // Reset to the first tab whenever the eventId changes
@@ -48,7 +52,6 @@ const EventDetails = ({
     async function fetching() {
       try {
         const heat_json = await SmmApi.getEventHeats(eventId);
-        console.log(heat_json);
         if (!ignore) {
           console.log(heat_json.data.results);
           setHeatData(heat_json.data.results);
@@ -59,7 +62,6 @@ const EventDetails = ({
           setLaneData(lane_json.data.results);
           setErrorOnLoading(false);
         }
-        console.log(heatData);
       } catch (error) {
         setErrorOnLoading(true);
       }
@@ -86,7 +88,7 @@ const EventDetails = ({
       accessorKey: "heat_name",
       header: "",
       size: 200,
-      Cell: ({ cell }) => <strong>{cell.getValue()}</strong>
+      Cell: ({ cell }) => <strong>{cell.getValue()}</strong>,
     },
   ];
 
@@ -95,7 +97,7 @@ const EventDetails = ({
       accessorKey: "lane_name",
       header: "",
       size: 200,
-      Cell: ({ cell }) => <strong>{cell.getValue()}</strong>
+      Cell: ({ cell }) => <strong>{cell.getValue()}</strong>,
     },
   ];
 
@@ -177,7 +179,21 @@ const EventDetails = ({
       ></ItemPaginationBar>
       {/*If count for numHeat is 0 alert box with message no heat and generate heat button
          Else tabpanel with heats/lane*/}
-      {numHeats ? (
+      {errorOnLoading ? (
+        <>
+          <Stack
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
+              width: "300px",
+              margin: "auto",
+            }}
+          >
+            <AlertBox type={typeAlertLoading} message={messageOnLoading} />
+          </Stack>
+        </>
+      ) : numHeats ? (
         <TabPanel
           tabs={tabs}
           selectedTab={selectedTab}
