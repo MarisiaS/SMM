@@ -95,7 +95,8 @@ class AthleteSeedTimeView(APIView):
         # Return the paginated response
         return paginator.get_paginated_response(serializer.data)
 
-    @extend_schema(request=UpdateAthleteSeedTimeSerializer)
+    @extend_schema(request=UpdateAthleteSeedTimeSerializer,
+                   summary="Record or update the seed time for a specific athlete in the given event")
     def post(self, request, event_id):
         try:
             event_instance = MeetEvent.objects.get(id=event_id)
