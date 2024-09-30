@@ -6,6 +6,22 @@ import ExpandableTable from "../components/Common/ExpandableTable";
 import { useTheme } from "@mui/material";
 import { ContentPaste as BackIcon } from "@mui/icons-material";
 
+const formatSeedTime = (seedTime) => {
+
+  if (!seedTime) return null;
+  if (seedTime === "NT") return "NT";
+  const timeParts = seedTime.split(":");
+  const secondsAndMillis = parseFloat(timeParts[2]).toFixed(2);
+  if (timeParts[0] !== "00") {
+    return `${timeParts[0]}:${timeParts[1]}:${secondsAndMillis}`;
+  }
+  if (timeParts[1] !== "00") {
+    const minutes = parseInt(timeParts[1], 10);
+    return `${minutes}:${secondsAndMillis}`;
+  }
+  return `${secondsAndMillis}`;
+};
+
 const EventDetails = ({
   eventName,
   eventId,
@@ -19,7 +35,12 @@ const EventDetails = ({
   const [heatData, setHeatData] = useState([]);
   const [laneData, setLaneData] = useState([]);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
+  const [selectedTab, setSelectedTab] = useState(0); // Manage selected tab
   const theme = useTheme();
+
+  useEffect(() => {
+    setSelectedTab(0); // Reset to the first tab whenever the eventId changes
+  }, [eventId]);
 
   //Use efects to fetch the data whe SmmApi ready
   useEffect(() => {
@@ -29,6 +50,7 @@ const EventDetails = ({
         const heat_json = await SmmApi.getEventHeats(eventId);
         console.log(heat_json);
         if (!ignore) {
+          console.log(heat_json.data.results);
           setHeatData(heat_json.data.results);
           setNumHeats(heat_json.data.count);
         }
@@ -79,7 +101,7 @@ const EventDetails = ({
     {
       accessorKey: "lane_num",
       header: "Lane",
-      size: 150,
+      size: 50,
     },
     {
       accessorKey: "athlete_full_name",
@@ -89,12 +111,14 @@ const EventDetails = ({
     {
       accessorKey: "seed_time",
       header: "Seed Time",
-      size: 150,
+      size: 100,
+      Cell: ({ cell }) => formatSeedTime(cell.getValue()),
     },
     {
       accessorKey: "heat_time",
       header: "Heat Time",
-      size: 150,
+      size: 100,
+      Cell: ({ cell }) => formatSeedTime(cell.getValue()),
     },
   ];
 
@@ -102,7 +126,7 @@ const EventDetails = ({
     {
       accessorKey: "num_heat",
       header: "Heat",
-      size: 150,
+      size: 50,
     },
     {
       accessorKey: "athlete_full_name",
@@ -117,7 +141,7 @@ const EventDetails = ({
       label: "By Heat",
       content: (
         <ExpandableTable
-          key={"heats"}
+          key={"heats" + eventId}
           data={heatData}
           columns={mainHeatTableColumns}
           subTableColumns={subHeatTableColumns}
@@ -129,7 +153,7 @@ const EventDetails = ({
       label: "By Lane",
       content: (
         <ExpandableTable
-          key={"lanes"}
+          key={"lanes" + eventId}
           data={laneData}
           columns={mainLaneTableColumns}
           subTableColumns={subLaneTableColumns}
@@ -151,7 +175,13 @@ const EventDetails = ({
       ></ItemPaginationBar>
       {/*If count for numHeat is 0 alert box with message no heat and generate heat button
          Else tabpanel with heats/lane*/}
-      {numHeats ? <TabPanel tabs={tabs} /> : null}
+      {numHeats ? (
+        <TabPanel
+          tabs={tabs}
+          selectedTab={selectedTab}
+          setSelectedTab={setSelectedTab} // Handle tab change
+        />
+      ) : null}
     </div>
   );
 };
