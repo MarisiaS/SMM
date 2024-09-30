@@ -71,7 +71,7 @@ const EventDetails = ({
   }, [eventId]);
 
   //What is needed for the itemPaginationBar
-  const label = eventName;
+  const label = "Event " + eventName;
   const extraButtons = [
     {
       label: "Back to events",
@@ -85,7 +85,8 @@ const EventDetails = ({
     {
       accessorKey: "heat_name",
       header: "",
-      size: 150,
+      size: 200,
+      Cell: ({ cell }) => <strong>{cell.getValue()}</strong>
     },
   ];
 
@@ -93,7 +94,8 @@ const EventDetails = ({
     {
       accessorKey: "lane_name",
       header: "",
-      size: 150,
+      size: 200,
+      Cell: ({ cell }) => <strong>{cell.getValue()}</strong>
     },
   ];
 
