@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import MyIconButton from "../FormElements/MyIconButton";
 import MyButton from "../FormElements/MyButton";
-import { Stack, Box } from "@mui/material";
+import { Stack, Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import {
   NavigateBefore as PreviousIcon,
@@ -21,7 +21,15 @@ const ItemPaginationBar = ({
     <div>
       <Stack direction="row" alignItems="center" spacing={2}>
         <Box className={"labelBox"} sx={{ marginLeft: 5 }}>
-          <h2>{label}</h2>
+        <Typography
+            sx={{
+              color: "text.secondary",
+              fontWeight: "bold", 
+              fontSize: "1.5rem",
+            }}
+          >
+            {label}
+          </Typography>
         </Box>
         <Box sx={{ marginLeft: 5 }}>
           <MyIconButton onClick={onPrevious} disabled={disablePrevious}>
