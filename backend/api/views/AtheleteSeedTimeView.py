@@ -80,10 +80,10 @@ class AthleteSeedTimeView(APIView):
             time_records = TimeRecord.objects.filter(athlete=athlete, event_type=event_type_instance).order_by('time')
             if time_records.exists():
                 seed_time = time_records.first()
-                seed_times.append({'athlete': athlete.id, 'athlete_full_name': athlete.full_name, 'seed_time': seed_time.time})
+                seed_times.append({'id': athlete.id, 'athlete_full_name': athlete.full_name, 'seed_time': seed_time.time})
             else:
                 # The serializer interpretes 200 days as NT (No time)
-                seed_times.append({'athlete': athlete.id, 'athlete_full_name': athlete.full_name, 'seed_time': timedelta(days=200)})
+                seed_times.append({'id': athlete.id, 'athlete_full_name': athlete.full_name, 'seed_time': timedelta(days=200)})
 
         paginator = LimitOffsetPagination()
         paginated_seed_times = paginator.paginate_queryset(seed_times, request)
