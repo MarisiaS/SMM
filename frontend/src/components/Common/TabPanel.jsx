@@ -3,18 +3,18 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 
-export default function TabPanel({ tabs, defaultTab = 0 }) {
-  const [activeTab, setActiveTab] = React.useState(defaultTab);
+export default function TabPanel({ tabs, selectedTab, setSelectedTab, defaultTab = 0 }) {
+  // const [activeTab, setActiveTab] = React.useState(defaultTab);
 
   const onTabChange = (event, newValue) => {
-    setActiveTab(newValue);
+    setSelectedTab(newValue);
   };
 
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
-          value={activeTab}
+          value={selectedTab}
           onChange={onTabChange}
           aria-label="tabs"
           variant="fullWidth"
@@ -24,7 +24,7 @@ export default function TabPanel({ tabs, defaultTab = 0 }) {
           ))}
         </Tabs>
       </Box>
-      <Box sx={{ p: 2 }}>{tabs[activeTab]?.content}</Box>
+      <Box sx={{ p: 2 }}>{tabs[selectedTab]?.content}</Box>
     </Box>
   );
 }
