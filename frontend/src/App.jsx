@@ -10,6 +10,8 @@ import AddEvent from "./Event/AddEvent";
 import TestTabPanel from "./Tests/TestTabPanel";
 import TestItemPaginationBar from "./Tests/TestItemPaginationBar";
 import TestExpandableTable from "./Tests/TestExpandableTable";
+import TestSelectTable from "./Tests/TestSelectTable";
+
 
 function App() {
   const NotFound = () => {
@@ -43,6 +45,7 @@ function App() {
       <Route path="/tests/test-tab-panel" element={<TestTabPanel />} />
       <Route path="/tests/test-item-pagination-bar" element={<TestItemPaginationBar />} />
       <Route path="/tests/test-expandable-table" element={<TestExpandableTable />} />
+      <Route path="/tests/test-select-table" element={<TestSelectTable />} />
     </Routes>
   );
 }
