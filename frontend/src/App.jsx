@@ -11,6 +11,7 @@ import TestTabPanel from "./Tests/TestTabPanel";
 import TestItemPaginationBar from "./Tests/TestItemPaginationBar";
 import TestExpandableTable from "./Tests/TestExpandableTable";
 import TestConditionalRender from "./Tests/TestConditionalRender";
+import TestSelectTable from "./Tests/TestSelectTable";
 
 function App() {
   const NotFound = () => {
@@ -42,18 +43,10 @@ function App() {
       </Route>
       // Routes for testing component behavior during development
       <Route path="/tests/test-tab-panel" element={<TestTabPanel />} />
-      <Route
-        path="/tests/test-item-pagination-bar"
-        element={<TestItemPaginationBar />}
-      />
-      <Route
-        path="/tests/test-expandable-table"
-        element={<TestExpandableTable />}
-      />
-      <Route
-        path="/tests/test-conditional-render"
-        element={<TestConditionalRender />}
-      />
+      <Route path="/tests/test-item-pagination-bar" element={<TestItemPaginationBar />} />
+      <Route path="/tests/test-expandable-table" element={<TestExpandableTable />} />
+      <Route path="/tests/test-select-table" element={<TestSelectTable />} />
+      <Route path="/tests/test-conditional-render" element={<TestConditionalRender />} />
     </Routes>
   );
 }
