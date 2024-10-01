@@ -5,6 +5,7 @@ import TabPanel from "../components/Common/TabPanel";
 import ExpandableTable from "../components/Common/ExpandableTable";
 import { ContentPaste as BackIcon } from "@mui/icons-material";
 import AlertBox from "../components/Common/AlertBox.jsx";
+import { Build as BuildIcon } from "@mui/icons-material";
 import { Stack } from "@mui/material";
 
 const formatSeedTime = (seedTime) => {
@@ -53,7 +54,6 @@ const EventDetails = ({
       try {
         const heat_json = await SmmApi.getEventHeats(eventId);
         if (!ignore) {
-          console.log(heat_json.data.results);
           setHeatData(heat_json.data.results);
           setNumHeats(heat_json.data.count);
         }
@@ -167,6 +167,17 @@ const EventDetails = ({
     },
   ];
 
+  //Need for Generate heats AlertBox
+
+  const handleAddHeats = () => {
+    //Change it to add heats for the new event
+    console.log("Go to Generate Heats");
+  };
+
+  let actionButtonsNoHeats = [
+    { label: "heats", onClick: handleAddHeats, icon: <BuildIcon /> },
+  ];
+
   return (
     <div>
       <ItemPaginationBar
@@ -177,8 +188,6 @@ const EventDetails = ({
         disableNext={disableNext}
         extraActions={extraButtons}
       ></ItemPaginationBar>
-      {/*If count for numHeat is 0 alert box with message no heat and generate heat button
-         Else tabpanel with heats/lane*/}
       {errorOnLoading ? (
         <>
           <Stack
@@ -199,7 +208,25 @@ const EventDetails = ({
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab} // Handle tab change
         />
-      ) : null}
+      ) : (
+        <>
+          <Stack
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
+              width: "300px",
+              margin: "auto",
+            }}
+          >
+            <AlertBox
+              type="info"
+              message="This event has no heats yet."
+              actionButtons={actionButtonsNoHeats}
+            />
+          </Stack>
+        </>
+      )}
     </div>
   );
 };
