@@ -3,7 +3,7 @@ import {
   useMaterialReactTable,
 } from "material-react-table";
 
-const SelectTable = ({ data, columns, rowSelection, setRowSelection }) => {
+const SelectTable = ({ data, columns, rowSelection, setRowSelection, notRecordsMessage }) => {
   const table = useMaterialReactTable({
     data: data,
     columns: columns,
@@ -46,7 +46,7 @@ const SelectTable = ({ data, columns, rowSelection, setRowSelection }) => {
       },
     },
     localization: {
-        noRecordsToDisplay: "", //No message when the table is empty
+        noRecordsToDisplay: notRecordsMessage, //Message when the table is empty
       },
   });
 
