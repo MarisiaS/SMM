@@ -95,6 +95,15 @@ const TestItemPaginationBar = () => {
         disableNext={isLastItem}
         extraActions={extraActions}
       ></ItemPaginationBar>
+      <ItemPaginationBar
+        label={data[itemIndex].name}
+        onPrevious={handlePrevious}
+        onNext={handleNext}
+        disablePrevious={isFirstItem}
+        disableNext={isLastItem}
+        extraActions={extraActions}
+        disableNav={true}
+      ></ItemPaginationBar>
     </div>
   );
 };
