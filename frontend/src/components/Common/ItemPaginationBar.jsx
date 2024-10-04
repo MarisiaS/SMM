@@ -36,7 +36,7 @@ const ItemPaginationBar = ({
         {extraActions &&
           extraActions.map((action, index) => (
             <Box key={index}>
-              <MyButton label={action.label} onClick={action.onClick}>
+              <MyButton label={action.label} onClick={action.onClick} disabled = {action.disabled}>
                 {action.icon}
               </MyButton>
             </Box>
