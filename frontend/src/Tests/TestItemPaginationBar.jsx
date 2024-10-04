@@ -82,6 +82,21 @@ const TestItemPaginationBar = () => {
       label: "Add event",
       icon: <AddIcon />,
       onClick: handleAddClick,
+      disabled: itemIndex === 0,
+    },
+  ];
+
+  const extraActionsNoNav = [
+    {
+      label: "Back to events",
+      icon: <BackIcon />,
+      onClick: handleBackClick,
+    },
+    {
+      label: "Add event",
+      icon: <AddIcon />,
+      onClick: handleAddClick,
+      disabled: itemIndex === 1,
     },
   ];
 
@@ -97,11 +112,7 @@ const TestItemPaginationBar = () => {
       ></ItemPaginationBar>
       <ItemPaginationBar
         label={data[itemIndex].name}
-        onPrevious={handlePrevious}
-        onNext={handleNext}
-        disablePrevious={isFirstItem}
-        disableNext={isLastItem}
-        extraActions={extraActions}
+        extraActions={extraActionsNoNav}
         disableNav={true}
       ></ItemPaginationBar>
     </div>
