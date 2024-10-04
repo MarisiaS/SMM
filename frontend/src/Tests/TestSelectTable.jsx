@@ -58,16 +58,29 @@ const testData = [
   },
 ];
 
-const mainTableColumns = [
+const availableColumns = [
   {
     accessorKey: "athlete_full_name",
-    header: "",
+    header: "Available athletes",
     size: 150,
   },
   {
     accessorKey: "seed_time",
-    header: "",
+    header: "Seed time",
+    size: 100,
+  },
+];
+
+const selectedColumns = [
+  {
+    accessorKey: "athlete_full_name",
+    header: "Selected athletes",
     size: 150,
+  },
+  {
+    accessorKey: "seed_time",
+    header: "Seed time",
+    size: 100,
   },
 ];
 
@@ -154,7 +167,7 @@ const TestSelectTable = () => {
         <Box flex="1" sx={{ maxWidth: "40%", flexGrow: 1 }}>
           <SelectTable
             data={availableData}
-            columns={mainTableColumns}
+            columns={availableColumns}
             selection={selectedRightData}
             rowSelection={selectedRightData}
             setRowSelection={setSelectedRightData}
@@ -195,7 +208,7 @@ const TestSelectTable = () => {
         <Box flex="1" sx={{ maxWidth: "40%", flexGrow: 1 }}>
           <SelectTable
             data={selectedData}
-            columns={mainTableColumns}
+            columns={selectedColumns}
             rowSelection={selectedLeftData}
             setRowSelection={setSelectedLeftData}
             notRecordsMessage={"No athletes selected."}
