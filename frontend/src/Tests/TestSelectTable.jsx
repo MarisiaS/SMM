@@ -158,6 +158,7 @@ const TestSelectTable = () => {
             selection={selectedRightData}
             rowSelection={selectedRightData}
             setRowSelection={setSelectedRightData}
+            notRecordsMessage={"No athletes available."}
           />
         </Box>
 
@@ -197,6 +198,7 @@ const TestSelectTable = () => {
             columns={mainTableColumns}
             rowSelection={selectedLeftData}
             setRowSelection={setSelectedLeftData}
+            notRecordsMessage={"No athletes selected."}
           />
         </Box>
       </Box>
