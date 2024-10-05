@@ -5,12 +5,11 @@ class MeetEventSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=50, read_only=True)
     group_name = serializers.ReadOnlyField(source="group.name")
     event_type_name = serializers.ReadOnlyField(source="event_type.name")
-    num_heats = serializers.IntegerField(source="heat_event.count", read_only=True)
-
+    total_num_heats = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = MeetEvent
-        fields = ('id', 'swim_meet', 'num_event', 'name', 'group', 'group_name', 'event_type', 'event_type_name', 'num_heats' )
+        fields = ('id', 'swim_meet', 'num_event', 'name', 'group', 'group_name', 'event_type', 'event_type_name', 'total_num_heats' )
         
         extra_kwargs = {
             'swim_meet': {'write_only': True},
