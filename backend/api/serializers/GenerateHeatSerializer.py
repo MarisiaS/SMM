@@ -51,10 +51,11 @@ class GenerateHeatSerializer(serializers.Serializer):
         athletes = validated_data.pop('athletes', [])
         athletes_sorted = sorted(athletes, key=lambda x: -x['seed_time'])
         num_athletes = len(athletes_sorted)
-        current_num_heat = 1
+        current_num_heat = 0
         num_empty_athletes = (num_lanes - num_athletes%num_lanes) % num_lanes
         num_empty_athletes_current_heat = math.ceil(num_empty_athletes / 2) if num_athletes > num_lanes else num_empty_athletes
         while(athletes_sorted):
+            current_num_heat += 1
             current_heat_athletes = athletes_sorted[:num_lanes - num_empty_athletes_current_heat]
             athletes_sorted = athletes_sorted[num_lanes - num_empty_athletes_current_heat:]
             for i in range(num_empty_athletes_current_heat, num_lanes):
@@ -70,8 +71,9 @@ class GenerateHeatSerializer(serializers.Serializer):
                 )
             num_empty_athletes -= num_empty_athletes_current_heat
             num_empty_athletes_current_heat = num_empty_athletes
-            current_num_heat += 1
-                   
+        
+        event_instance.total_num_heats = current_num_heat    
+        event_instance.save()
         return event_instance
    
     def calculate_lane_num(self, index, num_lanes):
