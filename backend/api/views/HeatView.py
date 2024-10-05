@@ -31,9 +31,9 @@ class HeatBatchView(APIView):
         except:
             return Response({'error': 'Number of lanes not found for the swim meet site.'}, status=status.HTTP_404_NOT_FOUND)
         
-        max_num_heat = Heat.objects.filter(event_id=event_id).aggregate(max_num_heat=Max('num_heat'))['max_num_heat']
+        max_num_heat = event_instance.total_num_heats 
 
-        if max_num_heat is not None:
+        if max_num_heat:
             heats_data = []
             for heat_num in range (1,max_num_heat+1):
                 # Retrieve all heats for the given event_id and heat_num
@@ -117,6 +117,8 @@ class HeatBatchView(APIView):
         
         try:
             Heat.objects.filter(event=event_instance).delete()
+            event_instance.total_num_heats = 0
+            event_instance.save()
         except Exception as e:
             transaction.set_rollback(True)
             return Response({'error': f'Failed to delete heats: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -167,9 +169,8 @@ class HeatDetailView(APIView):
             return Response({'error': 'Number of lanes not found for the swim meet site.'}, status=status.HTTP_404_NOT_FOUND)
         
         #Get number of heats on the event
-        max_num_heat = Heat.objects.filter(event_id=event_id).aggregate(max_num_heat=Max('num_heat'))['max_num_heat']
-
-        if max_num_heat is not None:
+        max_num_heat = event_instance.total_num_heats 
+        if max_num_heat:
             if 1<= heat_num <= max_num_heat:
                 # Retrieve all heats for the given event_id and heat_num
                 heats = Heat.objects.filter(event_id=event_id, num_heat=heat_num)
