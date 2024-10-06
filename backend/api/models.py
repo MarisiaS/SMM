@@ -160,6 +160,7 @@ class MeetEvent(models.Model):
     group = models.ForeignKey(Group, on_delete=models.PROTECT, related_name='event_group')
     event_type = models.ForeignKey(EventType, on_delete=models.PROTECT, related_name='event_type')
     num_event = models.PositiveSmallIntegerField()
+    total_num_heats = models.PositiveSmallIntegerField(default=0)
 
     @property
     def name(self):

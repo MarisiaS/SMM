@@ -25,9 +25,9 @@ class LaneBatchView(APIView):
         except:
             return Response({'error': 'Not able to retrieve number of lanes'}, status=status.HTTP_404_NOT_FOUND)
         
-        max_num_heat = Heat.objects.filter(event_id=event_id).aggregate(max_num_heat=Max('num_heat'))['max_num_heat']
+        max_num_heat = event_instance.total_num_heats
 
-        if max_num_heat is not None:
+        if max_num_heat:
             lanes_data = []
             for lane_num in range (1,num_lanes+1):
                 # Retrieve all heats for the given event_id and lane_num
@@ -81,9 +81,9 @@ class LaneDetailView(APIView):
             return Response({'error': 'Not able to retrieve number of lanes'}, status=status.HTTP_404_NOT_FOUND)
         
         #Get number of heats on the event
-        max_num_heat = Heat.objects.filter(event_id=event_id).aggregate(max_num_heat=Max('num_heat'))['max_num_heat']
+        max_num_heat = event_instance.total_num_heats
 
-        if max_num_heat is not None:
+        if max_num_heat:
             if 1<= lane_num <= num_lanes:
                 # Retrieve all heats for the given event_id and lane_num
                 heats = Heat.objects.filter(event_id=event_id, lane_num=lane_num)
