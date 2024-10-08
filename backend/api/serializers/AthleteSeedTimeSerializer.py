@@ -7,12 +7,12 @@ from rest_framework.exceptions import ValidationError
 
 
 class AthleteSeedTimeSerializer(serializers.Serializer):
-    athlete = serializers.PrimaryKeyRelatedField(queryset=Athlete.objects.all())
+    id = serializers.PrimaryKeyRelatedField(queryset=Athlete.objects.all())
     athlete_full_name = serializers.CharField()
     seed_time = HeatDurationField()
 
 class UpdateAthleteSeedTimeSerializer(serializers.Serializer):
-    athlete = serializers.PrimaryKeyRelatedField(queryset=Athlete.objects.all())
+    id = serializers.PrimaryKeyRelatedField(queryset=Athlete.objects.all())
     date = serializers.DateTimeField()
     time = serializers.DurationField()
 
@@ -26,7 +26,7 @@ class UpdateAthleteSeedTimeSerializer(serializers.Serializer):
     def create(self,validated_data):
         try:
             record_instance = TimeRecord.objects.create(
-                athlete = validated_data.get('athlete'),
+                athlete = validated_data.get('id'),
                 event_type = self.context['event_type'],
                 time = validated_data.get('time'),
                 date = validated_data.get('date')
