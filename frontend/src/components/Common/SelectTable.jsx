@@ -2,8 +2,16 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
+import { useTheme } from "@mui/material";
 
-const SelectTable = ({ data, columns, rowSelection, setRowSelection }) => {
+const SelectTable = ({
+  data,
+  columns,
+  rowSelection,
+  setRowSelection,
+  notRecordsMessage,
+}) => {
+  const theme = useTheme();
   const table = useMaterialReactTable({
     data: data,
     columns: columns,
@@ -20,9 +28,10 @@ const SelectTable = ({ data, columns, rowSelection, setRowSelection }) => {
     displayColumnDefOptions: {
       "mrt-row-select": { header: "" }, // Hide the header for the selection column
     },
-    muiTableHeadProps: {
+    muiTableHeadCellProps: {
       sx: {
-        visibility: "collapse", // Hide table headers but keep the layout intact
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
       },
     },
     getRowId: (originalRow) => originalRow.id, // Use 'id' as the unique identifier for rows
@@ -46,8 +55,8 @@ const SelectTable = ({ data, columns, rowSelection, setRowSelection }) => {
       },
     },
     localization: {
-        noRecordsToDisplay: "", //No message when the table is empty
-      },
+      noRecordsToDisplay: notRecordsMessage, //Message when the table is empty
+    },
   });
 
   return <MaterialReactTable table={table} />;
