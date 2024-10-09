@@ -106,14 +106,11 @@ const MeetEventDisplay = () => {
   };
 
   const handleBackToEvents = () => {
-    console.log(limit);
     setShowEventDetails(false);
     setSelectedEventIndex(null);
   };
 
   const handlePreviousEvent = () => {
-    console.log(selectedEventIndex);
-    console.log(page);
     if (selectedEventIndex > 0) {
       // Previous event on the same page
       setSelectedEventIndex(selectedEventIndex - 1);
