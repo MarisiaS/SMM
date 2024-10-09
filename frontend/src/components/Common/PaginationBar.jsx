@@ -3,9 +3,9 @@ import TablePagination from "@mui/material/TablePagination";
 
 import { useTheme } from "@mui/material";
 
-export default function PaginationBar({ count, setOffset, setLimit, page, setPage }) {
+export default function PaginationBar({ count, setOffset, limit, setLimit, page, setPage }) {
   const theme = useTheme();
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(limit);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

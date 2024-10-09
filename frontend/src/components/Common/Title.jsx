@@ -5,7 +5,7 @@ export default function Title({ data, fields }) {
   const theme = useTheme();
 
   return (
-    <Box sx={{ textAlign: "center", padding: 2 }}>
+    <Box sx={{ textAlign: "center", padding: 1 }}>
       {fields.map((field, index) => (
         <Typography
           key={index}

@@ -30,10 +30,11 @@ const ExpandableTable = ({
     positionActionsColumn: "last",
     initialState: {
       density: "compact",
-      //First row is expanded at the beginning
-      expanded: {
-        0: true,
-      },
+      //All rows are expanded at the beginning
+      expanded: data.reduce((expandedState, _, rowIndex) => {
+        expandedState[rowIndex] = true;
+        return expandedState;
+      }, {}),
     },
     enableTopToolbar: false,
     enableBottomToolbar: false,
