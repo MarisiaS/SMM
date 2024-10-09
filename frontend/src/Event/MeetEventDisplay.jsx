@@ -34,7 +34,6 @@ const MeetEventDisplay = () => {
 
   //EventDetail states
   const [showEventDetails, setShowEventDetails] = useState(false);
-  const [selectedEventId, setSelectedEventId] = useState(null);
   const [selectedEventIndex, setSelectedEventIndex] = useState(null);
 
   //Pagination States
@@ -49,7 +48,6 @@ const MeetEventDisplay = () => {
     : "";
 
   const handleDetailsClick = (id) => {
-    setSelectedEventId(eventData[id].id); // Set the selected eventId
     setSelectedEventIndex(Number(id));
     setShowEventDetails(true); // Show the HeatDisplay
   };
@@ -110,7 +108,6 @@ const MeetEventDisplay = () => {
   const handleBackToEvents = () => {
     console.log(limit);
     setShowEventDetails(false);
-    setSelectedEventId(null);
     setSelectedEventIndex(null);
   };
 
@@ -119,7 +116,6 @@ const MeetEventDisplay = () => {
     console.log(page);
     if (selectedEventIndex > 0) {
       // Previous event on the same page
-      setSelectedEventId(eventData[selectedEventIndex - 1].id);
       setSelectedEventIndex(selectedEventIndex - 1);
     } else if (page > 0) {
       // Move to the previous page
@@ -134,7 +130,6 @@ const MeetEventDisplay = () => {
   const handleNextEvent = () => {
     if (selectedEventIndex < eventData.length - 1) {
       // Next event on the same page
-      setSelectedEventId(eventData[selectedEventIndex + 1].id);
       setSelectedEventIndex(selectedEventIndex + 1);
     } else if (offset + limit < count) {
       // Move to the next page if available
@@ -166,10 +161,10 @@ const MeetEventDisplay = () => {
     return (
       <div>
         <Title data={meetData} fields={["name", "date", "site_name"]} />
-        {(showEventDetails && selectedEventId && eventData[selectedEventIndex]) ? (
+        {(showEventDetails && eventData[selectedEventIndex]) ? (
           <EventDetails
             eventName={eventData[selectedEventIndex].name}
-            eventId={selectedEventId}
+            eventId={eventData[selectedEventIndex].id}
             onBack={handleBackToEvents}
             onPrevious={handlePreviousEvent}
             onNext={handleNextEvent}
