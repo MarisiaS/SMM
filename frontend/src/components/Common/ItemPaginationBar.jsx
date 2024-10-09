@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import MyIconButton from "../FormElements/MyIconButton";
 import MyButton from "../FormElements/MyButton";
 import { Stack, Box, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import {
   NavigateBefore as PreviousIcon,
   NavigateNext as NextIcon,
