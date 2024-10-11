@@ -113,7 +113,7 @@ const TestItemPaginationBar = () => {
       <ItemPaginationBar
         label={data[itemIndex].name}
         extraActions={extraActionsNoNav}
-        disableNav={true}
+        enableButtonNavigation={false}
       ></ItemPaginationBar>
     </div>
   );
