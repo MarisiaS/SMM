@@ -5,9 +5,7 @@ export default function TabPanel({
   tabs,
   selectedTab,
   setSelectedTab,
-  defaultTab = 0,
 }) {
-  // const [activeTab, setActiveTab] = React.useState(defaultTab);
   const theme = useTheme();
 
   const onTabChange = (event, newValue) => {
@@ -37,9 +35,9 @@ export default function TabPanel({
               label={tab.label}
               sx={{
                 color: theme.palette.primary.main,
-                fontWeight: "bold", // Set default text color
+                fontWeight: "bold", 
                 "&.Mui-selected": {
-                  color: theme.palette.primary.contrastText, // Set text color when selected
+                  color: theme.palette.primary.contrastText, 
                   backgroundColor: theme.palette.primary.main,
                   fontWeight: "bold",
                 },
