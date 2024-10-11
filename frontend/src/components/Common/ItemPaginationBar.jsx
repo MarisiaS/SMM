@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import MyIconButton from "../FormElements/MyIconButton";
 import MyButton from "../FormElements/MyButton";
 import { Stack, Box } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import {
   NavigateBefore as PreviousIcon,
   NavigateNext as NextIcon,
@@ -15,7 +14,7 @@ const ItemPaginationBar = ({
   disablePrevious,
   disableNext,
   extraActions,
-  disableNav = false,
+  enableButtonNavigation = true,
 }) => {
   return (
     <div>
@@ -23,12 +22,12 @@ const ItemPaginationBar = ({
         <Box className={"labelBox"} sx={{ marginLeft: 5 }}>
           <h2>{label}</h2>
         </Box>
-        <Box sx={{ marginLeft: 5, visibility: disableNav ? 'hidden' : 'visible' }}>
+        <Box sx={{ marginLeft: 5, visibility: enableButtonNavigation ? 'visible' : 'hidden'  }}>
           <MyIconButton onClick={onPrevious} disabled={disablePrevious}>
             <PreviousIcon />
           </MyIconButton>
         </Box>
-        <Box sx={{ marginRight: 5, visibility: disableNav ? 'hidden' : 'visible' }}>
+        <Box sx={{ marginRight: 5, visibility: enableButtonNavigation ? 'visible' : 'hidden' }}>
           <MyIconButton onClick={onNext} disabled={disableNext}>
             <NextIcon />
           </MyIconButton>
