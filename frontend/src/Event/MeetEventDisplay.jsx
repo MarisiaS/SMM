@@ -31,10 +31,10 @@ const MeetEventDisplay = () => {
   const [eventData, setEventData] = useState([]);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
 
-
   //EventDetail states
   const [showEventDetails, setShowEventDetails] = useState(false);
   const [selectedEventIndex, setSelectedEventIndex] = useState(null);
+  const [navegationDirection, setNavegationDirection] = useState(null);
 
   //Pagination States
   const [count, setCount] = useState(0);
@@ -49,7 +49,7 @@ const MeetEventDisplay = () => {
 
   const handleDetailsClick = (id) => {
     setSelectedEventIndex(Number(id));
-    setShowEventDetails(true); // Show the HeatDisplay
+    setShowEventDetails(true); 
   };
 
   const handleDeleteClick = (id) => {
@@ -90,6 +90,12 @@ const MeetEventDisplay = () => {
           setEventData(json.results);
           setCount(json.count);
           setErrorOnLoading(false);
+          if (navegationDirection === "previous") {
+            setSelectedEventIndex(limit - 1);
+          } else if (navegationDirection === "next") {
+            setSelectedEventIndex(0);
+          }
+          setNavegationDirection(null);
         }
       } catch (error) {
         setErrorOnLoading(true);
@@ -117,9 +123,9 @@ const MeetEventDisplay = () => {
     } else if (page > 0) {
       // Move to the previous page
       const prevPage = page - 1;
+      setNavegationDirection("previous");
       setPage(prevPage);
       setOffset(prevPage * limit);
-      setSelectedEventIndex(limit - 1); // Set to the last event of the previous page once fetched
     }
   };
 
@@ -131,9 +137,9 @@ const MeetEventDisplay = () => {
     } else if (offset + limit < count) {
       // Move to the next page if available
       const nextPage = page + 1;
+      setNavegationDirection("next");
       setPage(nextPage);
       setOffset(nextPage * limit);
-      setSelectedEventIndex(0); // Set to the first event of the next page once fetched
     }
   };
 
@@ -158,7 +164,7 @@ const MeetEventDisplay = () => {
     return (
       <div>
         <Title data={meetData} fields={["name", "date", "site_name"]} />
-        {(showEventDetails && eventData[selectedEventIndex]) ? (
+        {showEventDetails && eventData[selectedEventIndex] ? (
           <EventDetails
             eventName={eventData[selectedEventIndex].name}
             eventId={eventData[selectedEventIndex].id}
@@ -192,7 +198,7 @@ const MeetEventDisplay = () => {
             <PaginationBar
               count={count}
               setOffset={setOffset}
-              limit = {limit}
+              limit={limit}
               setLimit={setLimit}
               page={page}
               setPage={setPage}
