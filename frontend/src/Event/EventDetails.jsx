@@ -36,16 +36,12 @@ const EventDetails = ({
   const [heatData, setHeatData] = useState([]);
   const [laneData, setLaneData] = useState([]);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
-  const [selectedTab, setSelectedTab] = useState(0); // Manage selected tab
+  const [selectedTab, setSelectedTab] = useState(0); 
 
   let typeAlertLoading = errorOnLoading ? "error" : "success";
   let messageOnLoading = errorOnLoading
     ? "Data upload failed. Please try again!"
     : "";
-
-  useEffect(() => {
-    setSelectedTab(0); // Reset to the first tab whenever the eventId changes
-  }, [eventId]);
 
   //Use efects to fetch the data whe SmmApi ready
   useEffect(() => {
@@ -53,13 +49,11 @@ const EventDetails = ({
     async function fetching() {
       try {
         const heat_json = await SmmApi.getEventHeats(eventId);
-        if (!ignore) {
-          setHeatData(heat_json.data.results);
-          setNumHeats(heat_json.data.count);
-        }
         const lane_json = await SmmApi.getEventLanes(eventId);
         if (!ignore) {
           setLaneData(lane_json.data.results);
+          setHeatData(heat_json.data.results);
+          setNumHeats(heat_json.data.count);
           setErrorOnLoading(false);
         }
       } catch (error) {
@@ -206,7 +200,7 @@ const EventDetails = ({
         <TabPanel
           tabs={tabs}
           selectedTab={selectedTab}
-          setSelectedTab={setSelectedTab} // Handle tab change
+          setSelectedTab={setSelectedTab} 
         />
       ) : (
         <>
