@@ -7,7 +7,6 @@ import {
   NavigateNext as NextIcon,
 } from "@mui/icons-material";
 
-
 const ItemPaginationBar = ({
   label,
   onPrevious,
@@ -15,6 +14,7 @@ const ItemPaginationBar = ({
   disablePrevious,
   disableNext,
   extraActions,
+  enableNavigationButtons = true,
 }) => {
   return (
     <div>
@@ -30,12 +30,12 @@ const ItemPaginationBar = ({
             {label}
           </Typography>
         </Box>
-        <Box sx={{ marginLeft: 5 }}>
+        <Box sx={{ marginLeft: 5, visibility: enableNavigationButtons ? 'visible' : 'hidden'  }}>
           <MyIconButton onClick={onPrevious} disabled={disablePrevious}>
             <PreviousIcon />
           </MyIconButton>
         </Box>
-        <Box sx={{ marginRight: 5 }}>
+        <Box sx={{ marginRight: 5, visibility: enableNavigationButtons ? 'visible' : 'hidden' }}>
           <MyIconButton onClick={onNext} disabled={disableNext}>
             <NextIcon />
           </MyIconButton>
@@ -43,7 +43,7 @@ const ItemPaginationBar = ({
         {extraActions &&
           extraActions.map((action, index) => (
             <Box key={index}>
-              <MyButton label={action.label} onClick={action.onClick}>
+              <MyButton label={action.label} onClick={action.onClick} disabled = {action.disabled}>
                 {action.icon}
               </MyButton>
             </Box>

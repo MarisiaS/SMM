@@ -45,30 +45,38 @@ const ExpandableTable = ({
     renderRowActions: ({ row }) => (
       <Box>
         {actions &&
-          actions.map((action, index) => (
-            <Tooltip
-              key={index}
-              title={action.tip}
-              placement="top"
-              arrow
-              slotProps={{
-                popper: {
-                  modifiers: [
-                    {
-                      name: "offset",
-                      options: {
-                        offset: [0, -20],
-                      },
+          actions.map((action, index) => {
+            let shouldRender = true;
+            if (action.visible) {
+              shouldRender = action.visible(row);
+            }
+            return (
+              shouldRender && (
+                <Tooltip
+                  key={index}
+                  title={action.tip}
+                  placement="top"
+                  arrow
+                  slotProps={{
+                    popper: {
+                      modifiers: [
+                        {
+                          name: "offset",
+                          options: {
+                            offset: [0, -20],
+                          },
+                        },
+                      ],
                     },
-                  ],
-                },
-              }}
-            >
-              <IconButton onClick={() => action.onClick(row.id)}>
-                {action.icon}
-              </IconButton>
-            </Tooltip>
-          ))}
+                  }}
+                >
+                  <IconButton onClick={() => action.onClick(row.id)}>
+                    {action.icon}
+                  </IconButton>
+                </Tooltip>
+              )
+            );
+          })}
       </Box>
     ),
 
