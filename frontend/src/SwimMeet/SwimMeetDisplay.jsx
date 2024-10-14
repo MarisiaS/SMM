@@ -168,6 +168,7 @@ const SwimMeetDisplay = () => {
         <PaginationBar
           count={count}
           setOffset={setOffset}
+          limit={limit}
           setLimit={setLimit}
           page={page}
           setPage={setPage}

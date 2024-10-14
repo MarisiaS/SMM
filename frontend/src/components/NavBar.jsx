@@ -125,7 +125,7 @@ export default function NavBar(props) {
         {drawer}
       </Drawer>
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 1 }}>
         <Toolbar />
         <Outlet />
       </Box>

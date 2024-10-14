@@ -4,8 +4,9 @@ import GenericTable from "../components/Common/GenericTable.jsx";
 import PaginationBar from "../components/Common/PaginationBar.jsx";
 import Title from "../components/Common/Title.jsx";
 import AlertBox from "../components/Common/AlertBox.jsx";
+import EventDetails from "./EventDetails.jsx";
 import {
-  ContentPaste as DetailsIcon,
+  FormatAlignCenter as HeatIcon,
   Delete as DeleteIcon,
   EmojiEvents as RankingIcon,
   Add as AddIcon,
@@ -29,7 +30,13 @@ const MeetEventDisplay = () => {
   const meetData = location.state;
   const [eventData, setEventData] = useState([]);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
-  //Variables needed for the pagination bar
+
+  //EventDetail states
+  const [showEventDetails, setShowEventDetails] = useState(false);
+  const [selectedEventIndex, setSelectedEventIndex] = useState(null);
+  const [navegationDirection, setNavegationDirection] = useState(null);
+
+  //Pagination States
   const [count, setCount] = useState(0);
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(10);
@@ -41,7 +48,8 @@ const MeetEventDisplay = () => {
     : "";
 
   const handleDetailsClick = (id) => {
-    console.log("Heats ...");
+    setSelectedEventIndex(Number(id));
+    setShowEventDetails(true); 
   };
 
   const handleDeleteClick = (id) => {
@@ -55,7 +63,7 @@ const MeetEventDisplay = () => {
   const actions = [
     {
       name: "Heats",
-      icon: <DetailsIcon />,
+      icon: <HeatIcon />,
       onClick: handleDetailsClick,
       tip: "Go to heats",
     },
@@ -82,6 +90,12 @@ const MeetEventDisplay = () => {
           setEventData(json.results);
           setCount(json.count);
           setErrorOnLoading(false);
+          if (navegationDirection === "previous") {
+            setSelectedEventIndex(limit - 1);
+          } else if (navegationDirection === "next") {
+            setSelectedEventIndex(0);
+          }
+          setNavegationDirection(null);
         }
       } catch (error) {
         setErrorOnLoading(true);
@@ -96,6 +110,41 @@ const MeetEventDisplay = () => {
   const handleAddNew = () => {
     navigate(`/add-event/${meetId}`, { state: meetData });
   };
+
+  const handleBackToEvents = () => {
+    setShowEventDetails(false);
+    setSelectedEventIndex(null);
+  };
+
+  const handlePreviousEvent = () => {
+    if (selectedEventIndex > 0) {
+      // Previous event on the same page
+      setSelectedEventIndex(selectedEventIndex - 1);
+    } else if (page > 0) {
+      // Move to the previous page
+      const prevPage = page - 1;
+      setNavegationDirection("previous");
+      setPage(prevPage);
+      setOffset(prevPage * limit);
+    }
+  };
+
+  // Handle next event (could involve changing pages)
+  const handleNextEvent = () => {
+    if (selectedEventIndex < eventData.length - 1) {
+      // Next event on the same page
+      setSelectedEventIndex(selectedEventIndex + 1);
+    } else if (offset + limit < count) {
+      // Move to the next page if available
+      const nextPage = page + 1;
+      setNavegationDirection("next");
+      setPage(nextPage);
+      setOffset(nextPage * limit);
+    }
+  };
+
+  const isFirstEvent = page === 0 && selectedEventIndex === 0;
+  const isLastEvent = offset + selectedEventIndex + 1 >= count;
 
   if (errorOnLoading) {
     return (
@@ -115,32 +164,47 @@ const MeetEventDisplay = () => {
     return (
       <div>
         <Title data={meetData} fields={["name", "date", "site_name"]} />
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <Box sx={{ marginLeft: 5 }}>
-            <MyButton label={"Event"} onClick={handleAddNew}>
-              <AddIcon />
-            </MyButton>
-          </Box>
-          <Box className={"searchBox"} sx={{ marginRight: 5 }}></Box>
-        </Stack>
-        <br></br>
-        <GenericTable
-          data={eventData}
-          columns={columns}
-          actions={actions}
-          notRecordsMessage={"This swim meet does not have events yet"}
-        />
-        <PaginationBar
-          count={count}
-          setOffset={setOffset}
-          setLimit={setLimit}
-          page={page}
-          setPage={setPage}
-        ></PaginationBar>
+        {showEventDetails && eventData[selectedEventIndex] ? (
+          <EventDetails
+            eventName={eventData[selectedEventIndex].name}
+            eventId={eventData[selectedEventIndex].id}
+            onBack={handleBackToEvents}
+            onPrevious={handlePreviousEvent}
+            onNext={handleNextEvent}
+            disablePrevious={isFirstEvent}
+            disableNext={isLastEvent}
+          />
+        ) : (
+          <>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Box sx={{ marginLeft: 5 }}>
+                <MyButton label={"Event"} onClick={handleAddNew}>
+                  <AddIcon />
+                </MyButton>
+              </Box>
+              <Box className={"searchBox"} sx={{ marginRight: 5 }}></Box>
+            </Stack>
+            <br></br>
+            <GenericTable
+              data={eventData}
+              columns={columns}
+              actions={actions}
+              notRecordsMessage={"This swim meet does not have events yet"}
+            />
+            <PaginationBar
+              count={count}
+              setOffset={setOffset}
+              limit={limit}
+              setLimit={setLimit}
+              page={page}
+              setPage={setPage}
+            ></PaginationBar>
+          </>
+        )}
       </div>
     );
   }
