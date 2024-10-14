@@ -1,11 +1,8 @@
 import "../App.css";
-import { Stack } from "@mui/material";
+import { Box } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-import AlertBox from "../components/Common/AlertBox.jsx";
-import SeedTimeForm from "./SeedTimeForm.jsx";
+import SeedTimeForm from "../GenerateHeats/SeedTimeForm.jsx";
 
 const TestSeedTimeForm = () => {
   const { handleSubmit, control } = useForm({
@@ -24,15 +21,29 @@ const TestSeedTimeForm = () => {
     console.log("Update was pressed!", data);
   };
   return (
-    <div>
-      <Stack alignItems="center" justifyContent="space-between">
+    <div
+      style={{
+        minHeight: "100vh",
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        className={"test"}
+        sx={{ gap: "15px", width: "80%", height: "auto", margin: "2px", }}
+      >
         <SeedTimeForm
           handleSubmit={handleSubmit(submission)}
           control={control}
           handleCancel={handleCancel}
           data={{ athlete_name: "Luis Garcia", seed_time: "00:45.87" }}
         />
-      </Stack>
+      </Box>
     </div>
   );
 };
