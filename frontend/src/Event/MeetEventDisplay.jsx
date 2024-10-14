@@ -14,11 +14,17 @@ import {
 import MyButton from "../components/FormElements/MyButton.jsx";
 import { Stack, Box } from "@mui/material";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { Build as BuildIcon } from "@mui/icons-material";
 
 const columns = [
   {
     accessorKey: "name",
     header: "Event",
+    size: 150,
+  },
+  {
+    accessorKey: "total_num_heats",
+    header: " Number of Heats",
     size: 150,
   },
 ];
@@ -47,9 +53,13 @@ const MeetEventDisplay = () => {
     ? "Data upload failed. Please try again!"
     : "";
 
+  const handleGenerateClick = (id) => {
+    console.log("Go to Generate Heats");
+  };
+
   const handleDetailsClick = (id) => {
     setSelectedEventIndex(Number(id));
-    setShowEventDetails(true); 
+    setShowEventDetails(true);
   };
 
   const handleDeleteClick = (id) => {
@@ -62,10 +72,18 @@ const MeetEventDisplay = () => {
 
   const actions = [
     {
-      name: "Heats",
+      name: "Generate Heats",
+      icon: <BuildIcon />,
+      onClick: handleGenerateClick,
+      tip: "Generate heats",
+      visible: (row) => row.original.total_num_heats === 0,
+    },
+    {
+      name: "Heats Details",
       icon: <HeatIcon />,
       onClick: handleDetailsClick,
       tip: "Go to heats",
+      visible: (row) => row.original.total_num_heats > 0,
     },
     {
       name: "Delete",
