@@ -19,6 +19,7 @@ const MyDatePicker = (props) => {
             label={label}
             value={value}
             onChange={onChange}
+            className={"myForm"}
             disablePast={disablePast}
             disableFuture={disableFuture}
             error={!!error}
