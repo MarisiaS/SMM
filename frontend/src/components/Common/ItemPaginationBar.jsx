@@ -14,7 +14,7 @@ const ItemPaginationBar = ({
   disablePrevious,
   disableNext,
   extraActions,
-  enableButtonNavigation = true,
+  enableNavigationButtons = true,
 }) => {
   return (
     <div>
@@ -22,12 +22,12 @@ const ItemPaginationBar = ({
         <Box className={"labelBox"} sx={{ marginLeft: 5 }}>
           <h2>{label}</h2>
         </Box>
-        <Box sx={{ marginLeft: 5, visibility: enableButtonNavigation ? 'visible' : 'hidden'  }}>
+        <Box sx={{ marginLeft: 5, visibility: enableNavigationButtons ? 'visible' : 'hidden'  }}>
           <MyIconButton onClick={onPrevious} disabled={disablePrevious}>
             <PreviousIcon />
           </MyIconButton>
         </Box>
-        <Box sx={{ marginRight: 5, visibility: enableButtonNavigation ? 'visible' : 'hidden' }}>
+        <Box sx={{ marginRight: 5, visibility: enableNavigationButtons ? 'visible' : 'hidden' }}>
           <MyIconButton onClick={onNext} disabled={disableNext}>
             <NextIcon />
           </MyIconButton>
