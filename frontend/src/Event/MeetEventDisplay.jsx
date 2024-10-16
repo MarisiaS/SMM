@@ -10,11 +10,11 @@ import {
   Delete as DeleteIcon,
   EmojiEvents as RankingIcon,
   Add as AddIcon,
+  Build as BuildIcon,
 } from "@mui/icons-material";
 import MyButton from "../components/FormElements/MyButton.jsx";
 import { Stack, Box } from "@mui/material";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { Build as BuildIcon } from "@mui/icons-material";
 
 const columns = [
   {
