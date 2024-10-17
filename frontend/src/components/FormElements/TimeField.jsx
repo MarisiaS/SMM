@@ -19,9 +19,8 @@ const TimeField = ({ label, name, control, rules }) => {
         });
 
         const handleChange = (field, newValue, currentIndex) => {
-          const trimmedValue = newValue.slice(0, 2);
           setTime((prevTime) => {
-            const updatedTime = { ...prevTime, [field]: trimmedValue };
+            const updatedTime = { ...prevTime, [field]: newValue };
             const formattedTime = `${
               updatedTime.minutes.padStart(2, "0") || "00"
             }:${updatedTime.seconds.padStart(2, "0") || "00"}.${
@@ -33,7 +32,7 @@ const TimeField = ({ label, name, control, rules }) => {
               onChange(formattedTime);
             }
             if (
-              trimmedValue.length === 2 &&
+              newValue.length === 2 &&
               currentIndex < inputRefs.current.length - 1
             ) {
               inputRefs.current[currentIndex + 1]?.focus();
