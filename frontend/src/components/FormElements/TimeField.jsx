@@ -44,15 +44,45 @@ const TimeField = ({ label, name, control, rules }) => {
         const handleKeyDown = (e, field, currentIndex) => {
           if (e.key === "Backspace" && !time[field]) {
             if (currentIndex > 0) {
-              inputRefs.current[currentIndex - 1]?.focus();
+              e.preventDefault();
+              const prevInput = inputRefs.current[currentIndex - 1];
+              if (prevInput) {
+                prevInput.focus();
+                setTimeout(() => {
+                  prevInput.setSelectionRange(
+                    prevInput.value.length,
+                    prevInput.value.length
+                  );
+                }, 0);
+              }
             }
           } else if (e.key === "ArrowLeft" && currentIndex > 0) {
-            inputRefs.current[currentIndex - 1]?.focus();
+            e.preventDefault();
+            const prevInput = inputRefs.current[currentIndex - 1];
+            if (prevInput) {
+              prevInput.focus();
+              setTimeout(() => {
+                prevInput.setSelectionRange(
+                  prevInput.value.length,
+                  prevInput.value.length
+                );
+              }, 0);
+            }
           } else if (
             e.key === "ArrowRight" &&
             currentIndex < inputRefs.current.length - 1
           ) {
-            inputRefs.current[currentIndex + 1]?.focus();
+            e.preventDefault();
+            const nextInput = inputRefs.current[currentIndex + 1];
+            if (nextInput) {
+              nextInput.focus();
+              setTimeout(() => {
+                nextInput.setSelectionRange(
+                  nextInput.value.length,
+                  nextInput.value.length
+                );
+              }, 0);
+            }
           }
         };
 
