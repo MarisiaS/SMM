@@ -86,24 +86,66 @@ const TimeField = ({ label, name, control, rules }) => {
           }
         };
 
-        const handlePaste = (e) => {
+        const handlePaste = (e, focusedField) => {
           e.preventDefault();
-          const pastedText = e.clipboardData
-            .getData("text/plain")
-            .replace(/\D/g, "");
-          if (pastedText.length === 6) {
-            setTime({
-              minutes: pastedText.slice(0, 2),
-              seconds: pastedText.slice(2, 4),
-              milliseconds: pastedText.slice(4, 6),
-            });
-            onChange(
-              `${pastedText.slice(0, 2)}:${pastedText.slice(
-                2,
-                4
-              )}.${pastedText.slice(4, 6)}`
-            );
-            inputRefs.current[2]?.focus();
+          const pastedText = e.clipboardData.getData("text/plain");
+          switch (focusedField) {
+            case "minutes":
+              const minutePattern = /^(\d{1,2}):(\d{2})\.?(\d{0,2})$/;
+              const minuteMatch = pastedText.match(minutePattern);
+              if (minuteMatch) {
+                const [_, minutes, seconds, milliseconds = "00"] = minuteMatch;
+                setTime({
+                  minutes: minutes.padStart(2, "0"),
+                  seconds: seconds,
+                  milliseconds: milliseconds.padEnd(2, "0"),
+                });
+                onChange(
+                  `${minutes.padStart(2, "0")}:${seconds}.${milliseconds.padEnd(
+                    2,
+                    "0"
+                  )}`
+                );
+                inputRefs.current[2]?.focus();
+              }
+              break;
+            case "seconds":
+              const secondPattern = /^(\d{1,2})\.?(\d{0,2})$/;
+              const secondMatch = pastedText.match(secondPattern);
+              if (secondMatch) {
+                const [_, seconds, milliseconds = "00"] = secondMatch;
+                setTime({
+                  minutes: "00",
+                  seconds: seconds,
+                  milliseconds: milliseconds.padEnd(2, "0"),
+                });
+                onChange(
+                  `${"00"}:${seconds}.${milliseconds.padEnd(
+                    2,
+                    "0"
+                  )}`
+                );
+                inputRefs.current[2]?.focus();
+              }
+              break;
+            case "milliseconds":
+              const millisecondsPattern = /^(\d{1,2})$/;
+              const millisecondsMatch = pastedText.match(millisecondsPattern);
+              if (millisecondsMatch) {
+                const [_, milliseconds] = millisecondsMatch;
+                setTime({
+                  minutes: "00",
+                  seconds: "00",
+                  milliseconds: milliseconds.padEnd(2, "0"),
+                });
+                onChange(
+                  `${"00"}:${"00"}.${milliseconds.padEnd(
+                    2,
+                    "0"
+                  )}`
+                );
+              }
+              break;
           }
         };
 
@@ -125,7 +167,7 @@ const TimeField = ({ label, name, control, rules }) => {
                   onChange={(e) => handleChange("minutes", e.target.value, 0)}
                   onKeyDown={(e) => handleKeyDown(e, "minutes", 0)}
                   inputRef={(el) => (inputRefs.current[0] = el)}
-                  onPaste={handlePaste}
+                  onPaste={(e) => handlePaste(e, "minutes")}
                   inputProps={{
                     placeholder: "MM",
                     maxLength: 2,
@@ -151,7 +193,7 @@ const TimeField = ({ label, name, control, rules }) => {
                   onChange={(e) => handleChange("seconds", e.target.value, 1)}
                   onKeyDown={(e) => handleKeyDown(e, "seconds", 1)}
                   inputRef={(el) => (inputRefs.current[1] = el)}
-                  onPaste={handlePaste}
+                  onPaste={(e) => handlePaste(e, "seconds")}
                   inputProps={{
                     placeholder: "SS",
                     maxLength: 2,
@@ -179,7 +221,7 @@ const TimeField = ({ label, name, control, rules }) => {
                   }
                   onKeyDown={(e) => handleKeyDown(e, "milliseconds", 2)}
                   inputRef={(el) => (inputRefs.current[2] = el)}
-                  onPaste={handlePaste}
+                  onPaste={(e) => handlePaste(e, "milliseconds")}
                   inputProps={{
                     placeholder: "ms",
                     maxLength: 2,
