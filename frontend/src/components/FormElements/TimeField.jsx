@@ -91,22 +91,33 @@ const TimeField = ({ label, name, control, rules }) => {
           const pastedText = e.clipboardData.getData("text/plain");
           switch (focusedField) {
             case "minutes":
-              const minutePattern = /^(\d{1,2}):(\d{2})\.?(\d{0,2})$/;
+              const minutePattern = /^(\d{1,2}):?(\d{2})?\.?(\d{0,2})?$/;
               const minuteMatch = pastedText.match(minutePattern);
               if (minuteMatch) {
-                const [_, minutes, seconds, milliseconds = "00"] = minuteMatch;
-                setTime({
-                  minutes: minutes.padStart(2, "0"),
-                  seconds: seconds,
-                  milliseconds: milliseconds.padEnd(2, "0"),
-                });
-                onChange(
-                  `${minutes.padStart(2, "0")}:${seconds}.${milliseconds.padEnd(
-                    2,
-                    "0"
-                  )}`
-                );
-                inputRefs.current[2]?.focus();
+                const [
+                  _,
+                  minutes,
+                  seconds = "00",
+                  milliseconds = "00",
+                ] = minuteMatch;
+                let shouldPaste = true;
+                if (!minuteMatch[2] && minuteMatch[3]) {
+                  shouldPaste = false;
+                }
+                if (shouldPaste) {
+                  setTime({
+                    minutes: minutes.padStart(2, "0"),
+                    seconds: seconds,
+                    milliseconds: milliseconds.padEnd(2, "0"),
+                  });
+                  onChange(
+                    `${minutes.padStart(
+                      2,
+                      "0"
+                    )}:${seconds}.${milliseconds.padEnd(2, "0")}`
+                  );
+                  inputRefs.current[2]?.focus();
+                } 
               }
               break;
             case "seconds":
@@ -119,12 +130,7 @@ const TimeField = ({ label, name, control, rules }) => {
                   seconds: seconds,
                   milliseconds: milliseconds.padEnd(2, "0"),
                 });
-                onChange(
-                  `${"00"}:${seconds}.${milliseconds.padEnd(
-                    2,
-                    "0"
-                  )}`
-                );
+                onChange(`${"00"}:${seconds}.${milliseconds.padEnd(2, "0")}`);
                 inputRefs.current[2]?.focus();
               }
               break;
@@ -138,12 +144,7 @@ const TimeField = ({ label, name, control, rules }) => {
                   seconds: "00",
                   milliseconds: milliseconds.padEnd(2, "0"),
                 });
-                onChange(
-                  `${"00"}:${"00"}.${milliseconds.padEnd(
-                    2,
-                    "0"
-                  )}`
-                );
+                onChange(`${"00"}:${"00"}.${milliseconds.padEnd(2, "0")}`);
               }
               break;
           }
