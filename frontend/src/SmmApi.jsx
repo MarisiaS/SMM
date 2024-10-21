@@ -187,4 +187,16 @@ export class SmmApi {
       headers: getConfig(),
     });
   }
+
+  static async getSeedTimes(eventId) {
+    return await axios.get(`${BASE_URL}/seed_times/${eventId}/`, {
+      headers: getConfig(),
+    });
+  }
+
+  static async registerSeedTime(eventId, data) {
+    return await axios.post(`${BASE_URL}/seed_times/${eventId}/`, data, {
+      headers: getConfig(),
+    });
+  }
 }
