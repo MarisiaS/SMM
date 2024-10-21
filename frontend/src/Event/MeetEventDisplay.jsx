@@ -39,6 +39,7 @@ const MeetEventDisplay = () => {
 
   //EventDetail states
   const [showEventDetails, setShowEventDetails] = useState(false);
+  const [showGenerateHeats, setShowGenerateHeats] = useState(false);
   const [selectedEventIndex, setSelectedEventIndex] = useState(null);
   const [navegationDirection, setNavegationDirection] = useState(null);
 
@@ -54,7 +55,8 @@ const MeetEventDisplay = () => {
     : "";
 
   const handleGenerateClick = (id) => {
-    console.log("Go to Generate Heats");
+    setSelectedEventIndex(Number(id));
+    setShowGenerateHeats(true);
   };
 
   const handleDetailsClick = (id) => {
@@ -131,6 +133,7 @@ const MeetEventDisplay = () => {
 
   const handleBackToEvents = () => {
     setShowEventDetails(false);
+    setShowGenerateHeats(false);
     setSelectedEventIndex(null);
   };
 
@@ -182,7 +185,18 @@ const MeetEventDisplay = () => {
     return (
       <div>
         <Title data={meetData} fields={["name", "date", "site_name"]} />
+
         {showEventDetails && eventData[selectedEventIndex] ? (
+          <EventDetails
+            eventName={eventData[selectedEventIndex].name}
+            eventId={eventData[selectedEventIndex].id}
+            onBack={handleBackToEvents}
+            onPrevious={handlePreviousEvent}
+            onNext={handleNextEvent}
+            disablePrevious={isFirstEvent}
+            disableNext={isLastEvent}
+          />
+        ) : showGenerateHeats && eventData[selectedEventIndex] ? (
           <EventDetails
             eventName={eventData[selectedEventIndex].name}
             eventId={eventData[selectedEventIndex].id}
@@ -206,7 +220,7 @@ const MeetEventDisplay = () => {
               </Box>
               <Box className={"searchBox"} sx={{ marginRight: 5 }}></Box>
             </Stack>
-            <br></br>
+            <br />
             <GenericTable
               data={eventData}
               columns={columns}
@@ -220,7 +234,7 @@ const MeetEventDisplay = () => {
               setLimit={setLimit}
               page={page}
               setPage={setPage}
-            ></PaginationBar>
+            />
           </>
         )}
       </div>
