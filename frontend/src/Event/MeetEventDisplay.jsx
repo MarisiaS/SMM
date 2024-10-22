@@ -5,6 +5,7 @@ import PaginationBar from "../components/Common/PaginationBar.jsx";
 import Title from "../components/Common/Title.jsx";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import EventDetails from "./EventDetails.jsx";
+import SelectAthlete from "../GenerateHeats/SelectAthlete.jsx";
 import {
   FormatAlignCenter as HeatIcon,
   Delete as DeleteIcon,
@@ -197,14 +198,11 @@ const MeetEventDisplay = () => {
             disableNext={isLastEvent}
           />
         ) : showGenerateHeats && eventData[selectedEventIndex] ? (
-          <EventDetails
+          //Need to change to select athletes
+          <SelectAthlete
             eventName={eventData[selectedEventIndex].name}
             eventId={eventData[selectedEventIndex].id}
             onBack={handleBackToEvents}
-            onPrevious={handlePreviousEvent}
-            onNext={handleNextEvent}
-            disablePrevious={isFirstEvent}
-            disableNext={isLastEvent}
           />
         ) : (
           <>
