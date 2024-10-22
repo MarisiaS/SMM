@@ -4,6 +4,7 @@ import { SmmApi } from "../SmmApi.jsx";
 import SelectTable from "../components/Common/SelectTable";
 import MyIconButton from "../components/FormElements/MyIconButton";
 import ItemPaginationBar from "../components/Common/ItemPaginationBar.jsx";
+import AlertBox from "../components/Common/AlertBox.jsx";
 import { Box, Stack } from "@mui/material";
 import { formatSeedTime } from "../utils/helperFunctions.js";
 import {
@@ -39,6 +40,7 @@ const selectedColumns = [
     accessorKey: "seed_time",
     header: "Seed time",
     size: 100,
+    Cell: ({ cell }) => formatSeedTime(cell.getValue()),
   },
 ];
 
@@ -149,69 +151,88 @@ const SelectAthlete = ({ eventName, eventId, onBack }) => {
     setSelectedLeftAthletes({});
   };
   return (
-    <div>
+    <div
+    >
       <ItemPaginationBar
         label={label}
         extraActions={extraButtons}
         enableNavigationButtons={false}
       ></ItemPaginationBar>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        sx={{ gap: "15px", width: "80%", height: "auto", margin: "2px" }}
-      >
-        <Box flex="1" sx={{ maxWidth: "40%", flexGrow: 1 }}>
-          <SelectTable
-            data={availableAthletes}
-            columns={availableColumns}
-            selection={selectedRightAthletes}
-            rowSelection={selectedRightAthletes}
-            setRowSelection={setSelectedRightAthletes}
-            notRecordsMessage={"No athletes available."}
-          />
-        </Box>
-
-        <Box display="flex" flexDirection="column" alignItems="center">
-          <MyIconButton
-            onClick={onRightSelected}
-            disabled={Object.keys(selectedRightAthletes).length === 0}
+      {errorOnLoading ? (
+        <>
+          <Stack
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
+              width: "300px",
+              margin: "auto",
+            }}
           >
-            <RightIcon />
-          </MyIconButton>
-
-          <MyIconButton
-            onClick={onRightAll}
-            disabled={availableAthletes.length === 0}
+            <AlertBox type={typeAlertLoading} message={messageOnLoading} />
+          </Stack>
+        </>
+      ) : (
+        <>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ gap: "25px", width: "100%", height: "auto", margin: "2px" }}
           >
-            <RightAllIcon />
-          </MyIconButton>
+            <Box flex="1" sx={{ maxWidth: "45%", flexGrow: 1 }}>
+              <SelectTable
+                data={availableAthletes}
+                columns={availableColumns}
+                selection={selectedRightAthletes}
+                rowSelection={selectedRightAthletes}
+                setRowSelection={setSelectedRightAthletes}
+                notRecordsMessage={"No athletes available."}
+              />
+            </Box>
 
-          <MyIconButton
-            onClick={onLeftAll}
-            disabled={selectedAthletes.length === 0}
-          >
-            <LeftAllIcon />
-          </MyIconButton>
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <MyIconButton
+                onClick={onRightSelected}
+                disabled={Object.keys(selectedRightAthletes).length === 0}
+              >
+                <RightIcon />
+              </MyIconButton>
 
-          <MyIconButton
-            onClick={onLeftSelected}
-            disabled={Object.keys(selectedLeftAthletes).length === 0}
-          >
-            <LeftIcon />
-          </MyIconButton>
-        </Box>
+              <MyIconButton
+                onClick={onRightAll}
+                disabled={availableAthletes.length === 0}
+              >
+                <RightAllIcon />
+              </MyIconButton>
 
-        <Box flex="1" sx={{ maxWidth: "40%", flexGrow: 1 }}>
-          <SelectTable
-            data={selectedAthletes}
-            columns={selectedColumns}
-            rowSelection={selectedLeftAthletes}
-            setRowSelection={setSelectedLeftAthletes}
-            notRecordsMessage={"No athletes selected."}
-          />
-        </Box>
-      </Box>
+              <MyIconButton
+                onClick={onLeftAll}
+                disabled={selectedAthletes.length === 0}
+              >
+                <LeftAllIcon />
+              </MyIconButton>
+
+              <MyIconButton
+                onClick={onLeftSelected}
+                disabled={Object.keys(selectedLeftAthletes).length === 0}
+              >
+                <LeftIcon />
+              </MyIconButton>
+            </Box>
+
+            <Box flex="1" sx={{ maxWidth: "45%", flexGrow: 1 }}>
+              <SelectTable
+                data={selectedAthletes}
+                columns={selectedColumns}
+                rowSelection={selectedLeftAthletes}
+                setRowSelection={setSelectedLeftAthletes}
+                notRecordsMessage={"No athletes selected."}
+              />
+            </Box>
+          </Box>
+        </>
+      )}
     </div>
   );
 };
