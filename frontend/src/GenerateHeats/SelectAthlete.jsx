@@ -1,62 +1,19 @@
 import "../App.css";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { SmmApi } from "../SmmApi.jsx";
 import SelectTable from "../components/Common/SelectTable";
 import MyIconButton from "../components/FormElements/MyIconButton";
+import ItemPaginationBar from "../components/Common/ItemPaginationBar.jsx";
 import { Box, Stack } from "@mui/material";
+import { formatSeedTime } from "../utils/helperFunctions.js";
 import {
   NavigateBefore as LeftIcon,
   NavigateNext as RightIcon,
   KeyboardDoubleArrowRight as RightAllIcon,
   KeyboardDoubleArrowLeft as LeftAllIcon,
+  ContentPaste as BackIcon,
+  Timer as TimeIcon,
 } from "@mui/icons-material";
-
-const testData = [
-  {
-    id: 2,
-    athlete_full_name: "Ana Gomez",
-    seed_time: "45.10",
-  },
-  {
-    id: 10,
-    athlete_full_name: "Anna Anderson",
-    seed_time: "38.54",
-  },
-  {
-    id: 16,
-    athlete_full_name: "Ava Wilson",
-    seed_time: "37.81",
-  },
-  {
-    id: 4,
-    athlete_full_name: "Elena Lopez",
-    seed_time: "39.21",
-  },
-  {
-    id: 12,
-    athlete_full_name: "Ellie Yuan",
-    seed_time: "41.84",
-  },
-  {
-    id: 8,
-    athlete_full_name: "Kyla Smith",
-    seed_time: "41.54",
-  },
-  {
-    id: 6,
-    athlete_full_name: "Laura Sanchez",
-    seed_time: "31.36",
-  },
-  {
-    id: 15,
-    athlete_full_name: "Olivia Davis",
-    seed_time: "38.54",
-  },
-  {
-    id: 11,
-    athlete_full_name: "Sofia Avila",
-    seed_time: "NT",
-  },
-];
 
 const availableColumns = [
   {
@@ -68,6 +25,7 @@ const availableColumns = [
     accessorKey: "seed_time",
     header: "Seed time",
     size: 100,
+    Cell: ({ cell }) => formatSeedTime(cell.getValue()),
   },
 ];
 
@@ -84,93 +42,132 @@ const selectedColumns = [
   },
 ];
 
-const SelectAthlete = () => {
-  const [availableData, setAvailableData] = useState(testData);
-  const [selectedData, setSelectedData] = useState([]);
-  const [selectedRightData, setSelectedRightData] = useState({});
-  const [selectedLeftData, setSelectedLeftData] = useState({});
+const SelectAthlete = ({ eventName, eventId, onBack }) => {
+  const [availableAthletes, setAvailableAthletes] = useState([]);
+  const [selectedAthletes, setSelectedAthletes] = useState([]);
+  const [selectedRightAthletes, setSelectedRightAthletes] = useState({});
+  const [selectedLeftAthletes, setSelectedLeftAthletes] = useState({});
+  const [errorOnLoading, setErrorOnLoading] = useState(false);
+
+  let typeAlertLoading = errorOnLoading ? "error" : "success";
+  let messageOnLoading = errorOnLoading
+    ? "Data upload failed. Please try again!"
+    : "";
+
+  useEffect(() => {
+    let ignore = false;
+    async function fetching() {
+      try {
+        const athletes_json = await SmmApi.getSeedTimes(eventId);
+        if (!ignore) {
+          setAvailableAthletes(athletes_json.data.results);
+          setErrorOnLoading(false);
+        }
+      } catch (error) {
+        setErrorOnLoading(true);
+      }
+    }
+    fetching();
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  //What is needed for the itemPaginationBar
+  const handleConfirmSeedTime = () => {
+    console.log("Confirm seed time clicked!");
+  };
+  const label = "Event " + eventName;
+  const extraButtons = [
+    {
+      label: "Confirm seed times",
+      icon: <TimeIcon />,
+      onClick: handleConfirmSeedTime,
+    },
+    {
+      label: "Back to events",
+      icon: <BackIcon />,
+      onClick: onBack,
+    },
+  ];
 
   const onRightSelected = () => {
-    //Move selected items from left table to right table
-    const dataToMove = availableData.filter(
-      (item) => item.id in selectedRightData
+    const athletesToMove = availableAthletes.filter(
+      (item) => item.id in selectedRightAthletes
     );
-    setSelectedData((prevSelectedData) => {
-      const updatedData = [...prevSelectedData, ...dataToMove];
-      return updatedData.sort((a, b) =>
+    setSelectedAthletes((prevSelectedAthletes) => {
+      const updatedAthletes = [...prevSelectedAthletes, ...athletesToMove];
+      return updatedAthletes.sort((a, b) =>
         a.athlete_full_name.localeCompare(b.athlete_full_name)
       );
     });
-    // Update available data by filtering out the moved items
-    setAvailableData((prevAvailableData) =>
-      prevAvailableData.filter(
-        (item) => !(item.id in selectedRightData) // Filter out moved items
+    setAvailableAthletes((prevAvailableAthletes) =>
+      prevAvailableAthletes.filter(
+        (item) => !(item.id in selectedRightAthletes)
       )
     );
-    // Clear selectedRightData
-    setSelectedRightData({});
+    setSelectedRightAthletes({});
   };
 
   const onRightAll = () => {
-    // Move all items to the right table
-    setAvailableData([]);
-    setSelectedData(testData);
-    setSelectedLeftData([]);
-    setSelectedRightData([]);
-  };
-
-  const onLeftAll = () => {
-    // Move all items back to the left table
-    setAvailableData(testData);
-    setSelectedData([]);
-    setSelectedLeftData([]);
-    setSelectedRightData([]);
-  };
-
-  const onLeftSelected = () => {
-    // Move selected items back to the left table
-    const dataToMove = selectedData.filter(
-      (item) => item.id in selectedLeftData
-    );
-    setAvailableData((prevAvailableData) => {
-      const updatedData = [...prevAvailableData, ...dataToMove];
-      return updatedData.sort((a, b) =>
+    setSelectedAthletes((prevSelectedAthletes) => {
+      const allAthletes = [...prevSelectedAthletes, ...availableAthletes];
+      return allAthletes.sort((a, b) =>
         a.athlete_full_name.localeCompare(b.athlete_full_name)
       );
     });
-    // Update available data by filtering out the moved items
-    setSelectedData((prevSelectedData) =>
-      prevSelectedData.filter(
-        (item) => !(item.id in selectedLeftData) // Filter out moved items
-      )
+    setAvailableAthletes([]);
+    setSelectedLeftAthletes({});
+    setSelectedRightAthletes({});
+  };
+
+  const onLeftAll = () => {
+    setAvailableAthletes((prevAvailableAthletes) => {
+      const allAthletes = [...prevAvailableAthletes, ...selectedAthletes];
+      return allAthletes.sort((a, b) =>
+        a.athlete_full_name.localeCompare(b.athlete_full_name)
+      );
+    });
+    setSelectedAthletes([]);
+    setSelectedLeftAthletes({});
+    setSelectedRightAthletes({});
+  };
+
+  const onLeftSelected = () => {
+    const athletesToMove = selectedAthletes.filter(
+      (item) => item.id in selectedLeftAthletes
     );
-    // Clear selectedRightData
-    setSelectedLeftData({});
+    setAvailableAthletes((prevAvailableAthletes) => {
+      const updatedAthletes = [...prevAvailableAthletes, ...athletesToMove];
+      return updatedAthletes.sort((a, b) =>
+        a.athlete_full_name.localeCompare(b.athlete_full_name)
+      );
+    });
+    setSelectedAthletes((prevSelectedAthletes) =>
+      prevSelectedAthletes.filter((item) => !(item.id in selectedLeftAthletes))
+    );
+    setSelectedLeftAthletes({});
   };
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <div>
+      <ItemPaginationBar
+        label={label}
+        extraActions={extraButtons}
+        enableNavigationButtons={false}
+      ></ItemPaginationBar>
       <Box
         display="flex"
         justifyContent="center"
         alignItems="center"
-        className={"test"}
         sx={{ gap: "15px", width: "80%", height: "auto", margin: "2px" }}
       >
         <Box flex="1" sx={{ maxWidth: "40%", flexGrow: 1 }}>
           <SelectTable
-            data={availableData}
+            data={availableAthletes}
             columns={availableColumns}
-            selection={selectedRightData}
-            rowSelection={selectedRightData}
-            setRowSelection={setSelectedRightData}
+            selection={selectedRightAthletes}
+            rowSelection={selectedRightAthletes}
+            setRowSelection={setSelectedRightAthletes}
             notRecordsMessage={"No athletes available."}
           />
         </Box>
@@ -178,28 +175,28 @@ const SelectAthlete = () => {
         <Box display="flex" flexDirection="column" alignItems="center">
           <MyIconButton
             onClick={onRightSelected}
-            disabled={Object.keys(selectedRightData).length === 0}
+            disabled={Object.keys(selectedRightAthletes).length === 0}
           >
             <RightIcon />
           </MyIconButton>
 
           <MyIconButton
             onClick={onRightAll}
-            disabled={availableData.length === 0}
+            disabled={availableAthletes.length === 0}
           >
             <RightAllIcon />
           </MyIconButton>
 
           <MyIconButton
             onClick={onLeftAll}
-            disabled={availableData.length === testData.length}
+            disabled={selectedAthletes.length === 0}
           >
             <LeftAllIcon />
           </MyIconButton>
 
           <MyIconButton
             onClick={onLeftSelected}
-            disabled={Object.keys(selectedLeftData).length === 0}
+            disabled={Object.keys(selectedLeftAthletes).length === 0}
           >
             <LeftIcon />
           </MyIconButton>
@@ -207,10 +204,10 @@ const SelectAthlete = () => {
 
         <Box flex="1" sx={{ maxWidth: "40%", flexGrow: 1 }}>
           <SelectTable
-            data={selectedData}
+            data={selectedAthletes}
             columns={selectedColumns}
-            rowSelection={selectedLeftData}
-            setRowSelection={setSelectedLeftData}
+            rowSelection={selectedLeftAthletes}
+            setRowSelection={setSelectedLeftAthletes}
             notRecordsMessage={"No athletes selected."}
           />
         </Box>
