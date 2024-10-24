@@ -58,11 +58,13 @@ const MeetEventDisplay = () => {
   const handleGenerateClick = (id) => {
     setSelectedEventIndex(Number(id));
     setShowGenerateHeats(true);
+    setShowEventDetails(false);
   };
 
   const handleDetailsClick = (id) => {
     setSelectedEventIndex(Number(id));
     setShowEventDetails(true);
+    setShowGenerateHeats(false);
   };
 
   const handleDeleteClick = (id) => {
@@ -138,6 +140,11 @@ const MeetEventDisplay = () => {
     setSelectedEventIndex(null);
   };
 
+  const handleGenerateButton = () => {
+    setShowEventDetails(false);
+    setShowGenerateHeats(true);
+  };
+
   const handlePreviousEvent = () => {
     if (selectedEventIndex > 0) {
       // Previous event on the same page
@@ -194,6 +201,7 @@ const MeetEventDisplay = () => {
             onBack={handleBackToEvents}
             onPrevious={handlePreviousEvent}
             onNext={handleNextEvent}
+            onGenerate={handleGenerateButton}
             disablePrevious={isFirstEvent}
             disableNext={isLastEvent}
           />
