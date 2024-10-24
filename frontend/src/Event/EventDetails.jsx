@@ -7,7 +7,7 @@ import { ContentPaste as BackIcon } from "@mui/icons-material";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import { Build as BuildIcon } from "@mui/icons-material";
 import { Stack } from "@mui/material";
-import { formatSeedTime } from "../utils/helperFunctions.js"; 
+import { formatSeedTime } from "../utils/helperFunctions.js";
 
 const EventDetails = ({
   eventName,
@@ -15,6 +15,7 @@ const EventDetails = ({
   onBack,
   onPrevious,
   onNext,
+  onGenerate,
   disablePrevious,
   disableNext,
 }) => {
@@ -22,7 +23,7 @@ const EventDetails = ({
   const [heatData, setHeatData] = useState([]);
   const [laneData, setLaneData] = useState([]);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
-  const [selectedTab, setSelectedTab] = useState(0); 
+  const [selectedTab, setSelectedTab] = useState(0);
 
   let typeAlertLoading = errorOnLoading ? "error" : "success";
   let messageOnLoading = errorOnLoading
@@ -149,13 +150,8 @@ const EventDetails = ({
 
   //Need for Generate heats AlertBox
 
-  const handleAddHeats = () => {
-    //Change it to add heats for the new event
-    console.log("Go to Generate Heats");
-  };
-
   let actionButtonsNoHeats = [
-    { label: "heats", onClick: handleAddHeats, icon: <BuildIcon /> },
+    { label: "heats", onClick: onGenerate, icon: <BuildIcon /> },
   ];
 
   return (
@@ -186,7 +182,7 @@ const EventDetails = ({
         <TabPanel
           tabs={tabs}
           selectedTab={selectedTab}
-          setSelectedTab={setSelectedTab} 
+          setSelectedTab={setSelectedTab}
         />
       ) : (
         <>
