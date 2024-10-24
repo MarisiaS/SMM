@@ -85,6 +85,7 @@ const SelectAthlete = ({ eventName, eventId, onBack }) => {
       label: "Confirm seed times",
       icon: <TimeIcon />,
       onClick: handleConfirmSeedTime,
+      disabled: selectedAthletes.length === 0,
     },
     {
       label: "Back to events",
@@ -151,8 +152,7 @@ const SelectAthlete = ({ eventName, eventId, onBack }) => {
     setSelectedLeftAthletes({});
   };
   return (
-    <div
-    >
+    <div>
       <ItemPaginationBar
         label={label}
         extraActions={extraButtons}
