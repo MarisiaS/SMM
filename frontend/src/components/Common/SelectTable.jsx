@@ -10,6 +10,8 @@ const SelectTable = ({
   rowSelection,
   setRowSelection,
   notRecordsMessage,
+  searchTerm,
+  setSearchTerm,
 }) => {
   const theme = useTheme();
   const table = useMaterialReactTable({
@@ -36,10 +38,11 @@ const SelectTable = ({
     },
     getRowId: (originalRow) => originalRow.id, // Use 'id' as the unique identifier for rows
     onRowSelectionChange: setRowSelection, // Sync row selection state with parent component
-    state: { rowSelection }, // Pass the current row selection state to the table
+    state: { rowSelection, globalFilter: searchTerm }, // Pass the current row selection state to the table
     enableRowVirtualization: true, // Allow vertical scrolling for rows
     enableSorting: false,
     initialState: { density: "compact", showGlobalFilter: true }, // Show search input (GlobalFilter)
+    onGlobalFilterChange: setSearchTerm,
     enableTopToolbar: true,
     enableToolbarInternalActions: false,
     positionToolbarAlertBanner: "bottom", // Display an alert banner at the bottom with selection info
