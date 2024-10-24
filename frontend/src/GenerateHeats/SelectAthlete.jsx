@@ -51,6 +51,9 @@ const SelectAthlete = ({ eventName, eventId, onBack }) => {
   const [selectedLeftAthletes, setSelectedLeftAthletes] = useState({});
   const [errorOnLoading, setErrorOnLoading] = useState(false);
 
+  const [availableSearchTerm, setAvailableSearchTerm] = useState("");
+  const [selectedSearchTerm, setSelectedSearchTerm] = useState("");
+
   let typeAlertLoading = errorOnLoading ? "error" : "success";
   let messageOnLoading = errorOnLoading
     ? "Data upload failed. Please try again!"
@@ -94,7 +97,13 @@ const SelectAthlete = ({ eventName, eventId, onBack }) => {
     },
   ];
 
+  const handleClearSearch = () => {
+    setAvailableSearchTerm(""); 
+    setSelectedSearchTerm("");
+  };
+
   const onRightSelected = () => {
+    handleClearSearch();
     const athletesToMove = availableAthletes.filter(
       (item) => item.id in selectedRightAthletes
     );
@@ -113,6 +122,7 @@ const SelectAthlete = ({ eventName, eventId, onBack }) => {
   };
 
   const onRightAll = () => {
+    handleClearSearch();
     setSelectedAthletes((prevSelectedAthletes) => {
       const allAthletes = [...prevSelectedAthletes, ...availableAthletes];
       return allAthletes.sort((a, b) =>
@@ -125,6 +135,7 @@ const SelectAthlete = ({ eventName, eventId, onBack }) => {
   };
 
   const onLeftAll = () => {
+    handleClearSearch();
     setAvailableAthletes((prevAvailableAthletes) => {
       const allAthletes = [...prevAvailableAthletes, ...selectedAthletes];
       return allAthletes.sort((a, b) =>
@@ -137,6 +148,7 @@ const SelectAthlete = ({ eventName, eventId, onBack }) => {
   };
 
   const onLeftSelected = () => {
+    handleClearSearch();
     const athletesToMove = selectedAthletes.filter(
       (item) => item.id in selectedLeftAthletes
     );
@@ -188,6 +200,8 @@ const SelectAthlete = ({ eventName, eventId, onBack }) => {
                 rowSelection={selectedRightAthletes}
                 setRowSelection={setSelectedRightAthletes}
                 notRecordsMessage={"No athletes available."}
+                searchTerm={availableSearchTerm}
+                setSearchTerm={setAvailableSearchTerm}
               />
             </Box>
 
@@ -228,6 +242,8 @@ const SelectAthlete = ({ eventName, eventId, onBack }) => {
                 rowSelection={selectedLeftAthletes}
                 setRowSelection={setSelectedLeftAthletes}
                 notRecordsMessage={"No athletes selected."}
+                searchTerm={selectedSearchTerm}
+                setSearchTerm={setSelectedSearchTerm}
               />
             </Box>
           </Box>
