@@ -127,10 +127,10 @@ const TimeField = ({ label, name, control, rules }) => {
                 const [_, seconds, milliseconds = "00"] = secondMatch;
                 setTime({
                   minutes: "00",
-                  seconds: seconds,
+                  seconds: seconds.padStart(2, "0"),
                   milliseconds: milliseconds.padEnd(2, "0"),
                 });
-                onChange(`${"00"}:${seconds}.${milliseconds.padEnd(2, "0")}`);
+                onChange(`${"00"}:${seconds.padStart(2, "0")}.${milliseconds.padEnd(2, "0")}`);
                 inputRefs.current[2]?.focus();
               }
               break;
