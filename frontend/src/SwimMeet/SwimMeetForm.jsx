@@ -5,6 +5,7 @@ import MyButton from "../components/FormElements/MyButton.jsx";
 import MyDatePicker from "../components/FormElements/MyDatePicker.jsx";
 import MyTimePicker from "../components/FormElements/MyTimePicker.jsx";
 import MySelect from "../components/FormElements/MySelect.jsx";
+import dayjs from "dayjs";
 
 const SwimMeetForm = ({
   handleSubmit,
@@ -30,7 +31,13 @@ const SwimMeetForm = ({
             name={"date"}
             control={control}
             disablePast={true}
-            rules={{ required: "Date is required" }}
+            rules={{ required: "Date is required",
+              validate: (value) => {
+                return value && dayjs(value).isValid()
+                  ? true
+                  : "Invalid date format";
+              },
+             }}
           />
         </Box>
         <Box className={"itemBox"}>
@@ -38,7 +45,14 @@ const SwimMeetForm = ({
             label={"Time"}
             name={"time"}
             control={control}
-            rules={{ required: "Time is required" }}
+            rules={{
+              required: "Time is required",
+              validate: (value) => {
+                return value && dayjs(value).isValid()
+                  ? true
+                  : "Invalid time format";
+              },
+            }}
           />
         </Box>
         <Box className={"itemBox"}>
@@ -47,7 +61,9 @@ const SwimMeetForm = ({
             name={"site"}
             control={control}
             options={options}
-            rules={{ required: "Site is required" }}
+            rules={{
+              required: "Site is required",
+            }}
           />
         </Box>
       </Stack>
