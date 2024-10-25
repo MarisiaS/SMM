@@ -112,4 +112,4 @@ class AthleteSeedTimeView(APIView):
         serializer = UpdateAthleteSeedTimeSerializer(data=request.data, context={'event_type':event_type_instance})
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response({'success': 'Time registered.'}, status=status.HTTP_200_OK)
