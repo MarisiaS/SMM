@@ -1,12 +1,18 @@
 import "../App.css";
-import { Box, Stack} from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import MyTextField from "../components/FormElements/MyTextField.jsx";
 import MyButton from "../components/FormElements/MyButton.jsx";
 import MyDatePicker from "../components/FormElements/MyDatePicker.jsx";
 import MyTimePicker from "../components/FormElements/MyTimePicker.jsx";
 import MySelect from "../components/FormElements/MySelect.jsx";
 
-const SwimMeetForm = ({ handleSubmit, control, handleCancel, options }) => {
+const SwimMeetForm = ({
+  handleSubmit,
+  control,
+  handleCancel,
+  options,
+  isValid,
+}) => {
   return (
     <form onSubmit={handleSubmit} className={"whiteBox"}>
       <Stack>
@@ -46,7 +52,12 @@ const SwimMeetForm = ({ handleSubmit, control, handleCancel, options }) => {
         </Box>
       </Stack>
       <Stack className={"itemBox"}>
-        <MyButton key={"create"} label={"Create"} type={"submit"} />
+        <MyButton
+          key={"create"}
+          label={"Create"}
+          type={"submit"}
+          disabled={!isValid}
+        />
         <Box sx={{ marginTop: 2 }}></Box>
         <MyButton
           key={"cancel"}
