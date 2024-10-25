@@ -9,6 +9,7 @@ const SeedTimeForm = ({
   control,
   handleCancel,
   data,
+  isValid,
 }) => {
   return (
     <form onSubmit={handleSubmit} className={"whiteBox"}>
@@ -65,7 +66,7 @@ const SeedTimeForm = ({
         </Box>
       </Stack>
       <Stack className={"itemBox"}>
-        <MyButton key={"create"} label={"Update"} type={"submit"} />
+        <MyButton key={"create"} label={"Update"} type={"submit"} disabled={!isValid} />
         <Box sx={{ marginTop: 2 }}></Box>
         <MyButton key={"cancel"} label={"Cancel"} onClick={handleCancel} />
       </Stack>

@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import SeedTimeForm from "../GenerateHeats/SeedTimeForm.jsx";
 
 const TestSeedTimeForm = () => {
-  const { handleSubmit, control } = useForm({
+  const { handleSubmit, control, formState: { isValid } } = useForm({
     defaultValues: {
       seed_time: "",
       date: dayjs(Date.now()),
@@ -42,6 +42,7 @@ const TestSeedTimeForm = () => {
           control={control}
           handleCancel={handleCancel}
           data={{ athlete_name: "Luis Garcia", seed_time: "00:45.87" }}
+          isValid={isValid}
         />
       </Box>
     </div>
