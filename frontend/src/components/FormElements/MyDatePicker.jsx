@@ -6,7 +6,8 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Controller } from "react-hook-form";
 
 const MyDatePicker = (props) => {
-  const { label, name, control, disablePast, disableFuture, rules } = props;
+  const { label, name, control, disablePast, disableFuture, rules} =
+    props;
 
   return (
     <Controller
@@ -19,10 +20,15 @@ const MyDatePicker = (props) => {
             label={label}
             value={value}
             onChange={onChange}
+            className={"myForm"}
             disablePast={disablePast}
             disableFuture={disableFuture}
-            error={!!error}
-            helperText={error?.message}
+            slotProps={{
+              textField: {
+                error: !!error,
+                helperText: error?.message,
+              },
+            }}
             sx={{ minWidth: 250 }}
           />
         </LocalizationProvider>

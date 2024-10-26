@@ -23,8 +23,12 @@ const MyTimePicker = (props) => {
             label={label}
             value={value}
             onChange={onChange}
-            error={!!error}
-            helperText={error?.message}
+            slotProps={{
+              textField: {
+                error: !!error,
+                helperText: error?.message,
+              },
+            }}
             sx={{ minWidth: 250 }}
           />
         </LocalizationProvider>
