@@ -34,7 +34,7 @@ const SwimMeetForm = ({
             rules={{ required: "Date is required",
               validate: (value) => {
                 if (!dayjs(value).isValid()) return "Invalid date";
-                if (dayjs(value).isBefore(dayjs()))
+                if (dayjs(value).startOf('day').isBefore(dayjs().startOf('day')))
                   return "Date cannot be in the past";
                 return true;
               },
