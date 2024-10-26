@@ -33,9 +33,10 @@ const SwimMeetForm = ({
             disablePast={true}
             rules={{ required: "Date is required",
               validate: (value) => {
-                return value && dayjs(value).isValid()
-                  ? true
-                  : "Invalid date format";
+                if (!dayjs(value).isValid()) return "Invalid date";
+                if (dayjs(value).isBefore(dayjs()))
+                  return "Date cannot be in the past";
+                return true;
               },
              }}
           />
@@ -48,9 +49,8 @@ const SwimMeetForm = ({
             rules={{
               required: "Time is required",
               validate: (value) => {
-                return value && dayjs(value).isValid()
-                  ? true
-                  : "Invalid time format";
+                if (!dayjs(value).isValid()) return "Invalid time";
+                return true;
               },
             }}
           />
