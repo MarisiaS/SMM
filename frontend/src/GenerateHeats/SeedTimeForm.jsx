@@ -3,6 +3,7 @@ import { Box, Stack, Typography, Divider } from "@mui/material";
 import TimeField from "../components/FormElements/TimeField.jsx";
 import MyButton from "../components/FormElements/MyButton.jsx";
 import MyDatePicker from "../components/FormElements/MyDatePicker.jsx";
+import dayjs from "dayjs";
 
 const SeedTimeForm = ({
   handleSubmit,
@@ -27,12 +28,7 @@ const SeedTimeForm = ({
         </Box>
         <Divider sx={{ borderBottomWidth: 3 }}></Divider>
         <Box>
-          <Typography
-            variant="h6"
-            padding={1}
-            align="center"
-            color="primary"
-          >
+          <Typography variant="h6" padding={1} align="center" color="primary">
             {data.athlete_name}
           </Typography>
         </Box>
@@ -61,12 +57,25 @@ const SeedTimeForm = ({
             name={"date"}
             control={control}
             disableFuture={true}
-            rules={{ required: "Date is required" }}
+            rules={{
+              required: "Date is required",
+              validate: (value) => {
+                if (!dayjs(value).isValid()) return "Invalid date";
+                if (dayjs(value).isAfter(dayjs()))
+                  return "Date cannot be in the future";
+                return true;
+              },
+            }}
           />
         </Box>
       </Stack>
       <Stack className={"itemBox"}>
-        <MyButton key={"create"} label={"Update"} type={"submit"} disabled={!isValid} />
+        <MyButton
+          key={"create"}
+          label={"Update"}
+          type={"submit"}
+          disabled={!isValid}
+        />
         <Box sx={{ marginTop: 2 }}></Box>
         <MyButton key={"cancel"} label={"Cancel"} onClick={handleCancel} />
       </Stack>
