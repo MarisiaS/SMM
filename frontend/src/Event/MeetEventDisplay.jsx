@@ -193,7 +193,6 @@ const MeetEventDisplay = () => {
     return (
       <div>
         <Title data={meetData} fields={["name", "date", "site_name"]} />
-
         {showEventDetails && eventData[selectedEventIndex] ? (
           <EventDetails
             eventName={eventData[selectedEventIndex].name}
