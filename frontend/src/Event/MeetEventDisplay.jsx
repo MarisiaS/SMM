@@ -5,6 +5,7 @@ import PaginationBar from "../components/Common/PaginationBar.jsx";
 import Title from "../components/Common/Title.jsx";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import EventDetails from "./EventDetails.jsx";
+import SelectAthlete from "../GenerateHeats/SelectAthlete.jsx";
 import {
   FormatAlignCenter as HeatIcon,
   Delete as DeleteIcon,
@@ -39,6 +40,7 @@ const MeetEventDisplay = () => {
 
   //EventDetail states
   const [showEventDetails, setShowEventDetails] = useState(false);
+  const [showGenerateHeats, setShowGenerateHeats] = useState(false);
   const [selectedEventIndex, setSelectedEventIndex] = useState(null);
   const [navegationDirection, setNavegationDirection] = useState(null);
 
@@ -54,12 +56,15 @@ const MeetEventDisplay = () => {
     : "";
 
   const handleGenerateClick = (id) => {
-    console.log("Go to Generate Heats");
+    setSelectedEventIndex(Number(id));
+    setShowGenerateHeats(true);
+    setShowEventDetails(false);
   };
 
   const handleDetailsClick = (id) => {
     setSelectedEventIndex(Number(id));
     setShowEventDetails(true);
+    setShowGenerateHeats(false);
   };
 
   const handleDeleteClick = (id) => {
@@ -131,7 +136,13 @@ const MeetEventDisplay = () => {
 
   const handleBackToEvents = () => {
     setShowEventDetails(false);
+    setShowGenerateHeats(false);
     setSelectedEventIndex(null);
+  };
+
+  const handleGenerateButton = () => {
+    setShowEventDetails(false);
+    setShowGenerateHeats(true);
   };
 
   const handlePreviousEvent = () => {
@@ -189,8 +200,16 @@ const MeetEventDisplay = () => {
             onBack={handleBackToEvents}
             onPrevious={handlePreviousEvent}
             onNext={handleNextEvent}
+            onGenerate={handleGenerateButton}
             disablePrevious={isFirstEvent}
             disableNext={isLastEvent}
+          />
+        ) : showGenerateHeats && eventData[selectedEventIndex] ? (
+          //Need to change to select athletes
+          <SelectAthlete
+            eventName={eventData[selectedEventIndex].name}
+            eventId={eventData[selectedEventIndex].id}
+            onBack={handleBackToEvents}
           />
         ) : (
           <>
@@ -206,7 +225,7 @@ const MeetEventDisplay = () => {
               </Box>
               <Box className={"searchBox"} sx={{ marginRight: 5 }}></Box>
             </Stack>
-            <br></br>
+            <br />
             <GenericTable
               data={eventData}
               columns={columns}
@@ -220,7 +239,7 @@ const MeetEventDisplay = () => {
               setLimit={setLimit}
               page={page}
               setPage={setPage}
-            ></PaginationBar>
+            />
           </>
         )}
       </div>
