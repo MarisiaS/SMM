@@ -4,6 +4,7 @@ import { SmmApi } from "../SmmApi.jsx";
 import SelectTable from "../components/Common/SelectTable";
 import MyIconButton from "../components/FormElements/MyIconButton";
 import ItemPaginationBar from "../components/Common/ItemPaginationBar.jsx";
+import GenericTable from "../components/Common/GenericTable.jsx";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import { Box, Stack } from "@mui/material";
 import { formatSeedTime } from "../utils/helperFunctions.js";
@@ -14,7 +15,10 @@ import {
   KeyboardDoubleArrowLeft as LeftAllIcon,
   ContentPaste as BackIcon,
   Timer as TimeIcon,
+  Edit as EditIcon,
 } from "@mui/icons-material";
+import { Dialog } from "@mui/material";
+import UpdateSeedTime from "./UpdateSeedTime.jsx";
 
 const availableColumns = [
   {
@@ -44,15 +48,31 @@ const selectedColumns = [
   },
 ];
 
+const confirmSeedTimeColumns = [
+  {
+    accessorKey: "athlete_full_name",
+    header: "Athlete",
+    size: 150,
+  },
+  {
+    accessorKey: "seed_time",
+    header: "Seed Time",
+    size: 150,
+    Cell: ({ cell }) => formatSeedTime(cell.getValue()),
+  },
+];
+
 const SelectAthlete = ({ eventName, eventId, onBack }) => {
   const [availableAthletes, setAvailableAthletes] = useState([]);
   const [selectedAthletes, setSelectedAthletes] = useState([]);
   const [selectedRightAthletes, setSelectedRightAthletes] = useState({});
   const [selectedLeftAthletes, setSelectedLeftAthletes] = useState({});
   const [errorOnLoading, setErrorOnLoading] = useState(false);
-
   const [availableSearchTerm, setAvailableSearchTerm] = useState("");
   const [selectedSearchTerm, setSelectedSearchTerm] = useState("");
+  const [areAthletesSelected, setAreAthletesSelected] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [athleteToUpdate, setAthleteToUpdate] = useState({});
 
   let typeAlertLoading = errorOnLoading ? "error" : "success";
   let messageOnLoading = errorOnLoading
@@ -78,27 +98,62 @@ const SelectAthlete = ({ eventName, eventId, onBack }) => {
     };
   }, []);
 
-  //What is needed for the itemPaginationBar
-  const handleConfirmSeedTime = () => {
+  const handleCurrentStep = () => {
     console.log("Confirm seed time clicked!");
+    setAreAthletesSelected(!areAthletesSelected);
   };
-  const label = "Event " + eventName;
+
+  const handleGenerateHeats = () => {
+    console.log("Generate Heats clicked!");
+  };
+
+  const handleBackToSelectAthletes = () => {
+    console.log("Back to Select Athletes!");
+    setAreAthletesSelected(false);
+  };
+
+  const handleEditClick = (row) => {
+    console.log("Edit seed time ...");
+    setAthleteToUpdate(row);
+    setIsFormOpen(true);
+    console.log(row);
+    console.log(selectedAthletes[row]);
+    console.log(athleteToUpdate);
+  };
+
+  const actions = [
+    {
+      name: "Edit",
+      icon: <EditIcon />,
+      onClick: handleEditClick,
+      tip: "Edit Seed Time",
+    },
+  ];
+
   const extraButtons = [
     {
-      label: "Confirm seed times",
-      icon: <TimeIcon />,
-      onClick: handleConfirmSeedTime,
-      disabled: selectedAthletes.length === 0,
+      label: areAthletesSelected ? "Select Athletes" : "Confirm seed times",
+      icon: areAthletesSelected ? <EditIcon /> : <TimeIcon />,
+      onClick: handleCurrentStep,
+      disabled: !areAthletesSelected ? selectedAthletes.length === 0 : false,
     },
     {
       label: "Back to events",
       icon: <BackIcon />,
       onClick: onBack,
     },
+    {
+      label: "Heats",
+      icon: <BackIcon />,
+      onClick: onBack,
+      visible: areAthletesSelected,
+    },
   ];
 
+  const label = "Event " + eventName;
+
   const handleClearSearch = () => {
-    setAvailableSearchTerm(""); 
+    setAvailableSearchTerm("");
     setSelectedSearchTerm("");
   };
 
@@ -184,7 +239,7 @@ const SelectAthlete = ({ eventName, eventId, onBack }) => {
             <AlertBox type={typeAlertLoading} message={messageOnLoading} />
           </Stack>
         </>
-      ) : (
+      ) : !areAthletesSelected ? (
         <>
           <Box
             display="flex"
@@ -248,6 +303,21 @@ const SelectAthlete = ({ eventName, eventId, onBack }) => {
             </Box>
           </Box>
         </>
+      ) : (
+        <div>
+          <GenericTable
+            data={selectedAthletes}
+            columns={confirmSeedTimeColumns}
+            actions={actions}
+          />
+          <Dialog
+            open={isFormOpen}
+            onClose={() => setIsFormOpen(false)}
+            fullWidth
+          >
+            <UpdateSeedTime athlete={selectedAthletes[athleteToUpdate]} />
+          </Dialog>
+        </div>
       )}
     </div>
   );
