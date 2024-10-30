@@ -1,5 +1,4 @@
 from rest_framework.views import APIView
-from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from api.models import MeetEvent, Heat, Group, Athlete
@@ -10,7 +9,6 @@ from drf_spectacular.utils import extend_schema
 from django.db import transaction
 from django.db.models import F, Value, Func, IntegerField
 from django.utils import timezone
-from django.db.models import Max
 
 
 @extend_schema(tags=['Heat'])

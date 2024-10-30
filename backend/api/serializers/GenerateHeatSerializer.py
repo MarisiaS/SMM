@@ -1,7 +1,6 @@
-from api.models import Athlete, Heat, Group
+from api.models import Athlete, Heat
 from rest_framework import serializers
 from django.db import transaction
-from rest_framework.exceptions import ValidationError
 from api.CustomField import HeatDurationField
 from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 import math
