@@ -1,14 +1,13 @@
-from api.models import Athlete, Heat, Group
+from api.models import Athlete, Heat
 from rest_framework import serializers
 from django.db import transaction
-from rest_framework.exceptions import ValidationError
 from api.CustomField import HeatDurationField
 from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 import math
 
 
 class AthleteSeedSerializer(serializers.Serializer):
-    athlete = serializers.PrimaryKeyRelatedField(queryset=Athlete.objects.all())
+    id = serializers.PrimaryKeyRelatedField(queryset=Athlete.objects.all())
     seed_time = HeatDurationField()
 
 @extend_schema_serializer(
@@ -18,15 +17,15 @@ class AthleteSeedSerializer(serializers.Serializer):
             value={
                 "athletes": [
                     {
-                        "athlete": 1,
+                        "id": 1,
                         "seed_time": "45.00"
                     },
                     {
-                        "athlete": 2,
+                        "id": 2,
                         "seed_time": "26.09"
                     },
                     {
-                        "athlete": 3,
+                        "id": 3,
                         "seed_time": "NT"
                     }
                 ]
@@ -39,7 +38,7 @@ class GenerateHeatSerializer(serializers.Serializer):
     athletes = AthleteSeedSerializer(many=True)
 
     def validate_athletes(self, value):
-        athlete_ids = [athlete['athlete'].id for athlete in value]
+        athlete_ids = [athlete['id'].id for athlete in value]
         if len(athlete_ids) != len(set(athlete_ids)):
             raise serializers.ValidationError("Athletes must not be repeated.")
         return value
@@ -62,7 +61,7 @@ class GenerateHeatSerializer(serializers.Serializer):
                 num_lane = self.calculate_lane_num(i,num_lanes)
                 Heat.objects.create(
                     event = event_instance,
-                    athlete = current_heat_athletes[i - num_empty_athletes_current_heat]["athlete"],
+                    athlete = current_heat_athletes[i - num_empty_athletes_current_heat]["id"],
                     lane_num = num_lane,
                     seed_time = current_heat_athletes[i - num_empty_athletes_current_heat]["seed_time"],
 

@@ -1,5 +1,4 @@
 from rest_framework.views import APIView
-from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from api.models import MeetEvent, Heat, Group, Athlete
@@ -10,7 +9,6 @@ from drf_spectacular.utils import extend_schema
 from django.db import transaction
 from django.db.models import F, Value, Func, IntegerField
 from django.utils import timezone
-from django.db.models import Max
 
 
 @extend_schema(tags=['Heat'])
@@ -100,7 +98,7 @@ class HeatBatchView(APIView):
             athletes_data = request.data.get('athletes', [])
             queryset = self.get_queryset(group_instance.id)
             queryset_athlete_ids = set(queryset.values_list('id', flat=True))
-            request_athlete_ids = {athlete['athlete'] for athlete in athletes_data}
+            request_athlete_ids = {athlete['id'] for athlete in athletes_data}
             if not request_athlete_ids.issubset(queryset_athlete_ids):
                 return Response({'error': 'One or more athletes are not part of the specified group for the event.'}, status=status.HTTP_400_BAD_REQUEST)
             serializer.save()
