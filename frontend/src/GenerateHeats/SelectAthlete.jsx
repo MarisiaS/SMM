@@ -19,12 +19,12 @@ import {
 const availableColumns = [
   {
     accessorKey: "athlete_full_name",
-    header: "Available athletes",
+    header: "Available Athletes",
     size: 150,
   },
   {
     accessorKey: "seed_time",
-    header: "Seed time",
+    header: "Seed Time",
     size: 100,
     Cell: ({ cell }) => formatSeedTime(cell.getValue()),
   },
@@ -33,12 +33,12 @@ const availableColumns = [
 const selectedColumns = [
   {
     accessorKey: "athlete_full_name",
-    header: "Selected athletes",
+    header: "Selected Athletes",
     size: 150,
   },
   {
     accessorKey: "seed_time",
-    header: "Seed time",
+    header: "Seed Time",
     size: 100,
     Cell: ({ cell }) => formatSeedTime(cell.getValue()),
   },
