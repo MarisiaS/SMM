@@ -1,10 +1,17 @@
-import "../App.css";
-import { Box } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { Stack } from "@mui/material";
 import dayjs from "dayjs";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import "../App.css";
+import AlertBox from "../components/Common/AlertBox.jsx";
+import { SmmApi } from "../SmmApi.jsx";
+import { formatSeedTime } from "../utils/helperFunctions.js";
 import SeedTimeForm from "./SeedTimeForm.jsx";
 
-const UpdateSeedTime = (athlete) => {
+const UpdateSeedTime = ({ eventId, athlete, onUpdate, onCancel }) => {
+  const [error, setError] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
   const {
     handleSubmit,
     control,
@@ -17,41 +24,61 @@ const UpdateSeedTime = (athlete) => {
     mode: "onChange",
   });
 
-  const handleCancel = () => {
-    console.log("Cancel was pressed!");
+  // AlertBox variables
+  let typeAlert = error ? "error" : "success";
+  let message = error ? error : "Seed time updated successfully!";
+
+  const handleClearError = () => {
+    console.log("Clear error");
+    setError(false);
+    setSubmitted(false);
   };
-  // Update Seed Time Form
-  const submission = async (data) => {
-    console.log("Update was pressed!", data);
+
+  const onSubmit = async (data) => {
+    setSubmitted(true);
+    setError(false);
+
+    const payload = {
+      id: athlete.id,
+      date: data.date,
+      time: `00:${data.seed_time}`,
+    };
+
+    const updatedAthlete = { ...athlete, seed_time: payload.time };
+
+    try {
+      await SmmApi.registerSeedTime(eventId, payload);
+      onUpdate(updatedAthlete);
+    } catch (error) {
+      setError(
+        "Unable to update Seed Time, an unexpected error occurred. Please try again!"
+      );
+    }
   };
+
   return (
     <div
+      onClick={handleClearError}
       style={{
-        minHeight: "100vh",
-        width: "100%",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        minHeight: "100vh",
       }}
     >
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        className={"test"}
-        sx={{ gap: "15px", width: "80%", height: "auto", margin: "2px" }}
-      >
+      <Stack alignItems="center" justifyContent="space-between">
+        {submitted && <AlertBox type={typeAlert} message={message} />}
         <SeedTimeForm
-          handleSubmit={handleSubmit(submission)}
+          handleSubmit={handleSubmit(onSubmit)}
           control={control}
-          handleCancel={handleCancel}
+          handleCancel={onCancel}
           data={{
             athlete_name: athlete.athlete_full_name,
-            seed_time: athlete.seed_time,
+            seed_time: formatSeedTime(athlete.seed_time),
           }}
           isValid={isValid}
         />
-      </Box>
+      </Stack>
     </div>
   );
 };
