@@ -108,7 +108,7 @@ const GenerateHeats = ({ eventName, eventId, onBack }) => {
   };
 
   const handleGenerateHeats = () => {
-    console.log("Generate Heats clicked!");
+    console.log("Create Heats clicked!");
   };
 
   const handleEditClick = (row) => {
@@ -139,23 +139,23 @@ const GenerateHeats = ({ eventName, eventId, onBack }) => {
 
   const extraButtons = [
     {
+      label: "Create Heats",
+      icon: <BuildIcon />,
+      onClick: handleGenerateHeats,
+      visible: areAthletesSelected,
+    },
+    {
       label: areAthletesSelected
         ? "Back To Select Athletes"
-        : "Confirm seed times",
+        : "Confirm Seed Times",
       icon: areAthletesSelected ? <ChecklistIcon /> : <TimeIcon />,
       onClick: handleCurrentStep,
       disabled: !areAthletesSelected ? selectedAthletes.length === 0 : false,
     },
     {
-      label: "Back to events",
+      label: "Back to Events",
       icon: <BackIcon />,
       onClick: onBack,
-    },
-    {
-      label: "Heats",
-      icon: <BuildIcon />,
-      onClick: handleGenerateHeats,
-      visible: areAthletesSelected,
     },
   ];
 
