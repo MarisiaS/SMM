@@ -29,13 +29,11 @@ const UpdateSeedTime = ({ eventId, athlete, onUpdate, onCancel }) => {
   let message = error ? error : "Seed time updated successfully!";
 
   const handleClearError = () => {
-    console.log("Clear error");
     setError(false);
     setSubmitted(false);
   };
 
   const onSubmit = async (data) => {
-    setSubmitted(true);
     setError(false);
 
     const payload = {
@@ -54,6 +52,7 @@ const UpdateSeedTime = ({ eventId, athlete, onUpdate, onCancel }) => {
         "Unable to update Seed Time, an unexpected error occurred. Please try again!"
       );
     }
+    setSubmitted(true);
   };
 
   return (
