@@ -80,10 +80,10 @@ const MeetEventDisplay = () => {
 
   const actions = [
     {
-      name: "Generate Heats",
+      name: "Create Heats",
       icon: <BuildIcon />,
       onClick: handleGenerateClick,
-      tip: "Generate heats",
+      tip: "Go to Create Heats",
       visible: (row) => row.original.total_num_heats === 0,
     },
     {
