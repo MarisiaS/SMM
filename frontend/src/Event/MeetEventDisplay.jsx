@@ -90,15 +90,15 @@ const MeetEventDisplay = () => {
       name: "Heats Details",
       icon: <HeatIcon />,
       onClick: handleDetailsClick,
-      tip: "Go to heats",
+      tip: "Go to Heats",
       visible: (row) => row.original.total_num_heats > 0,
     },
-    {
-      name: "Delete",
-      icon: <DeleteIcon />,
-      onClick: handleDeleteClick,
-      tip: "Delete",
-    },
+    // {
+    //   name: "Delete",
+    //   icon: <DeleteIcon />,
+    //   onClick: handleDeleteClick,
+    //   tip: "Delete",
+    // },
     {
       name: "Ranking",
       icon: <RankingIcon />,
