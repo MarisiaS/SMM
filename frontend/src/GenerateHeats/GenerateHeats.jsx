@@ -64,7 +64,13 @@ const confirmSeedTimeColumns = [
   },
 ];
 
-const GenerateHeats = ({ eventName, eventId, onBack }) => {
+const GenerateHeats = ({
+  eventName,
+  eventId,
+  onBack,
+  setGenerateHeatTrigger,
+  switchViews,
+}) => {
   const [availableAthletes, setAvailableAthletes] = useState([]);
   const [selectedAthletes, setSelectedAthletes] = useState([]);
   const [selectedRightAthletes, setSelectedRightAthletes] = useState({});
@@ -75,8 +81,14 @@ const GenerateHeats = ({ eventName, eventId, onBack }) => {
   const [areAthletesSelected, setAreAthletesSelected] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [athleteToUpdate, setAthleteToUpdate] = useState({});
+  const [heatsCreated, setHeatsCreated] = useState(false);
+  const [error, setError] = useState(false);
 
   const label = "Event " + eventName;
+
+  // AlertBox variables
+  let typeAlertCreateHeats = error ? "error" : "success";
+  let messageCreateHeats = error ? error : "Heats created successfully!";
 
   let typeAlertLoading = errorOnLoading ? "error" : "success";
   let messageOnLoading = errorOnLoading
@@ -107,8 +119,27 @@ const GenerateHeats = ({ eventName, eventId, onBack }) => {
     setAreAthletesSelected(!areAthletesSelected);
   };
 
-  const handleGenerateHeats = () => {
-    console.log("Create Heats clicked!");
+  const handleGenerateHeats = async (selectedAthletes) => {
+    setError(false);
+    let heatCreationSuccessful = false;
+    try {
+      const response = await SmmApi.createHeats(eventId, {
+        athletes: selectedAthletes,
+      });
+      heatCreationSuccessful = true;
+    } catch (error) {
+      setError(
+        "Unable to Create Heats, an unexpected error occurred. Please try again!"
+      );
+    }
+    setHeatsCreated(true);
+    setTimeout(() => {
+      if (heatCreationSuccessful) {
+        setGenerateHeatTrigger((prev) => prev + 1);
+        switchViews(eventId);
+      }
+      setHeatsCreated(false);
+    }, 2000);
   };
 
   const handleEditClick = (row) => {
@@ -141,7 +172,7 @@ const GenerateHeats = ({ eventName, eventId, onBack }) => {
     {
       label: "Create Heats",
       icon: <BuildIcon />,
-      onClick: handleGenerateHeats,
+      onClick: () => handleGenerateHeats(selectedAthletes),
       visible: areAthletesSelected,
     },
     {
@@ -323,6 +354,12 @@ const GenerateHeats = ({ eventName, eventId, onBack }) => {
               athlete={selectedAthletes[athleteToUpdate]}
               onUpdate={handleUpdateSeedTime}
               onCancel={() => setIsFormOpen(false)}
+            />
+          </Dialog>
+          <Dialog open={heatsCreated} fullWidth>
+            <AlertBox
+              type={typeAlertCreateHeats}
+              message={messageCreateHeats}
             />
           </Dialog>
         </div>
