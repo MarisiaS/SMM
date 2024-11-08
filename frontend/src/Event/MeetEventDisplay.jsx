@@ -44,6 +44,9 @@ const MeetEventDisplay = () => {
   const [selectedEventIndex, setSelectedEventIndex] = useState(null);
   const [navegationDirection, setNavegationDirection] = useState(null);
 
+  //GenerateHeats states
+  const [generateHeatTrigger, setGenerateHeatTrigger] = useState(0);
+
   //Pagination States
   const [count, setCount] = useState(0);
   const [offset, setOffset] = useState(0);
@@ -128,7 +131,7 @@ const MeetEventDisplay = () => {
     return () => {
       ignore = true;
     };
-  }, [offset, limit]);
+  }, [offset, limit, generateHeatTrigger]);
 
   const handleAddNew = () => {
     navigate(`/add-event/${meetId}`, { state: meetData });
@@ -172,6 +175,19 @@ const MeetEventDisplay = () => {
     }
   };
 
+  const handleSwitchGenerateToDetails = (eventId) => {
+    const index = eventData.findIndex((item) => item.id === eventId);
+    if (index === -1) {
+      setShowGenerateHeats(false);
+      setShowEventDetails(false);
+      setSelectedEventIndex(null);
+    } else {
+      setShowGenerateHeats(false);
+      setSelectedEventIndex(index);
+      setShowEventDetails(true);
+    }
+  };
+
   const isFirstEvent = page === 0 && selectedEventIndex === 0;
   const isLastEvent = offset + selectedEventIndex + 1 >= count;
 
@@ -210,6 +226,8 @@ const MeetEventDisplay = () => {
             eventName={eventData[selectedEventIndex].name}
             eventId={eventData[selectedEventIndex].id}
             onBack={handleBackToEvents}
+            setGenerateHeatTrigger={setGenerateHeatTrigger}
+            switchViews={handleSwitchGenerateToDetails}
           />
         ) : (
           <>
