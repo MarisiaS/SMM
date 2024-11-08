@@ -151,7 +151,7 @@ const EventDetails = ({
   //Need for Generate heats AlertBox
 
   let actionButtonsNoHeats = [
-    { label: "heats", onClick: onGenerate, icon: <BuildIcon /> },
+    { label: "Create Heats", onClick: onGenerate, icon: <BuildIcon /> },
   ];
 
   return (
@@ -191,14 +191,14 @@ const EventDetails = ({
               display: "flex",
               flexDirection: "column",
               gap: "16px",
-              width: "300px",
+              width: "500px",
               margin: "auto",
             }}
           >
             <AlertBox
               type="info"
               message="This event has no heats yet."
-              actionButtons={actionButtonsNoHeats}
+              actionButtons={actionButtonsNoHeats}         
             />
           </Stack>
         </>
