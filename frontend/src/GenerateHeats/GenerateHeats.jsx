@@ -1,21 +1,27 @@
-import "../App.css";
-import React, { useState, useEffect } from "react";
-import { SmmApi } from "../SmmApi.jsx";
-import SelectTable from "../components/Common/SelectTable";
-import MyIconButton from "../components/FormElements/MyIconButton";
-import ItemPaginationBar from "../components/Common/ItemPaginationBar.jsx";
-import AlertBox from "../components/Common/AlertBox.jsx";
-import { Box, Stack } from "@mui/material";
-import { formatSeedTime } from "../utils/helperFunctions.js";
 import {
-  NavigateBefore as LeftIcon,
-  NavigateNext as RightIcon,
-  KeyboardDoubleArrowRight as RightAllIcon,
-  KeyboardDoubleArrowLeft as LeftAllIcon,
   ContentPaste as BackIcon,
+  Build as BuildIcon,
+  Checklist as ChecklistIcon,
+  Edit as EditIcon,
+  KeyboardDoubleArrowLeft as LeftAllIcon,
+  NavigateBefore as LeftIcon,
+  KeyboardDoubleArrowRight as RightAllIcon,
+  NavigateNext as RightIcon,
   Timer as TimeIcon,
 } from "@mui/icons-material";
+import { Box, Dialog, Stack } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import "../App.css";
+import { SmmApi } from "../SmmApi.jsx";
+import AlertBox from "../components/Common/AlertBox.jsx";
+import GenericTable from "../components/Common/GenericTable.jsx";
+import ItemPaginationBar from "../components/Common/ItemPaginationBar.jsx";
+import SelectTable from "../components/Common/SelectTable.jsx";
+import MyIconButton from "../components/FormElements/MyIconButton.jsx";
+import { formatSeedTime } from "../utils/helperFunctions.js";
+import UpdateSeedTime from "./UpdateSeedTime.jsx";
 
+// Constants for table columns
 const availableColumns = [
   {
     accessorKey: "athlete_full_name",
@@ -44,15 +50,33 @@ const selectedColumns = [
   },
 ];
 
-const SelectAthlete = ({ eventName, eventId, onBack }) => {
+const confirmSeedTimeColumns = [
+  {
+    accessorKey: "athlete_full_name",
+    header: "Athlete",
+    size: 150,
+  },
+  {
+    accessorKey: "seed_time",
+    header: "Seed Time",
+    size: 150,
+    Cell: ({ cell }) => formatSeedTime(cell.getValue()),
+  },
+];
+
+const GenerateHeats = ({ eventName, eventId, onBack }) => {
   const [availableAthletes, setAvailableAthletes] = useState([]);
   const [selectedAthletes, setSelectedAthletes] = useState([]);
   const [selectedRightAthletes, setSelectedRightAthletes] = useState({});
   const [selectedLeftAthletes, setSelectedLeftAthletes] = useState({});
   const [errorOnLoading, setErrorOnLoading] = useState(false);
-
   const [availableSearchTerm, setAvailableSearchTerm] = useState("");
   const [selectedSearchTerm, setSelectedSearchTerm] = useState("");
+  const [areAthletesSelected, setAreAthletesSelected] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [athleteToUpdate, setAthleteToUpdate] = useState({});
+
+  const label = "Event " + eventName;
 
   let typeAlertLoading = errorOnLoading ? "error" : "success";
   let messageOnLoading = errorOnLoading
@@ -78,27 +102,65 @@ const SelectAthlete = ({ eventName, eventId, onBack }) => {
     };
   }, []);
 
-  //What is needed for the itemPaginationBar
-  const handleConfirmSeedTime = () => {
-    console.log("Confirm seed time clicked!");
+  //Event Handlers
+  const handleCurrentStep = () => {
+    setAreAthletesSelected(!areAthletesSelected);
   };
-  const label = "Event " + eventName;
+
+  const handleGenerateHeats = () => {
+    console.log("Create Heats clicked!");
+  };
+
+  const handleEditClick = (row) => {
+    setAthleteToUpdate(row);
+    setIsFormOpen(true);
+  };
+
+  const handleUpdateSeedTime = async (updatedAthlete) => {
+    setSelectedAthletes((prevAthletes) =>
+      prevAthletes.map((athlete) =>
+        athlete.id === updatedAthlete.id ? updatedAthlete : athlete
+      )
+    );
+    // Delay closing the form
+    setTimeout(() => {
+      setIsFormOpen(false);
+    }, 1500);
+  };
+
+  const actions = [
+    {
+      name: "Edit",
+      icon: <EditIcon />,
+      onClick: handleEditClick,
+      tip: "Edit Seed Time",
+    },
+  ];
+
   const extraButtons = [
     {
-      label: "Confirm seed times",
-      icon: <TimeIcon />,
-      onClick: handleConfirmSeedTime,
-      disabled: selectedAthletes.length === 0,
+      label: "Create Heats",
+      icon: <BuildIcon />,
+      onClick: handleGenerateHeats,
+      visible: areAthletesSelected,
     },
     {
-      label: "Back to events",
+      label: areAthletesSelected
+        ? "Back To Select Athletes"
+        : "Confirm Seed Times",
+      icon: areAthletesSelected ? <ChecklistIcon /> : <TimeIcon />,
+      onClick: handleCurrentStep,
+      disabled: !areAthletesSelected ? selectedAthletes.length === 0 : false,
+    },
+    {
+      label: "Back to Events",
       icon: <BackIcon />,
       onClick: onBack,
     },
   ];
 
   const handleClearSearch = () => {
-    setAvailableSearchTerm(""); 
+    setAvailableSearchTerm("");
     setSelectedSearchTerm("");
   };
 
@@ -184,7 +246,7 @@ const SelectAthlete = ({ eventName, eventId, onBack }) => {
             <AlertBox type={typeAlertLoading} message={messageOnLoading} />
           </Stack>
         </>
-      ) : (
+      ) : !areAthletesSelected ? (
         <>
           <Box
             display="flex"
@@ -248,9 +310,25 @@ const SelectAthlete = ({ eventName, eventId, onBack }) => {
             </Box>
           </Box>
         </>
+      ) : (
+        <div>
+          <GenericTable
+            data={selectedAthletes}
+            columns={confirmSeedTimeColumns}
+            actions={actions}
+          />
+          <Dialog open={isFormOpen} fullWidth>
+            <UpdateSeedTime
+              eventId={eventId}
+              athlete={selectedAthletes[athleteToUpdate]}
+              onUpdate={handleUpdateSeedTime}
+              onCancel={() => setIsFormOpen(false)}
+            />
+          </Dialog>
+        </div>
       )}
     </div>
   );
 };
 
-export default SelectAthlete;
+export default GenerateHeats;

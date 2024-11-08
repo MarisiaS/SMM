@@ -1,7 +1,7 @@
-import { useState, useRef } from "react";
+import { Box, FormHelperText, Grid, Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import { useRef, useState } from "react";
 import { Controller } from "react-hook-form";
-import { Grid, Box, Typography, FormHelperText } from "@mui/material";
 
 const TimeField = ({ label, name, control, rules }) => {
   const inputRefs = useRef([null, null, null]);
@@ -24,7 +24,7 @@ const TimeField = ({ label, name, control, rules }) => {
             const formattedTime = `${
               updatedTime.minutes.padStart(2, "0") || "00"
             }:${updatedTime.seconds.padStart(2, "0") || "00"}.${
-              updatedTime.milliseconds.padStart(2, "0") || "00"
+              updatedTime.milliseconds.padEnd(2, "0") || "00"
             }`;
             if (formattedTime === "00:00.00") {
               onChange(null);
@@ -94,12 +94,8 @@ const TimeField = ({ label, name, control, rules }) => {
               const minutePattern = /^(\d{1,2}):?(\d{2})?\.?(\d{0,2})?$/;
               const minuteMatch = pastedText.match(minutePattern);
               if (minuteMatch) {
-                const [
-                  _,
-                  minutes,
-                  seconds = "00",
-                  milliseconds = "00",
-                ] = minuteMatch;
+                const [_, minutes, seconds = "00", milliseconds = "00"] =
+                  minuteMatch;
                 let shouldPaste = true;
                 if (!minuteMatch[2] && minuteMatch[3]) {
                   shouldPaste = false;
@@ -117,7 +113,7 @@ const TimeField = ({ label, name, control, rules }) => {
                     )}:${seconds}.${milliseconds.padEnd(2, "0")}`
                   );
                   inputRefs.current[2]?.focus();
-                } 
+                }
               }
               break;
             case "seconds":
@@ -130,7 +126,12 @@ const TimeField = ({ label, name, control, rules }) => {
                   seconds: seconds.padStart(2, "0"),
                   milliseconds: milliseconds.padEnd(2, "0"),
                 });
-                onChange(`${"00"}:${seconds.padStart(2, "0")}.${milliseconds.padEnd(2, "0")}`);
+                onChange(
+                  `${"00"}:${seconds.padStart(2, "0")}.${milliseconds.padEnd(
+                    2,
+                    "0"
+                  )}`
+                );
                 inputRefs.current[2]?.focus();
               }
               break;
