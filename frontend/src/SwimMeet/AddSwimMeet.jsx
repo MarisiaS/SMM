@@ -21,7 +21,7 @@ const AddSwimMeet = () => {
     handleSubmit,
     control,
     reset,
-    formState: { isDirty },
+    formState: { isDirty, isValid },
   } = useForm({
     defaultValues: {
       name: "",
@@ -157,6 +157,7 @@ const AddSwimMeet = () => {
               control={control}
               handleCancel={handleCancel}
               options={sites}
+              isValid={isValid}
             />
           </Stack>
         </Stack>
