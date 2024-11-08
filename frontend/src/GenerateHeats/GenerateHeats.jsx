@@ -135,6 +135,7 @@ const GenerateHeats = ({
     setHeatsCreated(true);
     setTimeout(() => {
       if (heatCreationSuccessful) {
+        //This will reload the events data and switch to show the details of the given event
         setGenerateHeatTrigger((prev) => prev + 1);
         switchViews(eventId);
       }
