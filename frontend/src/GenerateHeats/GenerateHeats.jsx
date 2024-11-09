@@ -71,24 +71,29 @@ const GenerateHeats = ({
   setGenerateHeatTrigger,
   switchViews,
 }) => {
+  //States to manage table data
   const [availableAthletes, setAvailableAthletes] = useState([]);
   const [selectedAthletes, setSelectedAthletes] = useState([]);
   const [selectedRightAthletes, setSelectedRightAthletes] = useState({});
   const [selectedLeftAthletes, setSelectedLeftAthletes] = useState({});
+  //State to manage loading
   const [errorOnLoading, setErrorOnLoading] = useState(false);
+  //State to manage search on selectTables
   const [availableSearchTerm, setAvailableSearchTerm] = useState("");
   const [selectedSearchTerm, setSelectedSearchTerm] = useState("");
+  //State to manage change to step 2 of process
   const [areAthletesSelected, setAreAthletesSelected] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [athleteToUpdate, setAthleteToUpdate] = useState({});
+  //State to manage Heat Creation
   const [heatsCreated, setHeatsCreated] = useState(false);
-  const [error, setError] = useState(false);
+  const [errorCreateHeat, setErrorCreateHeat] = useState(false);
 
   const label = "Event " + eventName;
 
   // AlertBox variables
-  let typeAlertCreateHeats = error ? "error" : "success";
-  let messageCreateHeats = error ? error : "Heats created successfully!";
+  let typeAlertCreateHeats = errorCreateHeat ? "error" : "success";
+  let messageCreateHeats = errorCreateHeat ? errorCreateHeat : "Heats created successfully!";
 
   let typeAlertLoading = errorOnLoading ? "error" : "success";
   let messageOnLoading = errorOnLoading
@@ -120,7 +125,7 @@ const GenerateHeats = ({
   };
 
   const handleGenerateHeats = async (selectedAthletes) => {
-    setError(false);
+    setErrorCreateHeat(false);
     let heatCreationSuccessful = false;
     try {
       const response = await SmmApi.createHeats(eventId, {
@@ -128,7 +133,7 @@ const GenerateHeats = ({
       });
       heatCreationSuccessful = true;
     } catch (error) {
-      setError(
+      setErrorCreateHeat(
         "Unable to Create Heats, an unexpected error occurred. Please try again!"
       );
     }
