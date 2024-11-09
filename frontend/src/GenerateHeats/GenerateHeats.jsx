@@ -9,7 +9,7 @@ import {
   NavigateNext as RightIcon,
   Timer as TimeIcon,
 } from "@mui/icons-material";
-import { Box, Dialog, Stack } from "@mui/material";
+import { Box, Dialog, Stack, DialogContent } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "../App.css";
 import { SmmApi } from "../SmmApi.jsx";
@@ -358,10 +358,12 @@ const GenerateHeats = ({
             />
           </Dialog>
           <Dialog open={heatsCreated} fullWidth>
-            <AlertBox
-              type={typeAlertCreateHeats}
-              message={messageCreateHeats}
-            />
+            <DialogContent style={{ padding: "24px" }}>
+              <AlertBox
+                type={typeAlertCreateHeats}
+                message={messageCreateHeats}
+              />
+            </DialogContent>
           </Dialog>
         </div>
       )}
