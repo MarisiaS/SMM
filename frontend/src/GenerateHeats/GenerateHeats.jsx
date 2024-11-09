@@ -85,7 +85,7 @@ const GenerateHeats = ({
   const [areAthletesSelected, setAreAthletesSelected] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [athleteToUpdate, setAthleteToUpdate] = useState({});
-  //State to manage Heat Creation
+  //State to manage Heat Creation (step 3 of process)
   const [heatsCreated, setHeatsCreated] = useState(false);
   const [errorCreateHeat, setErrorCreateHeat] = useState(false);
 
