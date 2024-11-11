@@ -43,7 +43,7 @@ urlpatterns = [
     path('event_heat/<int:event_id>/<int:heat_num>/', HeatDetailView.as_view(), name='heat-detail'),
     path('event_lane/<int:event_id>/', LaneBatchView.as_view(), name='lanes-event'),
     path('event_lane/<int:event_id>/<int:lane_num>/', LaneDetailView.as_view(), name='lane-detail'),
-    path('download-heats/<int:event_id>/<int:heat_num>/<str:res_type>',DownloadHeats.as_view(),name='downloadHeats_view')
+    path('download-heats/<int:event_id>/<str:res_type>',DownloadHeats.as_view(),name='downloadHeats_view')
 
 ]
 
