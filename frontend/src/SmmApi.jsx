@@ -199,4 +199,34 @@ export class SmmApi {
       headers: getConfig(),
     });
   }
+
+  static async downloadHeatDetails(swimMeetName, eventName, eventId) {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/download-heats-details/${eventId}/`,
+        {},
+        {
+          headers: getConfig(),
+          responseType: "blob", // Important for file downloads
+        }
+      );
+
+      // Create a URL for the blob and trigger the download
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+
+      // Set the file name
+      link.setAttribute("download", `${swimMeetName}_${eventName}.xlsx`);
+
+      document.body.appendChild(link);
+      link.click();
+
+      // Cleanup
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading heats file:", error);
+      throw error;
+    }
+  }
 }
