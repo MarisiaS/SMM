@@ -48,8 +48,8 @@ urlpatterns = [
          LaneBatchView.as_view(), name='lanes-event'),
     path('event_lane/<int:event_id>/<int:lane_num>/',
          LaneDetailView.as_view(), name='lane-detail'),
-    path('download-heats/<int:event_id>/',
-         DownloadHeats.as_view(), name='downloadHeats_view')
+    path('download-heats-details/<int:event_id>/',
+         DownloadHeats.as_view(), name='download-heats-details')
 
 ]
 
