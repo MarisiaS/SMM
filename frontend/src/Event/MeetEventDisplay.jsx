@@ -12,6 +12,7 @@ import {
   EmojiEvents as RankingIcon,
   Add as AddIcon,
   Build as BuildIcon,
+  Download as DownloadIcon,
 } from "@mui/icons-material";
 import MyButton from "../components/FormElements/MyButton.jsx";
 import { Stack, Box } from "@mui/material";
@@ -74,6 +75,20 @@ const MeetEventDisplay = () => {
   const handleRankingClick = (id) => {
     console.log("Ranking ...");
   };
+  const handleDownloadDetails = async (id) => {
+    setSelectedEventIndex(Number(id));
+    try {
+      await SmmApi.downloadHeatDetails(
+        meetData.name,
+        eventData[selectedEventIndex].name,
+        eventData[selectedEventIndex].id
+      );
+      console.log("Download initiated.");
+    } catch (error) {
+      console.error("Download failed:", error);
+      alert("There was an error downloading the file. Please try again.");
+    }
+  };
 
   const actions = [
     {
@@ -101,6 +116,13 @@ const MeetEventDisplay = () => {
       icon: <RankingIcon />,
       onClick: handleRankingClick,
       tip: "Go to ranking",
+    },
+    {
+      name: "Download Heats Details",
+      icon: <DownloadIcon />,
+      onClick: handleDownloadDetails,
+      tip: "Download Heats Details",
+      visible: (row) => row.original.total_num_heats > 0,
     },
   ];
 
@@ -201,6 +223,7 @@ const MeetEventDisplay = () => {
             onPrevious={handlePreviousEvent}
             onNext={handleNextEvent}
             onGenerate={handleGenerateButton}
+            onDownload={handleDownloadDetails}
             disablePrevious={isFirstEvent}
             disableNext={isLastEvent}
           />
