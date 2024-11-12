@@ -3,9 +3,12 @@ import { SmmApi } from "../SmmApi.jsx";
 import ItemPaginationBar from "../components/Common/ItemPaginationBar";
 import TabPanel from "../components/Common/TabPanel";
 import ExpandableTable from "../components/Common/ExpandableTable";
-import { ContentPaste as BackIcon } from "@mui/icons-material";
 import AlertBox from "../components/Common/AlertBox.jsx";
-import { Build as BuildIcon } from "@mui/icons-material";
+import {
+  ContentPaste as BackIcon,
+  Build as BuildIcon,
+  Download as DownloadIcon,
+} from "@mui/icons-material";
 import { Stack } from "@mui/material";
 import { formatSeedTime } from "../utils/helperFunctions.js";
 
@@ -16,6 +19,7 @@ const EventDetails = ({
   onPrevious,
   onNext,
   onGenerate,
+  onDownload,
   disablePrevious,
   disableNext,
 }) => {
@@ -60,6 +64,12 @@ const EventDetails = ({
       label: "Back to events",
       icon: <BackIcon />,
       onClick: onBack,
+    },
+    {
+      label: "Download Details",
+      icon: <DownloadIcon />,
+      onClick: onDownload,
+      disabled: numHeats === 0,
     },
   ];
 
