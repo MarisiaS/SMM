@@ -10,13 +10,13 @@ from openpyxl.styles import Alignment
 
 from rest_framework.views import APIView
 from api.serializers.HeatDisplaySerializer import HeatSerializer, LaneSerializer
-from datetime import timedelta
+sx from datetime import timedelta
 
 
 @extend_schema(tags=['Download'])
 class DownloadHeats(APIView):
 
-    def generate_excel_from_lanes_data(self, swim_meet_name, event_name, heats_data, lanes_data):
+    def generate_excel_for_event_heats(self, swim_meet_name, event_name, heats_data, lanes_data):
         # Create an in-memory workbook
         workbook = Workbook()
         heat_worksheet = workbook.active
@@ -208,4 +208,4 @@ class DownloadHeats(APIView):
                     "heats": heats_data
                 })
 
-        return self.generate_excel_from_lanes_data(swim_meet_name, event_name, by_heats_data, by_lanes_data)
+        return self.generate_excel_for_event_heats(swim_meet_name, event_name, by_heats_data, by_lanes_data)
