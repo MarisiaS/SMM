@@ -10,8 +10,10 @@ from openpyxl.styles import Alignment
 
 from rest_framework.views import APIView
 from api.serializers.HeatDisplaySerializer import HeatSerializer, LaneSerializer
+from datetime import timedelta
 
 
+@extend_schema(tags=['Download'])
 class DownloadHeats(APIView):
 
     def generate_excel_from_lanes_data(self, swim_meet_name, event_name, heats_data, lanes_data):
@@ -21,14 +23,14 @@ class DownloadHeats(APIView):
         heat_worksheet.title = "By Heats"
 
         # Headers for the heats table
-        headers = ["Lane", "Athlete", "Seed Time", "Heat Time"]
+        heats_headers = ["Lane", "Athlete", "Seed Time", "Heat Time"]
 
         current_row = 1
 
         title_cell = heat_worksheet.cell(row=current_row, column=1)
         title_cell.value = event_name
         heat_worksheet.merge_cells(
-            start_row=current_row, start_column=1, end_row=current_row, end_column=len(headers))
+            start_row=current_row, start_column=1, end_row=current_row, end_column=len(heats_headers))
         title_cell = heat_worksheet.cell(row=current_row, column=1)
         title_cell.style = 'Title'
         title_cell.alignment = Alignment(
@@ -44,13 +46,13 @@ class DownloadHeats(APIView):
             title_cell = heat_worksheet.cell(row=current_row, column=1)
             title_cell.value = heat_name
             heat_worksheet.merge_cells(
-                start_row=current_row, start_column=1, end_row=current_row, end_column=len(headers))
+                start_row=current_row, start_column=1, end_row=current_row, end_column=len(heats_headers))
             title_cell.style = 'Title'
 
             current_row += 1
 
             # Set Headers
-            for col_num, header in enumerate(headers, start=1):
+            for col_num, header in enumerate(heats_headers, start=1):
                 cell = heat_worksheet.cell(row=current_row, column=col_num)
                 cell.value = header
                 cell.style = 'Headline 1'
@@ -69,6 +71,11 @@ class DownloadHeats(APIView):
 
             current_row += 2
 
+        # Adjust column widths
+        for col_num, header in enumerate(heats_headers, 1):
+            col_letter = get_column_letter(col_num)
+            heat_worksheet.column_dimensions[col_letter].width = 15
+
        # ========================= Lanes Data Worksheet =========================
         lanes_worksheet = workbook.create_sheet(title="By Lanes")
 
@@ -79,7 +86,7 @@ class DownloadHeats(APIView):
         title_cell = lanes_worksheet.cell(row=current_row, column=1)
         title_cell.value = event_name
         lanes_worksheet.merge_cells(
-            start_row=current_row, start_column=1, end_row=current_row, end_column=len(headers))
+            start_row=current_row, start_column=1, end_row=current_row, end_column=len(lanes_headers))
         title_cell = lanes_worksheet.cell(row=current_row, column=1)
         title_cell.style = 'Title'
         title_cell.alignment = Alignment(
@@ -88,7 +95,7 @@ class DownloadHeats(APIView):
         current_row += 2
 
         for lane in lanes_data:
-            lane_name = heat.get("lane_name")
+            lane_name = lane.get("lane_name")
             heats = lane.get("heats", [])
 
             # Set the title for each heat in the first cell of the row
@@ -98,16 +105,15 @@ class DownloadHeats(APIView):
                 start_row=current_row, start_column=1, end_row=current_row, end_column=len(lanes_headers))
             title_cell.style = 'Title'
 
-            # Move to the next row for headers
             current_row += 1
 
-            # Add headers
+            # Set headers
             for col_num, header in enumerate(lanes_headers, start=1):
                 cell = lanes_worksheet.cell(row=current_row, column=col_num)
                 cell.value = header
                 cell.style = 'Headline 1'
 
-            # Populate the table with lane data for the current heat
+            # Populate the table with heat data for the current lane
             for heat in heats:
                 current_row += 1
                 lanes_worksheet.cell(row=current_row, column=1,
@@ -120,10 +126,9 @@ class DownloadHeats(APIView):
             current_row += 2
 
         # Adjust column widths for readability in both worksheets
-        for worksheet in [heat_worksheet, lanes_worksheet]:
-            for col_num in range(1, len(headers) + 1):
-                col_letter = get_column_letter(col_num)
-                worksheet.column_dimensions[col_letter].width = 15
+        for col_num in range(1, len(lanes_headers) + 1):
+            col_letter = get_column_letter(col_num)
+            lanes_worksheet.column_dimensions[col_letter].width = 15
 
         # Save the workbook to an in-memory file
         file_buffer = BytesIO()
@@ -166,12 +171,14 @@ class DownloadHeats(APIView):
                 for lane_num in range(1, num_lanes + 1):
                     lane = Heat.objects.filter(
                         event_id=event_id, num_heat=heat_num, lane_num=lane_num).first()
-
+                    seed_time = lane.seed_time if lane else None
+                    if seed_time and seed_time == timedelta(days=200):
+                        seed_time = "NT"
                     lanes_data.append(
                         {
                             "lane_num": lane_num,
                             "athlete_full_name": lane.athlete.full_name if lane and lane.athlete else None,
-                            "seed_time": lane.seed_time if lane else None,
+                            "seed_time": seed_time,
                             "heat_time": lane.heat_time if lane else None,
                         }
                     )
@@ -181,7 +188,6 @@ class DownloadHeats(APIView):
                     "heat_name": f"Heat {heat_num}",
                     "lanes": lanes_data
                 })
-            print(by_heats_data)
             by_lanes_data = []
 
             for lane_num in range(1, num_lanes+1):
@@ -193,7 +199,7 @@ class DownloadHeats(APIView):
                         {
                             "num_heat": heat_num,
                             "athlete_full_name": heat.athlete.full_name if heat and heat.athlete else None,
-                            "seed_time": heat.seed_time if heat else None,
+                            "heat_time": heat.heat_time if heat else None,
                         }
                     )
                 by_lanes_data.append({
@@ -202,5 +208,4 @@ class DownloadHeats(APIView):
                     "heats": heats_data
                 })
 
-        print(by_lanes_data)
         return self.generate_excel_from_lanes_data(swim_meet_name, event_name, by_heats_data, by_lanes_data)
