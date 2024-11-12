@@ -10,7 +10,7 @@ from openpyxl.styles import Alignment
 
 from rest_framework.views import APIView
 from api.serializers.HeatDisplaySerializer import HeatSerializer, LaneSerializer
-sx from datetime import timedelta
+from datetime import timedelta
 
 
 @extend_schema(tags=['Download'])
