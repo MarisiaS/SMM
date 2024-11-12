@@ -30,20 +30,26 @@ router.register(r'athlete', AthleteViewSet, basename='athlete')
 router.register(r'timerecord', TimeRecordViewSet, basename='timerecord')
 
 
-
 urlpatterns = [
     path("login/", TokenObtainPairView.as_view()),
     path("login/refresh/", CustomTokenRefreshView.as_view()),
     path('logout/', LogoutView.as_view()),
     path('auth/', include('djoser.urls')),
-    path('meet_schools/<int:meet_id>/', MeetSchoolView.as_view(), name='meet-schools'),
+    path('meet_schools/<int:meet_id>/',
+         MeetSchoolView.as_view(), name='meet-schools'),
     path('meet_event/<int:meet_id>/', MeetEventView.as_view(), name='events-meet'),
-    path('seed_times/<int:event_id>/', AthleteSeedTimeView.as_view(), name='seed-times'),
-    path('event_heat/<int:event_id>/', HeatBatchView.as_view(), name='heats-event'),
-    path('event_heat/<int:event_id>/<int:heat_num>/', HeatDetailView.as_view(), name='heat-detail'),
-    path('event_lane/<int:event_id>/', LaneBatchView.as_view(), name='lanes-event'),
-    path('event_lane/<int:event_id>/<int:lane_num>/', LaneDetailView.as_view(), name='lane-detail'),
-    path('download-heats/<int:event_id>/<str:res_type>',DownloadHeats.as_view(),name='downloadHeats_view')
+    path('seed_times/<int:event_id>/',
+         AthleteSeedTimeView.as_view(), name='seed-times'),
+    path('event_heat/<int:event_id>/',
+         HeatBatchView.as_view(), name='heats-event'),
+    path('event_heat/<int:event_id>/<int:heat_num>/',
+         HeatDetailView.as_view(), name='heat-detail'),
+    path('event_lane/<int:event_id>/',
+         LaneBatchView.as_view(), name='lanes-event'),
+    path('event_lane/<int:event_id>/<int:lane_num>/',
+         LaneDetailView.as_view(), name='lane-detail'),
+    path('download-heats/<int:event_id>/',
+         DownloadHeats.as_view(), name='downloadHeats_view')
 
 ]
 
