@@ -68,8 +68,7 @@ const GenerateHeats = ({
   eventName,
   eventId,
   onBack,
-  setGenerateHeatTrigger,
-  switchViews,
+  processCompletion,
 }) => {
   //States to manage table data
   const [availableAthletes, setAvailableAthletes] = useState([]);
@@ -141,8 +140,7 @@ const GenerateHeats = ({
     setTimeout(() => {
       if (heatCreationSuccessful) {
         //This will reload the events data and switch to show the details of the given event
-        setGenerateHeatTrigger((prev) => prev + 1);
-        switchViews(eventId);
+        processCompletion(eventId);
       }
       setHeatsCreated(false);
     }, 2000);

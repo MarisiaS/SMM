@@ -175,8 +175,9 @@ const MeetEventDisplay = () => {
     }
   };
 
-  const handleSwitchGenerateToDetails = (eventId) => {
+  const handleGenerateHeatProcessCompletion = (eventId) => {
     const index = eventData.findIndex((item) => item.id === eventId);
+    setGenerateHeatTrigger((prev) => prev + 1);
     if (index === -1) {
       setShowGenerateHeats(false);
       setShowEventDetails(false);
@@ -221,13 +222,11 @@ const MeetEventDisplay = () => {
             disableNext={isLastEvent}
           />
         ) : showGenerateHeats && eventData[selectedEventIndex] ? (
-          //Need to change to select athletes
           <GenerateHeats
             eventName={eventData[selectedEventIndex].name}
             eventId={eventData[selectedEventIndex].id}
             onBack={handleBackToEvents}
-            setGenerateHeatTrigger={setGenerateHeatTrigger}
-            switchViews={handleSwitchGenerateToDetails}
+            processCompletion={handleGenerateHeatProcessCompletion}
           />
         ) : (
           <>
