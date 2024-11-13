@@ -9,7 +9,7 @@ import AlertBox from "../components/Common/AlertBox.jsx";
 import { Build as BuildIcon } from "@mui/icons-material";
 import Title from "../components/Common/Title.jsx";
 
-const AddEvent = () => {
+const AddEvent = ({onBack}) => {
   const { meetId } = useParams();
   const [error, setError] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
@@ -87,9 +87,6 @@ const AddEvent = () => {
     };
   }, []);
 
-  const handleCancel = () => {
-    navigate(`/swim-meet/${meetId}/events`, { state: meetData });
-  };
 
   const handleAddHeats = () => {
     //Change it to add heats for the new event
@@ -103,7 +100,6 @@ const AddEvent = () => {
   let actionButtons = error ? [] : actionButtonsSuccess;
 
   const submission = async (data) => {
-    setSubmitted(true);
     try {
       const response = await SmmApi.createEvent(meetId, data);
       setLastEventId(response.data.id);
@@ -118,8 +114,8 @@ const AddEvent = () => {
           "Unable to create the Event, an unexpected error occurred. Please try again!"
         );
       }
-      console.log(error);
     }
+    setSubmitted(true);
     reset({
       group: groups[0]?.id || "",
       event_type: eventTypes[0]?.id || "",
@@ -143,7 +139,6 @@ const AddEvent = () => {
   } else {
     return (
       <div>
-        <Title data={meetData} fields={["name", "date", "site_name"]} />
         <Stack alignItems="center" justifyContent="space-between">
           <Stack alignItems="center" justifyContent="space-between">
             {submitted && (
@@ -158,7 +153,7 @@ const AddEvent = () => {
             <AddEventForm
               handleSubmit={handleSubmit(submission)}
               control={control}
-              handleCancel={handleCancel}
+              handleCancel={onBack}
               options={{ groups, eventTypes }}
             />
           </Stack>
