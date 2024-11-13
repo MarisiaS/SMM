@@ -47,6 +47,7 @@ const MeetEventDisplay = () => {
 
   //AddNew states
   const [showAddEvent, setShowAddEvent] = useState(false);
+  const [targetEvent, setTargetEvent] = useState(null);
 
   //GenerateHeats states
   const [reloadEventDataTrigger, setReloadEventDataTrigger] = useState(0);
@@ -151,7 +152,7 @@ const MeetEventDisplay = () => {
     setShowEventDetails(false);
     setShowGenerateHeats(false);
     setShowAddEvent(false);
-    setSelectedEventIndex(null);  
+    setSelectedEventIndex(null);
   };
 
   const handleGenerateButton = () => {
@@ -193,29 +194,22 @@ const MeetEventDisplay = () => {
     if (index === -1) {
       setShowGenerateHeats(false);
       setShowEventDetails(false);
+      setShowAddEvent(false);
       setSelectedEventIndex(null);
     } else {
       setShowGenerateHeats(false);
       setSelectedEventIndex(index);
+      setShowAddEvent(false);
       setShowEventDetails(true);
     }
   };
 
-  // const handleAddHeatsToNewEvent = (eventId) => {
-  //   let index = -1;
-  //   let currentOffset = 0;
-  //   while (index === -1){
-  //     setOffset(currentOffset);
-  //     const index = eventData.findIndex((item) => item.id === eventId);
-  //     if (index != -1){
-  //     setSelectedEventIndex(index);
-  //     setShowGenerateHeats(true);
-  //     setShowEventDetails(false);
-  //     break;
-  //     }
-  //     currentOffset +=limit;
-  //   }
-  // };
+  const handleAddHeatsToNewEvent = () => {
+    setSelectedEventIndex(null);
+    setShowAddEvent(false);
+    setShowEventDetails(false);
+    setShowGenerateHeats(true);
+  };
 
   const isFirstEvent = page === 0 && selectedEventIndex === 0;
   const isLastEvent = offset + selectedEventIndex + 1 >= count;
@@ -256,8 +250,19 @@ const MeetEventDisplay = () => {
             onBack={handleBackToEvents}
             onProcessCompletion={handleGenerateHeatProcessCompletion}
           />
+        ) : showGenerateHeats && targetEvent ? (
+          <GenerateHeats
+            eventName={targetEvent.name}
+            eventId={targetEvent.id}
+            onBack={handleBackToEvents}
+            onProcessCompletion={handleGenerateHeatProcessCompletion}
+          />
         ) : showAddEvent ? (
-          <AddEvent onBack={handleBackToEvents} />
+          <AddEvent
+            onBack={handleBackToEvents}
+            onCreateHeats={handleAddHeatsToNewEvent}
+            setTargetEvent={setTargetEvent}
+          />
         ) : (
           <>
             <Stack
