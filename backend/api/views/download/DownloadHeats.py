@@ -1,15 +1,11 @@
 from io import BytesIO
-import pandas as pd
 from api.models import Heat, MeetEvent
-from django.http import FileResponse, HttpResponse
-from docx import Document
-from drf_spectacular.utils import OpenApiParameter, OpenApiResponse, extend_schema
+from django.http import HttpResponse
+from drf_spectacular.utils import OpenApiResponse, extend_schema
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Alignment
-
 from rest_framework.views import APIView
-from api.serializers.HeatDisplaySerializer import HeatSerializer, LaneSerializer
 from datetime import timedelta
 
 
