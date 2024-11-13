@@ -9,17 +9,13 @@ import AlertBox from "../components/Common/AlertBox.jsx";
 import { Build as BuildIcon } from "@mui/icons-material";
 import Title from "../components/Common/Title.jsx";
 
-const AddEvent = ({onBack}) => {
+const AddEvent = ({ onBack, onCreateHeats, setTargetEvent }) => {
   const { meetId } = useParams();
   const [error, setError] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
-  const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false);
   const [groups, setGroups] = useState([{ id: "", name: "", gender: "" }]);
   const [eventTypes, setEventTypes] = useState([{ id: "", name: "" }]);
-  const [lastEventId, setLastEventId] = useState(null);
-  const location = useLocation();
-  const meetData = location.state;
   const {
     handleSubmit,
     control,
@@ -52,15 +48,16 @@ const AddEvent = ({onBack}) => {
     let ignore = false;
     async function fetchOptions() {
       try {
-        const responseGroups = await SmmApi.getGroups();
+        const [responseGroups, responseEvents] = await Promise.all([
+          SmmApi.getGroups(),
+          SmmApi.getEventTypes(),
+        ]);
         const _groups = responseGroups.data.results.map((groups) => {
           return {
             id: groups.id,
             name: groups.name,
           };
         });
-
-        const responseEvents = await SmmApi.getEventTypes();
         const _eventTypes = responseEvents.data.results.map((eventTypes) => {
           return {
             id: eventTypes.id,
@@ -78,7 +75,6 @@ const AddEvent = ({onBack}) => {
         }
       } catch (error) {
         setErrorOnLoading(true);
-        console.log(error);
       }
     }
     fetchOptions();
@@ -87,14 +83,12 @@ const AddEvent = ({onBack}) => {
     };
   }, []);
 
-
-  const handleAddHeats = () => {
-    //Change it to add heats for the new event
-    navigate(`/heats`);
-  };
-
   let actionButtonsSuccess = [
-    { label: "heats", onClick: handleAddHeats, icon: <BuildIcon /> },
+    {
+      label: "Create Heats",
+      onClick: onCreateHeats,
+      icon: <BuildIcon />,
+    },
   ];
 
   let actionButtons = error ? [] : actionButtonsSuccess;
@@ -102,7 +96,8 @@ const AddEvent = ({onBack}) => {
   const submission = async (data) => {
     try {
       const response = await SmmApi.createEvent(meetId, data);
-      setLastEventId(response.data.id);
+      setTargetEvent(response.data);
+      setError(false);
     } catch (error) {
       if (error.response && error.response.status === 400) {
         const nonFieldErrorMessage = error.response.data.non_field_errors
