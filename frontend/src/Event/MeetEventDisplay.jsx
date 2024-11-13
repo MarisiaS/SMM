@@ -16,6 +16,7 @@ import PaginationBar from "../components/Common/PaginationBar.jsx";
 import Title from "../components/Common/Title.jsx";
 import MyButton from "../components/FormElements/MyButton.jsx";
 import EventDetails from "./EventDetails.jsx";
+import AddEvent from "./AddEvent.jsx";
 
 const columns = [
   {
@@ -44,8 +45,11 @@ const MeetEventDisplay = () => {
   const [selectedEventIndex, setSelectedEventIndex] = useState(null);
   const [navegationDirection, setNavegationDirection] = useState(null);
 
+  //AddNew states
+  const [showAddEvent, setShowAddEvent] = useState(false);
+
   //GenerateHeats states
-  const [generateHeatTrigger, setGenerateHeatTrigger] = useState(0);
+  const [reloadEventDataTrigger, setReloadEventDataTrigger] = useState(0);
 
   //Pagination States
   const [count, setCount] = useState(0);
@@ -60,14 +64,16 @@ const MeetEventDisplay = () => {
 
   const handleGenerateClick = (id) => {
     setSelectedEventIndex(Number(id));
-    setShowGenerateHeats(true);
+    setShowAddEvent(false);
     setShowEventDetails(false);
+    setShowGenerateHeats(true);
   };
 
   const handleDetailsClick = (id) => {
     setSelectedEventIndex(Number(id));
-    setShowEventDetails(true);
+    setShowAddEvent(false);
     setShowGenerateHeats(false);
+    setShowEventDetails(true);
   };
 
   const handleDeleteClick = (id) => {
@@ -131,20 +137,26 @@ const MeetEventDisplay = () => {
     return () => {
       ignore = true;
     };
-  }, [offset, limit, generateHeatTrigger]);
+  }, [offset, limit, reloadEventDataTrigger]);
 
   const handleAddNew = () => {
-    navigate(`/add-event/${meetId}`, { state: meetData });
-  };
-
-  const handleBackToEvents = () => {
     setShowEventDetails(false);
     setShowGenerateHeats(false);
     setSelectedEventIndex(null);
+    setShowAddEvent(true);
+  };
+
+  const handleBackToEvents = () => {
+    setReloadEventDataTrigger((prev) => prev + 1);
+    setShowEventDetails(false);
+    setShowGenerateHeats(false);
+    setShowAddEvent(false);
+    setSelectedEventIndex(null);  
   };
 
   const handleGenerateButton = () => {
     setShowEventDetails(false);
+    setShowAddEvent(false);
     setShowGenerateHeats(true);
   };
 
@@ -177,7 +189,7 @@ const MeetEventDisplay = () => {
 
   const handleGenerateHeatProcessCompletion = (eventId) => {
     const index = eventData.findIndex((item) => item.id === eventId);
-    setGenerateHeatTrigger((prev) => prev + 1);
+    setReloadEventDataTrigger((prev) => prev + 1);
     if (index === -1) {
       setShowGenerateHeats(false);
       setShowEventDetails(false);
@@ -188,6 +200,22 @@ const MeetEventDisplay = () => {
       setShowEventDetails(true);
     }
   };
+
+  // const handleAddHeatsToNewEvent = (eventId) => {
+  //   let index = -1;
+  //   let currentOffset = 0;
+  //   while (index === -1){
+  //     setOffset(currentOffset);
+  //     const index = eventData.findIndex((item) => item.id === eventId);
+  //     if (index != -1){
+  //     setSelectedEventIndex(index);
+  //     setShowGenerateHeats(true);
+  //     setShowEventDetails(false);
+  //     break;
+  //     }
+  //     currentOffset +=limit;
+  //   }
+  // };
 
   const isFirstEvent = page === 0 && selectedEventIndex === 0;
   const isLastEvent = offset + selectedEventIndex + 1 >= count;
@@ -226,8 +254,10 @@ const MeetEventDisplay = () => {
             eventName={eventData[selectedEventIndex].name}
             eventId={eventData[selectedEventIndex].id}
             onBack={handleBackToEvents}
-            processCompletion={handleGenerateHeatProcessCompletion}
+            onProcessCompletion={handleGenerateHeatProcessCompletion}
           />
+        ) : showAddEvent ? (
+          <AddEvent onBack={handleBackToEvents} />
         ) : (
           <>
             <Stack
