@@ -47,8 +47,11 @@ const EventDetails = ({
         }
       } catch (error) {
         setErrorOnLoading(true);
-      } finally {
-        setLoading(false);
+      }finally {
+        setTimeout(() => {
+          setLoading(false);
+        }, 100);
+        
       }
     }
     fetching();
@@ -56,6 +59,7 @@ const EventDetails = ({
       ignore = true;
     };
   }, [eventId]);
+
 
   //What is needed for the itemPaginationBar
   const label = "Event " + eventName;
