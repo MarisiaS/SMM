@@ -140,6 +140,41 @@ const MeetEventDisplay = () => {
     };
   }, [offset, limit, reloadEventDataTrigger]);
 
+  useEffect(() => {
+    if (targetEvent) {
+      const locateNewEvent = async () => {
+        let pageToNavigate = 0;
+        while (true) {
+          const response = await SmmApi.getSwimMeetEvents(
+            meetId,
+            pageToNavigate * limit,
+            limit
+          );
+          console.log("Page to navigate:", pageToNavigate);
+          console.log(response.results);
+          const foundIndex = response.results.findIndex(
+            (event) => event.id === targetEvent.id
+          );
+
+          if (foundIndex !== -1) {
+            // Event found on this page, update the page and index
+            setPage(pageToNavigate);
+            setOffset(pageToNavigate * limit);
+            setSelectedEventIndex(foundIndex);
+            setEventData(response.results);
+            break;
+          }
+          if ((pageToNavigate + 1) * limit >= response.count) {
+            setSelectedEventIndex(null);
+            break;
+          }
+          pageToNavigate += 1; // Move to the next page
+        }
+      };
+      locateNewEvent();
+    }
+  }, [targetEvent]);
+
   const handleAddNew = () => {
     setShowEventDetails(false);
     setShowGenerateHeats(false);
@@ -205,10 +240,16 @@ const MeetEventDisplay = () => {
   };
 
   const handleAddHeatsToNewEvent = () => {
-    setSelectedEventIndex(null);
-    setShowAddEvent(false);
-    setShowEventDetails(false);
-    setShowGenerateHeats(true);
+    setReloadEventDataTrigger((prev) => prev + 1);
+    if(selectedEventIndex){
+      setShowAddEvent(false);
+      setShowEventDetails(false);
+      setShowGenerateHeats(true);
+    } else{
+      setShowAddEvent(false);
+      setShowEventDetails(false);
+      setShowGenerateHeats(false);
+    }
   };
 
   const isFirstEvent = page === 0 && selectedEventIndex === 0;
@@ -247,13 +288,6 @@ const MeetEventDisplay = () => {
           <GenerateHeats
             eventName={eventData[selectedEventIndex].name}
             eventId={eventData[selectedEventIndex].id}
-            onBack={handleBackToEvents}
-            onProcessCompletion={handleGenerateHeatProcessCompletion}
-          />
-        ) : showGenerateHeats && targetEvent ? (
-          <GenerateHeats
-            eventName={targetEvent.name}
-            eventId={targetEvent.id}
             onBack={handleBackToEvents}
             onProcessCompletion={handleGenerateHeatProcessCompletion}
           />
