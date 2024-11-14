@@ -150,8 +150,6 @@ const MeetEventDisplay = () => {
             pageToNavigate * limit,
             limit
           );
-          console.log("Page to navigate:", pageToNavigate);
-          console.log(response.results);
           const foundIndex = response.results.findIndex(
             (event) => event.id === targetEvent.id
           );
@@ -241,11 +239,11 @@ const MeetEventDisplay = () => {
 
   const handleAddHeatsToNewEvent = () => {
     setReloadEventDataTrigger((prev) => prev + 1);
-    if(selectedEventIndex){
+    if (selectedEventIndex) {
       setShowAddEvent(false);
       setShowEventDetails(false);
       setShowGenerateHeats(true);
-    } else{
+    } else {
       setShowAddEvent(false);
       setShowEventDetails(false);
       setShowGenerateHeats(false);
