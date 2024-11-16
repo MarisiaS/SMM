@@ -83,7 +83,6 @@ const MeetEventDisplay = () => {
         eventData[selectedEventIndex].name,
         eventData[selectedEventIndex].id
       );
-      console.log("Download initiated.");
     } catch (error) {
       console.error("Download failed:", error);
       alert("There was an error downloading the file. Please try again.");
