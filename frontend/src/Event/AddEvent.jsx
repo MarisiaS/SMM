@@ -7,9 +7,8 @@ import { SmmApi } from "../SmmApi.jsx";
 import AddEventForm from "./AddEventForm.jsx";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import { Build as BuildIcon } from "@mui/icons-material";
-import Title from "../components/Common/Title.jsx";
 
-const AddEvent = ({ onBack, onCreateHeats, setTargetEvent }) => {
+const AddEvent = ({ onBack, onCreateHeats, onCreateEvent }) => {
   const { meetId } = useParams();
   const [error, setError] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
@@ -96,7 +95,8 @@ const AddEvent = ({ onBack, onCreateHeats, setTargetEvent }) => {
   const submission = async (data) => {
     try {
       const response = await SmmApi.createEvent(meetId, data);
-      setTargetEvent(response.data);
+      //setTargetEvent(response.data);
+      onCreateEvent();
       setError(false);
     } catch (error) {
       if (error.response && error.response.status === 400) {
