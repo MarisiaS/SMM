@@ -35,7 +35,7 @@ const MeetEventDisplay = () => {
   const { meetId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const meetData = location.state;
+  const meetData = location.state?.meetData;  
   const [eventData, setEventData] = useState([]);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
 
@@ -46,8 +46,8 @@ const MeetEventDisplay = () => {
   const [navegationDirection, setNavegationDirection] = useState(null);
 
   //AddNew states
-  const [showAddEvent, setShowAddEvent] = useState(false);
-  const [targetEvent, setTargetEvent] = useState(null);
+  const [showAddEvent, setShowAddEvent] = useState(location.state?.showAddEvent || false);
+  const [newEventTigger, setNewEventTrigger] = useState(0);
 
   //GenerateHeats states
   const [reloadEventDataTrigger, setReloadEventDataTrigger] = useState(0);
@@ -141,43 +141,26 @@ const MeetEventDisplay = () => {
   }, [offset, limit, reloadEventDataTrigger]);
 
   useEffect(() => {
-    if (targetEvent) {
-      const locateNewEvent = async () => {
-        let pageToNavigate = 0;
-        while (true) {
-          const response = await SmmApi.getSwimMeetEvents(
-            meetId,
-            pageToNavigate * limit,
-            limit
-          );
-          const foundIndex = response.results.findIndex(
-            (event) => event.id === targetEvent.id
-          );
-
-          if (foundIndex !== -1) {
-            // Event found on this page, update the page and index
-            setPage(pageToNavigate);
-            setOffset(pageToNavigate * limit);
-            setSelectedEventIndex(foundIndex);
-            setEventData(response.results);
-            break;
-          }
-          if ((pageToNavigate + 1) * limit >= response.count) {
-            setSelectedEventIndex(null);
-            break;
-          }
-          pageToNavigate += 1; // Move to the next page
-        }
-      };
-      locateNewEvent();
-    }
-  }, [targetEvent]);
+    const lastIndex = count % limit;
+    const lastOffset = count - lastIndex;
+    const lastPage = ~~(count / limit);
+    setSelectedEventIndex(lastIndex);
+    setPage(lastPage);
+    // On reload data once
+    offset !== lastOffset
+      ? setOffset(lastOffset)
+      : setReloadEventDataTrigger((prev) => prev + 1);
+  }, [newEventTigger]);
 
   const handleAddNew = () => {
     setShowEventDetails(false);
     setShowGenerateHeats(false);
     setSelectedEventIndex(null);
     setShowAddEvent(true);
+  };
+
+  const handleNewEventCreated = () => {
+    setNewEventTrigger((prev) => prev + 1);
   };
 
   const handleBackToEvents = () => {
@@ -188,7 +171,7 @@ const MeetEventDisplay = () => {
     setSelectedEventIndex(null);
   };
 
-  const handleGenerateButton = () => {
+  const handleGenerateButtonOnEventDetails = () => {
     setShowEventDetails(false);
     setShowAddEvent(false);
     setShowGenerateHeats(true);
@@ -238,15 +221,14 @@ const MeetEventDisplay = () => {
   };
 
   const handleAddHeatsToNewEvent = () => {
-    setReloadEventDataTrigger((prev) => prev + 1);
-    if (selectedEventIndex) {
-      setShowAddEvent(false);
-      setShowEventDetails(false);
-      setShowGenerateHeats(true);
-    } else {
+    if (selectedEventIndex === null) {
       setShowAddEvent(false);
       setShowEventDetails(false);
       setShowGenerateHeats(false);
+    } else {
+      setShowAddEvent(false);
+      setShowEventDetails(false);
+      setShowGenerateHeats(true);
     }
   };
 
@@ -278,7 +260,7 @@ const MeetEventDisplay = () => {
             onBack={handleBackToEvents}
             onPrevious={handlePreviousEvent}
             onNext={handleNextEvent}
-            onGenerate={handleGenerateButton}
+            onGenerate={handleGenerateButtonOnEventDetails}
             disablePrevious={isFirstEvent}
             disableNext={isLastEvent}
           />
@@ -293,7 +275,7 @@ const MeetEventDisplay = () => {
           <AddEvent
             onBack={handleBackToEvents}
             onCreateHeats={handleAddHeatsToNewEvent}
-            setTargetEvent={setTargetEvent}
+            onCreateEvent={handleNewEventCreated}
           />
         ) : (
           <>
