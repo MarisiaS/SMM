@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import SwimMeetForm from "./SwimMeetForm.jsx";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import { Add as AddIcon } from "@mui/icons-material";
+import MeetEventDisplay from "../Event/MeetEventDisplay.jsx";
 
 const AddSwimMeet = () => {
   const [error, setError] = useState(false);
@@ -84,7 +85,9 @@ const AddSwimMeet = () => {
   };
 
   const handleAddEvents = () => {
-    navigate(`/add-event/${lastSwimMeetData.id}`, { state: lastSwimMeetData });
+    navigate(`/swim-meet/${lastSwimMeetData.id}/events`, {
+      state: { showAddEvent: true, meetData: lastSwimMeetData },
+    });
   };
 
   let actionButtonsSuccess = [
