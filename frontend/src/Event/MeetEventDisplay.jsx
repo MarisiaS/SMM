@@ -1,6 +1,7 @@
 import {
   Add as AddIcon,
   Build as BuildIcon,
+  Download as DownloadIcon,
   Delete as DeleteIcon,
   FormatAlignCenter as HeatIcon,
   EmojiEvents as RankingIcon,
@@ -74,6 +75,19 @@ const MeetEventDisplay = () => {
   const handleRankingClick = (id) => {
     console.log("Ranking ...");
   };
+  const handleDownloadDetails = async (id) => {
+    let currentEvent = selectedEventIndex ? selectedEventIndex : Number(id);
+    try {
+      await SmmApi.downloadHeatDetails(
+        meetData.name,
+        eventData[currentEvent].name,
+        eventData[currentEvent].id
+      );
+    } catch (error) {
+      console.error("Download failed:", error);
+      alert("There was an error downloading the file. Please try again.");
+    }
+  };
 
   const actions = [
     {
@@ -101,6 +115,13 @@ const MeetEventDisplay = () => {
       icon: <RankingIcon />,
       onClick: handleRankingClick,
       tip: "Go to ranking",
+    },
+    {
+      name: "Download Heats Details",
+      icon: <DownloadIcon />,
+      onClick: handleDownloadDetails,
+      tip: "Download Heats Details",
+      visible: (row) => row.original.total_num_heats > 0,
     },
   ];
 
@@ -201,6 +222,7 @@ const MeetEventDisplay = () => {
             onPrevious={handlePreviousEvent}
             onNext={handleNextEvent}
             onGenerate={handleGenerateButton}
+            onDownload={handleDownloadDetails}
             disablePrevious={isFirstEvent}
             disableNext={isLastEvent}
           />
