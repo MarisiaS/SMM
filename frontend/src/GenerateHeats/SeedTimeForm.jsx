@@ -39,6 +39,7 @@ const SeedTimeForm = ({
         </Box>
         <Box className={"itemBox"}>
           <TimeEntryField
+            label={"New Seed Time"}
             name={"seed_time"}
             control={control}
             rules={{
