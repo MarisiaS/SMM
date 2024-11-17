@@ -1,6 +1,6 @@
 import "../App.css";
 import { Box, Stack, Typography, Divider } from "@mui/material";
-import TimeField from "../components/FormElements/TimeField.jsx";
+import TimeEntryField from "../components/FormElements/TimeEntryField.jsx";
 import MyButton from "../components/FormElements/MyButton.jsx";
 import MyDatePicker from "../components/FormElements/MyDatePicker.jsx";
 import dayjs from "dayjs";
@@ -38,14 +38,13 @@ const SeedTimeForm = ({
           </Typography>
         </Box>
         <Box className={"itemBox"}>
-          <TimeField
-            label={"New Seed Time"}
+          <TimeEntryField
             name={"seed_time"}
             control={control}
             rules={{
               required: "Seed time is required",
               pattern: {
-                value: /^([0-5]?[0-9]):[0-5][0-9]\.[0-9]{1,2}$/,
+                value: /^([0-5]?[0-9]):[0-5][0-9]\.[0-9]{1,2}$ || "NS" || "DQ"/,
                 message: "Invalid time format",
               },
             }}
