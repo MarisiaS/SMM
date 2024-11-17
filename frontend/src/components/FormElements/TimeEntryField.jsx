@@ -11,7 +11,7 @@ import TextField from "@mui/material/TextField";
 import { useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 
-const TimeEntryField = ({ label, name, control, rules, heat_time = false }) => {
+const TimeEntryField = ({ label, name, control, rules, aditional_options }) => {
   const inputRefs = useRef([null, null, null]);
 
   return (
@@ -274,7 +274,7 @@ const TimeEntryField = ({ label, name, control, rules, heat_time = false }) => {
                   disabled={!!time.status}
                 />
               </Grid>
-              {heat_time && (
+              {aditional_options && (
                 <>
                   <Grid item xs="auto">
                     <Box
@@ -294,22 +294,19 @@ const TimeEntryField = ({ label, name, control, rules, heat_time = false }) => {
                         handleChange("status", newStatus)
                       }
                       aria-label="status"
-                      sx={{ alignSelf: "flex-start" }} 
+                      sx={{ alignSelf: "flex-start" }}
                     >
-                      <ToggleButton
-                        value="NS"
-                        aria-label="No Show"
-                        sx={{ height: 56 }}
-                      >
-                        NS
-                      </ToggleButton>
-                      <ToggleButton
-                        value="DQ"
-                        aria-label="Disqualified"
-                        sx={{ height: 56 }}
-                      >
-                        DQ
-                      </ToggleButton>
+                      {aditional_options.map((option,index) => {
+                        return (
+                          <ToggleButton
+                            key={index}
+                            value={option}
+                            sx={{ height: 56 }}
+                          >
+                            {option}
+                          </ToggleButton>
+                        );
+                      })}
                     </ToggleButtonGroup>
                   </Grid>
                 </>
