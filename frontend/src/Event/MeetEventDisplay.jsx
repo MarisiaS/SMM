@@ -265,6 +265,7 @@ const MeetEventDisplay = () => {
                   <MyButton
                     label={"Download Heats for All Events"}
                     onClick={handleDownloadDetailsForAllEvents}
+                    disabled={eventData.length === 0}
                   >
                     <DownloadIcon />
                   </MyButton>
