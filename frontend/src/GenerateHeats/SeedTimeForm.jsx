@@ -44,7 +44,7 @@ const SeedTimeForm = ({
             rules={{
               required: "Seed time is required",
               pattern: {
-                value: /^([0-5]?[0-9]):[0-5][0-9]\.[0-9]{1,2}$ || "NS" || "DQ"/,
+                value: /^([0-5]?[0-9]):[0-5][0-9]\.[0-9]{1,2}$/,
                 message: "Invalid time format",
               },
             }}
