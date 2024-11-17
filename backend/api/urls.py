@@ -15,7 +15,7 @@ from api.views.MeetEventView import MeetEventView
 from api.views.AtheleteSeedTimeView import AthleteSeedTimeView
 from api.views.HeatView import HeatBatchView, HeatDetailView
 from api.views.LaneView import LaneBatchView, LaneDetailView
-from api.views.download.DownloadHeats import DownloadHeats
+from api.views.download.DownloadHeats import DownloadAllHeatsByEvent
 
 from rest_framework.routers import SimpleRouter
 
@@ -49,9 +49,7 @@ urlpatterns = [
     path('event_lane/<int:event_id>/<int:lane_num>/',
          LaneDetailView.as_view(), name='lane-detail'),
     path('download-heats-details/<int:event_id>/',
-         DownloadHeats.as_view(), name='download-heats-details')
-
+         DownloadAllHeatsByEvent.as_view(), name='download-event-heats-details'),
 ]
-
 
 urlpatterns += router.urls
