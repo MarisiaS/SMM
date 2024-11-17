@@ -216,7 +216,6 @@ const TimeEntryField = ({ label, name, control, rules, heat_time = false }) => {
                     placeholder: "MM",
                     maxLength: 2,
                   }}
-                  //error={!!error}
                   sx={{ maxWidth: 75 }}
                   disabled={!!time.status}
                 />
@@ -243,7 +242,6 @@ const TimeEntryField = ({ label, name, control, rules, heat_time = false }) => {
                     placeholder: "SS",
                     maxLength: 2,
                   }}
-                  //error={!!error}
                   sx={{ maxWidth: 75 }}
                   disabled={!!time.status}
                 />
@@ -272,7 +270,6 @@ const TimeEntryField = ({ label, name, control, rules, heat_time = false }) => {
                     placeholder: "ms",
                     maxLength: 2,
                   }}
-                  //error={!!error}
                   sx={{ maxWidth: 75 }}
                   disabled={!!time.status}
                 />
@@ -297,7 +294,7 @@ const TimeEntryField = ({ label, name, control, rules, heat_time = false }) => {
                         handleChange("status", newStatus)
                       }
                       aria-label="status"
-                      sx={{ alignSelf: "flex-start" }} // Align the toggle buttons to the top
+                      sx={{ alignSelf: "flex-start" }} 
                     >
                       <ToggleButton
                         value="NS"
