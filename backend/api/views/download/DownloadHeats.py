@@ -203,7 +203,7 @@ class DownloadAllHeatsByEvent(APIView):
 
         swim_meet_details = {
             'name': swim_meet_instance.name,
-            'date': swim_meet_instance.date.strftime('%m-%d-%Y'),
+            'date': swim_meet_instance.date.strftime('%m/%d/%Y'),
             'location': swim_meet_instance.site.name
         }
 
@@ -289,7 +289,7 @@ class DownloadAllHeatsByMeet(APIView):
 
         swim_meet_details = {
             'name': swim_meet_instance.name,
-            'date': swim_meet_instance.date,
+            'date': swim_meet_instance.date.strftime('%m/%d/%Y'),
             'location': swim_meet_instance.site.name
         }
 
