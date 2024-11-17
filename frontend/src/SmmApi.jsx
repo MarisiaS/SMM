@@ -200,7 +200,7 @@ export class SmmApi {
     });
   }
 
-  static async downloadHeatDetails(swimMeetName, eventName, eventId) {
+  static async downloadHeatDetailsForEvent(swimMeetName, eventName, eventId) {
     try {
       const response = await axios.post(
         `${BASE_URL}/download-heats-details/${eventId}/`,
@@ -218,6 +218,39 @@ export class SmmApi {
 
       // Set the file name
       link.setAttribute("download", `${swimMeetName}_${eventName}.xlsx`);
+
+      document.body.appendChild(link);
+      link.click();
+
+      // Cleanup
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading heats file:", error);
+      throw error;
+    }
+  }
+
+  static async downloadHeatDetailsForSwimMeet(swimMeetName, meetId) {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/download-all-heats-details/${meetId}/`,
+        {},
+        {
+          headers: getConfig(),
+          responseType: "blob", // Important for file downloads
+        }
+      );
+
+      // Create a URL for the blob and trigger the download
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+
+      // Set the file name
+      link.setAttribute(
+        "download",
+        `${swimMeetName}- All Event Heat Details.xlsx`
+      );
 
       document.body.appendChild(link);
       link.click();
