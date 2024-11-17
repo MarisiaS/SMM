@@ -1,5 +1,5 @@
 from io import BytesIO
-from api.models import Heat, MeetEvent
+from api.models import Heat, MeetEvent, SwimMeet
 from django.http import HttpResponse
 from drf_spectacular.utils import OpenApiResponse, extend_schema
 from openpyxl import Workbook
@@ -184,9 +184,9 @@ def format_time(time):
 class DownloadAllHeatsByEvent(APIView):
 
     @extend_schema(
-        summary='Send Binary response',
+        summary='Send Binary response with the contents of a xlsx file with the heat details for the given event',
         responses={
-            200: OpenApiResponse(description='Binary Response'),
+            200: OpenApiResponse(description='Binary Response for xlsx file created'),
             404: OpenApiResponse(description='Resource not found')
         }
     )
@@ -260,6 +260,104 @@ class DownloadAllHeatsByEvent(APIView):
         file = create_excel_file_for_heats_details(
             swim_meet_details, event_data)
         file_name = swim_meet_instance.name + "-" + event_name + ".xlsx"
+
+        # Create HTTP response
+        response = HttpResponse(
+            file,
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+        response["Content-Disposition"] = 'attachment; filename=' + file_name
+        return response
+
+
+@extend_schema(tags=['Download'])
+class DownloadAllHeatsByMeet(APIView):
+
+    @extend_schema(
+        summary='Send Binary response with the contents of a xlsx file with the heat details for all the events of the given swim meet',
+        responses={
+            200: OpenApiResponse(description='Binary Response for xlsx file created'),
+            404: OpenApiResponse(description='Resource not found')
+        }
+    )
+    def post(self, request, meet_id):
+        event_data = []
+
+        # Get number of lanes on the event
+        swim_meet_instance = SwimMeet.objects.get(id=meet_id)
+        num_lanes = swim_meet_instance.site.num_lanes
+
+        swim_meet_details = {
+            'name': swim_meet_instance.name,
+            'date': swim_meet_instance.date,
+            'location': swim_meet_instance.site.name
+        }
+
+        events_instance = MeetEvent.objects.filter(
+            swim_meet=meet_id).order_by('num_event')
+        for event in events_instance:
+            event_name = event.name
+
+            max_num_heat = event.total_num_heats
+
+            by_heats_data = []
+            by_lanes_data = []
+            if max_num_heat:
+                for heat_num in range(1, max_num_heat + 1):
+                    lanes_data = []
+                    for lane_num in range(1, num_lanes + 1):
+                        lane = Heat.objects.filter(
+                            event_id=event.id, num_heat=heat_num, lane_num=lane_num
+                        ).first()
+                        seed_time = format_time(
+                            lane.seed_time) if lane else ""
+                        heat_time = format_time(
+                            lane.heat_time) if lane else ""
+                        lanes_data.append(
+                            {
+                                "lane_num": lane_num,
+                                "athlete_full_name": lane.athlete.full_name if lane and lane.athlete else None,
+                                "seed_time": seed_time,
+                                "heat_time": heat_time,
+                            }
+                        )
+
+                    by_heats_data.append(
+                        {"id": heat_num, "heat_name": f"Heat {heat_num} of {max_num_heat}",
+                            "lanes": lanes_data}
+                    )
+
+                for lane_num in range(1, num_lanes + 1):
+                    heats_data = []
+                    for heat_num in range(1, max_num_heat + 1):
+                        heat = Heat.objects.filter(
+                            event_id=event.id, lane_num=lane_num, num_heat=heat_num
+                        ).first()
+                        heat_time = format_time(
+                            heat.heat_time) if heat else ""
+                        heats_data.append(
+                            {
+                                "num_heat": heat_num,
+                                "athlete_full_name": heat.athlete.full_name if heat and heat.athlete else None,
+                                "heat_time": heat_time,
+                            }
+                        )
+                    by_lanes_data.append(
+                        {"id": lane_num, "lane_name": f"Lane {lane_num} of {num_lanes}",
+                            "heats": heats_data}
+                    )
+
+            event_data.append(
+                {
+                    "event_name": event_name,
+                    "heats": by_heats_data if by_heats_data else None,
+                    "lanes": by_lanes_data if by_lanes_data else None,
+                }
+            )
+
+        file = create_excel_file_for_heats_details(
+            swim_meet_details, event_data)
+        file_name = swim_meet_instance.name + "- All Event Heat Details.xlsx"
 
         # Create HTTP response
         response = HttpResponse(
