@@ -76,12 +76,12 @@ const MeetEventDisplay = () => {
     console.log("Ranking ...");
   };
   const handleDownloadDetails = async (id) => {
-    setSelectedEventIndex(Number(id));
+    let currentEvent = selectedEventIndex ? selectedEventIndex : Number(id);
     try {
       await SmmApi.downloadHeatDetails(
         meetData.name,
-        eventData[selectedEventIndex].name,
-        eventData[selectedEventIndex].id
+        eventData[currentEvent].name,
+        eventData[currentEvent].id
       );
     } catch (error) {
       console.error("Download failed:", error);
