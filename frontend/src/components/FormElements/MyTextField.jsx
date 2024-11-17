@@ -21,6 +21,9 @@ const MyTextField = (props) => {
           error={!!error}
           helperText={error?.message}
           sx={{ minWidth: 250 }}
+          InputLabelProps={{
+            shrink: true,
+          }}
         />
       )}
     />

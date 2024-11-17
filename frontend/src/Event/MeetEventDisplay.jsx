@@ -1,22 +1,22 @@
-import { useState, useEffect } from "react";
-import { SmmApi } from "../SmmApi.jsx";
-import GenericTable from "../components/Common/GenericTable.jsx";
-import PaginationBar from "../components/Common/PaginationBar.jsx";
-import Title from "../components/Common/Title.jsx";
-import AlertBox from "../components/Common/AlertBox.jsx";
-import EventDetails from "./EventDetails.jsx";
-import SelectAthlete from "../GenerateHeats/SelectAthlete.jsx";
 import {
-  FormatAlignCenter as HeatIcon,
-  Delete as DeleteIcon,
-  EmojiEvents as RankingIcon,
   Add as AddIcon,
   Build as BuildIcon,
   Download as DownloadIcon,
+  Delete as DeleteIcon,
+  FormatAlignCenter as HeatIcon,
+  EmojiEvents as RankingIcon,
 } from "@mui/icons-material";
+import { Box, Stack } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import GenerateHeats from "../GenerateHeats/GenerateHeats.jsx";
+import { SmmApi } from "../SmmApi.jsx";
+import AlertBox from "../components/Common/AlertBox.jsx";
+import GenericTable from "../components/Common/GenericTable.jsx";
+import PaginationBar from "../components/Common/PaginationBar.jsx";
+import Title from "../components/Common/Title.jsx";
 import MyButton from "../components/FormElements/MyButton.jsx";
-import { Stack, Box } from "@mui/material";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import EventDetails from "./EventDetails.jsx";
 
 const columns = [
   {
@@ -228,7 +228,7 @@ const MeetEventDisplay = () => {
           />
         ) : showGenerateHeats && eventData[selectedEventIndex] ? (
           //Need to change to select athletes
-          <SelectAthlete
+          <GenerateHeats
             eventName={eventData[selectedEventIndex].name}
             eventId={eventData[selectedEventIndex].id}
             onBack={handleBackToEvents}

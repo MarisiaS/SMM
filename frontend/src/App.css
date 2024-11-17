@@ -48,14 +48,13 @@
   width: 40%;
 }
 
-.labelBox{
+.labelBox {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40%;
+  width: 35%;
   height: 100px;
 }
-
 
 .test {
   border: 1px solid red;
