@@ -8,7 +8,7 @@ const ExpandableTable = ({
   data,
   columns,
   actions,
-  subTableColumns,
+  getSubTableColumns,
   subData,
 }) => {
   const enableActions = actions;
@@ -83,6 +83,7 @@ const ExpandableTable = ({
     // Render a new table in the expanded row
     renderDetailPanel: ({ row }) => {
       const subTableData = row.original[subData];
+      const subTableColumns = getSubTableColumns(row.original.id);
       return (
         <Box sx={{ margin: 2 }}>
           <MaterialReactTable
