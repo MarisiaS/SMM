@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { SmmApi } from "../SmmApi.jsx";
-import ItemPaginationBar from "../components/Common/ItemPaginationBar";
-import TabPanel from "../components/Common/TabPanel";
-import ExpandableTable from "../components/Common/ExpandableTable";
-import AlertBox from "../components/Common/AlertBox.jsx";
 import {
   ContentPaste as BackIcon,
   Build as BuildIcon,
   Download as DownloadIcon,
 } from "@mui/icons-material";
-import { Stack } from "@mui/material";
+import { CircularProgress, Stack } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { SmmApi } from "../SmmApi.jsx";
+import AlertBox from "../components/Common/AlertBox.jsx";
+import ExpandableTable from "../components/Common/ExpandableTable";
+import ItemPaginationBar from "../components/Common/ItemPaginationBar";
+import TabPanel from "../components/Common/TabPanel";
 import { formatSeedTime } from "../utils/helperFunctions.js";
 
 const EventDetails = ({
@@ -26,6 +26,7 @@ const EventDetails = ({
   const [numHeats, setNumHeats] = useState(null);
   const [heatData, setHeatData] = useState([]);
   const [laneData, setLaneData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
 
@@ -38,6 +39,7 @@ const EventDetails = ({
   useEffect(() => {
     let ignore = false;
     async function fetching() {
+      setLoading(true);
       try {
         const heat_json = await SmmApi.getEventHeats(eventId);
         const lane_json = await SmmApi.getEventLanes(eventId);
@@ -49,6 +51,11 @@ const EventDetails = ({
         }
       } catch (error) {
         setErrorOnLoading(true);
+      }finally {
+        setTimeout(() => {
+          setLoading(false);
+        }, 100);
+        
       }
     }
     fetching();
@@ -56,6 +63,7 @@ const EventDetails = ({
       ignore = true;
     };
   }, [eventId]);
+
 
   //What is needed for the itemPaginationBar
   const label = "Event " + eventName;
@@ -161,7 +169,7 @@ const EventDetails = ({
   //Need for Generate heats AlertBox
 
   let actionButtonsNoHeats = [
-    { label: "heats", onClick: onGenerate, icon: <BuildIcon /> },
+    { label: "Create Heats", onClick: onGenerate, icon: <BuildIcon /> },
   ];
 
   return (
@@ -174,7 +182,15 @@ const EventDetails = ({
         disableNext={disableNext}
         extraActions={extraButtons}
       ></ItemPaginationBar>
-      {errorOnLoading ? (
+      {loading ? (
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          style={{ height: "100px" }}
+        >
+          <CircularProgress />
+        </Stack>
+      ) : errorOnLoading ? (
         <>
           <Stack
             style={{
@@ -201,7 +217,7 @@ const EventDetails = ({
               display: "flex",
               flexDirection: "column",
               gap: "16px",
-              width: "300px",
+              width: "500px",
               margin: "auto",
             }}
           >

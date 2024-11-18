@@ -1,20 +1,20 @@
-import { useMemo, useState, useEffect } from "react";
-import dayjs from "dayjs";
-import { SmmApi } from "../SmmApi";
-import GenericTable from "../components/Common/GenericTable";
-import SearchBar from "../components/Common/SearchBar";
-import PaginationBar from "../components/Common/PaginationBar";
 import {
-  Edit as EditIcon,
+  Add as AddIcon,
   Delete as DeleteIcon,
   ContentPaste as DetailsIcon,
+  Edit as EditIcon,
   EmojiEvents as RankingIcon,
-  Add as AddIcon,
 } from "@mui/icons-material";
-import MyButton from "../components/FormElements/MyButton";
-import { Stack, Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { SmmApi } from "../SmmApi";
 import AlertBox from "../components/Common/AlertBox.jsx";
+import GenericTable from "../components/Common/GenericTable";
+import PaginationBar from "../components/Common/PaginationBar";
+import SearchBar from "../components/Common/SearchBar";
+import MyButton from "../components/FormElements/MyButton";
 
 const columns = [
   {
@@ -58,7 +58,9 @@ const SwimMeetDisplay = () => {
     : "";
 
   const handleDetailsClick = (id) => {
-    navigate(`/swim-meet/${data[id].id}/events`, { state: data[id] });
+    navigate(`/swim-meet/${data[id].id}/events`, {
+      state: { meetData: data[id] },
+    });
   };
 
   const handleEditClick = () => {

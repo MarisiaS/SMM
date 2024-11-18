@@ -9,7 +9,7 @@ import {
   NavigateNext as RightIcon,
   Timer as TimeIcon,
 } from "@mui/icons-material";
-import { Box, Dialog, Stack } from "@mui/material";
+import { Box, Dialog, DialogContent, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "../App.css";
 import { SmmApi } from "../SmmApi.jsx";
@@ -64,19 +64,35 @@ const confirmSeedTimeColumns = [
   },
 ];
 
-const GenerateHeats = ({ eventName, eventId, onBack }) => {
+const GenerateHeats = ({
+  eventName,
+  eventId,
+  onBack,
+  onProcessCompletion,
+}) => {
+  //States to manage table data
   const [availableAthletes, setAvailableAthletes] = useState([]);
   const [selectedAthletes, setSelectedAthletes] = useState([]);
   const [selectedRightAthletes, setSelectedRightAthletes] = useState({});
   const [selectedLeftAthletes, setSelectedLeftAthletes] = useState({});
+  //State to manage loading
   const [errorOnLoading, setErrorOnLoading] = useState(false);
+  //State to manage search on selectTables
   const [availableSearchTerm, setAvailableSearchTerm] = useState("");
   const [selectedSearchTerm, setSelectedSearchTerm] = useState("");
+  //State to manage change to step 2 of process
   const [areAthletesSelected, setAreAthletesSelected] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [athleteToUpdate, setAthleteToUpdate] = useState({});
+  //State to manage Heat Creation (step 3 of process)
+  const [heatsCreated, setHeatsCreated] = useState(false);
+  const [errorCreateHeat, setErrorCreateHeat] = useState(false);
 
   const label = "Event " + eventName;
+
+  // AlertBox variables
+  let typeAlertCreateHeats = errorCreateHeat ? "error" : "success";
+  let messageCreateHeats = errorCreateHeat ? errorCreateHeat : "Heats created successfully!";
 
   let typeAlertLoading = errorOnLoading ? "error" : "success";
   let messageOnLoading = errorOnLoading
@@ -107,8 +123,27 @@ const GenerateHeats = ({ eventName, eventId, onBack }) => {
     setAreAthletesSelected(!areAthletesSelected);
   };
 
-  const handleGenerateHeats = () => {
-    console.log("Create Heats clicked!");
+  const handleGenerateHeats = async (selectedAthletes) => {
+    setErrorCreateHeat(false);
+    let heatCreationSuccessful = false;
+    try {
+      const response = await SmmApi.createHeats(eventId, {
+        athletes: selectedAthletes,
+      });
+      heatCreationSuccessful = true;
+    } catch (error) {
+      setErrorCreateHeat(
+        "Unable to Create Heats, an unexpected error occurred. Please try again!"
+      );
+    }
+    setHeatsCreated(true);
+    setTimeout(() => {
+      if (heatCreationSuccessful) {
+        //This will reload the events data and switch to show the details of the given event
+        onProcessCompletion(eventId);
+      }
+      setHeatsCreated(false);
+    }, 2000);
   };
 
   const handleEditClick = (row) => {
@@ -141,7 +176,7 @@ const GenerateHeats = ({ eventName, eventId, onBack }) => {
     {
       label: "Create Heats",
       icon: <BuildIcon />,
-      onClick: handleGenerateHeats,
+      onClick: () => handleGenerateHeats(selectedAthletes),
       visible: areAthletesSelected,
     },
     {
@@ -324,6 +359,14 @@ const GenerateHeats = ({ eventName, eventId, onBack }) => {
               onUpdate={handleUpdateSeedTime}
               onCancel={() => setIsFormOpen(false)}
             />
+          </Dialog>
+          <Dialog open={heatsCreated} fullWidth>
+            <DialogContent style={{ padding: "24px" }}>
+              <AlertBox
+                type={typeAlertCreateHeats}
+                message={messageCreateHeats}
+              />
+            </DialogContent>
           </Dialog>
         </div>
       )}

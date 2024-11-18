@@ -16,6 +16,7 @@ import GenericTable from "../components/Common/GenericTable.jsx";
 import PaginationBar from "../components/Common/PaginationBar.jsx";
 import Title from "../components/Common/Title.jsx";
 import MyButton from "../components/FormElements/MyButton.jsx";
+import AddEvent from "./AddEvent.jsx";
 import EventDetails from "./EventDetails.jsx";
 
 const columns = [
@@ -35,7 +36,7 @@ const MeetEventDisplay = () => {
   const { meetId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const meetData = location.state;
+  const meetData = location.state?.meetData;  
   const [eventData, setEventData] = useState([]);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
 
@@ -44,6 +45,13 @@ const MeetEventDisplay = () => {
   const [showGenerateHeats, setShowGenerateHeats] = useState(false);
   const [selectedEventIndex, setSelectedEventIndex] = useState(null);
   const [navegationDirection, setNavegationDirection] = useState(null);
+
+  //AddNew states
+  const [showAddEvent, setShowAddEvent] = useState(location.state?.showAddEvent || false);
+  const [newEventTigger, setNewEventTrigger] = useState(0);
+
+  //GenerateHeats states
+  const [reloadEventDataTrigger, setReloadEventDataTrigger] = useState(0);
 
   //Pagination States
   const [count, setCount] = useState(0);
@@ -58,14 +66,16 @@ const MeetEventDisplay = () => {
 
   const handleGenerateClick = (id) => {
     setSelectedEventIndex(Number(id));
-    setShowGenerateHeats(true);
+    setShowAddEvent(false);
     setShowEventDetails(false);
+    setShowGenerateHeats(true);
   };
 
   const handleDetailsClick = (id) => {
     setSelectedEventIndex(Number(id));
-    setShowEventDetails(true);
+    setShowAddEvent(false);
     setShowGenerateHeats(false);
+    setShowEventDetails(true);
   };
 
   const handleDeleteClick = (id) => {
@@ -102,25 +112,25 @@ const MeetEventDisplay = () => {
 
   const actions = [
     {
-      name: "Generate Heats",
+      name: "Create Heats",
       icon: <BuildIcon />,
       onClick: handleGenerateClick,
-      tip: "Generate heats",
+      tip: "Go to Create Heats",
       visible: (row) => row.original.total_num_heats === 0,
     },
     {
       name: "Heats Details",
       icon: <HeatIcon />,
       onClick: handleDetailsClick,
-      tip: "Go to heats",
+      tip: "Go to Heats",
       visible: (row) => row.original.total_num_heats > 0,
     },
-    {
-      name: "Delete",
-      icon: <DeleteIcon />,
-      onClick: handleDeleteClick,
-      tip: "Delete",
-    },
+    // {
+    //   name: "Delete",
+    //   icon: <DeleteIcon />,
+    //   onClick: handleDeleteClick,
+    //   tip: "Delete",
+    // },
     {
       name: "Ranking",
       icon: <RankingIcon />,
@@ -160,20 +170,42 @@ const MeetEventDisplay = () => {
     return () => {
       ignore = true;
     };
-  }, [offset, limit]);
+  }, [offset, limit, reloadEventDataTrigger]);
+
+  useEffect(() => {
+    const lastIndex = count % limit;
+    const lastOffset = count - lastIndex;
+    const lastPage = ~~(count / limit);
+    setSelectedEventIndex(lastIndex);
+    setPage(lastPage);
+    // On reload data once
+    offset !== lastOffset
+      ? setOffset(lastOffset)
+      : setReloadEventDataTrigger((prev) => prev + 1);
+  }, [newEventTigger]);
 
   const handleAddNew = () => {
-    navigate(`/add-event/${meetId}`, { state: meetData });
-  };
-
-  const handleBackToEvents = () => {
     setShowEventDetails(false);
     setShowGenerateHeats(false);
     setSelectedEventIndex(null);
+    setShowAddEvent(true);
   };
 
-  const handleGenerateButton = () => {
+  const handleNewEventCreated = () => {
+    setNewEventTrigger((prev) => prev + 1);
+  };
+
+  const handleBackToEvents = () => {
+    setReloadEventDataTrigger((prev) => prev + 1);
     setShowEventDetails(false);
+    setShowGenerateHeats(false);
+    setShowAddEvent(false);
+    setSelectedEventIndex(null);
+  };
+
+  const handleGenerateButtonOnEventDetails = () => {
+    setShowEventDetails(false);
+    setShowAddEvent(false);
     setShowGenerateHeats(true);
   };
 
@@ -201,6 +233,34 @@ const MeetEventDisplay = () => {
       setNavegationDirection("next");
       setPage(nextPage);
       setOffset(nextPage * limit);
+    }
+  };
+
+  const handleGenerateHeatProcessCompletion = (eventId) => {
+    const index = eventData.findIndex((item) => item.id === eventId);
+    setReloadEventDataTrigger((prev) => prev + 1);
+    if (index === -1) {
+      setShowGenerateHeats(false);
+      setShowEventDetails(false);
+      setShowAddEvent(false);
+      setSelectedEventIndex(null);
+    } else {
+      setShowGenerateHeats(false);
+      setSelectedEventIndex(index);
+      setShowAddEvent(false);
+      setShowEventDetails(true);
+    }
+  };
+
+  const handleAddHeatsToNewEvent = () => {
+    if (selectedEventIndex === null) {
+      setShowAddEvent(false);
+      setShowEventDetails(false);
+      setShowGenerateHeats(false);
+    } else {
+      setShowAddEvent(false);
+      setShowEventDetails(false);
+      setShowGenerateHeats(true);
     }
   };
 
@@ -232,17 +292,23 @@ const MeetEventDisplay = () => {
             onBack={handleBackToEvents}
             onPrevious={handlePreviousEvent}
             onNext={handleNextEvent}
-            onGenerate={handleGenerateButton}
+            onGenerate={handleGenerateButtonOnEventDetails}
             onDownload={handleDownloadDetailsForEvent}
             disablePrevious={isFirstEvent}
             disableNext={isLastEvent}
           />
         ) : showGenerateHeats && eventData[selectedEventIndex] ? (
-          //Need to change to select athletes
           <GenerateHeats
             eventName={eventData[selectedEventIndex].name}
             eventId={eventData[selectedEventIndex].id}
             onBack={handleBackToEvents}
+            onProcessCompletion={handleGenerateHeatProcessCompletion}
+          />
+        ) : showAddEvent ? (
+          <AddEvent
+            onBack={handleBackToEvents}
+            onCreateHeats={handleAddHeatsToNewEvent}
+            onCreateEvent={handleNewEventCreated}
           />
         ) : (
           <>

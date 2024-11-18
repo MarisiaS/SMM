@@ -1,25 +1,20 @@
-import "../App.css";
+import { Build as BuildIcon } from "@mui/icons-material";
 import { Stack } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useState, useEffect, useMemo } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import "../App.css";
+import AlertBox from "../components/Common/AlertBox.jsx";
 import { SmmApi } from "../SmmApi.jsx";
 import AddEventForm from "./AddEventForm.jsx";
-import AlertBox from "../components/Common/AlertBox.jsx";
-import { Build as BuildIcon } from "@mui/icons-material";
-import Title from "../components/Common/Title.jsx";
 
-const AddEvent = () => {
+const AddEvent = ({ onBack, onCreateHeats, onCreateEvent }) => {
   const { meetId } = useParams();
   const [error, setError] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
-  const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false);
   const [groups, setGroups] = useState([{ id: "", name: "", gender: "" }]);
   const [eventTypes, setEventTypes] = useState([{ id: "", name: "" }]);
-  const [lastEventId, setLastEventId] = useState(null);
-  const location = useLocation();
-  const meetData = location.state;
   const {
     handleSubmit,
     control,
@@ -52,15 +47,16 @@ const AddEvent = () => {
     let ignore = false;
     async function fetchOptions() {
       try {
-        const responseGroups = await SmmApi.getGroups();
+        const [responseGroups, responseEvents] = await Promise.all([
+          SmmApi.getGroups(),
+          SmmApi.getEventTypes(),
+        ]);
         const _groups = responseGroups.data.results.map((groups) => {
           return {
             id: groups.id,
             name: groups.name,
           };
         });
-
-        const responseEvents = await SmmApi.getEventTypes();
         const _eventTypes = responseEvents.data.results.map((eventTypes) => {
           return {
             id: eventTypes.id,
@@ -78,7 +74,6 @@ const AddEvent = () => {
         }
       } catch (error) {
         setErrorOnLoading(true);
-        console.log(error);
       }
     }
     fetchOptions();
@@ -87,26 +82,21 @@ const AddEvent = () => {
     };
   }, []);
 
-  const handleCancel = () => {
-    navigate(`/swim-meet/${meetId}/events`, { state: meetData });
-  };
-
-  const handleAddHeats = () => {
-    //Change it to add heats for the new event
-    navigate(`/heats`);
-  };
-
   let actionButtonsSuccess = [
-    { label: "heats", onClick: handleAddHeats, icon: <BuildIcon /> },
+    {
+      label: "Create Heats",
+      onClick: onCreateHeats,
+      icon: <BuildIcon />,
+    },
   ];
 
   let actionButtons = error ? [] : actionButtonsSuccess;
 
   const submission = async (data) => {
-    setSubmitted(true);
     try {
       const response = await SmmApi.createEvent(meetId, data);
-      setLastEventId(response.data.id);
+      onCreateEvent();
+      setError(false);
     } catch (error) {
       if (error.response && error.response.status === 400) {
         const nonFieldErrorMessage = error.response.data.non_field_errors
@@ -118,8 +108,8 @@ const AddEvent = () => {
           "Unable to create the Event, an unexpected error occurred. Please try again!"
         );
       }
-      console.log(error);
     }
+    setSubmitted(true);
     reset({
       group: groups[0]?.id || "",
       event_type: eventTypes[0]?.id || "",
@@ -143,7 +133,6 @@ const AddEvent = () => {
   } else {
     return (
       <div>
-        <Title data={meetData} fields={["name", "date", "site_name"]} />
         <Stack alignItems="center" justifyContent="space-between">
           <Stack alignItems="center" justifyContent="space-between">
             {submitted && (
@@ -158,7 +147,7 @@ const AddEvent = () => {
             <AddEventForm
               handleSubmit={handleSubmit(submission)}
               control={control}
-              handleCancel={handleCancel}
+              handleCancel={onBack}
               options={{ groups, eventTypes }}
             />
           </Stack>
