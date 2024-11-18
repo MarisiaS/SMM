@@ -1,6 +1,6 @@
 import "../App.css";
 import { Box, Stack, Typography, Divider } from "@mui/material";
-import TimeField from "../components/FormElements/TimeField.jsx";
+import TimeEntryField from "../components/FormElements/TimeEntryField.jsx";
 import MyButton from "../components/FormElements/MyButton.jsx";
 import MyDatePicker from "../components/FormElements/MyDatePicker.jsx";
 import dayjs from "dayjs";
@@ -38,7 +38,7 @@ const SeedTimeForm = ({
           </Typography>
         </Box>
         <Box className={"itemBox"}>
-          <TimeField
+          <TimeEntryField
             label={"New Seed Time"}
             name={"seed_time"}
             control={control}
