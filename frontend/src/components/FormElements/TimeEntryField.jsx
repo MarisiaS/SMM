@@ -21,22 +21,22 @@ const TimeEntryField = ({ label, name, control, rules, aditional_options }) => {
       rules={rules}
       render={({ field: { onChange, value }, fieldState: { error } }) => {
         const [time, setTime] = useState({
-          status: "",
+          option: "",
           minutes: "",
           seconds: "",
           milliseconds: "",
         });
 
         const handleChange = (field, newValue, currentIndex) => {
-          if (field === "status") {
+          if (field === "option") {
             setTime((prevTime) => {
               const updatedTime = {
                 minutes: "",
                 seconds: "",
                 milliseconds: "",
-                status: newValue === prevTime.status ? "" : newValue,
+                option: newValue === prevTime.option ? "" : newValue,
               };
-              onChange(updatedTime.status || null);
+              onChange(updatedTime.option || null);
               return updatedTime;
             });
           } else {
@@ -44,7 +44,7 @@ const TimeEntryField = ({ label, name, control, rules, aditional_options }) => {
               const updatedTime = {
                 ...prevTime,
                 [field]: newValue,
-                status: "",
+                option: "",
               };
               const formattedTime = `${
                 updatedTime.minutes.padStart(2, "0") || "00"
@@ -288,12 +288,12 @@ const TimeEntryField = ({ label, name, control, rules, aditional_options }) => {
                   </Grid>
                   <Grid item>
                     <ToggleButtonGroup
-                      value={time.status}
+                      value={time.option}
                       exclusive
                       onChange={(_, newStatus) =>
-                        handleChange("status", newStatus)
+                        handleChange("option", newStatus)
                       }
-                      aria-label="status"
+                      aria-label="Options"
                       sx={{ alignSelf: "flex-start" }}
                     >
                       {aditional_options.map((option,index) => {
