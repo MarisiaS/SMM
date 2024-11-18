@@ -2,6 +2,9 @@ import {
   ContentPaste as BackIcon,
   Build as BuildIcon,
   Download as DownloadIcon,
+  Edit as EditIcon,
+  Close as CloseIcon,
+  Save as SaveIcon,
 } from "@mui/icons-material";
 import { CircularProgress, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -29,6 +32,7 @@ const EventDetails = ({
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
+  const [editMainTableRowIds, setEditMainTableRowIds] = useState([]);
 
   let typeAlertLoading = errorOnLoading ? "error" : "success";
   let messageOnLoading = errorOnLoading
@@ -43,6 +47,7 @@ const EventDetails = ({
       try {
         const heat_json = await SmmApi.getEventHeats(eventId);
         const lane_json = await SmmApi.getEventLanes(eventId);
+        console.log(lane_json.data.results);
         if (!ignore) {
           setLaneData(lane_json.data.results);
           setHeatData(heat_json.data.results);
@@ -51,11 +56,10 @@ const EventDetails = ({
         }
       } catch (error) {
         setErrorOnLoading(true);
-      }finally {
+      } finally {
         setTimeout(() => {
           setLoading(false);
         }, 100);
-        
       }
     }
     fetching();
@@ -63,7 +67,6 @@ const EventDetails = ({
       ignore = true;
     };
   }, [eventId]);
-
 
   //What is needed for the itemPaginationBar
   const label = "Event " + eventName;
@@ -100,7 +103,7 @@ const EventDetails = ({
     },
   ];
 
-  const subHeatTableColumns = [
+  const getSubHeatTableColumns = (rowId) => [
     {
       accessorKey: "lane_num",
       header: "Lane",
@@ -125,16 +128,94 @@ const EventDetails = ({
     },
   ];
 
-  const subLaneTableColumns = [
+  const getSubLaneTableColumns = (rowId) => {
+    const baseColumns = [
+      { accessorKey: "num_heat", header: "Heat", size: 50 },
+      { accessorKey: "athlete_full_name", header: "Athlete", size: 150 },
+    ];
+    const heatTimeColumn = {
+      accessorKey: "heat_time",
+      header: "Heat Time",
+      size: 100,
+      Cell: ({ cell }) => formatSeedTime(cell.getValue()),
+    };
+    const editHeatTimeColumn = {
+      accessorKey: "heat_time",
+      header: "Heat Time",
+      id: "edit_heat_time",
+      size: 250,
+      Cell: ({ row }) =>
+        row.original.athlete_full_name ? (
+          row.original.heat_time ? (
+            <AlertBox
+              key={row.original.id}
+              type={"success"}
+              message={"Editing heat time"}
+            />
+          ) : (
+            <AlertBox
+              key={row.original.id}
+              type={"error"}
+              message={"No heat time"}
+            />
+          )
+        ) : (
+          <br />
+        ),
+    };
+    return editMainTableRowIds.includes(rowId)
+      ? [baseColumns[0], baseColumns[1], editHeatTimeColumn]
+      : [baseColumns[0], baseColumns[1], heatTimeColumn];
+  };
+
+  const alreadyLaneUpdated = (rowIndex) => {
+    return laneData[rowIndex].heats.some((heat) => heat.heat_time !== null);
+  };
+
+  const handleEditClickOnMainTable = (rowIndex) => {
+    setEditMainTableRowIds((prevIds) => {
+      const newIds = [...prevIds, laneData[rowIndex].id];
+      return newIds;
+    });
+  };
+
+  const handleSave = () => {
+    console.log("Save pressed.");
+  };
+
+  const handleCloseClick = (rowIndex) => {
+    setEditMainTableRowIds((prevIds) =>
+      prevIds.filter((id) => id !== laneData[rowIndex].id)
+    );
+  };
+
+  const actionsLaneMainTable = [
     {
-      accessorKey: "num_heat",
-      header: "Heat",
-      size: 50,
+      name: "Edit",
+      icon: <EditIcon />,
+      onClick: handleEditClickOnMainTable,
+      tip: "Add/Edit heat time",
+      visible: (row) => {
+        const rowId = row.original.id;
+        const rowIndex = row.index;
+        return (
+          !(editMainTableRowIds.includes(rowId) || alreadyLaneUpdated(rowIndex))
+        );
+      },
     },
     {
-      accessorKey: "athlete_full_name",
-      header: "Athlete",
-      size: 150,
+      name: "Save",
+      icon: <SaveIcon />,
+      onClick: handleSave,
+      tip: "Save results",
+      visible: (row) => editMainTableRowIds.includes(row.original.id),
+    },
+    {
+      name: "Close",
+      icon: <CloseIcon />,
+      onClick: handleCloseClick,
+      tip: "Close edit mode",
+      visible: (row) => editMainTableRowIds.includes(row.original.id),
     },
   ];
 
@@ -147,7 +228,7 @@ const EventDetails = ({
           key={"heats" + eventId}
           data={heatData}
           columns={mainHeatTableColumns}
-          subTableColumns={subHeatTableColumns}
+          getSubTableColumns={getSubHeatTableColumns}
           subData={"lanes"}
         />
       ),
@@ -159,7 +240,8 @@ const EventDetails = ({
           key={"lanes" + eventId}
           data={laneData}
           columns={mainLaneTableColumns}
-          subTableColumns={subLaneTableColumns}
+          actions={actionsLaneMainTable}
+          getSubTableColumns={getSubLaneTableColumns}
           subData={"heats"}
         />
       ),
