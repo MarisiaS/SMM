@@ -24,7 +24,7 @@ class HeatSerializer(serializers.ModelSerializer):
 class LaneSerializer(serializers.ModelSerializer):
     athlete_full_name = serializers.SerializerMethodField()
     # Setting write_only directly on the field as HeatDurationField is not a model field
-    heat_time = HeatDurationField(write_only=True)
+    heat_time = HeatDurationField()
 
     class Meta:
         model = Heat
@@ -34,7 +34,6 @@ class LaneSerializer(serializers.ModelSerializer):
             'athlete': {'read_only': True},
             'athlete_full_name': {'read_only': True},
         }
-
 
 
     def get_athlete_full_name(self, instance):
@@ -49,7 +48,6 @@ class LaneSerializer(serializers.ModelSerializer):
         #Updates heat_time
         instance.heat_time = validated_data.get('heat_time')
         instance.save()
-
     
         #Register the time on TimeRecord
         athlete = validated_data.get('athlete', instance.athlete)
