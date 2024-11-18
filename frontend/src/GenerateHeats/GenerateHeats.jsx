@@ -9,7 +9,7 @@ import {
   NavigateNext as RightIcon,
   Timer as TimeIcon,
 } from "@mui/icons-material";
-import { Box, Dialog, Stack, DialogContent } from "@mui/material";
+import { Box, Dialog, DialogContent, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "../App.css";
 import { SmmApi } from "../SmmApi.jsx";

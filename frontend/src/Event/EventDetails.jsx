@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { ContentPaste as BackIcon, Build as BuildIcon } from "@mui/icons-material";
+import { CircularProgress, Stack } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { SmmApi } from "../SmmApi.jsx";
+import AlertBox from "../components/Common/AlertBox.jsx";
+import ExpandableTable from "../components/Common/ExpandableTable";
 import ItemPaginationBar from "../components/Common/ItemPaginationBar";
 import TabPanel from "../components/Common/TabPanel";
-import ExpandableTable from "../components/Common/ExpandableTable";
-import { ContentPaste as BackIcon } from "@mui/icons-material";
-import AlertBox from "../components/Common/AlertBox.jsx";
-import { Build as BuildIcon } from "@mui/icons-material";
-import { Stack, CircularProgress } from "@mui/material";
 import { formatSeedTime } from "../utils/helperFunctions.js";
 
 const EventDetails = ({

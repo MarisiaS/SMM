@@ -1,12 +1,12 @@
-import "../App.css";
+import { Build as BuildIcon } from "@mui/icons-material";
 import { Stack } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useState, useEffect, useMemo } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import "../App.css";
+import AlertBox from "../components/Common/AlertBox.jsx";
 import { SmmApi } from "../SmmApi.jsx";
 import AddEventForm from "./AddEventForm.jsx";
-import AlertBox from "../components/Common/AlertBox.jsx";
-import { Build as BuildIcon } from "@mui/icons-material";
 
 const AddEvent = ({ onBack, onCreateHeats, onCreateEvent }) => {
   const { meetId } = useParams();
@@ -95,7 +95,6 @@ const AddEvent = ({ onBack, onCreateHeats, onCreateEvent }) => {
   const submission = async (data) => {
     try {
       const response = await SmmApi.createEvent(meetId, data);
-      //setTargetEvent(response.data);
       onCreateEvent();
       setError(false);
     } catch (error) {

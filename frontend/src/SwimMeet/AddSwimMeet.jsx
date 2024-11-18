@@ -1,14 +1,13 @@
-import "../App.css";
-import { Box, Stack } from "@mui/material";
-import { useForm } from "react-hook-form";
-import { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import { SmmApi } from "../SmmApi.jsx";
-import dayjs from "dayjs";
-import SwimMeetForm from "./SwimMeetForm.jsx";
-import AlertBox from "../components/Common/AlertBox.jsx";
 import { Add as AddIcon } from "@mui/icons-material";
-import MeetEventDisplay from "../Event/MeetEventDisplay.jsx";
+import { Stack } from "@mui/material";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import "../App.css";
+import AlertBox from "../components/Common/AlertBox.jsx";
+import { SmmApi } from "../SmmApi.jsx";
+import SwimMeetForm from "./SwimMeetForm.jsx";
 
 const AddSwimMeet = () => {
   const [error, setError] = useState(false);

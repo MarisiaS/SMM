@@ -15,8 +15,8 @@ import GenericTable from "../components/Common/GenericTable.jsx";
 import PaginationBar from "../components/Common/PaginationBar.jsx";
 import Title from "../components/Common/Title.jsx";
 import MyButton from "../components/FormElements/MyButton.jsx";
-import EventDetails from "./EventDetails.jsx";
 import AddEvent from "./AddEvent.jsx";
+import EventDetails from "./EventDetails.jsx";
 
 const columns = [
   {
