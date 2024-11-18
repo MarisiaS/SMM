@@ -77,7 +77,8 @@ const MeetEventDisplay = () => {
   };
 
   const handleDownloadDetailsForEvent = async (id) => {
-    let currentEvent = selectedEventIndex ? selectedEventIndex : Number(id);
+    let currentEvent =
+      selectedEventIndex !== null ? selectedEventIndex : Number(id);
     try {
       await SmmApi.downloadHeatDetailsForEvent(
         meetData.name,
