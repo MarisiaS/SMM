@@ -1,9 +1,16 @@
-import { Box, FormHelperText, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  FormHelperText,
+  Grid,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 
-const TimeField = ({ label, name, control, rules }) => {
+const TimeEntryField = ({ label, name, control, rules, aditional_options }) => {
   const inputRefs = useRef([null, null, null]);
 
   return (
@@ -13,32 +20,50 @@ const TimeField = ({ label, name, control, rules }) => {
       rules={rules}
       render={({ field: { onChange, value }, fieldState: { error } }) => {
         const [time, setTime] = useState({
+          option: "",
           minutes: "",
           seconds: "",
           milliseconds: "",
         });
 
         const handleChange = (field, newValue, currentIndex) => {
-          setTime((prevTime) => {
-            const updatedTime = { ...prevTime, [field]: newValue };
-            const formattedTime = `${
-              updatedTime.minutes.padStart(2, "0") || "00"
-            }:${updatedTime.seconds.padStart(2, "0") || "00"}.${
-              updatedTime.milliseconds.padEnd(2, "0") || "00"
-            }`;
-            if (formattedTime === "00:00.00") {
-              onChange(null);
-            } else {
-              onChange(formattedTime);
-            }
-            if (
-              newValue.length === 2 &&
-              currentIndex < inputRefs.current.length - 1
-            ) {
-              inputRefs.current[currentIndex + 1]?.focus();
-            }
-            return updatedTime;
-          });
+          if (field === "option") {
+            setTime((prevTime) => {
+              const updatedTime = {
+                minutes: "",
+                seconds: "",
+                milliseconds: "",
+                option: newValue === prevTime.option ? "" : newValue,
+              };
+              onChange(updatedTime.option || null);
+              return updatedTime;
+            });
+          } else {
+            setTime((prevTime) => {
+              const updatedTime = {
+                ...prevTime,
+                [field]: newValue,
+                option: "",
+              };
+              const formattedTime = `${
+                updatedTime.minutes.padStart(2, "0") || "00"
+              }:${updatedTime.seconds.padStart(2, "0") || "00"}.${
+                updatedTime.milliseconds.padEnd(2, "0") || "00"
+              }`;
+              if (formattedTime === "00:00.00") {
+                onChange(null);
+              } else {
+                onChange(formattedTime);
+              }
+              if (
+                newValue.length === 2 &&
+                currentIndex < inputRefs.current.length - 1
+              ) {
+                inputRefs.current[currentIndex + 1]?.focus();
+              }
+              return updatedTime;
+            });
+          }
         };
 
         const handleKeyDown = (e, field, currentIndex) => {
@@ -153,15 +178,31 @@ const TimeField = ({ label, name, control, rules }) => {
 
         return (
           <Box className={"myForm"}>
-            <Typography variant="subtitle1" padding={0.5}>
-              <Typography component="span" color="primary">
-                {label}:{"  "}
+            {label && (
+              <Typography variant="subtitle1" padding={0.5}>
+                <Typography component="span" color="primary">
+                  {label}:{" "}
+                </Typography>
+                <Typography component="span" color="black">
+                  {value}
+                </Typography>
               </Typography>
-              <Typography component="span" color="black">
-                {value}
-              </Typography>
-            </Typography>
-            <Grid container direction="row" alignItems="center">
+            )}
+            <Grid
+              container
+              spacing={0}
+              alignItems="center"
+              justifyContent="flex-start"
+              direction="row"
+              wrap="nowrap"
+              sx={{
+                border: error ? "2px solid red" : "none",
+                padding: error ? 0.5 : 0,
+                borderRadius: 1,
+                marginLeft: error ? "-5px" : "0",
+                width: error ? "102%" : "100%",
+              }}
+            >
               <Grid item xs="auto">
                 <TextField
                   label="MM"
@@ -174,11 +215,11 @@ const TimeField = ({ label, name, control, rules }) => {
                     placeholder: "MM",
                     maxLength: 2,
                   }}
-                  error={!!error}
                   sx={{ maxWidth: 75 }}
+                  disabled={!!time.status}
                 />
               </Grid>
-              <Grid item xs="auto">
+              <Grid item>
                 <Typography
                   variant="subtitle1"
                   color="primary"
@@ -200,11 +241,11 @@ const TimeField = ({ label, name, control, rules }) => {
                     placeholder: "SS",
                     maxLength: 2,
                   }}
-                  error={!!error}
                   sx={{ maxWidth: 75 }}
+                  disabled={!!time.status}
                 />
               </Grid>
-              <Grid item xs="auto">
+              <Grid item>
                 <Typography
                   variant="subtitle1"
                   color="primary"
@@ -228,10 +269,47 @@ const TimeField = ({ label, name, control, rules }) => {
                     placeholder: "ms",
                     maxLength: 2,
                   }}
-                  error={!!error}
                   sx={{ maxWidth: 75 }}
+                  disabled={!!time.status}
                 />
               </Grid>
+              {aditional_options && (
+                <>
+                  <Grid item xs="auto">
+                    <Box
+                      sx={{
+                        borderLeft: "2px solid gray",
+                        height: "56px",
+                        marginLeft: 2,
+                        marginRight: 2,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <ToggleButtonGroup
+                      value={time.option}
+                      exclusive
+                      onChange={(_, newStatus) =>
+                        handleChange("option", newStatus)
+                      }
+                      aria-label="Options"
+                      sx={{ alignSelf: "flex-start" }}
+                    >
+                      {aditional_options.map((option,index) => {
+                        return (
+                          <ToggleButton
+                            key={index}
+                            value={option}
+                            sx={{ height: 56 }}
+                          >
+                            {option}
+                          </ToggleButton>
+                        );
+                      })}
+                    </ToggleButtonGroup>
+                  </Grid>
+                </>
+              )}
             </Grid>
             {error && (
               <FormHelperText padding={2} error>
@@ -245,4 +323,4 @@ const TimeField = ({ label, name, control, rules }) => {
   );
 };
 
-export default TimeField;
+export default TimeEntryField;

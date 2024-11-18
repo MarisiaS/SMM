@@ -1,6 +1,7 @@
 import {
   Add as AddIcon,
   Build as BuildIcon,
+  Download as DownloadIcon,
   Delete as DeleteIcon,
   FormatAlignCenter as HeatIcon,
   EmojiEvents as RankingIcon,
@@ -85,6 +86,30 @@ const MeetEventDisplay = () => {
     console.log("Ranking ...");
   };
 
+  const handleDownloadDetailsForEvent = async (id) => {
+    let currentEvent =
+      selectedEventIndex !== null ? selectedEventIndex : Number(id);
+    try {
+      await SmmApi.downloadHeatDetailsForEvent(
+        meetData.name,
+        eventData[currentEvent].name,
+        eventData[currentEvent].id
+      );
+    } catch (error) {
+      console.error("Download failed:", error);
+      alert("There was an error downloading the file. Please try again.");
+    }
+  };
+
+  const handleDownloadDetailsForAllEvents = async (id) => {
+    try {
+      await SmmApi.downloadHeatDetailsForSwimMeet(meetData.name, meetData.id);
+    } catch (error) {
+      console.error("Download failed:", error);
+      alert("There was an error downloading the file. Please try again.");
+    }
+  };
+
   const actions = [
     {
       name: "Create Heats",
@@ -111,6 +136,13 @@ const MeetEventDisplay = () => {
       icon: <RankingIcon />,
       onClick: handleRankingClick,
       tip: "Go to ranking",
+    },
+    {
+      name: "Download Heats Details",
+      icon: <DownloadIcon />,
+      onClick: handleDownloadDetailsForEvent,
+      tip: "Download Heats Details",
+      visible: (row) => row.original.total_num_heats > 0,
     },
   ];
 
@@ -261,6 +293,7 @@ const MeetEventDisplay = () => {
             onPrevious={handlePreviousEvent}
             onNext={handleNextEvent}
             onGenerate={handleGenerateButtonOnEventDetails}
+            onDownload={handleDownloadDetailsForEvent}
             disablePrevious={isFirstEvent}
             disableNext={isLastEvent}
           />
@@ -284,11 +317,27 @@ const MeetEventDisplay = () => {
               alignItems="center"
               justifyContent="space-between"
             >
-              <Box sx={{ marginLeft: 5 }}>
-                <MyButton label={"Event"} onClick={handleAddNew}>
-                  <AddIcon />
-                </MyButton>
-              </Box>
+              <Stack
+                sx={{ marginLeft: 5 }}
+                direction="row"
+                alignItems="center"
+                spacing={2}
+              >
+                <Box>
+                  <MyButton label={"Event"} onClick={handleAddNew}>
+                    <AddIcon />
+                  </MyButton>
+                </Box>
+                <Box>
+                  <MyButton
+                    label={"Download Heats for All Events"}
+                    onClick={handleDownloadDetailsForAllEvents}
+                    disabled={eventData.length === 0}
+                  >
+                    <DownloadIcon />
+                  </MyButton>
+                </Box>
+              </Stack>
               <Box className={"searchBox"} sx={{ marginRight: 5 }}></Box>
             </Stack>
             <br />

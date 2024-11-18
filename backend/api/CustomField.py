@@ -1,18 +1,20 @@
 from rest_framework import serializers
-       
+
 
 class BlankableTimeField(serializers.TimeField):
     def to_internal_value(self, value):
         if value == '':
             return None
         return super().to_internal_value(value)
-    
+
+
 class BlankableIntegerField(serializers.IntegerField):
     def to_internal_value(self, value):
         if value == '':
             return None
         return super().to_internal_value(value)
-    
+
+
 class HeatDurationField(serializers.DurationField):
     def to_internal_value(self, value):
         """
@@ -26,8 +28,10 @@ class HeatDurationField(serializers.DurationField):
             -A positive duration
         """
         # Disqualified
-        if value == 'DQ':
-            return serializers.DurationField().to_internal_value('400 0:0.0') 
+        if value is None or value == '':
+            return None
+        elif value == 'DQ':
+            return serializers.DurationField().to_internal_value('400 0:0.0')
         # No show
         elif value == 'NS':
             return serializers.DurationField().to_internal_value('300 0:0.0')
@@ -38,7 +42,9 @@ class HeatDurationField(serializers.DurationField):
             return super().to_internal_value(value)
 
     def to_representation(self, value):
-        if value == serializers.DurationField().to_internal_value('400 0:0.0'):
+        if value is None:
+            return None
+        elif value == serializers.DurationField().to_internal_value('400 0:0.0'):
             return 'DQ'
         elif value == serializers.DurationField().to_internal_value('300 0:0.0'):
             return 'NS'

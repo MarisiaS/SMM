@@ -1,4 +1,8 @@
-import { ContentPaste as BackIcon, Build as BuildIcon } from "@mui/icons-material";
+import {
+  ContentPaste as BackIcon,
+  Build as BuildIcon,
+  Download as DownloadIcon,
+} from "@mui/icons-material";
 import { CircularProgress, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { SmmApi } from "../SmmApi.jsx";
@@ -15,6 +19,7 @@ const EventDetails = ({
   onPrevious,
   onNext,
   onGenerate,
+  onDownload,
   disablePrevious,
   disableNext,
 }) => {
@@ -67,6 +72,12 @@ const EventDetails = ({
       label: "Back to events",
       icon: <BackIcon />,
       onClick: onBack,
+    },
+    {
+      label: "Download Details",
+      icon: <DownloadIcon />,
+      onClick: onDownload,
+      disabled: numHeats === 0,
     },
   ];
 
