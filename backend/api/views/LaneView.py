@@ -42,7 +42,7 @@ class LaneBatchView(APIView):
                             "id": None,
                             "num_heat": heat,
                             "athlete": None,
-                            "seed_time": None
+                            "heat_time": None
                     })
         
                 # Serialize the heats using LaneSerializer
@@ -97,7 +97,7 @@ class LaneDetailView(APIView):
                             "id": None,
                             "num_heat": heat,
                             "athlete": None,
-                            "seed_time": None
+                            "heat_time": None
                     })
         
                 # Serialize the heats using LaneSerializer
@@ -119,14 +119,17 @@ class LaneDetailView(APIView):
                             value=[
                                     {
                                         "num_heat": 1,
+                                        "athlete": 11,
                                         "heat_time": "45.90"
                                     },
                                     {
                                         "num_heat": 2,
+                                        "athlete": 12,
                                         "heat_time": "NS"
                                     },
                                     {
                                         "num_heat": 3,
+                                        "athlete": 12,
                                         "heat_time": "36.67"
                                     }
                             ]
