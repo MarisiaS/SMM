@@ -36,11 +36,7 @@ const EventDetails = ({
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [editMainTableRowIds, setEditMainTableRowIds] = useState([]);
-  const [formDataWholeLane, setFormDataWholeLane] = useState({});
-
-  const { handleSubmit, control, reset } = useForm({
-    mode: "onChange",
-  });
+  const laneFormHooks = Array.from({ length: numLanes }).map(() => useForm({ mode: "onChange" }));
 
   let typeAlertLoading = errorOnLoading ? "error" : "success";
   let messageOnLoading = errorOnLoading
@@ -155,8 +151,7 @@ const EventDetails = ({
         row.original.athlete_full_name ? (
           <HeatTimeForm
             key={row.original.id}
-            handleSubmit={handleSubmit(handleSave)}
-            control={control}
+            control={laneFormHooks[rowId-1]?.control}
             name={String(row.original.id)}
           />
         ) : (
@@ -181,8 +176,20 @@ const EventDetails = ({
     });
   };
 
-  const handleSave = () => {
+  const handleSave = (rowIndex) => {
     console.log("Save pressed.");
+    const laneFormState = laneFormHooks[rowIndex];
+    if(laneFormState){
+      laneFormState.handleSubmit((data) => {
+        console.log("Submitting data for row:", rowIndex, "with values:", data);
+        laneFormState.reset(); 
+        setEditMainTableRowIds((prevIds) =>
+          prevIds.filter((id) => id !== laneData[rowIndex].id)
+        ); 
+      })();
+    } else {
+      console.log("No useForm");
+    }
   };
 
   const handleCloseClick = (rowIndex) => {

@@ -2,9 +2,9 @@ import "../App.css";
 import { Box } from "@mui/material";
 import TimeEntryField from "../components/FormElements/TimeEntryField.jsx";
 
-const HeatTimeForm = ({ handleSubmit, control, name}) => {
+const HeatTimeForm = ({control, name}) => {
   return (
-    <form onSubmit={handleSubmit} className={"heatTimeFormBox"}>
+    <form className={"heatTimeFormBox"}>
       <TimeEntryField
         name={name}
         control={control}
