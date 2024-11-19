@@ -20,6 +20,7 @@ import { useForm } from "react-hook-form";
 const EventDetails = ({
   eventName,
   eventId,
+  numLanes,
   onBack,
   onPrevious,
   onNext,
@@ -54,7 +55,6 @@ const EventDetails = ({
       try {
         const heat_json = await SmmApi.getEventHeats(eventId);
         const lane_json = await SmmApi.getEventLanes(eventId);
-        console.log(lane_json.data.results);
         if (!ignore) {
           setLaneData(lane_json.data.results);
           setHeatData(heat_json.data.results);

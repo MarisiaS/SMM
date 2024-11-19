@@ -34,7 +34,6 @@ const columns = [
 
 const MeetEventDisplay = () => {
   const { meetId } = useParams();
-  const navigate = useNavigate();
   const location = useLocation();
   const meetData = location.state?.meetData;  
   const [eventData, setEventData] = useState([]);
@@ -289,6 +288,7 @@ const MeetEventDisplay = () => {
           <EventDetails
             eventName={eventData[selectedEventIndex].name}
             eventId={eventData[selectedEventIndex].id}
+            numLanes={meetData.site_num_lanes}
             onBack={handleBackToEvents}
             onPrevious={handlePreviousEvent}
             onNext={handleNextEvent}
