@@ -14,6 +14,7 @@ import ExpandableTable from "../components/Common/ExpandableTable";
 import ItemPaginationBar from "../components/Common/ItemPaginationBar";
 import TabPanel from "../components/Common/TabPanel";
 import HeatTimeForm from "../Heat/HeatTimeForm.jsx";
+import DetailsByLane from "../Heat/DetailsByLane.jsx";
 import { formatSeedTime } from "../utils/helperFunctions.js";
 import { useForm } from "react-hook-form";
 
@@ -35,10 +36,10 @@ const EventDetails = ({
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
-  const [editMainTableRowIds, setEditMainTableRowIds] = useState([]);
+/*   const [editMainTableRowIds, setEditMainTableRowIds] = useState([]);
   const laneFormHooks = Array.from({ length: numLanes }).map(() =>
     useForm({ mode: "onChange" })
-  );
+  ); */
 
   let typeAlertLoading = errorOnLoading ? "error" : "success";
   let messageOnLoading = errorOnLoading
@@ -99,14 +100,14 @@ const EventDetails = ({
     },
   ];
 
-  const mainLaneTableColumns = [
+/*   const mainLaneTableColumns = [
     {
       accessorKey: "lane_name",
       header: "",
       size: 200,
       Cell: ({ cell }) => <strong>{cell.getValue()}</strong>,
     },
-  ];
+  ]; */
 
   const getSubHeatTableColumns = (rowId) => [
     {
@@ -133,7 +134,7 @@ const EventDetails = ({
     },
   ];
 
-  const getSubLaneTableColumns = (rowId) => {
+/*   const getSubLaneTableColumns = (rowId) => {
     const baseColumns = [
       { accessorKey: "num_heat", header: "Heat", size: 50 },
       { accessorKey: "athlete_full_name", header: "Athlete", size: 150 },
@@ -163,9 +164,9 @@ const EventDetails = ({
     return editMainTableRowIds.includes(rowId)
       ? [baseColumns[0], baseColumns[1], editHeatTimeColumn]
       : [baseColumns[0], baseColumns[1], heatTimeColumn];
-  };
+  }; */
 
-  const alreadyLaneUpdated = (rowIndex) => {
+/*   const alreadyLaneUpdated = (rowIndex) => {
     return laneData[rowIndex].heats.some((heat) => heat.heat_time !== null);
   };
 
@@ -232,7 +233,7 @@ const EventDetails = ({
       tip: "Close edit mode",
       visible: (row) => editMainTableRowIds.includes(row.original.id),
     },
-  ];
+  ]; */
 
   //Need for tabs component
   const tabs = [
@@ -251,13 +252,10 @@ const EventDetails = ({
     {
       label: "By Lane",
       content: (
-        <ExpandableTable
+        <DetailsByLane
           key={"lanes" + eventId}
-          data={laneData}
-          columns={mainLaneTableColumns}
-          actions={actionsLaneMainTable}
-          getSubTableColumns={getSubLaneTableColumns}
-          subData={"heats"}
+          numLanes={numLanes}
+          laneData={laneData}
         />
       ),
     },
