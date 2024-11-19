@@ -36,7 +36,9 @@ const EventDetails = ({
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [editMainTableRowIds, setEditMainTableRowIds] = useState([]);
-  const laneFormHooks = Array.from({ length: numLanes }).map(() => useForm({ mode: "onChange" }));
+  const laneFormHooks = Array.from({ length: numLanes }).map(() =>
+    useForm({ mode: "onChange" })
+  );
 
   let typeAlertLoading = errorOnLoading ? "error" : "success";
   let messageOnLoading = errorOnLoading
@@ -151,7 +153,7 @@ const EventDetails = ({
         row.original.athlete_full_name ? (
           <HeatTimeForm
             key={row.original.id}
-            control={laneFormHooks[rowId-1]?.control}
+            control={laneFormHooks[rowId - 1]?.control}
             name={String(row.original.id)}
           />
         ) : (
@@ -179,13 +181,17 @@ const EventDetails = ({
   const handleSave = (rowIndex) => {
     console.log("Save pressed.");
     const laneFormState = laneFormHooks[rowIndex];
-    if(laneFormState){
+    if (laneFormState) {
       laneFormState.handleSubmit((data) => {
+        // TODO (Issue #150): Implement API call to persist the data
+        // Currently, 'data' is an object containing key-value pairs
+        // where each key represents a heat ID and the corresponding value
+        // is the entered heat time for that specific heat.
         console.log("Submitting data for row:", rowIndex, "with values:", data);
-        laneFormState.reset(); 
+        laneFormState.reset();
         setEditMainTableRowIds((prevIds) =>
           prevIds.filter((id) => id !== laneData[rowIndex].id)
-        ); 
+        );
       })();
     } else {
       console.log("No useForm");
