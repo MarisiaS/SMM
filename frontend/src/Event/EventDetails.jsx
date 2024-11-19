@@ -13,7 +13,7 @@ import AlertBox from "../components/Common/AlertBox.jsx";
 import ExpandableTable from "../components/Common/ExpandableTable";
 import ItemPaginationBar from "../components/Common/ItemPaginationBar";
 import TabPanel from "../components/Common/TabPanel";
-import HeatTimeForm from "../GenerateHeats/HeatTimeForm.jsx";
+import HeatTimeForm from "../Heat/HeatTimeForm.jsx";
 import { formatSeedTime } from "../utils/helperFunctions.js";
 import { useForm } from "react-hook-form";
 

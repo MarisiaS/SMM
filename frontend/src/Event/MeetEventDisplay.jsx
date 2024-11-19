@@ -9,7 +9,7 @@ import {
 import { Box, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import GenerateHeats from "../GenerateHeats/GenerateHeats.jsx";
+import GenerateHeats from "../Heat/GenerateHeats.jsx";
 import { SmmApi } from "../SmmApi.jsx";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import GenericTable from "../components/Common/GenericTable.jsx";
