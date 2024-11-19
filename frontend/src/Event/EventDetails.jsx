@@ -13,7 +13,9 @@ import AlertBox from "../components/Common/AlertBox.jsx";
 import ExpandableTable from "../components/Common/ExpandableTable";
 import ItemPaginationBar from "../components/Common/ItemPaginationBar";
 import TabPanel from "../components/Common/TabPanel";
+import HeatTimeForm from "../GenerateHeats/HeatTimeForm.jsx";
 import { formatSeedTime } from "../utils/helperFunctions.js";
+import { useForm } from "react-hook-form";
 
 const EventDetails = ({
   eventName,
@@ -33,6 +35,11 @@ const EventDetails = ({
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [editMainTableRowIds, setEditMainTableRowIds] = useState([]);
+  const [formDataWholeLane, setFormDataWholeLane] = useState({});
+
+  const { handleSubmit, control, reset } = useForm({
+    mode: "onChange",
+  });
 
   let typeAlertLoading = errorOnLoading ? "error" : "success";
   let messageOnLoading = errorOnLoading
@@ -146,19 +153,12 @@ const EventDetails = ({
       size: 250,
       Cell: ({ row }) =>
         row.original.athlete_full_name ? (
-          row.original.heat_time ? (
-            <AlertBox
-              key={row.original.id}
-              type={"success"}
-              message={"Editing heat time"}
-            />
-          ) : (
-            <AlertBox
-              key={row.original.id}
-              type={"error"}
-              message={"No heat time"}
-            />
-          )
+          <HeatTimeForm
+            key={row.original.id}
+            handleSubmit={handleSubmit(handleSave)}
+            control={control}
+            name={String(row.original.id)}
+          />
         ) : (
           <br />
         ),
@@ -173,6 +173,8 @@ const EventDetails = ({
   };
 
   const handleEditClickOnMainTable = (rowIndex) => {
+    console.log("Row index:", rowIndex);
+    console.log("Data on that row:", laneData[rowIndex]);
     setEditMainTableRowIds((prevIds) => {
       const newIds = [...prevIds, laneData[rowIndex].id];
       return newIds;
@@ -198,8 +200,8 @@ const EventDetails = ({
       visible: (row) => {
         const rowId = row.original.id;
         const rowIndex = row.index;
-        return (
-          !(editMainTableRowIds.includes(rowId) || alreadyLaneUpdated(rowIndex))
+        return !(
+          editMainTableRowIds.includes(rowId) || alreadyLaneUpdated(rowIndex)
         );
       },
     },
