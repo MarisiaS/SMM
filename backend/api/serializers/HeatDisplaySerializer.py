@@ -51,7 +51,7 @@ class LaneSerializer(serializers.ModelSerializer):
         event_type = event_instance.event_type
         swim_meet = event_instance.swim_meet
 
-        time_record, created = TimeRecord.objects.update_or_create(
+        TimeRecord.objects.update_or_create(
             athlete=instance.athlete,
             event_type=event_type,
             swim_meet=swim_meet,
