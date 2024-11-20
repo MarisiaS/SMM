@@ -24,7 +24,6 @@ class HeatSerializer(serializers.ModelSerializer):
 
 class LaneSerializer(serializers.ModelSerializer):
     athlete_full_name = serializers.SerializerMethodField()
-    # Setting write_only directly on the field as HeatDurationField is not a model field
     heat_time = HeatDurationField()
 
     class Meta:
