@@ -11,7 +11,7 @@ import { formatSeedTime } from "../utils/helperFunctions.js";
 import { useForm } from "react-hook-form";
 
 const DetailsByLane = ({ numLanes, laneData }) => {
-  const [editMainTableRowIds, setEditMainTableRowIds] = useState([]);
+  const [editMainTableRowIndexes, setEditMainTableRowIndexes] = useState([]);
   const laneFormHooks = Array.from({ length: numLanes }).map(() =>
     useForm({ mode: "onChange" })
   );
@@ -26,7 +26,7 @@ const DetailsByLane = ({ numLanes, laneData }) => {
     },
   ];
 
-  const getSubLaneTableColumns = (rowId) => {
+  const getSubLaneTableColumns = (rowIndex) => {
     const baseColumns = [
       { accessorKey: "num_heat", header: "Heat", size: 50 },
       { accessorKey: "athlete_full_name", header: "Athlete", size: 150 },
@@ -46,14 +46,14 @@ const DetailsByLane = ({ numLanes, laneData }) => {
         row.original.athlete_full_name ? (
           <HeatTimeForm
             key={row.original.id}
-            control={laneFormHooks[rowId - 1]?.control}
+            control={laneFormHooks[rowIndex]?.control}
             name={String(row.original.id)}
           />
         ) : (
           <br />
         ),
     };
-    return editMainTableRowIds.includes(rowId)
+    return editMainTableRowIndexes.includes(rowIndex)
       ? [baseColumns[0], baseColumns[1], editHeatTimeColumn]
       : [baseColumns[0], baseColumns[1], heatTimeColumn];
   };
@@ -63,11 +63,12 @@ const DetailsByLane = ({ numLanes, laneData }) => {
   };
 
   const handleEditClickOnMainTable = (rowIndex) => {
+    console.log(editMainTableRowIndexes);
     console.log("Row index:", rowIndex);
     console.log("Data on that row:", laneData[rowIndex]);
-    setEditMainTableRowIds((prevIds) => {
-      const newIds = [...prevIds, laneData[rowIndex].id];
-      return newIds;
+    setEditMainTableRowIndexes((prevIndexes) => {
+      const newIndexes = [...prevIndexes, Number(rowIndex)];
+      return newIndexes;
     });
   };
 
@@ -82,8 +83,8 @@ const DetailsByLane = ({ numLanes, laneData }) => {
         // is the entered heat time for that specific heat.
         console.log("Submitting data for row:", rowIndex, "with values:", data);
         laneFormState.reset();
-        setEditMainTableRowIds((prevIds) =>
-          prevIds.filter((id) => id !== laneData[rowIndex].id)
+        setEditMainTableRowIndexes((prevIndexes) =>
+          prevIndexes.filter((index) => index !== Number(rowIndex))
         );
       })();
     } else {
@@ -92,8 +93,8 @@ const DetailsByLane = ({ numLanes, laneData }) => {
   };
 
   const handleCloseClick = (rowIndex) => {
-    setEditMainTableRowIds((prevIds) =>
-      prevIds.filter((id) => id !== laneData[rowIndex].id)
+    setEditMainTableRowIndexes((prevIndexes) =>
+      prevIndexes.filter((index) => index !== Number(rowIndex))
     );
   };
 
@@ -103,27 +104,25 @@ const DetailsByLane = ({ numLanes, laneData }) => {
       icon: <EditIcon />,
       onClick: handleEditClickOnMainTable,
       tip: "Add/Edit heat time",
-      visible: (row) => {
-        const rowId = row.original.id;
-        const rowIndex = row.index;
-        return !(
-          editMainTableRowIds.includes(rowId) || alreadyLaneUpdated(rowIndex)
-        );
-      },
+      visible: (row) =>
+        !(
+          editMainTableRowIndexes.includes(row.index) ||
+          alreadyLaneUpdated(row.index)
+        ),
     },
     {
       name: "Save",
       icon: <SaveIcon />,
       onClick: handleSave,
       tip: "Save results",
-      visible: (row) => editMainTableRowIds.includes(row.original.id),
+      visible: (row) => editMainTableRowIndexes.includes(row.index),
     },
     {
       name: "Close",
       icon: <CloseIcon />,
       onClick: handleCloseClick,
       tip: "Close edit mode",
-      visible: (row) => editMainTableRowIds.includes(row.original.id),
+      visible: (row) => editMainTableRowIndexes.includes(row.index),
     },
   ];
 
