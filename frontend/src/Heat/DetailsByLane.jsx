@@ -63,9 +63,6 @@ const DetailsByLane = ({ numLanes, laneData }) => {
   };
 
   const handleEditClickOnMainTable = (rowIndex) => {
-    console.log(editMainTableRowIndexes);
-    console.log("Row index:", rowIndex);
-    console.log("Data on that row:", laneData[rowIndex]);
     setEditMainTableRowIndexes((prevIndexes) => {
       const newIndexes = [...prevIndexes, Number(rowIndex)];
       return newIndexes;
@@ -73,7 +70,6 @@ const DetailsByLane = ({ numLanes, laneData }) => {
   };
 
   const handleSave = (rowIndex) => {
-    console.log("Save pressed.");
     const laneFormState = laneFormHooks[rowIndex];
     if (laneFormState) {
       laneFormState.handleSubmit((data) => {
