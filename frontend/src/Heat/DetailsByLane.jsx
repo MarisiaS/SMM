@@ -3,7 +3,7 @@ import {
   Close as CloseIcon,
   Save as SaveIcon,
 } from "@mui/icons-material";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { SmmApi } from "../SmmApi.jsx";
 import ExpandableTable from "../components/Common/ExpandableTable.jsx";
 import HeatTimeForm from "./HeatTimeForm.jsx";
@@ -15,6 +15,12 @@ const DetailsByLane = ({ numLanes, laneData }) => {
   const laneFormHooks = Array.from({ length: numLanes }).map(() =>
     useForm({ mode: "onChange" })
   );
+
+  const laneNotEmpty = useMemo(() => {
+    return laneData.map((lane) =>
+      lane.heats.some((heat) => heat.athlete_full_name !== null)
+    );
+  }, [laneData]);
 
   //Need data for lane tables
   const mainLaneTableColumns = [
@@ -100,11 +106,12 @@ const DetailsByLane = ({ numLanes, laneData }) => {
       icon: <EditIcon />,
       onClick: handleEditClickOnMainTable,
       tip: "Add/Edit heat time",
-      visible: (row) =>
-        !(
-          editMainTableRowIndexes.includes(row.index) ||
-          alreadyLaneUpdated(row.index)
-        ),
+      visible: (row) => {
+        const isEditing = editMainTableRowIndexes.includes(row.index);
+        const isLaneAlreadyUpdated = alreadyLaneUpdated(row.index);
+        const isLaneEmpty = laneNotEmpty[row.index];
+        return !isEditing && !isLaneAlreadyUpdated && isLaneEmpty;
+      },
     },
     {
       name: "Save",
