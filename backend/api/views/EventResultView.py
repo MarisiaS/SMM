@@ -28,4 +28,19 @@ class EventResultView(APIView):
         group_id = self.request.query_params.get('group_id')
         if group_id is not None:
             queryset = filter_by_group(group_id, queryset, False)
-        return queryset.order_by('heat_time')
+
+        results = list(queryset.order_by('heat_time', 'athlete__last_name', 'athlete__first_name'))
+        
+        if results:
+            current_rank = 1
+            previous_time = -1
+            for i, result in enumerate(results):
+                if result.heat_time in ["NS", "DQ", None]:
+                    break 
+                elif result.heat_time == previous_time:
+                    result.rank = current_rank
+                else:
+                    current_rank = i + 1
+                    result.rank = current_rank
+                previous_time = result.heat_time
+        return results
