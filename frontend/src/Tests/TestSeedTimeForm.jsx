@@ -2,7 +2,7 @@ import "../App.css";
 import { Box } from "@mui/material";
 import { useForm } from "react-hook-form";
 import dayjs from "dayjs";
-import SeedTimeForm from "../GenerateHeats/SeedTimeForm.jsx";
+import SeedTimeForm from "../Heat/SeedTimeForm.jsx";
 
 const TestSeedTimeForm = () => {
   const { handleSubmit, control, formState: { isValid } } = useForm({

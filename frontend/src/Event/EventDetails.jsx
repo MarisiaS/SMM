@@ -7,14 +7,15 @@ import { CircularProgress, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { SmmApi } from "../SmmApi.jsx";
 import AlertBox from "../components/Common/AlertBox.jsx";
-import ExpandableTable from "../components/Common/ExpandableTable";
 import ItemPaginationBar from "../components/Common/ItemPaginationBar";
 import TabPanel from "../components/Common/TabPanel";
-import { formatSeedTime } from "../utils/helperFunctions.js";
+import DetailsByLane from "../Heat/DetailsByLane.jsx";
+import DetailsByHeat from "../Heat/DetailsByHeat.jsx";
 
 const EventDetails = ({
   eventName,
   eventId,
+  numLanes,
   onBack,
   onPrevious,
   onNext,
@@ -51,11 +52,10 @@ const EventDetails = ({
         }
       } catch (error) {
         setErrorOnLoading(true);
-      }finally {
+      } finally {
         setTimeout(() => {
           setLoading(false);
         }, 100);
-        
       }
     }
     fetching();
@@ -63,7 +63,6 @@ const EventDetails = ({
       ignore = true;
     };
   }, [eventId]);
-
 
   //What is needed for the itemPaginationBar
   const label = "Event " + eventName;
@@ -81,86 +80,24 @@ const EventDetails = ({
     },
   ];
 
-  //Need data for heat/lane tables
-  const mainHeatTableColumns = [
-    {
-      accessorKey: "heat_name",
-      header: "",
-      size: 200,
-      Cell: ({ cell }) => <strong>{cell.getValue()}</strong>,
-    },
-  ];
-
-  const mainLaneTableColumns = [
-    {
-      accessorKey: "lane_name",
-      header: "",
-      size: 200,
-      Cell: ({ cell }) => <strong>{cell.getValue()}</strong>,
-    },
-  ];
-
-  const subHeatTableColumns = [
-    {
-      accessorKey: "lane_num",
-      header: "Lane",
-      size: 50,
-    },
-    {
-      accessorKey: "athlete_full_name",
-      header: "Athlete",
-      size: 150,
-    },
-    {
-      accessorKey: "seed_time",
-      header: "Seed Time",
-      size: 100,
-      Cell: ({ cell }) => formatSeedTime(cell.getValue()),
-    },
-    {
-      accessorKey: "heat_time",
-      header: "Heat Time",
-      size: 100,
-      Cell: ({ cell }) => formatSeedTime(cell.getValue()),
-    },
-  ];
-
-  const subLaneTableColumns = [
-    {
-      accessorKey: "num_heat",
-      header: "Heat",
-      size: 50,
-    },
-    {
-      accessorKey: "athlete_full_name",
-      header: "Athlete",
-      size: 150,
-    },
-  ];
-
   //Need for tabs component
   const tabs = [
     {
       label: "By Heat",
       content: (
-        <ExpandableTable
-          key={"heats" + eventId}
-          data={heatData}
-          columns={mainHeatTableColumns}
-          subTableColumns={subHeatTableColumns}
-          subData={"lanes"}
-        />
+        <DetailsByHeat
+        key={"heats" + eventId}
+        heatData={heatData}
+      />
       ),
     },
     {
       label: "By Lane",
       content: (
-        <ExpandableTable
+        <DetailsByLane
           key={"lanes" + eventId}
-          data={laneData}
-          columns={mainLaneTableColumns}
-          subTableColumns={subLaneTableColumns}
-          subData={"heats"}
+          numLanes={numLanes}
+          laneData={laneData}
         />
       ),
     },

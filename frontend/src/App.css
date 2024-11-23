@@ -17,6 +17,16 @@
   border-radius: 5px;
 }
 
+.heatTimeFormBox {
+  background-color: white;
+  padding: 10px;
+  min-width: 300px;
+  height: 30%;
+  width: 42%;
+  border: 1px solid lightblue;
+  border-radius: 5px;
+}
+
 .itemBox {
   display: flex;
   justify-content: center;

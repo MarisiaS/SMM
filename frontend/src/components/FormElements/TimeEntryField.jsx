@@ -10,7 +10,13 @@ import TextField from "@mui/material/TextField";
 import { useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 
-const TimeEntryField = ({ label, name, control, rules, aditional_options }) => {
+const TimeEntryField = ({
+  label,
+  name,
+  control,
+  rules,
+  aditional_options,
+}) => {
   const inputRefs = useRef([null, null, null]);
 
   return (
@@ -295,7 +301,7 @@ const TimeEntryField = ({ label, name, control, rules, aditional_options }) => {
                       aria-label="Options"
                       sx={{ alignSelf: "flex-start" }}
                     >
-                      {aditional_options.map((option,index) => {
+                      {aditional_options.map((option, index) => {
                         return (
                           <ToggleButton
                             key={index}

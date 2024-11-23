@@ -31,10 +31,11 @@ from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 class SwimMeetSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=50)
     site_name = serializers.ReadOnlyField(source="site.name")
+    site_num_lanes = serializers.ReadOnlyField(source="site.num_lanes")
 
     class Meta:
         model = SwimMeet
-        fields = ('id', 'name', 'date', 'time', 'site', 'site_name')
+        fields = ('id', 'name', 'date', 'time', 'site', 'site_name', 'site_num_lanes')
 
         
     
