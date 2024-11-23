@@ -35,7 +35,8 @@ export default function TabPanel({
               label={tab.label}
               sx={{
                 color: theme.palette.primary.main,
-                fontWeight: "bold", 
+                fontWeight: "bold",
+                borderRight: index !== tabs.length - 1 ? `2.5px solid ${theme.palette.primary.main}` : "none", 
                 "&.Mui-selected": {
                   color: theme.palette.primary.contrastText, 
                   backgroundColor: theme.palette.primary.main,
