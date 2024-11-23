@@ -16,8 +16,20 @@ const TestTabs = () => {
       {
         label: `New Tab ${prevTabs.length + 1}`,
         content: <div>New Content {prevTabs.length + 1}</div>,
+        close: true
       },
     ]);
+  };
+
+  const handleRemoveTab = (index) => {
+    setTabs((prevTabs) => prevTabs.filter((_, i) => i !== index));
+    setSelectedTab((prevSelected) =>
+      prevSelected === index
+        ? Math.max(0, index - 1)
+        : prevSelected > index
+        ? prevSelected - 1
+        : prevSelected
+    );
   };
 
   return (
@@ -29,6 +41,7 @@ const TestTabs = () => {
         tabs={tabs}
         selectedTab={selectedTab}
         setSelectedTab={setSelectedTab}
+        onRemoveTab={handleRemoveTab}
       />
     </div>
   );
