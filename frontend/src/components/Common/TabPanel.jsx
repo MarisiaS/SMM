@@ -32,6 +32,7 @@ export default function TabPanel({ tabs, selectedTab, setSelectedTab, onRemoveTa
           {tabs.map((tab, index) => (
             <Tab
               key={index}
+              component="div"
               label={
                 <Box
                   sx={{
