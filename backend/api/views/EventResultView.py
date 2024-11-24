@@ -5,6 +5,7 @@ from api.models import MeetEvent, Heat
 from api.serializers.EventResultSerializer import EventResultSerializer
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from api.CustomFilter import filter_by_group
+from datetime import timedelta
 
 
 
@@ -35,8 +36,8 @@ class EventResultView(APIView):
             current_rank = 1
             previous_time = -1
             for i, result in enumerate(results):
-                if result.heat_time in ["NS", "DQ", None]:
-                    break 
+                if result.heat_time in [timedelta(days=300), timedelta(days=400), None]:
+                    break
                 elif result.heat_time == previous_time:
                     result.rank = current_rank
                 else:
