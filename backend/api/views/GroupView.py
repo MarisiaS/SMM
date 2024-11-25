@@ -1,7 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.exceptions import NotFound
 from api.models import Group
 from api.serializers.GroupSerializer import GroupSerializer
 from drf_spectacular.utils import extend_schema, OpenApiParameter
@@ -41,7 +40,7 @@ class GroupViewSet(viewsets.ModelViewSet):
         try:
             filtering_group = Group.objects.get(id=filtering_group_id)
         except Group.DoesNotExist:
-            return Response({'error': 'Event not found'}, status=status.HTTP_404_NOT_FOUND)
+            raise NotFound(detail="Filtering group not found")
 
         filter_gender = filtering_group.gender
         filter_min_age = filtering_group.min_age
@@ -53,5 +52,5 @@ class GroupViewSet(viewsets.ModelViewSet):
         elif filter_min_age and filter_max_age is None:
             queryset = queryset.filter(Q(min_age__gte=filter_min_age) | Q(max_age__gte=filter_min_age))
         elif filter_max_age and filter_min_age is None:
-            queryset = queryset.filter(Q(max_age__lte=filter_max_age) | Q(min_age__lte=filter_min_age))
+            queryset = queryset.filter(Q(max_age__lte=filter_max_age) | Q(min_age__lte=filter_max_age))
         return queryset.exclude(id=filtering_group.id)
