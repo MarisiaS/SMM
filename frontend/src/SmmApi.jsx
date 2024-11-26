@@ -264,7 +264,7 @@ export class SmmApi {
   }
 
   static async registerHeatTimes(data) {
-    return await axios.post(`${BASE_URL}/event_lane/update_heat_times/`, data, {
+    return await axios.put(`${BASE_URL}/event_lane/update_heat_times/`, data, {
       headers: getConfig(),
     });
   }
