@@ -140,7 +140,7 @@ const TestResults = () => {
         <GenericTable
           data={testData}
           columns={columns}
-          AddSearch={true}
+          enableSearch={true}
           getRowStyle={rowHighlight}
         />
       </Box>
