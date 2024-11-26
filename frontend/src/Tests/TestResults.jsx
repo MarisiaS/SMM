@@ -48,11 +48,13 @@ const testData = [
   },
   {
     id: 15,
+    rank: null,
     athlete_full_name: "Olivia Davis",
     heat_time: "DQ",
   },
   {
     id: 11,
+    rank: null,
     athlete_full_name: "Sofia Avila",
     heat_time: "DQ",
   },
@@ -76,6 +78,48 @@ const columns = [
   },
 ];
 
+const rowHighlight = (row) => {
+  const rank = row.original.rank;
+  if (rank === 1) {
+    return {
+      backgroundColor: "#ffd700",
+      "& *": {
+        color: "#264040",
+        fontWeight: "bold",
+      },
+    };
+  }
+  if (rank === 2) {
+    return {
+      backgroundColor: "#c0c0c0",
+      "& *": {
+        color: "#264040",
+        fontWeight: "bold",
+      },
+    };
+  }
+  if (rank === 3) {
+    return {
+      backgroundColor: "#DAAA5E",
+      "& *": {
+        color: "#264040",
+        fontWeight: "bold",
+      },
+    };
+  }
+  if (rank === null) {
+    return {
+        backgroundColor: "#f0f0f0",
+      "& *": {
+        color: "#a0a0a0",
+        fontStyle: "italic",
+        fontWeight: "lighter"
+      },
+    };
+  }
+  return {};
+};
+
 const TestResults = () => {
   return (
     <div
@@ -93,7 +137,12 @@ const TestResults = () => {
         alignItems="center"
         className={"test"}
       >
-        <GenericTable data={testData} columns={columns} AddSearch={true} />
+        <GenericTable
+          data={testData}
+          columns={columns}
+          AddSearch={true}
+          getRowStyle={rowHighlight}
+        />
       </Box>
     </div>
   );
