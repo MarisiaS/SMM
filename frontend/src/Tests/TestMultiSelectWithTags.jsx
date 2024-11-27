@@ -30,6 +30,7 @@ const TestMultiSelectWithTags = ({}) => {
 
   return (
     <div className={"test"}>
+      <br/>
       <MultiSelectWithTags
         key={1}
         label={"Filter by group"}

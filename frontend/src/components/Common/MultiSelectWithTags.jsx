@@ -1,11 +1,11 @@
-import { useState, useMemo } from "react";
+import { useState} from "react";
 import {
-  InputLabel,
   MenuItem,
   ListItemText,
   Checkbox,
   Select,
   useTheme,
+  Box
 } from "@mui/material";
 
 const MultiSelectWithTags = ({
@@ -18,11 +18,6 @@ const MultiSelectWithTags = ({
   const theme = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
-  const filteredOptions = useMemo(() =>
-    options.filter((option) => !selectedOptions.includes(option.id)),
-    [options, selectedOptions]
-  );
-
   const handleChange = (event) => {
     const {
       target: { value },
@@ -34,39 +29,42 @@ const MultiSelectWithTags = ({
     setIsOpen(false);
   };
 
-  const allOptionsSelected = selectedOptions.length === options.length;
-
   return (
     <div>
-      <InputLabel
-        id="label-multi-select-tags"
-        sx={{
-          color: allOptionsSelected ? "gray" : theme.palette.primary.main,
-        }}
-      >
-        {label}
-      </InputLabel>
-      <Select
-        labelId="multi-select-with-tags"
-        id="multi-select-with-tags"
-        sx={{ width: 300, height: 50 }}
-        multiple
-        value={selectedOptions}
-        onChange={handleChange}
-        onClose={() => setIsOpen(false)}
-        onOpen={() => setIsOpen(true)}
-        open={isOpen}
-        renderValue={() => null}
-        disabled={allOptionsSelected}
-      >
-        {filteredOptions
-          .map((option) => (
-            <MenuItem key={option.id} value={option.id}>
+        <Select
+          id="multi-select-with-tags"
+          sx={{ width: 300, height: 50 }}
+          multiple
+          value={selectedOptions.length > 0 ? selectedOptions : ["placeholder"]}
+          onChange={handleChange}
+          onClose={() => setIsOpen(false)}
+          onOpen={() => setIsOpen(true)}
+          open={isOpen}
+          renderValue={(selected) =>
+            <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 0.5,
+              color: theme.palette.primary.dark,
+              fontWeigth: "bolder",
+            }}
+          >
+            {label}
+          </Box>
+          }
+        >
+          {options.map((option) => (
+            <MenuItem
+              key={option.id}
+              value={option.id}
+              disabled={selectedOptions.includes(option.id)}
+            >
               <Checkbox checked={selectedOptions.includes(option.id)} />
               <ListItemText primary={option.name} />
             </MenuItem>
           ))}
-      </Select>
+        </Select>
     </div>
   );
 };
