@@ -13,6 +13,8 @@ import TestExpandableTable from "./Tests/TestExpandableTable";
 import TestConditionalRender from "./Tests/TestConditionalRender";
 import TestSelectTable from "./Tests/TestSelectTable";
 import TestSeedTimeForm from "./Tests/TestSeedTimeForm";
+import PoolIcon from '@mui/icons-material/Pool';
+import AthleteIcon from "./MyIcons/AthleteIcon";
 
 function App() {
   const NotFound = () => {
@@ -20,11 +22,13 @@ function App() {
   };
 
   const H1 = () => {
-    return <h1>Hello from home</h1>;
+    return <h1>Hello from athlete</h1>;
   };
 
   const menuOptions = [
-    { id: 1, path: "/swim-meet", label: "Swim Meet", icon: "" },
+    { id: 1, path: "/athlete", label: "Athlete", icon: <AthleteIcon/> },
+    { id: 2, path: "/swim-meet", label: "Swim Meet", icon: <PoolIcon/> },
+    
   ];
 
   return (
@@ -33,6 +37,7 @@ function App() {
       <Route path="*" element={<NotFound />} />
       <Route element={<PrivateRoutes />}>
         <Route element={<NavBar menuOptions={menuOptions} />}>
+          <Route path="/athlete" element={<H1 />} />
           <Route path="/swim-meet" element={<SwimMeetDisplay />} />
           <Route path="/add-swim-meet" element={<AddSwimMeet />} />
           <Route
