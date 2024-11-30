@@ -3,6 +3,7 @@ import Login from "./components/Login";
 import { Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import PrivateRoutes from "./utils/privateRoutes";
+import AthleteDisplay from "./Athlete/AthleteDisplay";
 import SwimMeetDisplay from "./SwimMeet/SwimMeetDisplay";
 import AddSwimMeet from "./SwimMeet/AddSwimMeet";
 import MeetEventDisplay from "./Event/MeetEventDisplay";
@@ -37,7 +38,7 @@ function App() {
       <Route path="*" element={<NotFound />} />
       <Route element={<PrivateRoutes />}>
         <Route element={<NavBar menuOptions={menuOptions} />}>
-          <Route path="/athlete" element={<H1 />} />
+          <Route path="/athlete" element={<AthleteDisplay />} />
           <Route path="/swim-meet" element={<SwimMeetDisplay />} />
           <Route path="/add-swim-meet" element={<AddSwimMeet />} />
           <Route
