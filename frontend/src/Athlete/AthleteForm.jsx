@@ -3,17 +3,16 @@ import { Box, Stack } from "@mui/material";
 import MyTextField from "../components/FormElements/MyTextField.jsx";
 import MyButton from "../components/FormElements/MyButton.jsx";
 import MyDatePicker from "../components/FormElements/MyDatePicker.jsx";
-import MyTimePicker from "../components/FormElements/MyTimePicker.jsx";
 import MySelect from "../components/FormElements/MySelect.jsx";
 import dayjs from "dayjs";
 
-const SwimMeetForm = ({
+const AthleteForm = ({
   handleSubmit,
   control,
-  handleCancel,
+  onCancel,
   isValid,
 }) => {
-    gender_options =[{"id":1, "name": "Girl"},{"id":2, "name": "Boy"}];
+  const  gender_options =[{"id":1, "name": "Girl"},{"id":2, "name": "Boy"}];
   return (
     <form onSubmit={handleSubmit} className={"whiteBox"}>
       <Stack>
@@ -76,11 +75,11 @@ const SwimMeetForm = ({
         <MyButton
           key={"cancel"}
           label={"Go to Athlete"}
-          onClick={handleCancel}
+          onClick={onCancel}
         />
       </Stack>
     </form>
   );
 };
 
-export default SwimMeetForm;
+export default AthleteForm;
