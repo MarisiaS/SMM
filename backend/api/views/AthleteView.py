@@ -1,7 +1,9 @@
 from rest_framework import viewsets
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
 from rest_framework import status
+from django.db.models.functions import Collate
 from api.models import Athlete, Group
 from api.serializers.AthleteSerializer import AthleteSerializer
 from django.db.models import F, Func, IntegerField, Value
@@ -17,10 +19,15 @@ class AthleteViewSet(viewsets.ModelViewSet):
     queryset = Athlete.objects.all()
     serializer_class = AthleteSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [OrderingFilter, SearchFilter]
     http_method_names = ['get', 'post', 'delete', 'patch']
+    search_fields = ['^first_name_search','^last_name_search']
+    ordering = ['first_name']
     
     def get_queryset(self):
         queryset = Athlete.objects.all()
+        queryset = queryset.annotate(first_name_search = Collate("first_name", "und-x-icu" ))
+        queryset = queryset.annotate(last_name_search = Collate("last_name", "und-x-icu" ))
         group_id = self.request.query_params.get('group_id')
         if group_id is not None:
             queryset = queryset.annotate(
