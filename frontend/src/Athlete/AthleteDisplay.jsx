@@ -15,13 +15,13 @@ import {
   
   const columns = [
     {
-      accessorKey: "first_name",
-      header: "First Name",
+      accessorKey: "full_name",
+      header: "Name",
       size: 150,
     },
     {
-      accessorKey: "last_name",
-      header: "Last Name",
+      accessorKey: "age",
+      header: "Age",
       size: 150,
     },
     {
@@ -73,6 +73,7 @@ import {
       async function fetching() {
         try {
           const json = await SmmApi.getAthleteList(searchPar, offset, limit);
+          console.log(json.results);
           if (!ignore) {
             const formattedData = json.results.map((item) => ({
               ...item,
