@@ -290,4 +290,10 @@ export class SmmApi {
     });
     return res.data;
   }
+
+  static async createAthlete(data) {
+    return await axios.post(`${BASE_URL}/athlete/`, data, {
+      headers: getConfig(),
+    });
+  }
 }
