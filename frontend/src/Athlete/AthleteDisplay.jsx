@@ -1,14 +1,11 @@
 import {
     Add as AddIcon,
-    Delete as DeleteIcon,
     ContentPaste as DetailsIcon,
     Edit as EditIcon,
-    EmojiEvents as RankingIcon,
   } from "@mui/icons-material";
   import { Box, Stack } from "@mui/material";
   import dayjs from "dayjs";
   import { useEffect, useState } from "react";
-  import { useNavigate } from "react-router-dom";
   import { SmmApi } from "../SmmApi";
   import AlertBox from "../components/Common/AlertBox.jsx";
   import GenericTable from "../components/Common/GenericTable";
@@ -45,11 +42,6 @@ import {
     const [offset, setOffset] = useState(0); //search bar needs to restart this
     const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(0); //search bar needs to restart this
-  
-    let typeAlertLoading = errorOnLoading ? "error" : "success";
-    let messageOnLoading = errorOnLoading
-      ? "Data upload failed. Please try again!"
-      : "";
   
     const handleDetailsClick = (id) => {
       console.log("details")
@@ -115,7 +107,7 @@ import {
             margin: "auto",
           }}
         >
-          <AlertBox type={typeAlertLoading} message={messageOnLoading} />
+          <AlertBox type={"error"} message={"Data upload failed. Please try again!"} />
         </Stack>
       );
     } else {
