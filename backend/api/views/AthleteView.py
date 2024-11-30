@@ -25,17 +25,17 @@ class AthleteViewSet(viewsets.ModelViewSet):
     ordering = ['first_name']
     
     def get_queryset(self):
-        queryset = Athlete.objects.all()
-        queryset = queryset.annotate(first_name_search = Collate("first_name", "und-x-icu" ))
-        queryset = queryset.annotate(last_name_search = Collate("last_name", "und-x-icu" ))
-        group_id = self.request.query_params.get('group_id')
-        if group_id is not None:
-            queryset = queryset.annotate(
-                age=Func(
+        queryset = Athlete.objects.annotate(
+        first_name_search=Collate("first_name", "und-x-icu"),
+        last_name_search=Collate("last_name", "und-x-icu"),
+        age=Func(
                 Value("year"),
                 Func(Value(timezone.now().date()), F("date_of_birth"), function="age"),
                 function="date_part",
-                output_field=IntegerField()))
+                output_field=IntegerField()),
+        )
+        group_id = self.request.query_params.get('group_id')
+        if group_id is not None:
             try:
                 group_instance = Group.objects.get(id=group_id)
             except:

@@ -6,11 +6,14 @@ from django.utils import timezone
 class AthleteSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(max_length=50)
     last_name = serializers.CharField(max_length=50)
+    full_name = serializers.CharField(read_only=True)
+    age = serializers.IntegerField(read_only=True)
 
 
     class Meta:
         model = Athlete
         fields = '__all__'
+        read_only_fields = ['full_name', 'age']
 
     # Validate that the date is not in the future
     def validate_date_of_birth(self, value):
