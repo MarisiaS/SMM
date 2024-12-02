@@ -18,6 +18,7 @@ import Title from "../components/Common/Title.jsx";
 import MyButton from "../components/FormElements/MyButton.jsx";
 import AddEvent from "./AddEvent.jsx";
 import EventDetails from "./EventDetails.jsx";
+import EventResults from "../Results/EventResults.jsx";
 
 const columns = [
   {
@@ -73,7 +74,8 @@ const MeetEventDisplay = () => {
   };
 
   const handleRankingClick = (id) => {
-    console.log("Ranking ...");
+    setSelectedEventIndex(Number(id));
+    setView("results");
   };
 
   const handleDownloadDetailsForEvent = async (id) => {
@@ -296,6 +298,18 @@ const MeetEventDisplay = () => {
             onBack={handleBackToEvents}
             onCreateHeats={handleAddHeatsToNewEvent}
             onCreateEvent={handleNewEventCreated}
+          />
+        );
+      case "results":
+        return (
+          <EventResults
+            eventName={currentEvent.name}
+            eventId={currentEvent.id}
+            onBack={handleBackToEvents}
+            onPrevious={handlePreviousEvent}
+            onNext={handleNextEvent}
+            disablePrevious={isFirstEvent}
+            disableNext={isLastEvent}
           />
         );
       default:
