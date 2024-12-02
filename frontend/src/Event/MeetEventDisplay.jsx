@@ -35,18 +35,18 @@ const columns = [
 const MeetEventDisplay = () => {
   const { meetId } = useParams();
   const location = useLocation();
-  const meetData = location.state?.meetData;  
+  const meetData = location.state?.meetData;
   const [eventData, setEventData] = useState([]);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
 
-  //EventDetail states
-  const [showEventDetails, setShowEventDetails] = useState(false);
-  const [showGenerateHeats, setShowGenerateHeats] = useState(false);
+  // View states
+  const [view, setView] = useState(
+    location.state?.showAddEvent ? "add" : "list"
+  );
   const [selectedEventIndex, setSelectedEventIndex] = useState(null);
   const [navegationDirection, setNavegationDirection] = useState(null);
 
-  //AddNew states
-  const [showAddEvent, setShowAddEvent] = useState(location.state?.showAddEvent || false);
+  //Add states
   const [newEventTigger, setNewEventTrigger] = useState(0);
 
   //GenerateHeats states
@@ -58,23 +58,14 @@ const MeetEventDisplay = () => {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
 
-  let typeAlertLoading = errorOnLoading ? "error" : "success";
-  let messageOnLoading = errorOnLoading
-    ? "Data upload failed. Please try again!"
-    : "";
-
   const handleGenerateClick = (id) => {
     setSelectedEventIndex(Number(id));
-    setShowAddEvent(false);
-    setShowEventDetails(false);
-    setShowGenerateHeats(true);
+    setView("generate");
   };
 
   const handleDetailsClick = (id) => {
     setSelectedEventIndex(Number(id));
-    setShowAddEvent(false);
-    setShowGenerateHeats(false);
-    setShowEventDetails(true);
+    setView("details");
   };
 
   const handleDeleteClick = (id) => {
@@ -184,10 +175,8 @@ const MeetEventDisplay = () => {
   }, [newEventTigger]);
 
   const handleAddNew = () => {
-    setShowEventDetails(false);
-    setShowGenerateHeats(false);
     setSelectedEventIndex(null);
-    setShowAddEvent(true);
+    setView("add");
   };
 
   const handleNewEventCreated = () => {
@@ -196,16 +185,12 @@ const MeetEventDisplay = () => {
 
   const handleBackToEvents = () => {
     setReloadEventDataTrigger((prev) => prev + 1);
-    setShowEventDetails(false);
-    setShowGenerateHeats(false);
-    setShowAddEvent(false);
     setSelectedEventIndex(null);
+    setView("list");
   };
 
   const handleGenerateButtonOnEventDetails = () => {
-    setShowEventDetails(false);
-    setShowAddEvent(false);
-    setShowGenerateHeats(true);
+    setView("generate");
   };
 
   const handlePreviousEvent = () => {
@@ -239,55 +224,53 @@ const MeetEventDisplay = () => {
     const index = eventData.findIndex((item) => item.id === eventId);
     setReloadEventDataTrigger((prev) => prev + 1);
     if (index === -1) {
-      setShowGenerateHeats(false);
-      setShowEventDetails(false);
-      setShowAddEvent(false);
       setSelectedEventIndex(null);
+      setView("list");
     } else {
-      setShowGenerateHeats(false);
       setSelectedEventIndex(index);
-      setShowAddEvent(false);
-      setShowEventDetails(true);
+      setView("details");
     }
   };
 
   const handleAddHeatsToNewEvent = () => {
     if (selectedEventIndex === null) {
-      setShowAddEvent(false);
-      setShowEventDetails(false);
-      setShowGenerateHeats(false);
+      setView("list");
     } else {
-      setShowAddEvent(false);
-      setShowEventDetails(false);
-      setShowGenerateHeats(true);
+      setView("generate");
     }
   };
 
   const isFirstEvent = page === 0 && selectedEventIndex === 0;
   const isLastEvent = offset + selectedEventIndex + 1 >= count;
 
-  if (errorOnLoading) {
-    return (
-      <Stack
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "16px",
-          width: "300px",
-          margin: "auto",
-        }}
-      >
-        <AlertBox type={typeAlertLoading} message={messageOnLoading} />
-      </Stack>
-    );
-  } else {
-    return (
-      <div>
-        <Title data={meetData} fields={["name", "date", "site_name"]} />
-        {showEventDetails && eventData[selectedEventIndex] ? (
+  const renderContent = () => {
+    if (errorOnLoading) {
+      return (
+        <Stack
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            width: "300px",
+            margin: "auto",
+          }}
+        >
+          <AlertBox
+            type="error"
+            message="Data upload failed. Please try again!"
+          />
+        </Stack>
+      );
+    }
+
+    const currentEvent = eventData[selectedEventIndex];
+
+    switch (view) {
+      case "details":
+        return (
           <EventDetails
-            eventName={eventData[selectedEventIndex].name}
-            eventId={eventData[selectedEventIndex].id}
+            eventName={currentEvent.name}
+            eventId={currentEvent.id}
             numLanes={meetData.site_num_lanes}
             onBack={handleBackToEvents}
             onPrevious={handlePreviousEvent}
@@ -297,20 +280,26 @@ const MeetEventDisplay = () => {
             disablePrevious={isFirstEvent}
             disableNext={isLastEvent}
           />
-        ) : showGenerateHeats && eventData[selectedEventIndex] ? (
+        );
+      case "generate":
+        return (
           <GenerateHeats
-            eventName={eventData[selectedEventIndex].name}
-            eventId={eventData[selectedEventIndex].id}
+            eventName={currentEvent.name}
+            eventId={currentEvent.id}
             onBack={handleBackToEvents}
             onProcessCompletion={handleGenerateHeatProcessCompletion}
           />
-        ) : showAddEvent ? (
+        );
+      case "add":
+        return (
           <AddEvent
             onBack={handleBackToEvents}
             onCreateHeats={handleAddHeatsToNewEvent}
             onCreateEvent={handleNewEventCreated}
           />
-        ) : (
+        );
+      default:
+        return (
           <>
             <Stack
               direction="row"
@@ -356,10 +345,16 @@ const MeetEventDisplay = () => {
               setPage={setPage}
             />
           </>
-        )}
-      </div>
-    );
-  }
+        );
+    }
+  };
+
+  return (
+    <div>
+      <Title data={meetData} fields={["name", "date", "site_name"]} />
+      {renderContent()}
+    </div>
+  );
 };
 
 export default MeetEventDisplay;
