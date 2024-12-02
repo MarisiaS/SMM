@@ -128,6 +128,7 @@ const MeetEventDisplay = () => {
       icon: <RankingIcon />,
       onClick: handleRankingClick,
       tip: "Go to ranking",
+      visible: (row) => row.original.total_num_heats > 0,
     },
     {
       name: "Download Heats Details",
