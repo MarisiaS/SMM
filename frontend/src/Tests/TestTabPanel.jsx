@@ -1,34 +1,47 @@
 import { useState } from "react";
-import { MoveUp as BackIcon, Add as AddIcon } from "@mui/icons-material";
 import TabPanel from "../components/Common/TabPanel";
 import SwimMeetDisplay from "../SwimMeet/SwimMeetDisplay";
-import AddSwimMeet from "../SwimMeet/AddSwimMeet";
 
 const TestTabs = () => {
-  const handleByHeatsClick = () => {
-    console.log("Heats");
+  const [tabs, setTabs] = useState([
+    { label: "Heats", content: <SwimMeetDisplay /> },
+  ]);
+  const [selectedTab, setSelectedTab] = useState(0);
+
+  const handleAddTab = () => {
+    setSelectedTab(tabs.length);
+    setTabs((prevTabs) => [
+      ...prevTabs,
+      {
+        label: `New Tab ${prevTabs.length + 1}`,
+        content: <div>New Content {prevTabs.length + 1}</div>,
+        close: true
+      },
+    ]);
   };
 
-  const handleByLanesClick = () => {
-    console.log("Lanes");
+  const handleRemoveTab = (index) => {
+    setTabs((prevTabs) => prevTabs.filter((_, i) => i !== index));
+    setSelectedTab((prevSelected) =>
+      prevSelected === index
+        ? Math.max(0, index - 1)
+        : prevSelected > index
+        ? prevSelected - 1
+        : prevSelected
+    );
   };
-
-  const tabs = [
-    {
-      label: "Heats",
-      onClick: handleByHeatsClick,
-      content: <SwimMeetDisplay />,
-    },
-    {
-      label: "Lanes",
-      onClick: handleByLanesClick,
-      content: <AddSwimMeet />,
-    },
-  ];
 
   return (
     <div className={"test"}>
-      <TabPanel tabs={tabs} />
+      <button onClick={handleAddTab} style={{ marginBottom: "10px" }}>
+        Add Tab
+      </button>
+      <TabPanel
+        tabs={tabs}
+        selectedTab={selectedTab}
+        setSelectedTab={setSelectedTab}
+        onRemoveTab={handleRemoveTab}
+      />
     </div>
   );
 };

@@ -263,6 +263,14 @@ export class SmmApi {
     }
   }
 
+
+
+  static async registerHeatTimes(data) {
+    return await axios.put(`${BASE_URL}/event_lane/update_heat_times/`, data, {
+      headers: getConfig(),
+    });
+  }
+
   static async getEventResults(eventId, groupId) {
     let url = `${BASE_URL}/event_result/${eventId}/?`;
     const extraParams = new URLSearchParams();
@@ -278,4 +286,5 @@ export class SmmApi {
     });
     return res.data;
   }
+    
 }
