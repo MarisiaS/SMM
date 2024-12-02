@@ -64,6 +64,32 @@ const EventDetails = ({
     };
   }, [eventId]);
 
+  const handleLaneDataUpdate = (updatedData) => {
+    //Update the data by lane
+    const updatedLaneData = laneData.map((lane) => {
+      const updatedHeats = lane.heats.map((heat) => {
+        const updatedHeat = updatedData.find((p) => p.heat_id === heat.id);
+        return updatedHeat
+          ? { ...heat, heat_time: updatedHeat.heat_time }
+          : heat;
+      });
+      return { ...lane, heats: updatedHeats };
+    });
+    setLaneData(updatedLaneData);
+
+    //Update the data by heat
+    const updatedHeatData = heatData.map((heat) => {
+      const updatedLanes = heat.lanes.map((lane) => {
+        const updatedLane = updatedData.find((p) => p.heat_id === lane.id);
+        return updatedLane
+          ? { ...lane, heat_time: updatedLane.heat_time }
+          : lane;
+      });
+      return { ...heat, lanes: updatedLanes };
+    });
+    setHeatData(updatedHeatData);
+  };
+
   //What is needed for the itemPaginationBar
   const label = "Event " + eventName;
   const extraButtons = [
@@ -84,12 +110,7 @@ const EventDetails = ({
   const tabs = [
     {
       label: "By Heat",
-      content: (
-        <DetailsByHeat
-        key={"heats" + eventId}
-        heatData={heatData}
-      />
-      ),
+      content: <DetailsByHeat key={"heats" + eventId} heatData={heatData} />,
     },
     {
       label: "By Lane",
@@ -98,6 +119,7 @@ const EventDetails = ({
           key={"lanes" + eventId}
           numLanes={numLanes}
           laneData={laneData}
+          onLaneDataUpdate={handleLaneDataUpdate}
         />
       ),
     },
