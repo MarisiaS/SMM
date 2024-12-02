@@ -13,7 +13,9 @@ import TestExpandableTable from "./Tests/TestExpandableTable";
 import TestConditionalRender from "./Tests/TestConditionalRender";
 import TestSelectTable from "./Tests/TestSelectTable";
 import TestSeedTimeForm from "./Tests/TestSeedTimeForm";
+import TestResults from "./Tests/TestResults";
 import TestMultiSelectWithTags from "./Tests/TestMultiSelectWithTags";
+
 
 function App() {
   const NotFound = () => {
@@ -50,7 +52,9 @@ function App() {
       <Route path="/tests/test-select-table" element={<TestSelectTable />} />
       <Route path="/tests/test-conditional-render" element={<TestConditionalRender />} />
       <Route path="/tests/test-seed-time-form" element={<TestSeedTimeForm />} />
+      <Route path="/tests/test-results" element={<TestResults />} />
       <Route path="/tests/test-multi-select-with-tags" element={<TestMultiSelectWithTags />} />
+
     </Routes>
   );
 }

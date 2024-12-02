@@ -4,7 +4,7 @@ import {
 } from "material-react-table";
 import { Box, IconButton, Tooltip, useTheme } from "@mui/material";
 
-const GenericTable = ({ data, columns, actions, notRecordsMessage }) => {
+const GenericTable = ({ data, columns, actions, notRecordsMessage, enableSearch, getRowStyle }) => {
   const enableActions = actions;
   const theme = useTheme();
   const table = useMaterialReactTable({
@@ -16,11 +16,15 @@ const GenericTable = ({ data, columns, actions, notRecordsMessage }) => {
         color: theme.palette.primary.contrastText,
       },
     },
+    muiTableBodyRowProps: ({ row }) => ({
+      sx: getRowStyle ? getRowStyle(row) : {},
+    }),
     enableSorting: false,
     enableRowActions: enableActions,
     positionActionsColumn: "last",
-    initialState: { density: "compact" },
-    enableTopToolbar: false,
+    initialState: { density: "compact", showGlobalFilter: enableSearch ? enableSearch : false },
+    enableTopToolbar: enableSearch ? enableSearch : false,
+    enableToolbarInternalActions: false,
     enableBottomToolbar: false,
     enableColumnActions: false,
     enablePagination: false,
