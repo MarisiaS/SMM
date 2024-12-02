@@ -50,7 +50,7 @@ urlpatterns = [
     path('event_lane/<int:event_id>/<int:lane_num>/',
          LaneDetailView.as_view(), name='lane-detail'),
     path('event_result/<int:event_id>/',
-         EventResultView.as_view(), name='event_result'),
+         EventResultView.as_view(), name='event-result'),
     path('download-heats-details/<int:event_id>/',
          DownloadAllHeatsByEvent.as_view(), name='download-event-heats-details'),
     path('download-all-heats-details/<int:meet_id>/',
