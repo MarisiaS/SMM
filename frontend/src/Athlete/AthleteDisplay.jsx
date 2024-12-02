@@ -91,12 +91,6 @@ const AthleteDisplay = () => {
 
   const actions = [
     {
-      name: "Details",
-      icon: <DetailsIcon />,
-      onClick: handleDetailsClick,
-      tip: "More details",
-    },
-    {
       name: "Edit",
       icon: <EditIcon />,
       onClick: handleEditClick,
