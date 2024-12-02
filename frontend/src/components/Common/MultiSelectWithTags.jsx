@@ -47,7 +47,7 @@ const MultiSelectWithTags = ({
               alignItems: "center",
               gap: 0.5,
               color: theme.palette.primary.dark,
-              fontWeigth: "bolder",
+              fontWeight: "bolder",
             }}
           >
             {label}
