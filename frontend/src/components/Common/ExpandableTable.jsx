@@ -10,6 +10,7 @@ const ExpandableTable = ({
   actions,
   getSubTableColumns,
   subData,
+  subTableActions,
 }) => {
   const enableActions = actions;
   const theme = useTheme();
@@ -94,6 +95,8 @@ const ExpandableTable = ({
             enableBottomToolbar={false}
             enableColumnActions={false}
             enablePagination={false}
+            enableRowActions={subTableActions}
+            positionActionsColumn="last"
             initialState={{
               density: "compact",
             }}
@@ -103,6 +106,41 @@ const ExpandableTable = ({
                 color: theme.palette.primary.contrastText,
               },
             }}
+            renderRowActions={({ row }) =>
+              subTableActions &&
+              subTableActions.map((action, index) => {
+                let shouldRender = true;
+                if (action.visible) {
+                  shouldRender = action.visible(row);
+                }
+                return (
+                  shouldRender && (
+                    <Tooltip
+                      key={index}
+                      title={action.tip}
+                      placement="top"
+                      arrow
+                      slotProps={{
+                        popper: {
+                          modifiers: [
+                            {
+                              name: "offset",
+                              options: {
+                                offset: [0, -20],
+                              },
+                            },
+                          ],
+                        },
+                      }}
+                    >
+                      <IconButton onClick={() => action.onClick(row.original)}>
+                        {action.icon}
+                      </IconButton>
+                    </Tooltip>
+                  )
+                );
+              })
+            }
           />
         </Box>
       );
