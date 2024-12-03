@@ -1,22 +1,16 @@
 import {
-  Edit as EditIcon,
   Close as CloseIcon,
+  Edit as EditIcon,
   Save as SaveIcon,
 } from "@mui/icons-material";
-import {
-  Dialog,
-  DialogContent,
-  DialogActions,
-  Button,
-  Alert,
-} from "@mui/material";
-
-import React, { useState, useMemo } from "react";
-import { SmmApi } from "../SmmApi.jsx";
-import ExpandableTable from "../components/Common/ExpandableTable.jsx";
-import HeatTimeForm from "./HeatTimeForm.jsx";
-import { formatSeedTime } from "../utils/helperFunctions.js";
+import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
+import React, { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { SmmApi } from "../SmmApi.jsx";
+import AlertBox from "../components/Common/AlertBox.jsx";
+import ExpandableTable from "../components/Common/ExpandableTable.jsx";
+import { formatSeedTime } from "../utils/helperFunctions.js";
+import HeatTimeForm from "./HeatTimeForm.jsx";
 
 const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
   const [editMainTableRowIndexes, setEditMainTableRowIndexes] = useState([]);
@@ -177,7 +171,7 @@ const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
 
       <Dialog open={!!error} onClose={handleDialogClose}>
         <DialogContent>
-          <Alert severity="error">{error}</Alert>
+          <AlertBox type="error" message={error} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose} color="primary">
