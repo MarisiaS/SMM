@@ -134,10 +134,17 @@ export class SmmApi {
     return res.data;
   }
 
-  static async getGroups() {
-    return await axios.get(`${BASE_URL}/group/`, {
+  static async getGroups(groupId=null) {
+    const url = new URL(`${BASE_URL}/group/`);
+    if (groupId) {
+      url.searchParams.append("filtering_group_id", groupId);
+    }
+    console.log(url);
+
+    let res = await axios.get(url, {
       headers: getConfig(),
     });
+    return res;
   }
 
   static async getEventTypes() {
