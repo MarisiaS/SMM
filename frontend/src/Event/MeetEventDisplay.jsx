@@ -117,6 +117,13 @@ const MeetEventDisplay = () => {
       tip: "Go to Heats",
       visible: (row) => row.original.total_num_heats > 0,
     },
+    {
+      name: "Download Heats Details",
+      icon: <DownloadIcon />,
+      onClick: handleDownloadDetailsForEvent,
+      tip: "Download Heats Details",
+      visible: (row) => row.original.total_num_heats > 0,
+    },
     // {
     //   name: "Delete",
     //   icon: <DeleteIcon />,
@@ -130,13 +137,7 @@ const MeetEventDisplay = () => {
       tip: "Go to ranking",
       visible: (row) => row.original.total_num_heats > 0,
     },
-    {
-      name: "Download Heats Details",
-      icon: <DownloadIcon />,
-      onClick: handleDownloadDetailsForEvent,
-      tip: "Download Heats Details",
-      visible: (row) => row.original.total_num_heats > 0,
-    },
+    
   ];
 
   useEffect(() => {
@@ -306,6 +307,7 @@ const MeetEventDisplay = () => {
           <EventResults
             eventName={currentEvent.name}
             eventId={currentEvent.id}
+            groupId={currentEvent.group}
             onBack={handleBackToEvents}
             onPrevious={handlePreviousEvent}
             onNext={handleNextEvent}
