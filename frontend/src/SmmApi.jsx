@@ -139,7 +139,6 @@ export class SmmApi {
     if (groupId) {
       url.searchParams.append("filtering_group_id", groupId);
     }
-    console.log(url);
 
     let res = await axios.get(url, {
       headers: getConfig(),
