@@ -96,7 +96,7 @@ const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
 
         try {
           await SmmApi.registerHeatTimes(payload);
-          onLaneDataUpdate(payload);
+          onLaneDataUpdate();
           laneFormState.reset();
           setEditMainTableRowIndexes((prevIndexes) =>
             prevIndexes.filter((index) => index !== Number(rowIndex))

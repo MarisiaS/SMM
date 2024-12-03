@@ -64,7 +64,7 @@ const EventDetails = ({
     };
   }, [eventId, reloadDetailsTrigger]);
 
-  const handleLaneDataUpdate = (updatedData) => {
+  const handleLaneDataUpdate = () => {
     setReloadDetailsTrigger((prev) => prev + 1);
   };
 
