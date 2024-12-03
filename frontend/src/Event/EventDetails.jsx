@@ -30,7 +30,7 @@ const EventDetails = ({
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
-
+  const [reloadDetailsTrigger, setReloadDetailsTrigger] = useState(0);
   let typeAlertLoading = errorOnLoading ? "error" : "success";
   let messageOnLoading = errorOnLoading
     ? "Data upload failed. Please try again!"
@@ -62,32 +62,10 @@ const EventDetails = ({
     return () => {
       ignore = true;
     };
-  }, [eventId]);
+  }, [eventId, reloadDetailsTrigger]);
 
   const handleLaneDataUpdate = (updatedData) => {
-    //Update the data by lane
-    const updatedLaneData = laneData.map((lane) => {
-      const updatedHeats = lane.heats.map((heat) => {
-        const updatedHeat = updatedData.find((p) => p.heat_id === heat.id);
-        return updatedHeat
-          ? { ...heat, heat_time: updatedHeat.heat_time }
-          : heat;
-      });
-      return { ...lane, heats: updatedHeats };
-    });
-    setLaneData(updatedLaneData);
-
-    //Update the data by heat
-    const updatedHeatData = heatData.map((heat) => {
-      const updatedLanes = heat.lanes.map((lane) => {
-        const updatedLane = updatedData.find((p) => p.heat_id === lane.id);
-        return updatedLane
-          ? { ...lane, heat_time: updatedLane.heat_time }
-          : lane;
-      });
-      return { ...heat, lanes: updatedLanes };
-    });
-    setHeatData(updatedHeatData);
+    setReloadDetailsTrigger((prev) => prev + 1);
   };
 
   //What is needed for the itemPaginationBar
