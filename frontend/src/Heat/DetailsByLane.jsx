@@ -106,7 +106,7 @@ const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
         }
       })();
     } else {
-      console.log("No useForm");
+      setError("Failed to update heat times. Please try again.");
     }
   };
 
