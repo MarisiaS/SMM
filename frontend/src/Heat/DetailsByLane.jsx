@@ -7,7 +7,7 @@ import React, { useState, useMemo } from "react";
 import { SmmApi } from "../SmmApi.jsx";
 import ExpandableTable from "../components/Common/ExpandableTable.jsx";
 import HeatTimeForm from "./HeatTimeForm.jsx";
-import { formatSeedTime } from "../utils/helperFunctions.js";
+import { formatTime } from "../utils/helperFunctions.js";
 import { useForm } from "react-hook-form";
 
 const DetailsByLane = ({ numLanes, laneData }) => {
@@ -41,7 +41,12 @@ const DetailsByLane = ({ numLanes, laneData }) => {
       accessorKey: "heat_time",
       header: "Heat Time",
       size: 100,
-      Cell: ({ cell }) => formatSeedTime(cell.getValue()),
+      Cell: ({ cell }) => formatTime(cell.getValue()),
+      /* muiTableBodyCellProps: {
+        sx: {
+          textAlign: "right", 
+        },
+      }, */
     };
     const editHeatTimeColumn = {
       accessorKey: "heat_time",
