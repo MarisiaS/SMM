@@ -43,7 +43,7 @@ const AddAthlete = ({onCancel, setLastAthleteCreated, setNumNewAthletes}) => {
   const submission = async (data) => {
     console.log(data);
     const date_of_birth = dayjs(data.date_of_birth).format("YYYY-MM-DD");
-    const gender = data.gender === "Girl" ? "F" : "M";
+    const gender = data.gender === 1 ? "F" : "M";
     const status = "ACTIVE";
     const formatData = {
       ...data,
