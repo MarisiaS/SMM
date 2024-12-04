@@ -11,7 +11,7 @@ export function formatTime(timeStr) {
     const minutes = parseInt(parts[1], 10);
     const [seconds, ms = "00"] = parts[2].split(".");
 
-    if (hours > 0) formattedTime.push(hours);
+    if (hours > 0) formattedTime.push(String(hours).padStart(2, "0"));
     formattedTime.push(String(minutes).padStart(2, "0"));
     formattedTime.push(
       `${String(seconds).padStart(2, "0")}.${ms.padEnd(2, "0").slice(0, 2)}`
