@@ -44,11 +44,9 @@ const UpdateHeatTime = ({ heat, onUpdate, onCancel }) => {
       },
     ];
 
-    const updatedLaneData = { ...heat, heat_time: payload.heat_time };
-
     try {
       await SmmApi.registerHeatTimes(payload);
-      onUpdate(updatedLaneData);
+      onUpdate();
     } catch (error) {
       setError("Failed to update heat time. Please try again.");
     }
