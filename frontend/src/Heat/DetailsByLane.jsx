@@ -1,17 +1,20 @@
 import {
-  Edit as EditIcon,
   Close as CloseIcon,
+  Edit as EditIcon,
   Save as SaveIcon,
 } from "@mui/icons-material";
-import React, { useState, useMemo } from "react";
+import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
+import React, { useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 import { SmmApi } from "../SmmApi.jsx";
+import AlertBox from "../components/Common/AlertBox.jsx";
 import ExpandableTable from "../components/Common/ExpandableTable.jsx";
 import HeatTimeForm from "./HeatTimeForm.jsx";
 import { formatTime } from "../utils/helperFunctions.js";
-import { useForm } from "react-hook-form";
 
-const DetailsByLane = ({ numLanes, laneData }) => {
+const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
   const [editMainTableRowIndexes, setEditMainTableRowIndexes] = useState([]);
+  const [error, setError] = useState(null);
   const laneFormHooks = Array.from({ length: numLanes }).map(() =>
     useForm({ mode: "onChange" })
   );
@@ -80,22 +83,35 @@ const DetailsByLane = ({ numLanes, laneData }) => {
     });
   };
 
+  const handleEditClickOnSubTable = (row) => {
+    console.log("Heat to update", row);
+  };
+
   const handleSave = (rowIndex) => {
     const laneFormState = laneFormHooks[rowIndex];
     if (laneFormState) {
-      laneFormState.handleSubmit((data) => {
-        // TODO (Issue #150): Implement API call to persist the data
-        // Currently, 'data' is an object containing key-value pairs
-        // where each key represents a heat ID and the corresponding value
-        // is the entered heat time for that specific heat.
-        console.log("Submitting data for row:", rowIndex, "with values:", data);
-        laneFormState.reset();
-        setEditMainTableRowIndexes((prevIndexes) =>
-          prevIndexes.filter((index) => index !== Number(rowIndex))
-        );
+      laneFormState.handleSubmit(async (data) => {
+        const payload = Object.entries(data).map(([heatId, heatTime]) => ({
+          heat_id: Number(heatId),
+          heat_time:
+            heatTime === "DQ" || heatTime === "NS"
+              ? heatTime
+              : `00:${heatTime}`,
+        }));
+
+        try {
+          await SmmApi.registerHeatTimes(payload);
+          onLaneDataUpdate();
+          laneFormState.reset();
+          setEditMainTableRowIndexes((prevIndexes) =>
+            prevIndexes.filter((index) => index !== Number(rowIndex))
+          );
+        } catch (error) {
+          setError("Failed to update heat times. Please try again.");
+        }
       })();
     } else {
-      console.log("No useForm");
+      setError("Failed to update heat times. Please try again.");
     }
   };
 
@@ -105,6 +121,9 @@ const DetailsByLane = ({ numLanes, laneData }) => {
     );
   };
 
+  const handleDialogClose = () => {
+    setError(null);
+  };
   const actionsLaneMainTable = [
     {
       name: "Edit",
@@ -134,6 +153,16 @@ const DetailsByLane = ({ numLanes, laneData }) => {
     },
   ];
 
+  const actionsLaneSubTable = [
+    {
+      name: "Edit",
+      icon: <EditIcon />,
+      onClick: handleEditClickOnSubTable,
+      tip: "Edit heat time",
+      visible: (row) => !!row.original.heat_time,
+    },
+  ];
+
   return (
     <div>
       <ExpandableTable
@@ -142,7 +171,19 @@ const DetailsByLane = ({ numLanes, laneData }) => {
         actions={actionsLaneMainTable}
         getSubTableColumns={getSubLaneTableColumns}
         subData={"heats"}
+        subTableActions={actionsLaneSubTable}
       />
+
+      <Dialog open={!!error} onClose={handleDialogClose}>
+        <DialogContent>
+          <AlertBox type="error" message={error} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
