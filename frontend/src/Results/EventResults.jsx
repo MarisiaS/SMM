@@ -10,7 +10,7 @@ import ItemPaginationBar from "../components/Common/ItemPaginationBar";
 import MultiSelectWithTags from "../components/Common/MultiSelectWithTags";
 import TabPanel from "../components/Common/TabPanel";
 import GenericTable from "../components/Common/GenericTable.jsx";
-import { formatSeedTime } from "../utils/helperFunctions.js";
+import { formatTime } from "../utils/helperFunctions.js";
 
 const columns = [
   {
@@ -27,7 +27,7 @@ const columns = [
     accessorKey: "heat_time",
     header: "Heat Time",
     size: 150,
-    Cell: ({ cell }) => formatSeedTime(cell.getValue()),
+    Cell: ({ cell }) => formatTime(cell.getValue()),
   },
 ];
 
