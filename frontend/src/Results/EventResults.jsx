@@ -84,7 +84,6 @@ const EventResults = ({
   disableNext,
 }) => {
   const [resultsData, setResultsData] = useState({});
-  const [count, setCount] = useState(null);
   const [groupOptions, setGroupOptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
@@ -107,14 +106,10 @@ const EventResults = ({
           SmmApi.getGroups(groupId),
         ]);
         if (!ignore) {
-          setResultsData((prevState) => ({
-            ...prevState,
-            ["main"]: resultsResponse,
-          }));
+          setResultsData({ main: resultsResponse });
           setSelectedGroups([]);
           setLastSelectedGroupId(null);
           setSelectedTab(0);
-          setCount(resultsResponse.length);
           setGroupOptions(groupFilterResponse.data.results);
           setErrorOnLoading(false);
           setTabs([
@@ -212,7 +207,12 @@ const EventResults = ({
                 key: lastSelectedGroupId,
                 label: selectedGroup.name,
                 content: (
-                  <AlertBox type={"error"} message={"Error loading the group results. Please close the tab and try again."}/>
+                  <AlertBox
+                    type={"error"}
+                    message={
+                      "Error loading the group results. Please close the tab and try again."
+                    }
+                  />
                 ),
                 close: true,
               },
@@ -254,6 +254,13 @@ const EventResults = ({
     setLastSelectedGroupId(null);
   };
 
+  const checkEventHasResults = (data) => {
+    if (data.length === 0 || data.some((ele) => ele.heat_time === null)) {
+      return false;
+    }
+    return true;
+  };
+
   const renderContent = () => {
     if (loading) {
       return (
@@ -285,18 +292,23 @@ const EventResults = ({
       );
     }
 
-    if (count > 0) {
+    const hasResults =
+      resultsData.main && checkEventHasResults(resultsData.main);
+
+    if (hasResults) {
       return (
         <>
-          <MultiSelectWithTags
-            key={"multi-select"}
-            label={"Filter by group"}
-            options={groupOptions}
-            selectedOptions={selectedGroups}
-            setSelectedOptions={setSelectedGroups}
-            setLastSelected={setLastSelectedGroupId}
-          />
-          <br/>
+          {groupOptions.length > 0 && (
+            <MultiSelectWithTags
+              key={"multi-select"}
+              label={"Filter by group"}
+              options={groupOptions}
+              selectedOptions={selectedGroups}
+              setSelectedOptions={setSelectedGroups}
+              setLastSelected={setLastSelectedGroupId}
+            />
+          )}
+          <br />
           <TabPanel
             tabs={tabs}
             selectedTab={selectedTab}
