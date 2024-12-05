@@ -2,7 +2,7 @@ import {
   ContentPaste as BackIcon,
   Download as DownloadIcon,
 } from "@mui/icons-material";
-import { CircularProgress, Stack, Typography } from "@mui/material";
+import { CircularProgress, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { SmmApi } from "../SmmApi.jsx";
 import AlertBox from "../components/Common/AlertBox.jsx";
@@ -25,7 +25,7 @@ const columns = [
   },
   {
     accessorKey: "heat_time",
-    header: "Heat time",
+    header: "Heat Time",
     size: 150,
     Cell: ({ cell }) => formatSeedTime(cell.getValue()),
   },
@@ -297,7 +297,7 @@ const EventResults = ({
 
     if (hasResults) {
       return (
-        <>
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           {groupOptions.length > 0 && (
             <MultiSelectWithTags
               key={"multi-select"}
@@ -308,14 +308,13 @@ const EventResults = ({
               setLastSelected={setLastSelectedGroupId}
             />
           )}
-          <br />
           <TabPanel
             tabs={tabs}
             selectedTab={selectedTab}
             setSelectedTab={setSelectedTab}
             onRemoveTab={handleRemoveTab}
           />
-        </>
+        </div>
       );
     }
 
