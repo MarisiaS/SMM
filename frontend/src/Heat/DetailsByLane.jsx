@@ -129,7 +129,7 @@ const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
       name: "Edit",
       icon: <EditIcon />,
       onClick: handleEditClickOnMainTable,
-      tip: "Add/Edit heat time",
+      tip: "Add/Edit Heat Time",
       visible: (row) => {
         const isEditing = editMainTableRowIndexes.includes(row.index);
         const isLaneAlreadyUpdated = alreadyLaneUpdated(row.index);
@@ -141,14 +141,14 @@ const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
       name: "Save",
       icon: <SaveIcon />,
       onClick: handleSave,
-      tip: "Save results",
+      tip: "Save Results",
       visible: (row) => editMainTableRowIndexes.includes(row.index),
     },
     {
       name: "Close",
       icon: <CloseIcon />,
       onClick: handleCloseClick,
-      tip: "Close edit mode",
+      tip: "Close Edit Mode",
       visible: (row) => editMainTableRowIndexes.includes(row.index),
     },
   ];
@@ -158,7 +158,7 @@ const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
       name: "Edit",
       icon: <EditIcon />,
       onClick: handleEditClickOnSubTable,
-      tip: "Edit heat time",
+      tip: "Edit Heat Time",
       visible: (row) => !!row.original.heat_time,
     },
   ];
