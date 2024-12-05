@@ -12,7 +12,7 @@ from api.views.MeetSchoolView import MeetSchoolView
 from api.views.AthleteView import AthleteViewSet
 from api.views.TimeRecordView import TimeRecordViewSet
 from api.views.MeetEventView import MeetEventView
-from api.views.AtheleteSeedTimeView import AthleteSeedTimeView
+from backend.api.views.AthleteSeedTimeView import AthleteSeedTimeView
 from api.views.HeatView import HeatBatchView, HeatDetailView
 from api.views.LaneView import LaneBatchView, LaneDetailView, UpdateHeatTimeView
 from api.views.EventResultView import EventResultView
