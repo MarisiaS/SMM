@@ -11,10 +11,14 @@ import AlertBox from "../components/Common/AlertBox.jsx";
 import ExpandableTable from "../components/Common/ExpandableTable.jsx";
 import { formatSeedTime } from "../utils/helperFunctions.js";
 import HeatTimeForm from "./HeatTimeForm.jsx";
+import UpdateHeatTime from "./UpdateHeatTime.jsx";
 
 const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
   const [editMainTableRowIndexes, setEditMainTableRowIndexes] = useState([]);
   const [error, setError] = useState(null);
+  const [heatToUpdate, setHeatToUpdate] = useState({});
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
   const laneFormHooks = Array.from({ length: numLanes }).map(() =>
     useForm({ mode: "onChange" })
   );
@@ -79,7 +83,8 @@ const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
   };
 
   const handleEditClickOnSubTable = (row) => {
-    console.log("Heat to update", row);
+    setHeatToUpdate(row);
+    setIsFormOpen(true);
   };
 
   const handleSave = (rowIndex) => {
@@ -158,6 +163,14 @@ const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
     },
   ];
 
+  const handleUpdateHeatTime = () => {
+    // Delay closing the form
+    setTimeout(() => {
+      console.log("Time out");
+      setIsFormOpen(false);
+    }, 1500);
+    onLaneDataUpdate();
+  };
   return (
     <div>
       <ExpandableTable
@@ -168,6 +181,13 @@ const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
         subData={"heats"}
         subTableActions={actionsLaneSubTable}
       />
+      <Dialog open={isFormOpen} fullWidth>
+        <UpdateHeatTime
+          onUpdate={handleUpdateHeatTime}
+          onCancel={() => setIsFormOpen(false)}
+          heat={heatToUpdate}
+        />
+      </Dialog>
 
       <Dialog open={!!error} onClose={handleDialogClose}>
         <DialogContent>
