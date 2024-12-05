@@ -166,10 +166,9 @@ const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
   const handleUpdateHeatTime = () => {
     // Delay closing the form
     setTimeout(() => {
-      console.log("Time out");
       setIsFormOpen(false);
+      onLaneDataUpdate();
     }, 1500);
-    onLaneDataUpdate();
   };
   return (
     <div>
