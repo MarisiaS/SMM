@@ -115,7 +115,7 @@ def create_excel_file_for_event_results(swim_meet_details, event_name, results_b
     return file_buffer
 
 
-@extend_schema(tags=['Download'], request=GroupListSerializer,)
+@extend_schema(tags=['Download'], request=GroupsListSerializer,)
 class DownloadEventResults(APIView):
 
     @extend_schema(
