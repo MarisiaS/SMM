@@ -24,16 +24,18 @@ class GroupSerializer(serializers.ModelSerializer):
         min_age = data.get('min_age', None)
         max_age = data.get('max_age', None)
         if min_age is not None and min_age <= 0:
-            raise serializers.ValidationError({'min_age': "Min age must be greater than 0."})
+            raise serializers.ValidationError(
+                {'min_age': "Min age must be greater than 0."})
 
         if max_age is not None and max_age <= 0:
-            raise serializers.ValidationError({'max_age': "Max age must be greater than 0."})
+            raise serializers.ValidationError(
+                {'max_age': "Max age must be greater than 0."})
 
         if min_age is not None and max_age is not None and min_age > max_age:
             raise serializers.ValidationError({
-                    'min_age': "Min age must be less than or equal to max age.",
-                    'max_age': "Max age must be greater than or equal to min age."
-                })
+                'min_age': "Min age must be less than or equal to max age.",
+                'max_age': "Max age must be greater than or equal to min age."
+            })
         return data
 
     def validate_unique_group(self, data):
@@ -47,5 +49,22 @@ class GroupSerializer(serializers.ModelSerializer):
             max_age=max_age,
             gender=gender
         ).exists():
-            raise serializers.ValidationError("A group with this caracteristics already exists.")
+            raise serializers.ValidationError(
+                "A group with this caracteristics already exists.")
         return data
+
+
+class GroupsListSerializer(serializers.Serializer):
+    group_ids = serializers.ListField(
+        child=serializers.IntegerField(), allow_empty=True)
+
+    def validate_group_ids(self, value):
+        # Check if all group_ids exist
+        existing_school_ids = Group.objects.values_list('id', flat=True)
+        invalid_ids = set(value) - set(existing_school_ids)
+
+        if invalid_ids:
+            raise serializers.ValidationError(
+                f"Invalid group IDs: {list(invalid_ids)}")
+
+        return value
