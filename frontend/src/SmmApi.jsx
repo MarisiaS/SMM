@@ -291,11 +291,11 @@ export class SmmApi {
     return res.data;
   }
 
-  static async downloadResultsForEvent(swimMeetName, eventName, eventId) {
+  static async downloadResultsForEvent(swimMeetName, eventName, eventId, data) {
     try {
       const response = await axios.post(
         `${BASE_URL}/download-event-results/${eventId}/`,
-        {},
+        data,
         {
           headers: getConfig(),
           responseType: "blob", // Important for file downloads
