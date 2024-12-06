@@ -33,7 +33,6 @@ class GroupViewSet(viewsets.ModelViewSet):
         queryset = super().get_queryset()
 
         filtering_group_id = self.request.query_params.get('filtering_group_id', None)
-        print(filtering_group_id)
         if not filtering_group_id:
             return queryset
 
