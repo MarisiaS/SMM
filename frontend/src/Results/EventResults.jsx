@@ -74,6 +74,7 @@ const rowHighlight = (row) => {
 };
 
 const EventResults = ({
+  swimMeetName,
   eventName,
   eventId,
   groupId,
@@ -251,7 +252,20 @@ const EventResults = ({
     return true;
   };
 
-  const handleDownloadResultsForEvent = async () => {};
+  const handleDownloadResultsForEvent = async () => {
+    const payload = { group_ids: selectedGroups };
+    try {
+      await SmmApi.downloadResultsForEvent(
+        swimMeetName,
+        eventName,
+        eventId,
+        payload
+      );
+    } catch (error) {
+      console.error("Download failed:", error);
+      alert("There was an error downloading the file. Please try again.");
+    }
+  };
 
   //What is needed for the itemPaginationBar
   const label = "Event " + eventName;
