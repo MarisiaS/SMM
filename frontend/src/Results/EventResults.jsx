@@ -84,7 +84,7 @@ const EventResults = ({
   disablePrevious,
   disableNext,
 }) => {
-  const [resultsData, setResultsData] = useState({});
+  const [resultsData, setResultsData] = useState({ main: [] });
   const [groupOptions, setGroupOptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
@@ -253,7 +253,9 @@ const EventResults = ({
   };
 
   const handleDownloadResultsForEvent = async () => {
-    const payload = { group_ids: selectedGroups };
+    const payload = {
+      group_ids: selectedGroups.filter((id) => id !== "placeholder"),
+    };
     try {
       await SmmApi.downloadResultsForEvent(
         swimMeetName,
@@ -279,7 +281,7 @@ const EventResults = ({
       label: "Download Results",
       icon: <DownloadIcon />,
       onClick: handleDownloadResultsForEvent,
-      disabled: !resultsData.main || resultsData.main.length === 0,
+      disabled: !checkEventHasResults(resultsData.main),
     },
   ];
 
