@@ -27,8 +27,8 @@ function App() {
   };
 
   const menuOptions = [
-    { id: 1, path: "/athlete", label: "Athlete", icon: <AthleteIcon/> },
-    { id: 2, path: "/swim-meet", label: "Swim Meet", icon: <PoolIcon/> },
+    { id: 1, path: "/athletes", label: "Athletes", icon: <AthleteIcon/> },
+    { id: 2, path: "/swim-meets", label: "Swim Meets", icon: <PoolIcon/> },
     
   ];
 
@@ -38,11 +38,11 @@ function App() {
       <Route path="*" element={<NotFound />} />
       <Route element={<PrivateRoutes />}>
         <Route element={<NavBar menuOptions={menuOptions} />}>
-          <Route path="/athlete" element={<AthleteDisplay />} />
-          <Route path="/swim-meet" element={<SwimMeetDisplay />} />
+          <Route path="/athletes" element={<AthleteDisplay />} />
+          <Route path="/swim-meets" element={<SwimMeetDisplay />} />
           <Route path="/add-swim-meet" element={<AddSwimMeet />} />
           <Route
-            path="/swim-meet/:meetId/events"
+            path="/swim-meets/:meetId/events"
             element={<MeetEventDisplay />}
           />
           <Route path="/add-event/:meetId" element={<AddEvent />} />
