@@ -7,6 +7,7 @@ from openpyxl.utils import get_column_letter
 from openpyxl.styles import Alignment
 from rest_framework.views import APIView
 from datetime import timedelta
+from api.utils.HelperFunctions import format_time
 
 
 def create_excel_file_for_heats_details(swim_meet_details, event_data):
@@ -155,29 +156,6 @@ def create_excel_file_for_heats_details(swim_meet_details, event_data):
     file_buffer.seek(0)
 
     return file_buffer
-
-
-def format_time(time):
-    if not time:
-        return None
-    if time == timedelta(days=200):
-        return "NT"
-    elif time == timedelta(days=300):
-        return "NS"
-    elif time == timedelta(days=400):
-        return "DQ"
-
-    time_parts = str(time).split(":")
-    seconds_and_millis = f"{float(time_parts[2]):.2f}"
-
-    if time_parts[0] != "0":
-        return f"{time_parts[0]}:{time_parts[1]}:{seconds_and_millis}"
-
-    if time_parts[1] != "00":
-        minutes = int(time_parts[1])
-        return f"{minutes}:{seconds_and_millis}"
-
-    return seconds_and_millis
 
 
 @extend_schema(tags=['Download'])
