@@ -60,8 +60,8 @@ class GroupsListSerializer(serializers.Serializer):
 
     def validate_group_ids(self, value):
         # Check if all group_ids exist
-        existing_school_ids = Group.objects.values_list('id', flat=True)
-        invalid_ids = set(value) - set(existing_school_ids)
+        existing_groups_ids = Group.objects.values_list('id', flat=True)
+        invalid_ids = set(value) - set(existing_groups_ids)
 
         if invalid_ids:
             raise serializers.ValidationError(
