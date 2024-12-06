@@ -226,16 +226,6 @@ const EventResults = ({
     }
   }, [lastSelectedGroupId]);
 
-  //What is needed for the itemPaginationBar
-  const label = "Event " + eventName;
-  const extraButtons = [
-    {
-      label: "Back to events",
-      icon: <BackIcon />,
-      onClick: onBack,
-    },
-  ];
-
   //TabPanel
 
   const handleRemoveTab = (index) => {
@@ -260,6 +250,24 @@ const EventResults = ({
     }
     return true;
   };
+
+  const handleDownloadResultsForEvent = async () => {};
+
+  //What is needed for the itemPaginationBar
+  const label = "Event " + eventName;
+  const extraButtons = [
+    {
+      label: "Back to events",
+      icon: <BackIcon />,
+      onClick: onBack,
+    },
+    {
+      label: "Download Results",
+      icon: <DownloadIcon />,
+      onClick: handleDownloadResultsForEvent,
+      disabled: !resultsData.main || resultsData.main.length === 0,
+    },
+  ];
 
   const renderContent = () => {
     if (loading) {
