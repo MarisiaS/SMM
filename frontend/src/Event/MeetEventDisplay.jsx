@@ -102,6 +102,15 @@ const MeetEventDisplay = () => {
     }
   };
 
+  const handleDownloadResultsForAllEvents = async (id) => {
+    try {
+      await SmmApi.downloadResultsForAllEvent(meetData.name, meetData.id);
+    } catch (error) {
+      console.error("Download failed:", error);
+      alert("There was an error downloading the file. Please try again.");
+    }
+  };
+
   const actions = [
     {
       name: "Create Heats",
@@ -137,7 +146,6 @@ const MeetEventDisplay = () => {
       tip: "Go to ranking",
       visible: (row) => row.original.total_num_heats > 0,
     },
-    
   ];
 
   useEffect(() => {
@@ -338,6 +346,15 @@ const MeetEventDisplay = () => {
                   <MyButton
                     label={"Download Heats for All Events"}
                     onClick={handleDownloadDetailsForAllEvents}
+                    disabled={eventData.length === 0}
+                  >
+                    <DownloadIcon />
+                  </MyButton>
+                </Box>
+                <Box>
+                  <MyButton
+                    label={"Download Results for All Events"}
+                    onClick={handleDownloadResultsForAllEvents}
                     disabled={eventData.length === 0}
                   >
                     <DownloadIcon />
