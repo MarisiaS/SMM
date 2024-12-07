@@ -104,7 +104,7 @@ const MeetEventDisplay = () => {
 
   const handleDownloadResultsForAllEvents = async (id) => {
     try {
-      await SmmApi.downloadResultsForAllEvent(meetData.name, meetData.id);
+      await SmmApi.downloadResultsForAllEvents(meetData.name, meetData.id);
     } catch (error) {
       console.error("Download failed:", error);
       alert("There was an error downloading the file. Please try again.");

@@ -291,7 +291,7 @@ export class SmmApi {
     return res.data;
   }
 
-  static async downloadResultsForAllEvent(swimMeetName, meetId) {
+  static async downloadResultsForAllEvents(swimMeetName, meetId) {
     try {
       const response = await axios.post(
         `${BASE_URL}/download-all-event-results/${meetId}/`,
