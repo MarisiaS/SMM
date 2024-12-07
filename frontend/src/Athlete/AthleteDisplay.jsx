@@ -5,7 +5,7 @@ import {
 } from "@mui/icons-material";
 import { Box, Stack, Dialog } from "@mui/material";
 import dayjs from "dayjs";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useReducer } from "react";
 import { SmmApi } from "../SmmApi";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import GenericTable from "../components/Common/GenericTable";
@@ -25,11 +25,6 @@ const columns = [
     header: "Age",
     size: 150,
   },
-  {
-    accessorKey: "notes",
-    header: "Notes",
-    size: 350,
-  },
 ];
 
 const AthleteDisplay = () => {
@@ -46,6 +41,7 @@ const AthleteDisplay = () => {
   const [offset, setOffset] = useState(0); //search bar needs to restart this
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0); //search bar needs to restart this
+  const [renderTrigger, setRenderTrigger] = useState(0);
 
   const handleCancelAddAthlete = () => {
     if (numAthletesCreated.current > 0) {
@@ -56,9 +52,6 @@ const AthleteDisplay = () => {
 
   const refreshDataForLastCreatedAthlete = async () => {
     try {
-      console.log("Refreshing data...");
-      console.log("Last created ID:", lastCreatedAthleteId.current);
-      console.log("Number of athletes created:", numAthletesCreated.current);
       const json = await SmmApi.getAthleteList(
         "",
         0,
@@ -67,10 +60,14 @@ const AthleteDisplay = () => {
       const indexAthlete = json.results.findIndex(
         (item) => item.id === lastCreatedAthleteId.current
       );
-      console.log(indexAthlete);
       if (indexAthlete !== -1) {
         const newPage = Math.floor(indexAthlete / limit);
-        setOffset(newPage * limit);
+        if(offset != newPage * limit){
+          setOffset(newPage * limit);
+        }
+        else{
+          setRenderTrigger((prev) => prev + 1);
+        }
         setCount(json.count);
         setPage(newPage);
       }
@@ -81,22 +78,18 @@ const AthleteDisplay = () => {
     lastCreatedAthleteId.current = null;
   };
 
-  const handleDetailsClick = (id) => {
-    console.log("details");
-  };
-
-  const handleEditClick = () => {
+/*   const handleEditClick = () => {
     console.log("Edit ...");
-  };
+  };*/
 
   const actions = [
-    {
+/*     {
       name: "Edit",
       icon: <EditIcon />,
       onClick: handleEditClick,
       tip: "Edit basic information",
-    },
-  ];
+    }, */
+  ]; 
 
   useEffect(() => {
     let ignore = false;
@@ -120,7 +113,7 @@ const AthleteDisplay = () => {
     return () => {
       ignore = true;
     };
-  }, [searchPar, offset, limit]);
+  }, [searchPar, offset, limit, renderTrigger]);
 
   if (errorOnLoading) {
     return (
