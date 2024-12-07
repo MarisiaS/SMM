@@ -2,7 +2,7 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
-import { useTheme } from "@mui/material";
+import { useTheme, Box, Typography, Button } from "@mui/material";
 
 const SelectTable = ({
   data,
@@ -12,6 +12,8 @@ const SelectTable = ({
   notRecordsMessage,
   searchTerm,
   setSearchTerm,
+  totalLabel,
+  selectedLabel,
 }) => {
   const theme = useTheme();
   const table = useMaterialReactTable({
@@ -49,16 +51,55 @@ const SelectTable = ({
     enableBottomToolbar: true,
     enableColumnActions: false,
     enablePagination: false,
+    muiTableContainerProps: { sx: { maxHeight: "400px", minHeight: "400px" } },
     muiTableBodyProps: {
       sx: {
-        maxHeight: "400px", // Set a maximum height for the table body
-        minHeight: "400px", // Set a minimum height for the table body
-        overflowY: "auto", // Enable vertical scrolling
-        overflowX: "hidden", // Disable horizontal scrolling
+        overflowY: "auto",
+        overflowX: "hidden",
       },
     },
     localization: {
-      noRecordsToDisplay: notRecordsMessage, //Message when the table is empty
+      noRecordsToDisplay: notRecordsMessage,
+    },
+    renderTopToolbarCustomActions: ({ table }) => {
+      const rowCount = table.getRowModel().rows.length;
+      return (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+            px: 2,
+          }}
+        >
+          <Typography variant="body2">
+            {totalLabel}: <strong>{rowCount}</strong>
+          </Typography>
+        </Box>
+      );
+    },
+    renderToolbarAlertBannerContent: ({ table }) => {
+      const selectedRowCount = table.getSelectedRowModel().rows.length;
+      const totalRowCount = table.getRowModel().rows.length;
+
+      return selectedRowCount > 0 ? (
+        <Box sx={{ padding: 1, display: "flex", alignItems: "center", height: "44px" }}>
+          <h5>
+            {totalRowCount > 1
+              ? `${selectedRowCount} of ${totalRowCount} ${selectedLabel}(s) selected`
+              : `${selectedRowCount} of ${totalRowCount} ${selectedLabel} selected`}
+          </h5>
+          <Button
+            onClick={() => table.resetRowSelection()}
+            variant="text"
+            color="secondary"
+            disabled={rowSelection.size === 0}
+          >
+            Clear Selection
+          </Button>
+        </Box>
+      ) : null;
     },
   });
 
