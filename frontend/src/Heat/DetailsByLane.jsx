@@ -12,7 +12,6 @@ import ExpandableTable from "../components/Common/ExpandableTable.jsx";
 import HeatTimeForm from "./HeatTimeForm.jsx";
 import UpdateHeatTime from "./UpdateHeatTime.jsx";
 import { formatTime } from "../utils/helperFunctions.js";
-import UpdateHeatTime from "./UpdateHeatTime.jsx";
 
 const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
   const [editMainTableRowIndexes, setEditMainTableRowIndexes] = useState([]);
