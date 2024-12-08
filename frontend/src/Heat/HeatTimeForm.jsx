@@ -4,7 +4,7 @@ import TimeEntryField from "../components/FormElements/TimeEntryField.jsx";
 
 const HeatTimeForm = ({control, name}) => {
   return (
-    <form className={"heatTimeFormRowBox"}>
+    <form className={"heatTimeFormBox"}>
       <TimeEntryField
         name={name}
         control={control}
