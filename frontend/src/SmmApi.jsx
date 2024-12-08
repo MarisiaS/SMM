@@ -181,9 +181,10 @@ export class SmmApi {
   }
 
   static async getHeatDetails(eventId, heatNum) {
-    return await axios.get(`${BASE_URL}/event_heat/${eventId}/${heatNum}/`, {
+    let res = await axios.get(`${BASE_URL}/event_heat/${eventId}/${heatNum}/`, {
       headers: getConfig(),
     });
+    return res.data;
   }
 
   static async getEventLanes(eventId) {
