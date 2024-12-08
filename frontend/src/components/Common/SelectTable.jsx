@@ -12,8 +12,7 @@ const SelectTable = ({
   notRecordsMessage,
   searchTerm,
   setSearchTerm,
-  totalLabel,
-  selectedLabel,
+  labels
 }) => {
   const theme = useTheme();
   const table = useMaterialReactTable({
@@ -74,7 +73,7 @@ const SelectTable = ({
           }}
         >
           <Typography variant="body2">
-            {totalLabel}: <strong>{rowCount}</strong>
+            {labels[0]}: <strong>{rowCount}</strong>
           </Typography>
         </Box>
       );
@@ -87,8 +86,8 @@ const SelectTable = ({
         <Box sx={{ padding: 1, display: "flex", alignItems: "center", height: "44px" }}>
           <h5>
             {totalRowCount > 1
-              ? `${selectedRowCount} of ${totalRowCount} ${selectedLabel}(s) selected`
-              : `${selectedRowCount} of ${totalRowCount} ${selectedLabel} selected`}
+              ? `${selectedRowCount} of ${totalRowCount} ${labels[1]}(s) selected`
+              : `${selectedRowCount} of ${totalRowCount} ${labels[1]} selected`}
           </h5>
           <Button
             onClick={() => table.resetRowSelection()}

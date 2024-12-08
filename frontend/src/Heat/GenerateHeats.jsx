@@ -296,8 +296,7 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
                 notRecordsMessage={"No athletes available."}
                 searchTerm={availableSearchTerm}
                 setSearchTerm={setAvailableSearchTerm}
-                totalLabel={"Number of Athletes available"}
-                selectedLabel={"Athlete"}
+                labels={["Number of Athletes Available","Athlete"]}
               />
             </Box>
 
@@ -340,8 +339,7 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
                 notRecordsMessage={"No athletes selected."}
                 searchTerm={selectedSearchTerm}
                 setSearchTerm={setSelectedSearchTerm}
-                totalLabel={"Number of Athletes selected"}
-                selectedLabel={"Athlete"}
+                labels={["Number of Athletes Selected","Athlete"]}
               />
             </Box>
           </Box>
