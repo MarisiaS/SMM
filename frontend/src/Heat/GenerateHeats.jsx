@@ -102,7 +102,7 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
       try {
         const athletes_json = await SmmApi.getSeedTimes(eventId);
         if (!ignore) {
-          setAvailableAthletes(athletes_json.data.results);
+          setAvailableAthletes(athletes_json.data);
           setErrorOnLoading(false);
         }
       } catch (error) {
@@ -296,6 +296,7 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
                 notRecordsMessage={"No athletes available."}
                 searchTerm={availableSearchTerm}
                 setSearchTerm={setAvailableSearchTerm}
+                labels={["Athletes Available","Athlete"]}
               />
             </Box>
 
@@ -338,6 +339,7 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
                 notRecordsMessage={"No athletes selected."}
                 searchTerm={selectedSearchTerm}
                 setSearchTerm={setSelectedSearchTerm}
+                labels={["Athletes Selected","Athlete"]}
               />
             </Box>
           </Box>
