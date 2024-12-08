@@ -45,9 +45,9 @@ const EventDetails = ({
         const heat_json = await SmmApi.getEventHeats(eventId);
         const lane_json = await SmmApi.getEventLanes(eventId);
         if (!ignore) {
-          setLaneData(lane_json.data.results);
-          setHeatData(heat_json.data.results);
-          setNumHeats(heat_json.data.count);
+          setLaneData(lane_json.results);
+          setHeatData(heat_json.results);
+          setNumHeats(heat_json.count);
           setErrorOnLoading(false);
         }
       } catch (error) {

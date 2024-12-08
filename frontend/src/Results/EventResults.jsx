@@ -111,7 +111,7 @@ const EventResults = ({
           setSelectedGroups([]);
           setLastSelectedGroupId(null);
           setSelectedTab(0);
-          setGroupOptions(groupFilterResponse.data.results);
+          setGroupOptions(groupFilterResponse);
           setErrorOnLoading(false);
           setTabs([
             {

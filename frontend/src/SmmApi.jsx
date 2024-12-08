@@ -97,9 +97,10 @@ export class SmmApi {
   }
 
   static async getSites() {
-    return await axios.get(`${BASE_URL}/site/`, {
+    let res = await axios.get(`${BASE_URL}/site/`, {
       headers: getConfig(),
     });
+    return res.data;
   }
 
   static async createSwimMeet(data) {
@@ -143,13 +144,14 @@ export class SmmApi {
     let res = await axios.get(url, {
       headers: getConfig(),
     });
-    return res;
+    return res.data;
   }
 
   static async getEventTypes() {
-    return await axios.get(`${BASE_URL}/eventtype/`, {
+    let res = await axios.get(`${BASE_URL}/eventtype/`, {
       headers: getConfig(),
     });
+    return res.data;
   }
 
   static async createEvent(meetId, data) {
@@ -159,9 +161,10 @@ export class SmmApi {
   }
 
   static async getEventHeats(eventId) {
-    return await axios.get(`${BASE_URL}/event_heat/${eventId}/`, {
+    let res = await axios.get(`${BASE_URL}/event_heat/${eventId}/`, {
       headers: getConfig(),
     });
+    return res.data;
   }
 
   static async createHeats(eventId, data) {
@@ -171,33 +174,38 @@ export class SmmApi {
   }
 
   static async deleteHeats(eventId) {
-    return await axios.delete(`${BASE_URL}/event_heat/${eventId}/`, {
+    let res = await axios.delete(`${BASE_URL}/event_heat/${eventId}/`, {
       headers: getConfig(),
     });
+    return res.data;
   }
 
   static async getHeatDetails(eventId, heatNum) {
-    return await axios.get(`${BASE_URL}/event_heat/${eventId}/${heatNum}/`, {
+    let res = await axios.get(`${BASE_URL}/event_heat/${eventId}/${heatNum}/`, {
       headers: getConfig(),
     });
+    return res.data;
   }
 
   static async getEventLanes(eventId) {
-    return await axios.get(`${BASE_URL}/event_lane/${eventId}/`, {
+    let res = await axios.get(`${BASE_URL}/event_lane/${eventId}/`, {
       headers: getConfig(),
     });
+    return res.data;
   }
 
   static async getLaneDetails(eventId, laneNum) {
-    return await axios.get(`${BASE_URL}/event_lane/${eventId}/${laneNum}/`, {
+    let res = await axios.get(`${BASE_URL}/event_lane/${eventId}/${laneNum}/`, {
       headers: getConfig(),
     });
+    return res.data;
   }
 
   static async getSeedTimes(eventId) {
-    return await axios.get(`${BASE_URL}/seed_times/${eventId}/`, {
+    let res = await axios.get(`${BASE_URL}/seed_times/${eventId}/`, {
       headers: getConfig(),
     });
+    return res.data;
   }
 
   static async registerSeedTime(eventId, data) {
