@@ -74,6 +74,7 @@ const rowHighlight = (row) => {
 };
 
 const EventResults = ({
+  swimMeetName,
   eventName,
   eventId,
   groupId,
@@ -83,7 +84,7 @@ const EventResults = ({
   disablePrevious,
   disableNext,
 }) => {
-  const [resultsData, setResultsData] = useState({});
+  const [resultsData, setResultsData] = useState({ main: [] });
   const [groupOptions, setGroupOptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
@@ -226,16 +227,6 @@ const EventResults = ({
     }
   }, [lastSelectedGroupId]);
 
-  //What is needed for the itemPaginationBar
-  const label = "Event " + eventName;
-  const extraButtons = [
-    {
-      label: "Back to events",
-      icon: <BackIcon />,
-      onClick: onBack,
-    },
-  ];
-
   //TabPanel
 
   const handleRemoveTab = (index) => {
@@ -260,6 +251,39 @@ const EventResults = ({
     }
     return true;
   };
+
+  const handleDownloadResultsForEvent = async () => {
+    const payload = {
+      group_ids: selectedGroups.filter((id) => id !== "placeholder"),
+    };
+    try {
+      await SmmApi.downloadResultsForEvent(
+        swimMeetName,
+        eventName,
+        eventId,
+        payload
+      );
+    } catch (error) {
+      console.error("Download failed:", error);
+      alert("There was an error downloading the file. Please try again.");
+    }
+  };
+
+  //What is needed for the itemPaginationBar
+  const label = "Event " + eventName;
+  const extraButtons = [
+    {
+      label: "Back to events",
+      icon: <BackIcon />,
+      onClick: onBack,
+    },
+    {
+      label: "Download Results",
+      icon: <DownloadIcon />,
+      onClick: handleDownloadResultsForEvent,
+      disabled: !checkEventHasResults(resultsData.main),
+    },
+  ];
 
   const renderContent = () => {
     if (loading) {

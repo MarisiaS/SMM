@@ -134,7 +134,7 @@ export class SmmApi {
     return res.data;
   }
 
-  static async getGroups(groupId=null) {
+  static async getGroups(groupId = null) {
     const url = new URL(`${BASE_URL}/group/`);
     if (groupId) {
       url.searchParams.append("filtering_group_id", groupId);
@@ -269,8 +269,6 @@ export class SmmApi {
     }
   }
 
-
-
   static async registerHeatTimes(data) {
     return await axios.put(`${BASE_URL}/event_lane/update_heat_times/`, data, {
       headers: getConfig(),
@@ -292,5 +290,37 @@ export class SmmApi {
     });
     return res.data;
   }
-    
+
+  static async downloadResultsForEvent(swimMeetName, eventName, eventId, data) {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/download-event-results/${eventId}/`,
+        data,
+        {
+          headers: getConfig(),
+          responseType: "blob", // Important for file downloads
+        }
+      );
+
+      // Create a URL for the blob and trigger the download
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+
+      // Set the file name
+      link.setAttribute(
+        "download",
+        `Results_${swimMeetName}_${eventName}.xlsx`
+      );
+
+      document.body.appendChild(link);
+      link.click();
+
+      // Cleanup
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading heats file:", error);
+      throw error;
+    }
+  }
 }

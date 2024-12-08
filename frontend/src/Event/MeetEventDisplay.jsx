@@ -137,7 +137,6 @@ const MeetEventDisplay = () => {
       tip: "Go to ranking",
       visible: (row) => row.original.total_num_heats > 0,
     },
-    
   ];
 
   useEffect(() => {
@@ -305,6 +304,7 @@ const MeetEventDisplay = () => {
       case "results":
         return (
           <EventResults
+            swimMeetName={meetData.name}
             eventName={currentEvent.name}
             eventId={currentEvent.id}
             groupId={currentEvent.group}
