@@ -18,6 +18,7 @@ from api.views.LaneView import LaneBatchView, LaneDetailView, UpdateHeatTimeView
 from api.views.EventResultView import EventResultView
 from api.views.download.DownloadHeats import DownloadAllHeatsByEvent, DownloadAllHeatsByMeet
 from api.views.download.DownloadResults import DownloadEventResults
+from api.views.download.DownloadResults import DownloadEventResultsForSwimMeet
 
 from rest_framework.routers import SimpleRouter
 
@@ -58,6 +59,8 @@ urlpatterns = [
          DownloadAllHeatsByMeet.as_view(), name='download-meet-heats-details'),
     path('download-event-results/<int:event_id>/',
          DownloadEventResults.as_view(), name='download-event-results'),
+    path('download-all-event-results/<int:meet_id>/',
+         DownloadEventResultsForSwimMeet.as_view(), name='download-all-events-results'),
     path('event_lane/update_heat_times/',
          UpdateHeatTimeView.as_view(), name='update-heat-time')
 ]
