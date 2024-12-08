@@ -159,9 +159,10 @@ export class SmmApi {
   }
 
   static async getEventHeats(eventId) {
-    return await axios.get(`${BASE_URL}/event_heat/${eventId}/`, {
+    let res = await axios.get(`${BASE_URL}/event_heat/${eventId}/`, {
       headers: getConfig(),
     });
+    return res.data;
   }
 
   static async createHeats(eventId, data) {
@@ -171,9 +172,10 @@ export class SmmApi {
   }
 
   static async deleteHeats(eventId) {
-    return await axios.delete(`${BASE_URL}/event_heat/${eventId}/`, {
+    let res = await axios.delete(`${BASE_URL}/event_heat/${eventId}/`, {
       headers: getConfig(),
     });
+    return res.data;
   }
 
   static async getHeatDetails(eventId, heatNum) {
@@ -183,15 +185,17 @@ export class SmmApi {
   }
 
   static async getEventLanes(eventId) {
-    return await axios.get(`${BASE_URL}/event_lane/${eventId}/`, {
+    let res = await axios.get(`${BASE_URL}/event_lane/${eventId}/`, {
       headers: getConfig(),
     });
+    return res.data;
   }
 
   static async getLaneDetails(eventId, laneNum) {
-    return await axios.get(`${BASE_URL}/event_lane/${eventId}/${laneNum}/`, {
+    let res = await axios.get(`${BASE_URL}/event_lane/${eventId}/${laneNum}/`, {
       headers: getConfig(),
     });
+    return res.data;
   }
 
   static async getSeedTimes(eventId) {
