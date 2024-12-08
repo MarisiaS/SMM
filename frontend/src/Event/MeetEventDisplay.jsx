@@ -313,6 +313,7 @@ const MeetEventDisplay = () => {
       case "results":
         return (
           <EventResults
+            swimMeetName={meetData.name}
             eventName={currentEvent.name}
             eventId={currentEvent.id}
             groupId={currentEvent.group}

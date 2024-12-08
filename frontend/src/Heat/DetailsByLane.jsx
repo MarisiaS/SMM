@@ -10,11 +10,15 @@ import { SmmApi } from "../SmmApi.jsx";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import ExpandableTable from "../components/Common/ExpandableTable.jsx";
 import HeatTimeForm from "./HeatTimeForm.jsx";
+import UpdateHeatTime from "./UpdateHeatTime.jsx";
 import { formatTime } from "../utils/helperFunctions.js";
 
 const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
   const [editMainTableRowIndexes, setEditMainTableRowIndexes] = useState([]);
   const [error, setError] = useState(null);
+  const [heatToUpdate, setHeatToUpdate] = useState({});
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
   const laneFormHooks = Array.from({ length: numLanes }).map(() =>
     useForm({ mode: "onChange" })
   );
@@ -84,7 +88,8 @@ const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
   };
 
   const handleEditClickOnSubTable = (row) => {
-    console.log("Heat to update", row);
+    setHeatToUpdate(row);
+    setIsFormOpen(true);
   };
 
   const handleSave = (rowIndex) => {
@@ -129,7 +134,7 @@ const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
       name: "Edit",
       icon: <EditIcon />,
       onClick: handleEditClickOnMainTable,
-      tip: "Add/Edit heat time",
+      tip: "Add/Edit Heat Time",
       visible: (row) => {
         const isEditing = editMainTableRowIndexes.includes(row.index);
         const isLaneAlreadyUpdated = alreadyLaneUpdated(row.index);
@@ -141,14 +146,14 @@ const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
       name: "Save",
       icon: <SaveIcon />,
       onClick: handleSave,
-      tip: "Save results",
+      tip: "Save Results",
       visible: (row) => editMainTableRowIndexes.includes(row.index),
     },
     {
       name: "Close",
       icon: <CloseIcon />,
       onClick: handleCloseClick,
-      tip: "Close edit mode",
+      tip: "Close Edit Mode",
       visible: (row) => editMainTableRowIndexes.includes(row.index),
     },
   ];
@@ -158,11 +163,18 @@ const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
       name: "Edit",
       icon: <EditIcon />,
       onClick: handleEditClickOnSubTable,
-      tip: "Edit heat time",
+      tip: "Edit Heat Time",
       visible: (row) => !!row.original.heat_time,
     },
   ];
 
+  const handleUpdateHeatTime = () => {
+    // Delay closing the form
+    setTimeout(() => {
+      setIsFormOpen(false);
+      onLaneDataUpdate();
+    }, 1500);
+  };
   return (
     <div>
       <ExpandableTable
@@ -173,6 +185,13 @@ const DetailsByLane = ({ numLanes, laneData, onLaneDataUpdate }) => {
         subData={"heats"}
         subTableActions={actionsLaneSubTable}
       />
+      <Dialog open={isFormOpen} fullWidth>
+        <UpdateHeatTime
+          onUpdate={handleUpdateHeatTime}
+          onCancel={() => setIsFormOpen(false)}
+          heat={heatToUpdate}
+        />
+      </Dialog>
 
       <Dialog open={!!error} onClose={handleDialogClose}>
         <DialogContent>

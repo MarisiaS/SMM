@@ -1,49 +1,39 @@
 import {
   Add as AddIcon,
-  Delete as DeleteIcon,
   ContentPaste as DetailsIcon,
   Edit as EditIcon,
-  EmojiEvents as RankingIcon,
 } from "@mui/icons-material";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Dialog } from "@mui/material";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState, useRef, useReducer } from "react";
 import { SmmApi } from "../SmmApi";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import GenericTable from "../components/Common/GenericTable";
 import PaginationBar from "../components/Common/PaginationBar";
 import SearchBar from "../components/Common/SearchBar";
 import MyButton from "../components/FormElements/MyButton";
+import AddAthlete from "./AddAthlete.jsx";
 
 const columns = [
   {
-    accessorKey: "name",
+    accessorKey: "full_name",
     header: "Name",
     size: 150,
   },
   {
-    accessorKey: "date",
-    header: "Date",
-    size: 150,
-  },
-  {
-    accessorKey: "time",
-    header: "Time",
-    size: 150,
-  },
-  {
-    accessorKey: "site_name",
-    header: "Site",
+    accessorKey: "age",
+    header: "Age",
     size: 150,
   },
 ];
 
-const SwimMeetDisplay = () => {
+const AthleteDisplay = () => {
   const [errorOnLoading, setErrorOnLoading] = useState(false);
-  const navigate = useNavigate();
+  const [isFormOpen, setIsFormOpen] = useState(false);
   //Controls the data
-  const [data, setData] = useState([]);
+  const [athleteData, setAthleteData] = useState([]);
+  const lastCreatedAthleteId = useRef(null);
+  const numAthletesCreated = useRef(0);
   //Use to control the search parameter
   const [searchPar, setSearchPar] = useState("");
   //Variables needed for the pagination bar
@@ -51,69 +41,67 @@ const SwimMeetDisplay = () => {
   const [offset, setOffset] = useState(0); //search bar needs to restart this
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0); //search bar needs to restart this
+  const [renderTrigger, setRenderTrigger] = useState(0);
 
-  let typeAlertLoading = errorOnLoading ? "error" : "success";
-  let messageOnLoading = errorOnLoading
-    ? "Data upload failed. Please try again!"
-    : "";
-
-  const handleDetailsClick = (id) => {
-    navigate(`/swim-meets/${data[id].id}/events`, {
-      state: { meetData: data[id] },
-    });
+  const handleCancelAddAthlete = () => {
+    if (numAthletesCreated.current > 0) {
+      refreshDataForLastCreatedAthlete();
+    }
+    setIsFormOpen(false);
   };
 
-  const handleEditClick = () => {
+  const refreshDataForLastCreatedAthlete = async () => {
+    try {
+      const json = await SmmApi.getAthleteList(
+        "",
+        0,
+        count + numAthletesCreated.current
+      );
+      const indexAthlete = json.results.findIndex(
+        (item) => item.id === lastCreatedAthleteId.current
+      );
+      if (indexAthlete !== -1) {
+        const newPage = Math.floor(indexAthlete / limit);
+        if(offset != newPage * limit){
+          setOffset(newPage * limit);
+        }
+        else{
+          setRenderTrigger((prev) => prev + 1);
+        }
+        setCount(json.count);
+        setPage(newPage);
+      }
+    } catch (error) {
+      setErrorOnLoading(true);
+    }
+    numAthletesCreated.current = 0;
+    lastCreatedAthleteId.current = null;
+  };
+
+/*   const handleEditClick = () => {
     console.log("Edit ...");
-  };
-
-  const handleDeleteClick = () => {
-    console.log("Delete ...");
-  };
-
-  const handleRankingClick = () => {
-    console.log("Ranking ...");
-  };
+  };*/
 
   const actions = [
-    {
-      name: "Details",
-      icon: <DetailsIcon />,
-      onClick: handleDetailsClick,
-      tip: "Go to events",
-    },
-    {
+/*     {
       name: "Edit",
       icon: <EditIcon />,
       onClick: handleEditClick,
       tip: "Edit basic information",
-    },
-    {
-      name: "Delete",
-      icon: <DeleteIcon />,
-      onClick: handleDeleteClick,
-      tip: "Delete",
-    },
-    {
-      name: "Ranking",
-      icon: <RankingIcon />,
-      onClick: handleRankingClick,
-      tip: "Go to ranking",
-    },
-  ];
+    }, */
+  ]; 
 
   useEffect(() => {
     let ignore = false;
     async function fetching() {
       try {
-        const json = await SmmApi.getSwimMeetList(searchPar, offset, limit);
+        const json = await SmmApi.getAthleteList(searchPar, offset, limit);
         if (!ignore) {
           const formattedData = json.results.map((item) => ({
             ...item,
-            date: dayjs(item.date).format("MM/DD/YYYY"),
-            time: item.time.slice(0, 5),
+            date_of_birth: dayjs(item.date_of_birth).format("MM/DD/YYYY"),
           }));
-          setData(formattedData);
+          setAthleteData(formattedData);
           setCount(json.count);
           setErrorOnLoading(false);
         }
@@ -125,11 +113,7 @@ const SwimMeetDisplay = () => {
     return () => {
       ignore = true;
     };
-  }, [searchPar, offset, limit]);
-
-  const handleAddNew = () => {
-    navigate("/add-swim-meet");
-  };
+  }, [searchPar, offset, limit, renderTrigger]);
 
   if (errorOnLoading) {
     return (
@@ -142,7 +126,10 @@ const SwimMeetDisplay = () => {
           margin: "auto",
         }}
       >
-        <AlertBox type={typeAlertLoading} message={messageOnLoading} />
+        <AlertBox
+          type={"error"}
+          message={"Data upload failed. Please try again!"}
+        />
       </Stack>
     );
   } else {
@@ -154,7 +141,7 @@ const SwimMeetDisplay = () => {
           justifyContent="space-between"
         >
           <Box sx={{ marginLeft: 5 }}>
-            <MyButton label={"Swim Meet"} onClick={handleAddNew}>
+            <MyButton label={"Athlete"} onClick={() => setIsFormOpen(true)}>
               <AddIcon />
             </MyButton>
           </Box>
@@ -166,7 +153,7 @@ const SwimMeetDisplay = () => {
             ></SearchBar>
           </Box>
         </Stack>
-        <GenericTable data={data} columns={columns} actions={actions} />
+        <GenericTable data={athleteData} columns={columns} actions={actions} />
         <PaginationBar
           count={count}
           setOffset={setOffset}
@@ -175,9 +162,16 @@ const SwimMeetDisplay = () => {
           page={page}
           setPage={setPage}
         ></PaginationBar>
+        <Dialog open={isFormOpen} fullWidth>
+          <AddAthlete
+            onCancel={handleCancelAddAthlete}
+            setLastAthleteCreated={(id) => (lastCreatedAthleteId.current = id)}
+            setNumNewAthletes={(num) => (numAthletesCreated.current += num)}
+          />
+        </Dialog>
       </div>
     );
   }
 };
 
-export default SwimMeetDisplay;
+export default AthleteDisplay;

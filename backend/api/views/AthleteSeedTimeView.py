@@ -8,7 +8,6 @@ from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from drf_spectacular.types import OpenApiTypes
-from rest_framework.pagination import LimitOffsetPagination
 from datetime import timedelta
 
 @extend_schema(tags=['Seed times'])
@@ -78,22 +77,17 @@ class AthleteSeedTimeView(APIView):
 
         for athlete in athletes:
             time_records = TimeRecord.objects.filter(athlete=athlete, event_type=event_type_instance).order_by('time')
-            if time_records.exists():
-                seed_time = time_records.first()
+            seed_time = time_records.first() or None
+            if seed_time and seed_time.time < timedelta(days=200):
                 seed_times.append({'id': athlete.id, 'athlete_full_name': athlete.full_name, 'seed_time': seed_time.time})
             else:
                 # The serializer interpretes 200 days as NT (No time)
                 seed_times.append({'id': athlete.id, 'athlete_full_name': athlete.full_name, 'seed_time': timedelta(days=200)})
 
-        paginator = LimitOffsetPagination()
-        paginated_seed_times = paginator.paginate_queryset(seed_times, request)
-
-        # Serialize the paginated data
-        serializer = AthleteSeedTimeSerializer(data=paginated_seed_times, many=True)
+        serializer = AthleteSeedTimeSerializer(data=seed_times, many=True)
         serializer.is_valid(raise_exception=True)
 
-        # Return the paginated response
-        return paginator.get_paginated_response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     @extend_schema(request=UpdateAthleteSeedTimeSerializer,
                    summary="Record or update the seed time for a specific athlete in the given event")
