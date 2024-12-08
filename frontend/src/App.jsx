@@ -3,6 +3,7 @@ import Login from "./components/Login";
 import { Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import PrivateRoutes from "./utils/privateRoutes";
+import AthleteDisplay from "./Athlete/AthleteDisplay";
 import SwimMeetDisplay from "./SwimMeet/SwimMeetDisplay";
 import AddSwimMeet from "./SwimMeet/AddSwimMeet";
 import MeetEventDisplay from "./Event/MeetEventDisplay";
@@ -15,7 +16,8 @@ import TestSelectTable from "./Tests/TestSelectTable";
 import TestSeedTimeForm from "./Tests/TestSeedTimeForm";
 import TestResults from "./Tests/TestResults";
 import TestMultiSelectWithTags from "./Tests/TestMultiSelectWithTags";
-
+import PoolIcon from '@mui/icons-material/Pool';
+import AthleteIcon from "./MyIcons/AthleteIcon";
 
 function App() {
   const NotFound = () => {
@@ -23,11 +25,13 @@ function App() {
   };
 
   const H1 = () => {
-    return <h1>Hello from home</h1>;
+    return <h1>Hello from athlete</h1>;
   };
 
   const menuOptions = [
-    { id: 1, path: "/swim-meet", label: "Swim Meet", icon: "" },
+    { id: 1, path: "/athletes", label: "Athletes", icon: <AthleteIcon/> },
+    { id: 2, path: "/swim-meets", label: "Swim Meets", icon: <PoolIcon/> },
+    
   ];
 
   return (
@@ -36,10 +40,11 @@ function App() {
       <Route path="*" element={<NotFound />} />
       <Route element={<PrivateRoutes />}>
         <Route element={<NavBar menuOptions={menuOptions} />}>
-          <Route path="/swim-meet" element={<SwimMeetDisplay />} />
+          <Route path="/athletes" element={<AthleteDisplay />} />
+          <Route path="/swim-meets" element={<SwimMeetDisplay />} />
           <Route path="/add-swim-meet" element={<AddSwimMeet />} />
           <Route
-            path="/swim-meet/:meetId/events"
+            path="/swim-meets/:meetId/events"
             element={<MeetEventDisplay />}
           />
           <Route path="/add-event/:meetId" element={<AddEvent />} />

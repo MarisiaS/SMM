@@ -11,7 +11,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import PoolIcon from '@mui/icons-material/Pool';
 import { Link, useLocation, Outlet } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -60,8 +59,8 @@ export default function NavBar(props) {
                 selected={option.path === path}
                 onClick={handleOptionClick}
               >
-                <ListItemIcon>
-                  <PoolIcon />
+                <ListItemIcon >
+                  {option.icon}
                 </ListItemIcon>
                 <ListItemText primary={option.label} />
               </ListItemButton>

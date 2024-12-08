@@ -323,4 +323,32 @@ export class SmmApi {
       throw error;
     }
   }
+
+  static async getAthleteList(search, offset, limit) {
+    let url = `${BASE_URL}/athlete/?`;
+    const extraParams = new URLSearchParams();
+
+    if (search) {
+      extraParams.set("search", search);
+    }
+    if (offset) {
+      extraParams.set("offset", offset);
+    }
+    if (limit) {
+      extraParams.set("limit", limit);
+    }
+
+    url += extraParams.toString();
+
+    let res = await axios.get(url, {
+      headers: getConfig(),
+    });
+    return res.data;
+  }
+
+  static async createAthlete(data) {
+    return await axios.post(`${BASE_URL}/athlete/`, data, {
+      headers: getConfig(),
+    });
+  }
 }
