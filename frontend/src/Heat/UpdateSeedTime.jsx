@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import "../App.css";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import { SmmApi } from "../SmmApi.jsx";
-import { formatSeedTime } from "../utils/helperFunctions.js";
+import { formatTime } from "../utils/helperFunctions.js";
 import SeedTimeForm from "./SeedTimeForm.jsx";
 
 const UpdateSeedTime = ({ eventId, athlete, onUpdate, onCancel }) => {
@@ -73,7 +73,7 @@ const UpdateSeedTime = ({ eventId, athlete, onUpdate, onCancel }) => {
           handleCancel={onCancel}
           data={{
             athlete_name: athlete.athlete_full_name,
-            seed_time: formatSeedTime(athlete.seed_time),
+            seed_time: formatTime(athlete.seed_time),
           }}
           isValid={isValid}
         />

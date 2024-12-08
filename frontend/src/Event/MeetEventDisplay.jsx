@@ -18,6 +18,7 @@ import Title from "../components/Common/Title.jsx";
 import MyButton from "../components/FormElements/MyButton.jsx";
 import AddEvent from "./AddEvent.jsx";
 import EventDetails from "./EventDetails.jsx";
+import EventResults from "../Results/EventResults.jsx";
 
 const columns = [
   {
@@ -73,7 +74,8 @@ const MeetEventDisplay = () => {
   };
 
   const handleRankingClick = (id) => {
-    console.log("Ranking ...");
+    setSelectedEventIndex(Number(id));
+    setView("results");
   };
 
   const handleDownloadDetailsForEvent = async (id) => {
@@ -115,6 +117,13 @@ const MeetEventDisplay = () => {
       tip: "Go to Heats",
       visible: (row) => row.original.total_num_heats > 0,
     },
+    {
+      name: "Download Heats Details",
+      icon: <DownloadIcon />,
+      onClick: handleDownloadDetailsForEvent,
+      tip: "Download Heats Details",
+      visible: (row) => row.original.total_num_heats > 0,
+    },
     // {
     //   name: "Delete",
     //   icon: <DeleteIcon />,
@@ -126,14 +135,9 @@ const MeetEventDisplay = () => {
       icon: <RankingIcon />,
       onClick: handleRankingClick,
       tip: "Go to ranking",
-    },
-    {
-      name: "Download Heats Details",
-      icon: <DownloadIcon />,
-      onClick: handleDownloadDetailsForEvent,
-      tip: "Download Heats Details",
       visible: (row) => row.original.total_num_heats > 0,
     },
+    
   ];
 
   useEffect(() => {
@@ -296,6 +300,19 @@ const MeetEventDisplay = () => {
             onBack={handleBackToEvents}
             onCreateHeats={handleAddHeatsToNewEvent}
             onCreateEvent={handleNewEventCreated}
+          />
+        );
+      case "results":
+        return (
+          <EventResults
+            eventName={currentEvent.name}
+            eventId={currentEvent.id}
+            groupId={currentEvent.group}
+            onBack={handleBackToEvents}
+            onPrevious={handlePreviousEvent}
+            onNext={handleNextEvent}
+            disablePrevious={isFirstEvent}
+            disableNext={isLastEvent}
           />
         );
       default:
