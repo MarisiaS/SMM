@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import "../App.css";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import { SmmApi } from "../SmmApi.jsx";
-import { formatSeedTime } from "../utils/helperFunctions.js";
+import { formatTime } from "../utils/helperFunctions.js";
 import UpdateHeatTimeForm from "./UpdateHeatTimeForm.jsx";
 
 const UpdateHeatTime = ({ heat, onUpdate, onCancel }) => {
@@ -72,7 +72,7 @@ const UpdateHeatTime = ({ heat, onUpdate, onCancel }) => {
           handleCancel={onCancel}
           data={{
             athlete_name: heat.athlete_full_name,
-            heat_time: formatSeedTime(heat.heat_time),
+            heat_time: formatTime(heat.heat_time),
           }}
           isValid={isValid}
         />
