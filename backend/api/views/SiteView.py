@@ -1,10 +1,11 @@
 from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
 from api.models import Site
 from api.serializers.SiteSerializer import SiteSerializer
 from drf_spectacular.utils import extend_schema
-from rest_framework.pagination import LimitOffsetPagination
 from django.db.models.functions import Collate
 import logging
 
@@ -29,10 +30,6 @@ class SiteViewSet(viewsets.ModelViewSet):
         # Eliminate duplicate rows
         queryset = queryset.distinct()
         filter_query_set = self.filter_queryset(queryset)
-        # Paginate the filtered queryset
-        paginator = LimitOffsetPagination()
-        paginated_query_set = paginator.paginate_queryset(filter_query_set, request)
-        # Serialize the paginated queryset
-        serializer = self.get_serializer_class()(paginated_query_set, many=True)
+        serializer = self.get_serializer_class()(filter_query_set, many=True)
         # Return paginated response
-        return paginator.get_paginated_response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)

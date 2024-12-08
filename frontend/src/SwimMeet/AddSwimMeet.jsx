@@ -54,7 +54,7 @@ const AddSwimMeet = () => {
     async function fetchOptions() {
       try {
         const response = await SmmApi.getSites();
-        const _sites = response.data.results.map((site) => {
+        const _sites = response.map((site) => {
           return {
             id: site.id,
             name: site.name,

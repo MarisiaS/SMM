@@ -97,9 +97,10 @@ export class SmmApi {
   }
 
   static async getSites() {
-    return await axios.get(`${BASE_URL}/site/`, {
+    let res = await axios.get(`${BASE_URL}/site/`, {
       headers: getConfig(),
     });
+    return res.data;
   }
 
   static async createSwimMeet(data) {
@@ -143,13 +144,14 @@ export class SmmApi {
     let res = await axios.get(url, {
       headers: getConfig(),
     });
-    return res;
+    return res.data;
   }
 
   static async getEventTypes() {
-    return await axios.get(`${BASE_URL}/eventtype/`, {
+    let res = await axios.get(`${BASE_URL}/eventtype/`, {
       headers: getConfig(),
     });
+    return res.data;
   }
 
   static async createEvent(meetId, data) {
@@ -199,9 +201,10 @@ export class SmmApi {
   }
 
   static async getSeedTimes(eventId) {
-    return await axios.get(`${BASE_URL}/seed_times/${eventId}/`, {
+    let res = await axios.get(`${BASE_URL}/seed_times/${eventId}/`, {
       headers: getConfig(),
     });
+    return res.data;
   }
 
   static async registerSeedTime(eventId, data) {

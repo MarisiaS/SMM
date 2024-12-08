@@ -47,17 +47,17 @@ const AddEvent = ({ onBack, onCreateHeats, onCreateEvent }) => {
     let ignore = false;
     async function fetchOptions() {
       try {
-        const [responseGroups, responseEvents] = await Promise.all([
+        const [responseGroups, responseEventTypes] = await Promise.all([
           SmmApi.getGroups(),
           SmmApi.getEventTypes(),
         ]);
-        const _groups = responseGroups.data.results.map((groups) => {
+        const _groups = responseGroups.map((groups) => {
           return {
             id: groups.id,
             name: groups.name,
           };
         });
-        const _eventTypes = responseEvents.data.results.map((eventTypes) => {
+        const _eventTypes = responseEventTypes.map((eventTypes) => {
           return {
             id: eventTypes.id,
             name: eventTypes.name,
