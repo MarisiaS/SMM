@@ -290,7 +290,7 @@ export class SmmApi {
     });
     return res.data;
   }
-
+  
   static async downloadResultsForEvent(swimMeetName, eventName, eventId, data) {
     try {
       const response = await axios.post(
@@ -319,7 +319,40 @@ export class SmmApi {
       // Cleanup
       link.parentNode.removeChild(link);
     } catch (error) {
-      console.error("Error downloading heats file:", error);
+      console.error("Error downloading results file:", error);
+      throw error;
+    }
+  }
+
+  static async downloadResultsForAllEvents(swimMeetName, meetId) {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/download-all-event-results/${meetId}/`,
+        {},
+        {
+          headers: getConfig(),
+          responseType: "blob", // Important for file downloads
+        }
+      );
+
+      // Create a URL for the blob and trigger the download
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+
+      // Set the file name
+      link.setAttribute(
+        "download",
+        `Results_${swimMeetName}_General Results.xlsx`
+      );
+
+      document.body.appendChild(link);
+      link.click();
+
+      // Cleanup
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading results file:", error);
       throw error;
     }
   }
