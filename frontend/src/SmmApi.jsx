@@ -134,10 +134,16 @@ export class SmmApi {
     return res.data;
   }
 
-  static async getGroups() {
-    return await axios.get(`${BASE_URL}/group/`, {
+  static async getGroups(groupId = null) {
+    const url = new URL(`${BASE_URL}/group/`);
+    if (groupId) {
+      url.searchParams.append("filtering_group_id", groupId);
+    }
+
+    let res = await axios.get(url, {
       headers: getConfig(),
     });
+    return res;
   }
 
   static async getEventTypes() {
@@ -267,6 +273,55 @@ export class SmmApi {
     return await axios.put(`${BASE_URL}/event_lane/update_heat_times/`, data, {
       headers: getConfig(),
     });
+  }
+
+  static async getEventResults(eventId, groupId) {
+    let url = `${BASE_URL}/event_result/${eventId}/?`;
+    const extraParams = new URLSearchParams();
+
+    if (groupId) {
+      extraParams.set("group_id", groupId);
+    }
+
+    url += extraParams.toString();
+
+    let res = await axios.get(url, {
+      headers: getConfig(),
+    });
+    return res.data;
+  }
+
+  static async downloadResultsForEvent(swimMeetName, eventName, eventId, data) {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/download-event-results/${eventId}/`,
+        data,
+        {
+          headers: getConfig(),
+          responseType: "blob", // Important for file downloads
+        }
+      );
+
+      // Create a URL for the blob and trigger the download
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+
+      // Set the file name
+      link.setAttribute(
+        "download",
+        `Results_${swimMeetName}_${eventName}.xlsx`
+      );
+
+      document.body.appendChild(link);
+      link.click();
+
+      // Cleanup
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading heats file:", error);
+      throw error;
+    }
   }
 
   static async getAthleteList(search, offset, limit) {

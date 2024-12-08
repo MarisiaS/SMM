@@ -18,7 +18,7 @@ import GenericTable from "../components/Common/GenericTable.jsx";
 import ItemPaginationBar from "../components/Common/ItemPaginationBar.jsx";
 import SelectTable from "../components/Common/SelectTable.jsx";
 import MyIconButton from "../components/FormElements/MyIconButton.jsx";
-import { formatSeedTime } from "../utils/helperFunctions.js";
+import { formatTime } from "../utils/helperFunctions.js";
 import UpdateSeedTime from "./UpdateSeedTime.jsx";
 
 // Constants for table columns
@@ -32,7 +32,7 @@ const availableColumns = [
     accessorKey: "seed_time",
     header: "Seed Time",
     size: 100,
-    Cell: ({ cell }) => formatSeedTime(cell.getValue()),
+    Cell: ({ cell }) => formatTime(cell.getValue()),
   },
 ];
 
@@ -46,7 +46,7 @@ const selectedColumns = [
     accessorKey: "seed_time",
     header: "Seed Time",
     size: 100,
-    Cell: ({ cell }) => formatSeedTime(cell.getValue()),
+    Cell: ({ cell }) => formatTime(cell.getValue()),
   },
 ];
 
@@ -60,16 +60,11 @@ const confirmSeedTimeColumns = [
     accessorKey: "seed_time",
     header: "Seed Time",
     size: 150,
-    Cell: ({ cell }) => formatSeedTime(cell.getValue()),
+    Cell: ({ cell }) => formatTime(cell.getValue()),
   },
 ];
 
-const GenerateHeats = ({
-  eventName,
-  eventId,
-  onBack,
-  onProcessCompletion,
-}) => {
+const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
   //States to manage table data
   const [availableAthletes, setAvailableAthletes] = useState([]);
   const [selectedAthletes, setSelectedAthletes] = useState([]);
@@ -92,7 +87,9 @@ const GenerateHeats = ({
 
   // AlertBox variables
   let typeAlertCreateHeats = errorCreateHeat ? "error" : "success";
-  let messageCreateHeats = errorCreateHeat ? errorCreateHeat : "Heats created successfully!";
+  let messageCreateHeats = errorCreateHeat
+    ? errorCreateHeat
+    : "Heats created successfully!";
 
   let typeAlertLoading = errorOnLoading ? "error" : "success";
   let messageOnLoading = errorOnLoading

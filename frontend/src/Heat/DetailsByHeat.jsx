@@ -1,8 +1,7 @@
 import ExpandableTable from "../components/Common/ExpandableTable";
-import { formatSeedTime } from "../utils/helperFunctions.js";
+import { formatTime } from "../utils/helperFunctions.js";
 
-
-const DetailsByHeat = ({ heatData}) => {
+const DetailsByHeat = ({ heatData }) => {
   //Need data for heat tables
   const mainHeatTableColumns = [
     {
@@ -28,13 +27,13 @@ const DetailsByHeat = ({ heatData}) => {
       accessorKey: "seed_time",
       header: "Seed Time",
       size: 100,
-      Cell: ({ cell }) => formatSeedTime(cell.getValue()),
+      Cell: ({ cell }) => formatTime(cell.getValue()),
     },
     {
       accessorKey: "heat_time",
       header: "Heat Time",
       size: 100,
-      Cell: ({ cell }) => formatSeedTime(cell.getValue()),
+      Cell: ({ cell }) => formatTime(cell.getValue()),
     },
   ];
 

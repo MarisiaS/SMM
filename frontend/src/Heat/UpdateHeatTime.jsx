@@ -1,14 +1,13 @@
 import { Stack } from "@mui/material";
-import dayjs from "dayjs";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import "../App.css";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import { SmmApi } from "../SmmApi.jsx";
 import { formatTime } from "../utils/helperFunctions.js";
-import SeedTimeForm from "./SeedTimeForm.jsx";
+import UpdateHeatTimeForm from "./UpdateHeatTimeForm.jsx";
 
-const UpdateSeedTime = ({ eventId, athlete, onUpdate, onCancel }) => {
+const UpdateHeatTime = ({ heat, onUpdate, onCancel }) => {
   const [error, setError] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -18,15 +17,14 @@ const UpdateSeedTime = ({ eventId, athlete, onUpdate, onCancel }) => {
     formState: { isValid },
   } = useForm({
     defaultValues: {
-      seed_time: "",
-      date: dayjs(Date.now()),
+      heat_time: "",
     },
     mode: "onChange",
   });
 
   // AlertBox variables
   let typeAlert = error ? "error" : "success";
-  let message = error ? error : "Seed time updated successfully!";
+  let message = error ? error : "Heat time updated successfully!";
 
   const handleClearError = () => {
     setError(false);
@@ -36,21 +34,21 @@ const UpdateSeedTime = ({ eventId, athlete, onUpdate, onCancel }) => {
   const onSubmit = async (data) => {
     setError(false);
 
-    const payload = {
-      id: athlete.id,
-      date: data.date,
-      time: `00:${data.seed_time}`,
-    };
-
-    const updatedAthlete = { ...athlete, seed_time: payload.time };
+    const payload = [
+      {
+        heat_id: Number(heat.id),
+        heat_time:
+          data.heat_time === "DQ" || data.heat_time === "NS"
+            ? data.heat_time
+            : `00:${data.heat_time}`,
+      },
+    ];
 
     try {
-      await SmmApi.registerSeedTime(eventId, payload);
-      onUpdate(updatedAthlete);
+      await SmmApi.registerHeatTimes(payload);
+      onUpdate();
     } catch (error) {
-      setError(
-        "Unable to update Seed Time, an unexpected error occurred. Please try again!"
-      );
+      setError("Failed to update heat time. Please try again.");
     }
     setSubmitted(true);
   };
@@ -62,18 +60,19 @@ const UpdateSeedTime = ({ eventId, athlete, onUpdate, onCancel }) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "100vh",
+        height: "75vh", 
+        overflow: "hidden", 
       }}
     >
       <Stack alignItems="center" justifyContent="space-between">
         {submitted && <AlertBox type={typeAlert} message={message} />}
-        <SeedTimeForm
+        <UpdateHeatTimeForm
           handleSubmit={handleSubmit(onSubmit)}
           control={control}
           handleCancel={onCancel}
           data={{
-            athlete_name: athlete.athlete_full_name,
-            seed_time: formatTime(athlete.seed_time),
+            athlete_name: heat.athlete_full_name,
+            heat_time: formatTime(heat.heat_time),
           }}
           isValid={isValid}
         />
@@ -82,4 +81,4 @@ const UpdateSeedTime = ({ eventId, athlete, onUpdate, onCancel }) => {
   );
 };
 
-export default UpdateSeedTime;
+export default UpdateHeatTime;
