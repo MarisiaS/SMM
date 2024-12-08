@@ -73,7 +73,7 @@ const SelectTable = ({
           }}
         >
           <Typography variant="body2">
-            {labels[0]}: <strong>{rowCount}</strong>
+          <strong>Number of {labels[0]}: {rowCount}</strong>
           </Typography>
         </Box>
       );
