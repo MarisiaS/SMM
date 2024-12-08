@@ -10,6 +10,7 @@ import { SmmApi } from "../SmmApi.jsx";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import ExpandableTable from "../components/Common/ExpandableTable.jsx";
 import HeatTimeForm from "./HeatTimeForm.jsx";
+import UpdateHeatTime from "./UpdateHeatTime.jsx";
 import { formatTime } from "../utils/helperFunctions.js";
 import UpdateHeatTime from "./UpdateHeatTime.jsx";
 
