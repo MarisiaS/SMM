@@ -21,7 +21,17 @@
   background-color: white;
   padding: 10px;
   min-width: 300px;
-  height: 30%;
+  height: 50%;
+  width: 100%;
+  border: 1px solid lightblue;
+  border-radius: 5px;
+}
+
+.heatTimeFormRowBox {
+  background-color: white;
+  padding: 10px;
+  min-width: 300px;
+  height: 70%;
   width: 48%;
   border: 1px solid lightblue;
   border-radius: 5px;

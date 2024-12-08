@@ -11,7 +11,7 @@ const UpdateHeatTimeForm = ({
   isValid,
 }) => {
   return (
-    <form onSubmit={handleSubmit} className={"whiteBox"}>
+    <form onSubmit={handleSubmit} className={"heatTimeFormBox"}>
       <Stack>
         <Box>
           <Typography
@@ -43,10 +43,11 @@ const UpdateHeatTimeForm = ({
             rules={{
               required: "Heat time is required",
               pattern: {
-                value: /^([0-5]?[0-9]):[0-5][0-9]\.[0-9]{1,2}$/,
+                value: /^([0-5]?[0-9]):[0-5][0-9]\.[0-9]{1,2}$|^NS$|^DQ$/,
                 message: "Invalid time format",
               },
             }}
+            aditional_options={["NS", "DQ"]}
           />
         </Box>
       </Stack>
