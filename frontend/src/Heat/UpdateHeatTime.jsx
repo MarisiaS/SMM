@@ -60,7 +60,8 @@ const UpdateHeatTime = ({ heat, onUpdate, onCancel }) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "100vh",
+        height: "75vh", 
+        overflow: "hidden", 
       }}
     >
       <Stack alignItems="center" justifyContent="space-between">
