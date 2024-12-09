@@ -8,12 +8,20 @@ from django.utils import timezone
 """
 This function is used to filter a queryset by group.
 When the queryset comes from the `Athlete` model, the 
-argument `athlete` is not needed.
+argument `for_athlete_model` is not needed.
 When the queryset comes from a model that contains
-`Athlete` as a foreign key, the argument `athlete` should 
+`Athlete` as a foreign key, the argument `for_athlete_model` should 
 be set to `False`.
+The age of an athlete is calculate at the date provided.
 """
-def filter_by_group(group_id, queryset, athlete=True):
+def filter_by_group(group_id=None, queryset=None, date=timezone.now().date(), from_athlete_model=True):
+    
+    if queryset is None:
+        raise ValidationError({'error': "A queryset must be provided"}, code=status.HTTP_400_BAD_REQUEST)
+    
+    if group_id is None:
+        return queryset
+
     # Get the group instance with id group_id
     try:
         group_instance = Group.objects.get(id=group_id)
@@ -21,7 +29,7 @@ def filter_by_group(group_id, queryset, athlete=True):
         raise ValidationError({'error': "Group does not exist"}, code=status.HTTP_400_BAD_REQUEST)
 
     # Distinguishes between the `Athlete` model and other models.
-    if athlete:
+    if from_athlete_model:
         athlete_field = ""
     else:
         athlete_field = "athlete__"
@@ -30,7 +38,7 @@ def filter_by_group(group_id, queryset, athlete=True):
     queryset = queryset.annotate(
         age=Func(
             Value("year"),
-            Func(Value(timezone.now().date()), F(
+            Func(Value(date), F(
                 f"{athlete_field}date_of_birth"), function="age"),
             function="date_part",
             output_field=IntegerField()

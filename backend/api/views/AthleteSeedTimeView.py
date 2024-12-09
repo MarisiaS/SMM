@@ -3,8 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from api.models import Athlete, TimeRecord, MeetEvent, Group, EventType
 from api.serializers.AthleteSeedTimeSerializer import AthleteSeedTimeSerializer, UpdateAthleteSeedTimeSerializer
-from django.db.models import F, Value, Func, IntegerField
-from django.utils import timezone
+from api.CustomFilter import filter_by_group
 from rest_framework.exceptions import ValidationError
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from drf_spectacular.types import OpenApiTypes
@@ -12,29 +11,9 @@ from datetime import timedelta
 
 @extend_schema(tags=['Seed times'])
 class AthleteSeedTimeView(APIView):
-    def get_queryset(self, group_id):
-        try:
-            group_instance = Group.objects.get(id=group_id)
-        except Group.DoesNotExist:
-            raise ValidationError({'error': "Group does not exist"}, code=status.HTTP_400_BAD_REQUEST)
+    def get_queryset(self, group_id,date_of_swim_meet):
         queryset = Athlete.objects.all()
-        queryset = queryset.annotate(
-                age=Func(
-                    Value("year"),
-                    Func(Value(timezone.now().date()), F(
-                        "date_of_birth"), function="age"),
-                    function="date_part",
-                    output_field=IntegerField()))
-        
-        gender = group_instance.gender
-        if gender != 'MX':
-            queryset = queryset.filter(gender=gender)
-        min_age = group_instance.min_age
-        max_age = group_instance.max_age
-        if max_age is not None:
-            queryset = queryset.filter(age__lte=max_age)
-        if min_age is not None:
-            queryset = queryset.filter(age__gte=min_age)
+        queryset = filter_by_group(group_id=group_id, queryset=queryset, date=date_of_swim_meet, from_athlete_model=True)
             
         return queryset.order_by('first_name')
 
@@ -64,6 +43,7 @@ class AthleteSeedTimeView(APIView):
         #Getting the group and event_type
         group_id = event_instance.group.id
         event_type_id = event_instance.event_type.id
+        date_of_swim_meet = event_instance.swim_meet.date
         
         #Checking that the event type exists
         try:
@@ -72,7 +52,7 @@ class AthleteSeedTimeView(APIView):
             return Response({'error': 'Event type not found'}, status=status.HTTP_404_NOT_FOUND)
 
         #On get_queryset we validate if the group exists and filter by group
-        athletes = self.get_queryset(group_id)
+        athletes = self.get_queryset(group_id, date_of_swim_meet)
         seed_times = []
 
         for athlete in athletes:
