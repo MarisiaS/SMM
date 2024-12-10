@@ -80,7 +80,7 @@ const AddSwimMeet = () => {
   }, []);
 
   const handleCancel = () => {
-    navigate(`/swim-meet`);
+    navigate(`/swim-meets`);
   };
 
   const handleAddEvents = () => {
