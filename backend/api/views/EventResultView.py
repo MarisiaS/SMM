@@ -28,7 +28,7 @@ class EventResultView(APIView):
         queryset = Heat.objects.filter(event=event_instance)
         group_id = self.request.query_params.get('group_id')
         if group_id is not None:
-            queryset = filter_by_group(group_id, queryset, False)
+            queryset = filter_by_group(group_id=group_id, queryset=queryset, date=event_instance.swim_meet.date, from_athlete_model=False)
 
         results = list(queryset.order_by('heat_time', 'athlete__last_name', 'athlete__first_name'))
         
