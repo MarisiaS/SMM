@@ -31,5 +31,4 @@ class SiteViewSet(viewsets.ModelViewSet):
         queryset = queryset.distinct()
         filter_query_set = self.filter_queryset(queryset)
         serializer = self.get_serializer_class()(filter_query_set, many=True)
-        # Return paginated response
         return Response(serializer.data, status=status.HTTP_200_OK)
