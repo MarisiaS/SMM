@@ -14,6 +14,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { Link, useLocation, Outlet } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import Logout from "./Logout";
 
 const drawerWidth = 240;
 
@@ -59,9 +60,7 @@ export default function NavBar(props) {
                 selected={option.path === path}
                 onClick={handleOptionClick}
               >
-                <ListItemIcon >
-                  {option.icon}
-                </ListItemIcon>
+                <ListItemIcon>{option.icon}</ListItemIcon>
                 <ListItemText primary={option.label} />
               </ListItemButton>
             </ListItem>
@@ -78,19 +77,29 @@ export default function NavBar(props) {
         position="fixed"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
-        <Toolbar color="primary">
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Swim Meet Manager
-          </Typography>
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: "none" } }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap component="div">
+              Swim Meet Manager
+            </Typography>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center", width:"100px" }}> <Logout /> </Box>
+          
         </Toolbar>
       </AppBar>
       <Drawer
