@@ -7,6 +7,7 @@ from django.db.models import Q, F, Value, Func, IntegerField
 from django.db.models.functions import Collate, Concat
 from rest_framework.exceptions import ValidationError
 from rest_framework import status
+from api.CustomFilter import filter_by_group
 from django.utils import timezone
 
 import logging
@@ -50,27 +51,7 @@ class TimeRecordViewSet(viewsets.ModelViewSet):
                     {'error': "Event type with this ID does not exist."}, code=status.HTTP_400_BAD_REQUEST)
 
         if group_id is not None:
-            queryset = queryset.annotate(
-                age=Func(
-                    Value("year"),
-                    Func(Value(timezone.now().date()), F(
-                        "athlete__date_of_birth"), function="age"),
-                    function="date_part",
-                    output_field=IntegerField()))
-            try:
-                group_instance = Group.objects.get(id=group_id)
-            except Group.DoesNotExist:
-                raise ValidationError(
-                    {'error': "Group does not exist"}, code=status.HTTP_400_BAD_REQUEST)
-            gender = group_instance.gender
-            if gender != 'MX':
-                queryset = queryset.filter(athlete__gender=gender)
-            min_age = group_instance.min_age
-            max_age = group_instance.max_age
-            if max_age is not None:
-                queryset = queryset.filter(age__lte=max_age)
-            if min_age is not None:
-                queryset = queryset.filter(age__gte=min_age)
+            queryset = filter_by_group(group_id=group_id, queryset=queryset, from_athlete_model=False)
 
         # Order the queryset by first_name by default
         return queryset.order_by('athlete__first_name')
