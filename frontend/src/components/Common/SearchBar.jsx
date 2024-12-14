@@ -1,5 +1,4 @@
-import { useState } from "react";
-import IconButton from "@mui/material/IconButton";
+import { forwardRef, useImperativeHandle } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { useForm } from "react-hook-form";
 import "../../App.css";
@@ -7,7 +6,7 @@ import { Stack, Box } from "@mui/material";
 import CleanableTextField from "../FormElements/CleanableTextField";
 import MyButton from "../FormElements/MyButton";
 
-const SearchBar = ({ setSearchPar, setOffset, setPage }) => {
+const SearchBar = forwardRef(({ setSearchPar, setOffset, setPage }, ref) => {
   const { handleSubmit, control, setValue } = useForm();
 
   const search = (data) => {
@@ -15,6 +14,17 @@ const SearchBar = ({ setSearchPar, setOffset, setPage }) => {
     setOffset(0);
     setPage(0);
   };
+
+  const clearSearch = () => {
+    setValue("search", ""); 
+    setSearchPar("");
+    setOffset(0);
+    setPage(0);
+  };
+
+  useImperativeHandle(ref, () => ({
+    clearSearch,
+  }));
 
   return (
     <div>
@@ -38,6 +48,6 @@ const SearchBar = ({ setSearchPar, setOffset, setPage }) => {
       </form>
     </div>
   );
-};
+});
 
 export default SearchBar;
