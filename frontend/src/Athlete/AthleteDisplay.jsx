@@ -102,7 +102,7 @@ const AthleteDisplay = () => {
       name: "Edit",
       icon: <EditIcon />,
       onClick: handleEditClick,
-      tip: "Edit basic information",
+      tip: "Edit Basic Information",
     },
   ];
 
