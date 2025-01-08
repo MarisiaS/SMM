@@ -53,7 +53,6 @@ const AddAthlete = ({
       const fetchAthlete = async () => {
         try {
           const response = await SmmApi.getAthlete(athleteToEditId);
-          console.log(response);
           setAthleteToEdit(response);
           reset({
             first_name: response.first_name,
@@ -62,7 +61,6 @@ const AddAthlete = ({
             gender: response.gender === "F" ? 1 : 2,
           });
         } catch (error) {
-          console.error("Error fetching athlete data:", error);
           setError(true);
         }
       };
