@@ -11,6 +11,7 @@ const AthleteForm = ({
   control,
   onCancel,
   isValid,
+  isEditing
 }) => {
   const  gender_options =[{"id":1, "name": "Girl"},{"id":2, "name": "Boy"}];
   return (
@@ -66,8 +67,8 @@ const AthleteForm = ({
       </Stack>
       <Stack className={"itemBox"}>
         <MyButton
-          key={"create"}
-          label={"Create"}
+          key={"submit_button"}
+          label={isEditing ? "edit": "create"}
           type={"submit"}
           disabled={!isValid}
         />
