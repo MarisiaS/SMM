@@ -14,50 +14,57 @@ let refreshingPromise = null;
 
 //To manage refresh token in case the access token is expired
 axios.interceptors.response.use(
-  (response) => {
-    return Promise.resolve(response);
-  },
-  function (error) {
-    const { response} = error;
+  (response) => Promise.resolve(response),
+  async (error) => {
+    const { response } = error;
     const detail =
-      response.data?.detail ||
-      response.data?.error ||
+      response?.data?.detail ||
+      response?.data?.error ||
       "Error details not defined";
-    const code = response.data?.code || "Code not defined";
+    const code = response?.data?.code || "Code not defined";
     const originalRequest = error.config;
+
     if (
-      response.status === 401 &&
+      response?.status === 401 &&
       !originalRequest._retry &&
       code === "token_not_valid"
     ) {
-      // Access Token expired, get new token using the existing Refresh token
-      if (
-        sessionStorage.getItem("token") &&
-        detail === "Given token not valid for any token type"
-      ) {
-        originalRequest._retry = true;
+      originalRequest._retry = true;
+
+      if (sessionStorage.getItem("token") && detail === "Given token not valid for any token type") {
         if (!refreshingPromise) {
           const { refresh } = JSON.parse(sessionStorage.getItem("token"));
           refreshingPromise = axios
-            .post(`${BASE_URL}/login/refresh/`, { refresh: refresh })
+            .post(`${BASE_URL}/login/refresh/`, { refresh })
             .then((res) => {
               if (res.status === 200) {
-                let { access, refresh } = res.data;
-                let token = { access, refresh };
+                const { access, refresh } = res.data;
+                const token = { access, refresh };
                 sessionStorage.setItem("token", JSON.stringify(token));
               }
-            refreshingPromise = null;
+              console.log("Refreshed");
+              refreshingPromise = null;
+            })
+            .catch((error) => {
+              refreshingPromise = null;
+              console.log("Error refreshing");
+              sessionStorage.removeItem("token");
+              window.location.href = ``; // Redirect to login
+              throw error;
             });
         }
-        return refreshingPromise.then(() => {
-          originalRequest.headers = getConfig();
+        try {
+          await refreshingPromise;
+          originalRequest.headers = getConfig(); // Update headers with the new token
           return axios(originalRequest);
-        });
+        } catch (err) {
+          return Promise.reject(err);
+        }
       }
-      // Refresh Token expired. clean up the tokens stored in sessionStorage
+
       if (detail === "Token is invalid or expired") {
         sessionStorage.removeItem("token");
-        return (window.location.href = ``);
+        window.location.href = ``; // Redirect to login
       }
     }
     return Promise.reject(error);
