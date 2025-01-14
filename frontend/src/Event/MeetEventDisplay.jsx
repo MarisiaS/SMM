@@ -6,7 +6,7 @@ import {
   FormatAlignCenter as HeatIcon,
   EmojiEvents as RankingIcon,
 } from "@mui/icons-material";
-import { Box, Stack } from "@mui/material";
+import { CircularProgress, Box, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import GenerateHeats from "../Heat/GenerateHeats.jsx";
@@ -38,6 +38,7 @@ const MeetEventDisplay = () => {
   const location = useLocation();
   const meetData = location.state?.meetData;
   const [eventData, setEventData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
 
   // View states
@@ -151,6 +152,7 @@ const MeetEventDisplay = () => {
   useEffect(() => {
     let ignore = false;
     async function fetching() {
+      setLoading(true);
       try {
         const json = await SmmApi.getSwimMeetEvents(meetId, offset, limit);
         if (!ignore) {
@@ -166,6 +168,8 @@ const MeetEventDisplay = () => {
         }
       } catch (error) {
         setErrorOnLoading(true);
+      } finally {
+        setLoading(false);
       }
     }
     fetching();
@@ -255,7 +259,26 @@ const MeetEventDisplay = () => {
   const isFirstEvent = page === 0 && selectedEventIndex === 0;
   const isLastEvent = offset + selectedEventIndex + 1 >= count;
 
+  const handleReload = () => {
+    setReloadEventDataTrigger((prev) => prev + 1);
+  };
+
+  let actionButtonsErrorOnLoading = [
+    { label: "Reload", onClick: handleReload },
+  ];
   const renderContent = () => {
+    if (loading) {
+      return (
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          style={{ height: "100px" }}
+        >
+          <CircularProgress />
+        </Stack>
+      );
+    }
+
     if (errorOnLoading) {
       return (
         <Stack
@@ -263,13 +286,14 @@ const MeetEventDisplay = () => {
             display: "flex",
             flexDirection: "column",
             gap: "16px",
-            width: "300px",
+            width: "550px",
             margin: "auto",
           }}
         >
           <AlertBox
             type="error"
             message="Data upload failed. Please try again!"
+            actionButtons={actionButtonsErrorOnLoading}
           />
         </Stack>
       );
