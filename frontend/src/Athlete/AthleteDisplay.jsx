@@ -135,7 +135,7 @@ const AthleteDisplay = () => {
   }, [searchPar, offset, limit, renderTrigger]);
 
   const handleReload = () => {
-    setRenderTrigger((prev) => prev + 1);;
+    setRenderTrigger((prev) => prev + 1);
   };
 
   let actionButtonsErrorOnLoading = [
