@@ -53,9 +53,7 @@ const EventDetails = ({
       } catch (error) {
         setErrorOnLoading(true);
       } finally {
-        setTimeout(() => {
-          setLoading(false);
-        }, 100);
+        setLoading(false);
       }
     }
     fetching();
