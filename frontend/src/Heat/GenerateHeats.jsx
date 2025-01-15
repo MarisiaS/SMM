@@ -9,7 +9,13 @@ import {
   NavigateNext as RightIcon,
   Timer as TimeIcon,
 } from "@mui/icons-material";
-import { Box, Dialog, DialogContent, Stack } from "@mui/material";
+import {
+  CircularProgress,
+  Box,
+  Dialog,
+  DialogContent,
+  Stack,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "../App.css";
 import { SmmApi } from "../SmmApi.jsx";
@@ -71,6 +77,7 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
   const [selectedRightAthletes, setSelectedRightAthletes] = useState({});
   const [selectedLeftAthletes, setSelectedLeftAthletes] = useState({});
   //State to manage loading
+  const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   //State to manage search on selectTables
   const [availableSearchTerm, setAvailableSearchTerm] = useState("");
@@ -99,6 +106,7 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
   useEffect(() => {
     let ignore = false;
     async function fetching() {
+      setLoading(true);
       try {
         const athletes_json = await SmmApi.getSeedTimes(eventId);
         if (!ignore) {
@@ -107,6 +115,8 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
         }
       } catch (error) {
         setErrorOnLoading(true);
+      } finally {
+        setLoading(false);
       }
     }
     fetching();
@@ -257,28 +267,38 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
     );
     setSelectedLeftAthletes({});
   };
-  return (
-    <div>
-      <ItemPaginationBar
-        label={label}
-        extraActions={extraButtons}
-        enableNavigationButtons={false}
-      ></ItemPaginationBar>
-      {errorOnLoading ? (
-        <>
-          <Stack
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "16px",
-              width: "300px",
-              margin: "auto",
-            }}
-          >
-            <AlertBox type={typeAlertLoading} message={messageOnLoading} />
-          </Stack>
-        </>
-      ) : !areAthletesSelected ? (
+
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          style={{ height: "100px" }}
+        >
+          <CircularProgress />
+        </Stack>
+      );
+    }
+
+    if (errorOnLoading) {
+      return (
+        <Stack
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            width: "300px",
+            margin: "auto",
+          }}
+        >
+          <AlertBox type={typeAlertLoading} message={messageOnLoading} />
+        </Stack>
+      );
+    }
+
+    if (!areAthletesSelected) {
+      return (
         <>
           <Box
             display="flex"
@@ -296,7 +316,7 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
                 notRecordsMessage={"No athletes available."}
                 searchTerm={availableSearchTerm}
                 setSearchTerm={setAvailableSearchTerm}
-                labels={["Athletes Available","Athlete"]}
+                labels={["Athletes Available", "Athlete"]}
               />
             </Box>
 
@@ -339,12 +359,15 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
                 notRecordsMessage={"No athletes selected."}
                 searchTerm={selectedSearchTerm}
                 setSearchTerm={setSelectedSearchTerm}
-                labels={["Athletes Selected","Athlete"]}
+                labels={["Athletes Selected", "Athlete"]}
               />
             </Box>
           </Box>
         </>
-      ) : (
+      );
+    }
+    return (
+      <>
         <div>
           <GenericTable
             data={selectedAthletes}
@@ -368,7 +391,18 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
             </DialogContent>
           </Dialog>
         </div>
-      )}
+      </>
+    );
+  };
+
+  return (
+    <div>
+      <ItemPaginationBar
+        label={label}
+        extraActions={extraButtons}
+        enableNavigationButtons={false}
+      ></ItemPaginationBar>
+      {renderContent()}
     </div>
   );
 };
