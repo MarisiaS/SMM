@@ -60,7 +60,7 @@ axios.interceptors.response.use(
           "Refresh token expired, cleanup tokens and navigate to Login page"
         );
         sessionStorage.removeItem("token");
-        return (window.location.href = `${BASE_URL}/login`);
+        return (window.location.href = ``);
       }
     }
     return Promise.reject(error);
@@ -71,6 +71,12 @@ export class SmmApi {
   static async login(data) {
     return await axios.post(`${BASE_URL}/login/`, data, {
       headers: { "content-type": "application/json" },
+    });
+  }
+
+  static async logout( ) {
+    return await axios.post(`${BASE_URL}/logout/`, {}, {
+      headers: getConfig(),
     });
   }
 

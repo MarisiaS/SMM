@@ -2,12 +2,12 @@ import * as React from "react";
 import { Button, useTheme } from "@mui/material";
 
 export default function MyButton(props) {
-  const { label, type, onClick, disabled } = props;
+  const { label, type, onClick, disabled, variant="contained" } = props;
   const theme = useTheme();
   return (
     <Button
       type={type}
-      variant="contained"
+      variant={variant}
       className={"myButton"}
       onClick={onClick}
       disabled={disabled}
