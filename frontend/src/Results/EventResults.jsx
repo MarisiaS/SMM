@@ -340,7 +340,7 @@ const EventResults = ({
       );
     }
 
-    return (
+    if (!hasResults) {
       <>
         <Stack
           style={{
@@ -356,8 +356,10 @@ const EventResults = ({
             message={"This event does not have results yet"}
           />
         </Stack>
-      </>
-    );
+      </>;
+    }
+
+    return null;
   };
 
   return (
