@@ -4,6 +4,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models.functions import Coalesce
+from django.db.models import F, Q
 from .managers import CustomUserManager
 
 
@@ -119,6 +120,15 @@ class SwimMeet(models.Model):
     time = models.TimeField(null=True, blank=True)
     site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='swim_meet_site')
     school = models.ManyToManyField(School, related_name="swim_meet_schools")
+    num_lanes = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=Q(num_lanes__lte=F('site__num_lanes')),
+                name='check_num_lanes_less_than_or_equal_site_num_lanes',
+            )
+        ]
     
 class Athlete(models.Model):
     class Status(models.TextChoices):
