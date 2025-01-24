@@ -113,7 +113,6 @@ class Session(models.Model):
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='school_group')
 
     
-      
 class SwimMeet(models.Model):
     name = models.CharField(max_length=255, null=False, blank=False)
     date = models.DateField(null=False, blank=False)
@@ -130,7 +129,6 @@ class SwimMeet(models.Model):
             })
 
     def save(self, *args, **kwargs):
-        # Perform validation before saving
         self.full_clean()
         super().save(*args, **kwargs)
     
