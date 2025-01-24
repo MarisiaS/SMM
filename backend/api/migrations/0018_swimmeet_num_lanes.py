@@ -14,7 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='swimmeet',
             name='num_lanes',
-            field=models.PositiveSmallIntegerField(default=5, validators=[django.core.validators.MinValueValidator(1)]),
-            preserve_default=False,
+            field=models.PositiveSmallIntegerField(validators=[django.core.validators.MinValueValidator(1)]),
         ),
     ]
