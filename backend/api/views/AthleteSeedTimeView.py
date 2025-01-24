@@ -1,10 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from api.models import Athlete, TimeRecord, MeetEvent, Group, EventType
+from api.models import Athlete, TimeRecord, MeetEvent, EventType
 from api.serializers.AthleteSeedTimeSerializer import AthleteSeedTimeSerializer, UpdateAthleteSeedTimeSerializer
 from api.CustomFilter import filter_by_group
-from rest_framework.exceptions import ValidationError
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from drf_spectacular.types import OpenApiTypes
 from datetime import timedelta

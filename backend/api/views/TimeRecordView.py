@@ -1,14 +1,13 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from api.models import TimeRecord, EventType, Group
+from api.models import TimeRecord, EventType
 from api.serializers.TimeRecordSerializer import TimeRecordSerializer
 from drf_spectacular.utils import extend_schema, OpenApiParameter
-from django.db.models import Q, F, Value, Func, IntegerField
+from django.db.models import Q, F, Value
 from django.db.models.functions import Collate, Concat
 from rest_framework.exceptions import ValidationError
 from rest_framework import status
 from api.CustomFilter import filter_by_group
-from django.utils import timezone
 
 import logging
 

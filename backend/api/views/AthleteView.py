@@ -1,10 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import ValidationError
-from rest_framework import status
 from django.db.models.functions import Collate
-from api.models import Athlete, Group
+from api.models import Athlete
 from api.serializers.AthleteSerializer import AthleteSerializer
 from django.db.models import F, Func, IntegerField, Value
 from django.utils import timezone
