@@ -121,7 +121,7 @@ class SwimMeet(models.Model):
     school = models.ManyToManyField(School, related_name="swim_meet_schools")
     num_lanes = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
 
-    def clean(self):
+    def clean_num_lanes(self):
         # Check that num_lanes is less than or equal to the site's num_lanes
         if self.site and self.num_lanes > self.site.num_lanes:
             raise ValidationError({
