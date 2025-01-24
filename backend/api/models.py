@@ -4,7 +4,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models.functions import Coalesce
-from django.db.models import F, Q
+from django.core.exceptions import ValidationError
 from .managers import CustomUserManager
 
 
@@ -122,13 +122,17 @@ class SwimMeet(models.Model):
     school = models.ManyToManyField(School, related_name="swim_meet_schools")
     num_lanes = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
 
-    class Meta:
-        constraints = [
-            models.CheckConstraint(
-                check=Q(num_lanes__lte=F('site__num_lanes')),
-                name='check_num_lanes_less_than_or_equal_site_num_lanes',
-            )
-        ]
+    def clean(self):
+        # Check that num_lanes is less than or equal to the site's num_lanes
+        if self.site and self.num_lanes > self.site.num_lanes:
+            raise ValidationError({
+                'num_lanes': f"The number of lanes for this swim meet cannot exceed the site's number of lanes ({self.site.num_lanes})."
+            })
+
+    def save(self, *args, **kwargs):
+        # Perform validation before saving
+        self.full_clean()
+        super().save(*args, **kwargs)
     
 class Athlete(models.Model):
     class Status(models.TextChoices):
