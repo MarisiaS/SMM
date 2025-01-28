@@ -176,11 +176,7 @@ const AddAthlete = ({
     );
   };
 
-  return (
-    <div>
-        {renderContent()}
-    </div>
-  );
+  return <div>{renderContent()}</div>;
 };
 
 export default AddAthlete;

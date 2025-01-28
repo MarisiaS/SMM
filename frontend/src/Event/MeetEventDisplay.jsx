@@ -8,7 +8,7 @@ import {
 } from "@mui/icons-material";
 import { CircularProgress, Box, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import GenerateHeats from "../Heat/GenerateHeats.jsx";
 import { SmmApi } from "../SmmApi.jsx";
 import AlertBox from "../components/Common/AlertBox.jsx";

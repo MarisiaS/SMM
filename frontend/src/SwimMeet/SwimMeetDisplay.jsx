@@ -203,11 +203,7 @@ const SwimMeetDisplay = () => {
     );
   };
 
-  return (
-    <div>
-        {renderContent()}
-    </div>
-  );
+  return <div>{renderContent()}</div>;
 };
 
 export default SwimMeetDisplay;

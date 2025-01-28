@@ -186,11 +186,7 @@ const AddSwimMeet = () => {
     );
   };
 
-  return (
-    <div>
-        {renderContent()}
-    </div>
-  );
+  return <div>{renderContent()}</div>;
 };
 
 export default AddSwimMeet;

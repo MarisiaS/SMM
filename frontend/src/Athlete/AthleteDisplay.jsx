@@ -1,11 +1,7 @@
-import {
-  Add as AddIcon,
-  ContentPaste as DetailsIcon,
-  Edit as EditIcon,
-} from "@mui/icons-material";
+import { Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 import { CircularProgress, Box, Stack, Dialog } from "@mui/material";
 import dayjs from "dayjs";
-import { useEffect, useState, useRef, useReducer } from "react";
+import { useEffect, useState, useRef } from "react";
 import { SmmApi } from "../SmmApi";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import GenericTable from "../components/Common/GenericTable";
