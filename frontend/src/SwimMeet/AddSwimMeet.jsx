@@ -153,7 +153,7 @@ const AddSwimMeet = () => {
         >
           <AlertBox
             type="error"
-            message="Unable to load needed data. Please try again."
+            message="We were unable to load the required data. Please try again."
             actionButtons={actionButtonsErrorOnLoading}
           />
         </Stack>

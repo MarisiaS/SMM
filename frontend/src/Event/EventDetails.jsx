@@ -128,7 +128,7 @@ const EventDetails = ({
         >
           <AlertBox
             type="error"
-            message="Unable to load event details. Please try again."
+            message="We were unable to load the required data. Please try again."
           />
         </Stack>
       );

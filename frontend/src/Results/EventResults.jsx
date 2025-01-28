@@ -308,7 +308,7 @@ const EventResults = ({
         >
           <AlertBox
             type="error"
-            message="Unable to load results. Please try again."
+            message="We were unable to load the required data. Please try again."
           />
         </Stack>
       );

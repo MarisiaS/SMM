@@ -166,8 +166,8 @@ const AthleteDisplay = () => {
           }}
         >
           <AlertBox
-            type={"error"}
-            message={"Data upload failed. Please try again!"}
+            type="error"
+            message="We were unable to load the required data. Please try again."
             actionButtons={actionButtonsErrorOnLoading}
           />
         </Stack>

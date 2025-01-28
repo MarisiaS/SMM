@@ -32,11 +32,6 @@ const AddEvent = ({ onBack, onCreateHeats, onCreateEvent }) => {
   let typeAlert = error ? "error" : "success";
   let message = error ? error : "Event created successfully.";
 
-  let typeAlertLoading = errorOnLoading ? "error" : "success";
-  let messageOnLoading = errorOnLoading
-    ? "Unable to load Event types and Groups. Please try again!"
-    : "";
-
   useEffect(() => {
     if (isDirty) {
       setSubmitted(false);
@@ -148,8 +143,8 @@ const AddEvent = ({ onBack, onCreateHeats, onCreateEvent }) => {
           }}
         >
           <AlertBox
-            type={typeAlertLoading}
-            message={messageOnLoading}
+            type="error"
+            message="We were unable to load the required data. Please try again."
             actionButtons={actionButtonsErrorOnLoading}
           />
         </Stack>

@@ -98,11 +98,6 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
     ? errorCreateHeat
     : "Heats created successfully!";
 
-  let typeAlertLoading = errorOnLoading ? "error" : "success";
-  let messageOnLoading = errorOnLoading
-    ? "Data upload failed. Please try again!"
-    : "";
-
   useEffect(() => {
     let ignore = false;
     async function fetching() {
@@ -292,7 +287,10 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
             margin: "auto",
           }}
         >
-          <AlertBox type={typeAlertLoading} message={messageOnLoading} />
+          <AlertBox
+            type="error"
+            message="We were unable to load the required data. Please try again."
+          />
         </Stack>
       );
     }
