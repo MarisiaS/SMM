@@ -121,7 +121,7 @@ const AddAthlete = ({
   };
 
   let actionButtonsErrorOnLoading = [
-    { label: "Go to Athlete", onClick: onCancel },
+    { label: "Go to Athletes", onClick: onCancel },
   ];
 
   const renderContent = () => {
