@@ -37,21 +37,32 @@ const AthleteDisplay = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   //Controls the data
   const [athleteData, setAthleteData] = useState([]);
+  const [athleteToEditId, setAthleteToEditId] = useState(null);
   const lastCreatedAthleteId = useRef(null);
   const numAthletesCreated = useRef(0);
+  const [renderTrigger, setRenderTrigger] = useState(0);
   //Use to control the search parameter
   const [searchPar, setSearchPar] = useState("");
+  const searchBarRef = useRef(null);
   //Variables needed for the pagination bar
   const [count, setCount] = useState(0);
   const [offset, setOffset] = useState(0); //search bar needs to restart this
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0); //search bar needs to restart this
-  const [renderTrigger, setRenderTrigger] = useState(0);
+
+  const handleAddClick = () => {
+    if (searchBarRef.current) {
+      searchBarRef.current.clearSearch();
+    }
+    setSearchPar("");
+    setIsFormOpen(true);
+  };
 
   const handleCancelAddAthlete = () => {
-    if (numAthletesCreated.current > 0) {
+    if (lastCreatedAthleteId.current) {
       refreshDataForLastCreatedAthlete();
     }
+    setAthleteToEditId(null);
     setIsFormOpen(false);
   };
 
@@ -67,10 +78,9 @@ const AthleteDisplay = () => {
       );
       if (indexAthlete !== -1) {
         const newPage = Math.floor(indexAthlete / limit);
-        if(offset != newPage * limit){
+        if (offset != newPage * limit) {
           setOffset(newPage * limit);
-        }
-        else{
+        } else {
           setRenderTrigger((prev) => prev + 1);
         }
         setCount(json.count);
@@ -83,8 +93,14 @@ const AthleteDisplay = () => {
     lastCreatedAthleteId.current = null;
   };
 
-  const handleEditClick = () => {
-    console.log("Edit ...");
+
+  const handleEditClick = (row) => {
+    if (searchBarRef.current) {
+      searchBarRef.current.clearSearch();
+    }
+    setSearchPar("");
+    setAthleteToEditId(athleteData[row].id);
+    setIsFormOpen(true);
   };
 
   const actions = [
@@ -146,12 +162,13 @@ const AthleteDisplay = () => {
           justifyContent="space-between"
         >
           <Box sx={{ marginLeft: 5 }}>
-            <MyButton label={"Athlete"} onClick={() => setIsFormOpen(true)}>
+            <MyButton label={"Athlete"} onClick={handleAddClick}>
               <AddIcon />
             </MyButton>
           </Box>
           <Box className={"searchBox"} sx={{ marginRight: 5 }}>
             <SearchBar
+              ref={searchBarRef}
               setSearchPar={setSearchPar}
               setOffset={setOffset}
               setPage={setPage}
@@ -172,6 +189,7 @@ const AthleteDisplay = () => {
             onCancel={handleCancelAddAthlete}
             setLastAthleteCreated={(id) => (lastCreatedAthleteId.current = id)}
             setNumNewAthletes={(num) => (numAthletesCreated.current += num)}
+            athleteToEditId={athleteToEditId}
           />
         </Dialog>
       </div>

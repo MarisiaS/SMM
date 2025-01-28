@@ -60,7 +60,7 @@ axios.interceptors.response.use(
           "Refresh token expired, cleanup tokens and navigate to Login page"
         );
         sessionStorage.removeItem("token");
-        return (window.location.href = `${BASE_URL}/login`);
+        return (window.location.href = ``);
       }
     }
     return Promise.reject(error);
@@ -71,6 +71,12 @@ export class SmmApi {
   static async login(data) {
     return await axios.post(`${BASE_URL}/login/`, data, {
       headers: { "content-type": "application/json" },
+    });
+  }
+
+  static async logout( ) {
+    return await axios.post(`${BASE_URL}/logout/`, {}, {
+      headers: getConfig(),
     });
   }
 
@@ -387,8 +393,21 @@ export class SmmApi {
     return res.data;
   }
 
+  static async getAthlete(athleteId) {
+    let res = await axios.get(`${BASE_URL}/athlete/${athleteId}/`, {
+      headers: getConfig(),
+    });
+    return res.data;
+  }
+
   static async createAthlete(data) {
     return await axios.post(`${BASE_URL}/athlete/`, data, {
+      headers: getConfig(),
+    });
+  }
+
+  static async updateAthlete(athleteId, data) {
+    return await axios.patch(`${BASE_URL}/athlete/${athleteId}/`, data, {
       headers: getConfig(),
     });
   }
