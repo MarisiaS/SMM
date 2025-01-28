@@ -21,6 +21,11 @@ const columns = [
     size: 150,
   },
   {
+    accessorKey: "gender_display",
+    header: "Gender",
+    size: 150,
+  },
+  {
     accessorKey: "age",
     header: "Age",
     size: 150,
@@ -88,6 +93,7 @@ const AthleteDisplay = () => {
     lastCreatedAthleteId.current = null;
   };
 
+
   const handleEditClick = (row) => {
     if (searchBarRef.current) {
       searchBarRef.current.clearSearch();
@@ -102,9 +108,9 @@ const AthleteDisplay = () => {
       name: "Edit",
       icon: <EditIcon />,
       onClick: handleEditClick,
-      tip: "Edit Basic Information",
+      tip: "Edit Athlete",
     },
-  ];
+  ]; 
 
   useEffect(() => {
     let ignore = false;
