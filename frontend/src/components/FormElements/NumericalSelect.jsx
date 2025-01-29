@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 const NumericalSelect = (props) => {
-  const { label, name, control, min_value, max_value, rules } = props;
+  const { label, name, control, min_value, max_value, disabled, rules } = props;
   const options = Array.from(
     { length: max_value - min_value + 1 },
     (_, index) => min_value + index
@@ -27,6 +27,7 @@ const NumericalSelect = (props) => {
             value={value}
             onChange={onChange}
             label={label}
+            disabled={disabled}
             sx={{ minWidth: 250 }}
           >
             {options.map((option) => (
