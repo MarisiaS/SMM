@@ -4,7 +4,6 @@ from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models.functions import Coalesce
-from django.core.exceptions import ValidationError
 from .managers import CustomUserManager
 
 
