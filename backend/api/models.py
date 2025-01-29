@@ -120,17 +120,6 @@ class SwimMeet(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='swim_meet_site')
     school = models.ManyToManyField(School, related_name="swim_meet_schools")
     num_lanes = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
-
-    def clean_num_lanes(self):
-        # Check that num_lanes is less than or equal to the site's num_lanes
-        if self.site and self.num_lanes > self.site.num_lanes:
-            raise ValidationError({
-                'num_lanes': f"The number of lanes for this swim meet cannot exceed the site's number of lanes ({self.site.num_lanes})."
-            })
-
-    def save(self, *args, **kwargs):
-        self.full_clean()
-        super().save(*args, **kwargs)
     
 class Athlete(models.Model):
     class Status(models.TextChoices):
