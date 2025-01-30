@@ -15,6 +15,7 @@ import GenericTable from "../components/Common/GenericTable";
 import PaginationBar from "../components/Common/PaginationBar";
 import SearchBar from "../components/Common/SearchBar";
 import MyButton from "../components/FormElements/MyButton";
+import AthleteIcon from "../MyIcons/AthleteIcon.jsx";
 
 const columns = [
   {
@@ -57,6 +58,10 @@ const SwimMeetDisplay = () => {
     ? "Data upload failed. Please try again!"
     : "";
 
+  const handleEnrollment = (id) => {
+    console.log("Go to Enrollment")
+  };
+
   const handleDetailsClick = (id) => {
     navigate(`/swim-meets/${data[id].id}/events`, {
       state: { meetData: data[id] },
@@ -76,6 +81,12 @@ const SwimMeetDisplay = () => {
   };
 
   const actions = [
+    {
+      name: "Athlete enrollment",
+      icon: <AthleteIcon />,
+      onClick: handleDetailsClick,
+      tip: "Go to Enrollment",
+    },
     {
       name: "Details",
       icon: <DetailsIcon />,
