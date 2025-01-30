@@ -102,11 +102,11 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
     let ignore = false;
     async function fetching() {
       setLoading(true);
+      setErrorOnLoading(false);
       try {
         const athletes_json = await SmmApi.getSeedTimes(eventId);
         if (!ignore) {
           setAvailableAthletes(athletes_json);
-          setErrorOnLoading(false);
         }
       } catch (error) {
         setErrorOnLoading(true);

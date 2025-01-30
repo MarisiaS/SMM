@@ -43,6 +43,7 @@ const AddEvent = ({ onBack, onCreateHeats, onCreateEvent }) => {
     let ignore = false;
     async function fetchOptions() {
       setLoading(true);
+      setErrorOnLoading(false);
       try {
         const [responseGroups, responseEventTypes] = await Promise.all([
           SmmApi.getGroups(),

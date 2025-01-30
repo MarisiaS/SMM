@@ -107,6 +107,7 @@ const AthleteDisplay = () => {
     let ignore = false;
     async function fetching() {
       setLoading(true);
+      setErrorOnLoading(false);
       try {
         const json = await SmmApi.getAthleteList(searchPar, offset, limit);
         if (!ignore) {
@@ -116,7 +117,6 @@ const AthleteDisplay = () => {
           }));
           setAthleteData(formattedData);
           setCount(json.count);
-          setErrorOnLoading(false);
         }
       } catch (error) {
         setErrorOnLoading(true);

@@ -37,6 +37,7 @@ const EventDetails = ({
     let ignore = false;
     async function fetching() {
       setLoading(true);
+      setErrorOnLoading(false);
       try {
         const heat_json = await SmmApi.getEventHeats(eventId);
         const lane_json = await SmmApi.getEventLanes(eventId);
@@ -44,7 +45,6 @@ const EventDetails = ({
           setLaneData(lane_json.results);
           setHeatData(heat_json.results);
           setNumHeats(heat_json.count);
-          setErrorOnLoading(false);
         }
       } catch (error) {
         setErrorOnLoading(true);

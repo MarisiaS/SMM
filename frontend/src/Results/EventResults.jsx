@@ -101,6 +101,7 @@ const EventResults = ({
     let ignore = false;
     async function fetching() {
       setLoading(true);
+      setErrorOnLoading(false);
       try {
         const [resultsResponse, groupFilterResponse] = await Promise.all([
           SmmApi.getEventResults(eventId),
@@ -112,7 +113,6 @@ const EventResults = ({
           setLastSelectedGroupId(null);
           setSelectedTab(0);
           setGroupOptions(groupFilterResponse);
-          setErrorOnLoading(false);
           setTabs([
             {
               key: "main",

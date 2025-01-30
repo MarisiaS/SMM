@@ -53,6 +53,7 @@ const AddAthlete = ({
       // Fetch athlete data for editing
       const fetchAthlete = async () => {
         setLoading(true);
+        setErrorOnLoading(false);
         try {
           const response = await SmmApi.getAthlete(athleteToEditId);
           setAthleteToEdit(response);

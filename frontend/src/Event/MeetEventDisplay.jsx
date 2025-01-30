@@ -153,12 +153,12 @@ const MeetEventDisplay = () => {
     let ignore = false;
     async function fetching() {
       setLoading(true);
+      setErrorOnLoading(false);
       try {
         const json = await SmmApi.getSwimMeetEvents(meetId, offset, limit);
         if (!ignore) {
           setEventData(json.results);
           setCount(json.count);
-          setErrorOnLoading(false);
           if (navegationDirection === "previous") {
             setSelectedEventIndex(limit - 1);
           } else if (navegationDirection === "next") {

@@ -102,6 +102,7 @@ const SwimMeetDisplay = () => {
     let ignore = false;
     async function fetching() {
       setLoading(true);
+      setErrorOnLoading(false);
       try {
         const json = await SmmApi.getSwimMeetList(searchPar, offset, limit);
         if (!ignore) {
@@ -112,7 +113,6 @@ const SwimMeetDisplay = () => {
           }));
           setData(formattedData);
           setCount(json.count);
-          setErrorOnLoading(false);
         }
       } catch (error) {
         setErrorOnLoading(true);
