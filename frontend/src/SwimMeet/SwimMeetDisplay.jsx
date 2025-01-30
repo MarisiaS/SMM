@@ -58,7 +58,7 @@ const SwimMeetDisplay = () => {
     ? "Data upload failed. Please try again!"
     : "";
 
-  const handleEnrollment = (id) => {
+  const handleEnrollmentClick = (id) => {
     console.log("Go to Enrollment")
   };
 
@@ -84,7 +84,7 @@ const SwimMeetDisplay = () => {
     {
       name: "Athlete enrollment",
       icon: <AthleteIcon />,
-      onClick: handleDetailsClick,
+      onClick: handleEnrollmentClick,
       tip: "Go to Enrollment",
     },
     {
