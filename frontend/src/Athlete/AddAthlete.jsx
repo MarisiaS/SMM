@@ -1,5 +1,4 @@
-import { Add as AddIcon } from "@mui/icons-material";
-import { Stack } from "@mui/material";
+import { CircularProgress, Stack } from "@mui/material";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -17,6 +16,8 @@ const AddAthlete = ({
   const [error, setError] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [athleteToEdit, setAthleteToEdit] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [errorOnLoading, setErrorOnLoading] = useState(false);
 
   const {
     handleSubmit,
@@ -51,6 +52,8 @@ const AddAthlete = ({
     if (athleteToEditId) {
       // Fetch athlete data for editing
       const fetchAthlete = async () => {
+        setLoading(true);
+        setErrorOnLoading(false);
         try {
           const response = await SmmApi.getAthlete(athleteToEditId);
           setAthleteToEdit(response);
@@ -61,7 +64,9 @@ const AddAthlete = ({
             gender: response.gender === "F" ? 1 : 2,
           });
         } catch (error) {
-          setError(true);
+          setErrorOnLoading(true);
+        } finally {
+          setLoading(false);
         }
       };
 
@@ -82,7 +87,10 @@ const AddAthlete = ({
     };
     if (athleteToEdit) {
       try {
-        const response = await SmmApi.updateAthlete(athleteToEdit.id,formatData);
+        const response = await SmmApi.updateAthlete(
+          athleteToEdit.id,
+          formatData
+        );
         setNumNewAthletes(0);
         setLastAthleteCreated(response.data.id);
         setTimeout(() => {
@@ -112,25 +120,64 @@ const AddAthlete = ({
   const handleCancel = () => {
     onCancel();
   };
-  return (
-    <div>
-      <div style={{ minHeight: !submitted ? "100px" : "0" }}></div>
-      <Stack alignItems="center" justifyContent="space-between">
-        <Stack alignItems="center" justifyContent="space-between">
-          {submitted && <AlertBox type={typeAlert} message={message} />}
+
+  let actionButtonsErrorOnLoading = [
+    { label: "Go to Athletes", onClick: onCancel },
+  ];
+
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          style={{ height: "100px" }}
+        >
+          <CircularProgress />
         </Stack>
-        <Stack alignItems="center" justifyContent="space-between">
-          <AthleteForm
-            handleSubmit={handleSubmit(submission)}
-            control={control}
-            onCancel={handleCancel}
-            isValid={isValid}
-            isEditing={athleteToEditId ? true : false}
+      );
+    }
+    if (errorOnLoading) {
+      return (
+        <Stack
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            width: "550px",
+            margin: "auto",
+          }}
+        >
+          <AlertBox
+            type="error"
+            message="We were unable to load the required data. Please try again."
+            actionButtons={actionButtonsErrorOnLoading}
           />
         </Stack>
-      </Stack>
-    </div>
-  );
+      );
+    }
+    return (
+      <>
+        {!submitted && <div style={{ minHeight: "100px" }} />}
+        <Stack alignItems="center" justifyContent="space-between">
+          <Stack alignItems="center" justifyContent="space-between">
+            {submitted && <AlertBox type={typeAlert} message={message} />}
+          </Stack>
+          <Stack alignItems="center" justifyContent="space-between">
+            <AthleteForm
+              handleSubmit={handleSubmit(submission)}
+              control={control}
+              onCancel={handleCancel}
+              isValid={isValid}
+              isEditing={athleteToEditId ? true : false}
+            />
+          </Stack>
+        </Stack>
+      </>
+    );
+  };
+
+  return <div>{renderContent()}</div>;
 };
 
 export default AddAthlete;

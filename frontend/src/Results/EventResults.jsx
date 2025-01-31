@@ -101,6 +101,7 @@ const EventResults = ({
     let ignore = false;
     async function fetching() {
       setLoading(true);
+      setErrorOnLoading(false);
       try {
         const [resultsResponse, groupFilterResponse] = await Promise.all([
           SmmApi.getEventResults(eventId),
@@ -112,7 +113,6 @@ const EventResults = ({
           setLastSelectedGroupId(null);
           setSelectedTab(0);
           setGroupOptions(groupFilterResponse);
-          setErrorOnLoading(false);
           setTabs([
             {
               key: "main",
@@ -132,9 +132,7 @@ const EventResults = ({
       } catch (error) {
         setErrorOnLoading(true);
       } finally {
-        setTimeout(() => {
-          setLoading(false);
-        }, 100);
+        setLoading(false);
       }
     }
     fetching();
@@ -310,7 +308,7 @@ const EventResults = ({
         >
           <AlertBox
             type="error"
-            message="Unable to load results. Please try again."
+            message="We were unable to load the required data. Please try again."
           />
         </Stack>
       );
@@ -342,7 +340,7 @@ const EventResults = ({
       );
     }
 
-    return (
+    if (!hasResults) {
       <>
         <Stack
           style={{
@@ -358,8 +356,10 @@ const EventResults = ({
             message={"This event does not have results yet"}
           />
         </Stack>
-      </>
-    );
+      </>;
+    }
+
+    return null;
   };
 
   return (
