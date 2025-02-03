@@ -112,13 +112,13 @@ class Session(models.Model):
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='school_group')
 
     
-      
 class SwimMeet(models.Model):
     name = models.CharField(max_length=255, null=False, blank=False)
     date = models.DateField(null=False, blank=False)
     time = models.TimeField(null=True, blank=True)
     site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='swim_meet_site')
     school = models.ManyToManyField(School, related_name="swim_meet_schools")
+    num_lanes = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
     
 class Athlete(models.Model):
     class Status(models.TextChoices):
