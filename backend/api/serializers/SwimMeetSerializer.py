@@ -1,7 +1,6 @@
 from api.models import SwimMeet
 from rest_framework import serializers
 from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
-from django.core.exceptions import ValidationError
 
 @extend_schema_serializer(
     examples=[
