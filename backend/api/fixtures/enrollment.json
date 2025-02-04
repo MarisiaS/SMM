@@ -1,0 +1,242 @@
+[
+  {
+    "model": "api.enrollment",
+    "pk": 1,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 1
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 2,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 2
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 3,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 3
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 4,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 4
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 5,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 5
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 6,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 6
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 7,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 7
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 8,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 8
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 9,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 9
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 10,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 10
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 11,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 11
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 12,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 12
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 13,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 13
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 14,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 14
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 15,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 15
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 16,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 16
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 17,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 17
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 18,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 18
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 19,
+    "fields": {
+      "swim_meet": 1,
+      "athlete": 19
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 20,
+    "fields": {
+      "swim_meet": 2,
+      "athlete": 1
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 21,
+    "fields": {
+      "swim_meet": 2,
+      "athlete": 2
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 22,
+    "fields": {
+      "swim_meet": 2,
+      "athlete": 3
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 23,
+    "fields": {
+      "swim_meet": 2,
+      "athlete": 4
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 24,
+    "fields": {
+      "swim_meet": 2,
+      "athlete": 5
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 25,
+    "fields": {
+      "swim_meet": 2,
+      "athlete": 6
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 26,
+    "fields": {
+      "swim_meet": 2,
+      "athlete": 7
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 27,
+    "fields": {
+      "swim_meet": 3,
+      "athlete": 11
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 28,
+    "fields": {
+      "swim_meet": 3,
+      "athlete": 12
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 29,
+    "fields": {
+      "swim_meet": 3,
+      "athlete": 13
+    }
+  },
+  {
+    "model": "api.enrollment",
+    "pk": 30,
+    "fields": {
+      "swim_meet": 3,
+      "athlete": 14
+    }
+  }
+]
