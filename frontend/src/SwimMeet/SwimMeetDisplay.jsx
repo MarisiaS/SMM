@@ -5,7 +5,7 @@ import {
   Edit as EditIcon,
   EmojiEvents as RankingIcon,
 } from "@mui/icons-material";
-import { Box, Stack } from "@mui/material";
+import { CircularProgress, Box, Stack } from "@mui/material";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -41,6 +41,7 @@ const columns = [
 ];
 
 const SwimMeetDisplay = () => {
+  const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   const navigate = useNavigate();
   //Controls the data
@@ -52,11 +53,6 @@ const SwimMeetDisplay = () => {
   const [offset, setOffset] = useState(0); //search bar needs to restart this
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0); //search bar needs to restart this
-
-  let typeAlertLoading = errorOnLoading ? "error" : "success";
-  let messageOnLoading = errorOnLoading
-    ? "Data upload failed. Please try again!"
-    : "";
 
   const handleEnrollmentClick = (id) => {
     console.log("Go to Enrollment")
@@ -116,6 +112,8 @@ const SwimMeetDisplay = () => {
   useEffect(() => {
     let ignore = false;
     async function fetching() {
+      setLoading(true);
+      setErrorOnLoading(false);
       try {
         const json = await SmmApi.getSwimMeetList(searchPar, offset, limit);
         if (!ignore) {
@@ -126,10 +124,11 @@ const SwimMeetDisplay = () => {
           }));
           setData(formattedData);
           setCount(json.count);
-          setErrorOnLoading(false);
         }
       } catch (error) {
         setErrorOnLoading(true);
+      } finally {
+        setLoading(false);
       }
     }
     fetching();
@@ -142,21 +141,46 @@ const SwimMeetDisplay = () => {
     navigate("/add-swim-meet");
   };
 
-  if (errorOnLoading) {
-    return (
-      <Stack
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "16px",
-          width: "300px",
-          margin: "auto",
-        }}
-      >
-        <AlertBox type={typeAlertLoading} message={messageOnLoading} />
-      </Stack>
-    );
-  } else {
+  const handleReload = () => {
+    navigate(0);
+  };
+
+  let actionButtonsErrorOnLoading = [
+    { label: "Reload", onClick: handleReload },
+  ];
+
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          style={{ height: "100px" }}
+        >
+          <CircularProgress />
+        </Stack>
+      );
+    }
+
+    if (errorOnLoading) {
+      return (
+        <Stack
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            width: "550px",
+            margin: "auto",
+          }}
+        >
+          <AlertBox
+            type="error"
+            message="We were unable to load the required data. Please try again."
+            actionButtons={actionButtonsErrorOnLoading}
+          />
+        </Stack>
+      );
+    }
     return (
       <div>
         <Stack
@@ -188,7 +212,9 @@ const SwimMeetDisplay = () => {
         ></PaginationBar>
       </div>
     );
-  }
+  };
+
+  return <div>{renderContent()}</div>;
 };
 
 export default SwimMeetDisplay;

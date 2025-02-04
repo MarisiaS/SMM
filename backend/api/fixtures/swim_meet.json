@@ -6,7 +6,8 @@
             "name": "Spring Swim Meet 1",
             "date": "2024-03-16",
             "time": "17:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -16,7 +17,8 @@
             "name": "Flying Fish Swim Meet 1",
             "date": "2024-04-29",
             "time": "12:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -26,7 +28,8 @@
             "name": "Spring Swim Meet 2",
             "date": "2024-04-16",
             "time": "17:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -36,7 +39,8 @@
             "name": "Flying Fish Swim Meet 2",
             "date": "2024-05-29",
             "time": "12:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -46,7 +50,8 @@
             "name": "Spring Swim Meet 3",
             "date": "2024-05-16",
             "time": "17:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 4
         }
     },
     {
@@ -56,7 +61,8 @@
             "name": "Flying Fish Swim Meet 3",
             "date": "2024-06-29",
             "time": "12:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -66,7 +72,8 @@
             "name": "Spring Swim Meet 4",
             "date": "2024-06-16",
             "time": "17:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -76,7 +83,8 @@
             "name": "Flying Fish Swim Meet 4",
             "date": "2024-07-29",
             "time": "12:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 4
         }
     },
     {
@@ -86,7 +94,8 @@
             "name": "Spring Swim Meet 5",
             "date": "2024-07-16",
             "time": "17:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 4
         }
     },
     {
@@ -96,7 +105,8 @@
             "name": "Flying Fish Swim Meet 5",
             "date": "2024-08-29",
             "time": "12:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 3
         }
     },
     {
@@ -106,7 +116,8 @@
             "name": "Spring Swim Meet 6",
             "date": "2024-08-16",
             "time": "17:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -116,7 +127,8 @@
             "name": "Flying Fish Swim Meet 6",
             "date": "2024-09-29",
             "time": "12:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -126,7 +138,8 @@
             "name": "Spring Swim Meet 7",
             "date": "2024-09-16",
             "time": "17:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -136,7 +149,8 @@
             "name": "Flying Fish Swim Meet 7",
             "date": "2024-10-29",
             "time": "12:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -146,7 +160,8 @@
             "name": "Spring Swim Meet 8",
             "date": "2024-10-16",
             "time": "17:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -156,7 +171,8 @@
             "name": "Flying Fish Swim Meet 8",
             "date": "2024-11-29",
             "time": "12:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -166,7 +182,8 @@
             "name": "Spring Swim Meet 9",
             "date": "2024-11-16",
             "time": "17:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -176,7 +193,8 @@
             "name": "Flying Fish Swim Meet 9",
             "date": "2024-12-29",
             "time": "12:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -186,7 +204,8 @@
             "name": "Spring Swim Meet 10",
             "date": "2024-12-16",
             "time": "17:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -196,7 +215,8 @@
             "name": "Flying Fish Swim Meet 10",
             "date": "2025-01-29",
             "time": "12:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -206,7 +226,8 @@
             "name": "Spring Swim Meet 11",
             "date": "2025-01-16",
             "time": "17:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -216,7 +237,8 @@
             "name": "Flying Fish Swim Meet 11",
             "date": "2025-02-28",
             "time": "12:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -226,7 +248,8 @@
             "name": "Spring Swim Meet 12",
             "date": "2025-02-16",
             "time": "17:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -236,7 +259,8 @@
             "name": "Flying Fish Swim Meet 12",
             "date": "2025-03-29",
             "time": "12:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -246,7 +270,8 @@
             "name": "Spring Swim Meet 13",
             "date": "2025-03-16",
             "time": "17:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -256,7 +281,8 @@
             "name": "Flying Fish Swim Meet 13",
             "date": "2025-04-29",
             "time": "12:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 5
         }
     },
     {
@@ -266,7 +292,8 @@
             "name": "Spring Swim Meet 14",
             "date": "2025-04-16",
             "time": "17:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 3
         }
     },
     {
@@ -276,7 +303,8 @@
             "name": "Flying Fish Swim Meet 14",
             "date": "2025-05-29",
             "time": "12:00:00",
-            "site": 1
+            "site": 1,
+            "num_lanes": 4
         }
     }
 

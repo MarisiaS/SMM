@@ -1,11 +1,7 @@
-import {
-  Add as AddIcon,
-  ContentPaste as DetailsIcon,
-  Edit as EditIcon,
-} from "@mui/icons-material";
-import { Box, Stack, Dialog } from "@mui/material";
+import { Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
+import { CircularProgress, Box, Stack, Dialog } from "@mui/material";
 import dayjs from "dayjs";
-import { useEffect, useState, useRef, useReducer } from "react";
+import { useEffect, useState, useRef } from "react";
 import { SmmApi } from "../SmmApi";
 import AlertBox from "../components/Common/AlertBox.jsx";
 import GenericTable from "../components/Common/GenericTable";
@@ -33,6 +29,7 @@ const columns = [
 ];
 
 const AthleteDisplay = () => {
+  const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   //Controls the data
@@ -115,6 +112,8 @@ const AthleteDisplay = () => {
   useEffect(() => {
     let ignore = false;
     async function fetching() {
+      setLoading(true);
+      setErrorOnLoading(false);
       try {
         const json = await SmmApi.getAthleteList(searchPar, offset, limit);
         if (!ignore) {
@@ -124,10 +123,11 @@ const AthleteDisplay = () => {
           }));
           setAthleteData(formattedData);
           setCount(json.count);
-          setErrorOnLoading(false);
         }
       } catch (error) {
         setErrorOnLoading(true);
+      } finally {
+        setLoading(false);
       }
     }
     fetching();
@@ -136,65 +136,96 @@ const AthleteDisplay = () => {
     };
   }, [searchPar, offset, limit, renderTrigger]);
 
-  if (errorOnLoading) {
-    return (
-      <Stack
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "16px",
-          width: "300px",
-          margin: "auto",
-        }}
-      >
-        <AlertBox
-          type={"error"}
-          message={"Data upload failed. Please try again!"}
-        />
-      </Stack>
-    );
-  } else {
-    return (
-      <div>
+  const handleReload = () => {
+    setRenderTrigger((prev) => prev + 1);
+  };
+
+  let actionButtonsErrorOnLoading = [
+    { label: "Reload", onClick: handleReload },
+  ];
+
+  const renderContent = () => {
+    if (loading) {
+      return (
         <Stack
-          direction="row"
           alignItems="center"
-          justifyContent="space-between"
+          justifyContent="center"
+          style={{ height: "100px" }}
         >
-          <Box sx={{ marginLeft: 5 }}>
-            <MyButton label={"Athlete"} onClick={handleAddClick}>
-              <AddIcon />
-            </MyButton>
-          </Box>
-          <Box className={"searchBox"} sx={{ marginRight: 5 }}>
-            <SearchBar
-              ref={searchBarRef}
-              setSearchPar={setSearchPar}
-              setOffset={setOffset}
-              setPage={setPage}
-            ></SearchBar>
-          </Box>
+          <CircularProgress />
         </Stack>
-        <GenericTable data={athleteData} columns={columns} actions={actions} />
-        <PaginationBar
-          count={count}
-          setOffset={setOffset}
-          limit={limit}
-          setLimit={setLimit}
-          page={page}
-          setPage={setPage}
-        ></PaginationBar>
-        <Dialog open={isFormOpen} fullWidth>
-          <AddAthlete
-            onCancel={handleCancelAddAthlete}
-            setLastAthleteCreated={(id) => (lastCreatedAthleteId.current = id)}
-            setNumNewAthletes={(num) => (numAthletesCreated.current += num)}
-            athleteToEditId={athleteToEditId}
+      );
+    }
+    if (errorOnLoading) {
+      return (
+        <Stack
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            width: "550px",
+            margin: "auto",
+          }}
+        >
+          <AlertBox
+            type="error"
+            message="We were unable to load the required data. Please try again."
+            actionButtons={actionButtonsErrorOnLoading}
           />
-        </Dialog>
-      </div>
+        </Stack>
+      );
+    }
+    return (
+      <>
+        <div>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Box sx={{ marginLeft: 5 }}>
+              <MyButton label={"Athlete"} onClick={handleAddClick}>
+                <AddIcon />
+              </MyButton>
+            </Box>
+            <Box className={"searchBox"} sx={{ marginRight: 5 }}>
+              <SearchBar
+                ref={searchBarRef}
+                setSearchPar={setSearchPar}
+                setOffset={setOffset}
+                setPage={setPage}
+              ></SearchBar>
+            </Box>
+          </Stack>
+          <GenericTable
+            data={athleteData}
+            columns={columns}
+            actions={actions}
+          />
+          <PaginationBar
+            count={count}
+            setOffset={setOffset}
+            limit={limit}
+            setLimit={setLimit}
+            page={page}
+            setPage={setPage}
+          ></PaginationBar>
+          <Dialog open={isFormOpen} fullWidth>
+            <AddAthlete
+              onCancel={handleCancelAddAthlete}
+              setLastAthleteCreated={(id) =>
+                (lastCreatedAthleteId.current = id)
+              }
+              setNumNewAthletes={(num) => (numAthletesCreated.current += num)}
+              athleteToEditId={athleteToEditId}
+            />
+          </Dialog>
+        </div>
+      </>
     );
-  }
+  };
+
+  return <div>{renderContent()}</div>;
 };
 
 export default AthleteDisplay;

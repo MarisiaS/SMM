@@ -31,16 +31,13 @@ const EventDetails = ({
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [reloadDetailsTrigger, setReloadDetailsTrigger] = useState(0);
-  let typeAlertLoading = errorOnLoading ? "error" : "success";
-  let messageOnLoading = errorOnLoading
-    ? "Data upload failed. Please try again!"
-    : "";
 
   //Use efects to fetch the data whe SmmApi ready
   useEffect(() => {
     let ignore = false;
     async function fetching() {
       setLoading(true);
+      setErrorOnLoading(false);
       try {
         const heat_json = await SmmApi.getEventHeats(eventId);
         const lane_json = await SmmApi.getEventLanes(eventId);
@@ -48,14 +45,11 @@ const EventDetails = ({
           setLaneData(lane_json.results);
           setHeatData(heat_json.results);
           setNumHeats(heat_json.count);
-          setErrorOnLoading(false);
         }
       } catch (error) {
         setErrorOnLoading(true);
       } finally {
-        setTimeout(() => {
-          setLoading(false);
-        }, 100);
+        setLoading(false);
       }
     }
     fetching();
@@ -109,6 +103,67 @@ const EventDetails = ({
     { label: "Create Heats", onClick: onGenerate, icon: <BuildIcon /> },
   ];
 
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          style={{ height: "100px" }}
+        >
+          <CircularProgress />
+        </Stack>
+      );
+    }
+    if (errorOnLoading) {
+      return (
+        <Stack
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            width: "300px",
+            margin: "auto",
+          }}
+        >
+          <AlertBox
+            type="error"
+            message="We were unable to load the required data. Please try again."
+          />
+        </Stack>
+      );
+    }
+    if (numHeats > 0) {
+      return (
+        <TabPanel
+          tabs={tabs}
+          selectedTab={selectedTab}
+          setSelectedTab={setSelectedTab}
+        />
+      );
+    }
+    if (numHeats === 0) {
+      <>
+        <Stack
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            width: "500px",
+            margin: "auto",
+          }}
+        >
+          <AlertBox
+            type="info"
+            message="This event has no heats yet."
+            actionButtons={actionButtonsNoHeats}
+          />
+        </Stack>
+      </>;
+    }
+    return null;
+  };
+
   return (
     <div>
       <ItemPaginationBar
@@ -119,53 +174,7 @@ const EventDetails = ({
         disableNext={disableNext}
         extraActions={extraButtons}
       ></ItemPaginationBar>
-      {loading ? (
-        <Stack
-          alignItems="center"
-          justifyContent="center"
-          style={{ height: "100px" }}
-        >
-          <CircularProgress />
-        </Stack>
-      ) : errorOnLoading ? (
-        <>
-          <Stack
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "16px",
-              width: "300px",
-              margin: "auto",
-            }}
-          >
-            <AlertBox type={typeAlertLoading} message={messageOnLoading} />
-          </Stack>
-        </>
-      ) : numHeats ? (
-        <TabPanel
-          tabs={tabs}
-          selectedTab={selectedTab}
-          setSelectedTab={setSelectedTab}
-        />
-      ) : (
-        <>
-          <Stack
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "16px",
-              width: "500px",
-              margin: "auto",
-            }}
-          >
-            <AlertBox
-              type="info"
-              message="This event has no heats yet."
-              actionButtons={actionButtonsNoHeats}
-            />
-          </Stack>
-        </>
-      )}
+      {renderContent()}
     </div>
   );
 };
