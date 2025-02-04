@@ -7,23 +7,24 @@ import MyTimePicker from "../components/FormElements/MyTimePicker.jsx";
 import MySelect from "../components/FormElements/MySelect.jsx";
 import NumericalSelect from "../components/FormElements/NumericalSelect.jsx";
 import dayjs from "dayjs";
-import { useWatch } from "react-hook-form";
 import { useEffect } from "react";
 
 const SwimMeetForm = ({
   handleSubmit,
   control,
+  resetField,
+  watch,
   handleCancel,
   options,
   isValid,
-  setValue,
 }) => {
-  const selectedSite = useWatch({ control, name: "site" });
-  const selectedSiteData = options.find((option) => option.id === selectedSite);
-  const max_value = selectedSiteData ? selectedSiteData.max_value : 1;
+  const selectedSite = watch("site");
   useEffect(() => {
-    setValue("num_lanes", "");
+    resetField("num_lanes");
   }, [selectedSite]);
+  const selectedSiteData = options.find((option) => option.id === selectedSite);
+  const max_num_lanes = selectedSiteData ? selectedSiteData.num_lanes : "";
+
   return (
     <form onSubmit={handleSubmit} className={"whiteBox"}>
       <Stack>
@@ -85,7 +86,7 @@ const SwimMeetForm = ({
             name={"num_lanes"}
             control={control}
             min_value={1}
-            max_value={max_value}
+            max_value={max_num_lanes}
             disabled={!selectedSite}
             rules={{
               required: "Number of lanes is required",

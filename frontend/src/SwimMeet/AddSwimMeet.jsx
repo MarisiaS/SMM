@@ -21,8 +21,9 @@ const AddSwimMeet = () => {
     handleSubmit,
     control,
     reset,
+    watch,
+    resetField,
     formState: { isDirty, isValid },
-    setValue,
   } = useForm({
     defaultValues: {
       name: "",
@@ -60,7 +61,7 @@ const AddSwimMeet = () => {
           return {
             id: site.id,
             name: site.name,
-            max_value: site.num_lanes,
+            num_lanes: site.num_lanes,
           };
         });
         if (!ignore) {
@@ -162,10 +163,11 @@ const AddSwimMeet = () => {
             <SwimMeetForm
               handleSubmit={handleSubmit(submission)}
               control={control}
+              resetField={resetField}
+              watch={watch}
               handleCancel={handleCancel}
               options={sites}
               isValid={isValid}
-              setValue={setValue}
             />
           </Stack>
         </Stack>
