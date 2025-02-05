@@ -22,6 +22,8 @@ const AddSwimMeet = ({ onCancel }) => {
     handleSubmit,
     control,
     reset,
+    watch,
+    resetField,
     formState: { isDirty, isValid },
   } = useForm({
     defaultValues: {
@@ -29,6 +31,7 @@ const AddSwimMeet = ({ onCancel }) => {
       date: dayjs(Date.now()),
       time: dayjs(Date.now()),
       site: "",
+      num_lanes: "",
     },
     mode: "onChange",
   });
@@ -56,6 +59,7 @@ const AddSwimMeet = ({ onCancel }) => {
           return {
             id: site.id,
             name: site.name,
+            num_lanes: site.num_lanes,
           };
         });
         if (!ignore) {
@@ -64,7 +68,8 @@ const AddSwimMeet = ({ onCancel }) => {
             name: "",
             date: dayjs(Date.now()),
             time: dayjs(Date.now()),
-            site: _sites[0]?.id || "",
+            site: "",
+            num_lanes: "",
           });
         }
       } catch (error) {
@@ -121,7 +126,8 @@ const AddSwimMeet = ({ onCancel }) => {
       name: "",
       date: dayjs(Date.now()),
       time: dayjs(Date.now()),
-      site: sites[0].id,
+      site: "",
+      num_lanes: "",
     });
   };
 
@@ -177,6 +183,8 @@ const AddSwimMeet = ({ onCancel }) => {
             <SwimMeetForm
               handleSubmit={handleSubmit(submission)}
               control={control}
+              resetField={resetField}
+              watch={watch}
               handleCancel={handleCancel}
               options={sites}
               isValid={isValid}
