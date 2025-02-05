@@ -307,7 +307,7 @@ const MeetEventDisplay = () => {
           <EventDetails
             eventName={currentEvent.name}
             eventId={currentEvent.id}
-            numLanes={meetData.site_num_lanes}
+            numLanes={meetData.num_lanes}
             onBack={handleBackToEvents}
             onPrevious={handlePreviousEvent}
             onNext={handleNextEvent}
