@@ -5,15 +5,26 @@ import MyButton from "../components/FormElements/MyButton.jsx";
 import MyDatePicker from "../components/FormElements/MyDatePicker.jsx";
 import MyTimePicker from "../components/FormElements/MyTimePicker.jsx";
 import MySelect from "../components/FormElements/MySelect.jsx";
+import NumericalSelect from "../components/FormElements/NumericalSelect.jsx";
 import dayjs from "dayjs";
+import { useEffect } from "react";
 
 const SwimMeetForm = ({
   handleSubmit,
   control,
+  resetField,
+  watch,
   handleCancel,
   options,
   isValid,
 }) => {
+  const selectedSite = watch("site");
+  useEffect(() => {
+    resetField("num_lanes");
+  }, [selectedSite]);
+  const selectedSiteData = options.find((option) => option.id === selectedSite);
+  const max_num_lanes = selectedSiteData ? selectedSiteData.num_lanes : "";
+
   return (
     <form onSubmit={handleSubmit} className={"whiteBox"}>
       <Stack>
@@ -31,14 +42,17 @@ const SwimMeetForm = ({
             name={"date"}
             control={control}
             disablePast={true}
-            rules={{ required: "Date is required",
+            rules={{
+              required: "Date is required",
               validate: (value) => {
                 if (!dayjs(value).isValid()) return "Invalid date";
-                if (dayjs(value).startOf('day').isBefore(dayjs().startOf('day')))
+                if (
+                  dayjs(value).startOf("day").isBefore(dayjs().startOf("day"))
+                )
                   return "Date cannot be in the past";
                 return true;
               },
-             }}
+            }}
           />
         </Box>
         <Box className={"itemBox"}>
@@ -63,6 +77,19 @@ const SwimMeetForm = ({
             options={options}
             rules={{
               required: "Site is required",
+            }}
+          />
+        </Box>
+        <Box className={"itemBox"}>
+          <NumericalSelect
+            label={"Number of Lanes"}
+            name={"num_lanes"}
+            control={control}
+            min_value={1}
+            max_value={max_num_lanes}
+            disabled={!selectedSite}
+            rules={{
+              required: "Number of lanes is required",
             }}
           />
         </Box>
