@@ -62,10 +62,10 @@ const UpdateSeedTime = ({ eventId, athlete, onUpdate, onCancel }) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "100vh",
       }}
     >
       <Stack alignItems="center" justifyContent="space-between">
+        {!submitted && <div style={{ minHeight: "100px" }} />}
         {submitted && <AlertBox type={typeAlert} message={message} />}
         <SeedTimeForm
           handleSubmit={handleSubmit(onSubmit)}
@@ -77,6 +77,7 @@ const UpdateSeedTime = ({ eventId, athlete, onUpdate, onCancel }) => {
           }}
           isValid={isValid}
         />
+        <div style={{ minHeight: "100px" }}></div>
       </Stack>
     </div>
   );
