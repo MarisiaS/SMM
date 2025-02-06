@@ -167,10 +167,16 @@ const AddSwimMeet = ({ onCancel }) => {
       );
     }
     return (
-      <div>
-        <div style={{ minHeight: !submitted ? "100px" : "0" }}></div>
+      <div
+        sx={{
+          overflowY: "auto",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         <Stack alignItems="center" justifyContent="space-between">
           <Stack alignItems="center" justifyContent="space-between">
+            <div style={{ minHeight: !submitted ? "100px" : "0" }}></div>
             {submitted && (
               <AlertBox
                 type={typeAlert}
@@ -190,8 +196,8 @@ const AddSwimMeet = ({ onCancel }) => {
               isValid={isValid}
             />
           </Stack>
+          <div style={{ minHeight: "30px" }}></div>
         </Stack>
-        <div style={{ minHeight: "20px"}}></div>
       </div>
     );
   };
