@@ -60,11 +60,10 @@ const UpdateHeatTime = ({ heat, onUpdate, onCancel }) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "75vh", 
-        overflow: "hidden", 
       }}
     >
       <Stack alignItems="center" justifyContent="space-between">
+        {!submitted && <div style={{ minHeight: "100px" }} />}
         {submitted && <AlertBox type={typeAlert} message={message} />}
         <UpdateHeatTimeForm
           handleSubmit={handleSubmit(onSubmit)}
@@ -76,6 +75,7 @@ const UpdateHeatTime = ({ heat, onUpdate, onCancel }) => {
           }}
           isValid={isValid}
         />
+        <div style={{ minHeight: "100px" }}></div>
       </Stack>
     </div>
   );

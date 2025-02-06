@@ -159,9 +159,9 @@ const AddAthlete = ({
     return (
       <div
         sx={{
-          overflowY: "auto",
           display: "flex",
           justifyContent: "center",
+          alignItems: "center"
         }}
       >
         <Stack alignItems="center" justifyContent="space-between">
