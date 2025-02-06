@@ -169,9 +169,9 @@ const AddSwimMeet = ({ onCancel }) => {
     return (
       <div
         sx={{
-          overflowY: "auto",
           display: "flex",
           justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <Stack alignItems="center" justifyContent="space-between">
@@ -196,7 +196,7 @@ const AddSwimMeet = ({ onCancel }) => {
               isValid={isValid}
             />
           </Stack>
-          <div style={{ minHeight: "30px" }}></div>
+          <div style={{ minHeight: "60px" }}></div>
         </Stack>
       </div>
     );
