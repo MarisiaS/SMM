@@ -1,5 +1,5 @@
 import "../App.css";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Typography, Divider } from "@mui/material";
 import MyTextField from "../components/FormElements/MyTextField.jsx";
 import MyButton from "../components/FormElements/MyButton.jsx";
 import MyDatePicker from "../components/FormElements/MyDatePicker.jsx";
@@ -11,12 +11,28 @@ const AthleteForm = ({
   control,
   onCancel,
   isValid,
-  isEditing
+  isEditing,
 }) => {
-  const  gender_options =[{"id":1, "name": "Girl"},{"id":2, "name": "Boy"}];
+  const gender_options = [
+    { id: 1, name: "Girl" },
+    { id: 2, name: "Boy" },
+  ];
+  const title = isEditing ? "UPDATE ATHLETE" : "ADD ATHLETE";
   return (
     <form onSubmit={handleSubmit} className={"whiteBox"}>
       <Stack>
+        <Box>
+          <Typography
+            variant="subtitle1"
+            color="primary"
+            padding={0.5}
+            align="center"
+            style={{ fontWeight: 600 }}
+          >
+            {title}
+          </Typography>
+        </Box>
+        <Divider sx={{ borderBottomWidth: 3 }}></Divider>
         <Box className={"itemBox"}>
           <MyTextField
             id={"first_name"}
@@ -42,14 +58,15 @@ const AthleteForm = ({
             name={"date_of_birth"}
             control={control}
             disableFuture={true}
-            rules={{ required: "Date Of Birth is required",
+            rules={{
+              required: "Date Of Birth is required",
               validate: (value) => {
                 if (!dayjs(value).isValid()) return "Invalid date";
-                if (dayjs(value).startOf('day').isAfter(dayjs().startOf('day')))
+                if (dayjs(value).startOf("day").isAfter(dayjs().startOf("day")))
                   return "Date cannot be in the future";
                 return true;
               },
-             }}
+            }}
           />
         </Box>
         <Box className={"itemBox"}>
@@ -68,16 +85,12 @@ const AthleteForm = ({
       <Stack className={"itemBox"}>
         <MyButton
           key={"submit_button"}
-          label={isEditing ? "edit": "create"}
+          label={isEditing ? "edit" : "create"}
           type={"submit"}
           disabled={!isValid}
         />
         <Box sx={{ marginTop: 2 }}></Box>
-        <MyButton
-          key={"cancel"}
-          label={"Go to Athlete"}
-          onClick={onCancel}
-        />
+        <MyButton key={"cancel"} label={"Go to Athlete"} onClick={onCancel} />
       </Stack>
     </form>
   );
