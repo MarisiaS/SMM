@@ -57,7 +57,7 @@ const SwimMeetDisplay = () => {
   const [page, setPage] = useState(0); //search bar needs to restart this
 
   const handleEnrollmentClick = (id) => {
-    console.log("Go to Enrollment")
+    console.log("Go to Enrollment");
   };
 
   const handleDetailsClick = (id) => {
@@ -217,9 +217,7 @@ const SwimMeetDisplay = () => {
           setPage={setPage}
         ></PaginationBar>
         <Dialog open={isFormOpen} fullWidth>
-          <AddSwimMeet
-          onCancel={handleCancelAddSwimMeet}
-          />
+          <AddSwimMeet onCancel={handleCancelAddSwimMeet} />
         </Dialog>
       </div>
     );
