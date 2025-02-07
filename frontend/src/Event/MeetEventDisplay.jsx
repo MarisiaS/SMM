@@ -42,9 +42,7 @@ const MeetEventDisplay = () => {
   const [errorOnLoading, setErrorOnLoading] = useState(false);
 
   // View states
-  const [view, setView] = useState(
-    location.state?.showAddEvent ? "add" : "list"
-  );
+  const [view, setView] = useState("list");
   const [selectedEventIndex, setSelectedEventIndex] = useState(null);
   const [navegationDirection, setNavegationDirection] = useState(null);
 
