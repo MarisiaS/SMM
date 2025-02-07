@@ -6,7 +6,7 @@ import {
   FormatAlignCenter as HeatIcon,
   EmojiEvents as RankingIcon,
 } from "@mui/icons-material";
-import { CircularProgress, Box, Stack } from "@mui/material";
+import { CircularProgress, Box, Stack, Dialog } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import GenerateHeats from "../Heat/GenerateHeats.jsx";
@@ -40,6 +40,7 @@ const MeetEventDisplay = () => {
   const [eventData, setEventData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   // View states
   const [view, setView] = useState("list");
@@ -189,8 +190,7 @@ const MeetEventDisplay = () => {
   }, [newEventTigger]);
 
   const handleAddNew = () => {
-    setSelectedEventIndex(null);
-    setView("add");
+    setIsFormOpen(true);
   };
 
   const handleNewEventCreated = () => {
@@ -198,9 +198,8 @@ const MeetEventDisplay = () => {
   };
 
   const handleBackToEvents = () => {
-    setReloadEventDataTrigger((prev) => prev + 1);
-    setSelectedEventIndex(null);
-    setView("list");
+    //Need to reload to the last event
+    setIsFormOpen(false);
   };
 
   const handleGenerateButtonOnEventDetails = () => {
@@ -401,6 +400,13 @@ const MeetEventDisplay = () => {
               page={page}
               setPage={setPage}
             />
+            <Dialog open={isFormOpen} fullWidth>
+              <AddEvent
+                onBack={handleBackToEvents}
+                onCreateHeats={handleAddHeatsToNewEvent}
+                onCreateEvent={handleNewEventCreated}
+              />
+            </Dialog>
           </>
         );
     }
