@@ -8,7 +8,12 @@ import AlertBox from "../components/Common/AlertBox.jsx";
 import { SmmApi } from "../SmmApi.jsx";
 import AddEventForm from "./AddEventForm.jsx";
 
-const AddEvent = ({ onBack, onCreateHeats, onCreateEvent }) => {
+const AddEvent = ({
+  onBack,
+  setNumNewEvents,
+  setLastEventCreated,
+  setRequiredGenerate,
+}) => {
   const { meetId } = useParams();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -82,10 +87,15 @@ const AddEvent = ({ onBack, onCreateHeats, onCreateEvent }) => {
     };
   }, []);
 
+  const handleGoToGenerate = () => {
+    setRequiredGenerate(true);
+    onBack();
+  };
+
   let actionButtonsSuccess = [
     {
       label: "Create Heats",
-      onClick: onCreateHeats,
+      onClick: handleGoToGenerate,
       icon: <BuildIcon />,
     },
   ];
@@ -95,7 +105,8 @@ const AddEvent = ({ onBack, onCreateHeats, onCreateEvent }) => {
   const submission = async (data) => {
     try {
       const response = await SmmApi.createEvent(meetId, data);
-      onCreateEvent();
+      setLastEventCreated(response.data.id);
+      setNumNewEvents(1);
       setError(false);
     } catch (error) {
       if (error.response && error.response.status === 400) {
@@ -152,10 +163,16 @@ const AddEvent = ({ onBack, onCreateHeats, onCreateEvent }) => {
       );
     }
     return (
-      <div>
-        {!submitted && <div style={{ minHeight: "100px" }} />}
+      <div
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Stack alignItems="center" justifyContent="space-between">
           <Stack alignItems="center" justifyContent="space-between">
+            {!submitted && <div style={{ minHeight: "100px" }} />}
             {submitted && (
               <AlertBox
                 type={typeAlert}
@@ -172,6 +189,7 @@ const AddEvent = ({ onBack, onCreateHeats, onCreateEvent }) => {
               options={{ groups, eventTypes }}
             />
           </Stack>
+          <div style={{ minHeight: "100px" }}></div>
         </Stack>
       </div>
     );
