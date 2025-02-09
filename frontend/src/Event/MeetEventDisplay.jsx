@@ -7,7 +7,7 @@ import {
   EmojiEvents as RankingIcon,
 } from "@mui/icons-material";
 import { CircularProgress, Box, Stack, Dialog } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import GenerateHeats from "../Heat/GenerateHeats.jsx";
 import { SmmApi } from "../SmmApi.jsx";
@@ -49,6 +49,9 @@ const MeetEventDisplay = () => {
 
   //Add states
   const [newEventTigger, setNewEventTrigger] = useState(0);
+  const numEventsCreated = useRef(0);
+  const lastCreatedEventId = useRef(null);
+  const requiredGenerate = useRef(false);
 
   //GenerateHeats states
   const [reloadEventDataTrigger, setReloadEventDataTrigger] = useState(0);
@@ -163,7 +166,19 @@ const MeetEventDisplay = () => {
           } else if (navegationDirection === "next") {
             setSelectedEventIndex(0);
           }
+          if (lastCreatedEventId.current != null) {
+            const indexEvent = json.results.findIndex(
+              (item) => item.id === lastCreatedEventId.current
+            );
+            setSelectedEventIndex(indexEvent);
+          }
+          if (requiredGenerate.current) {
+            setView("generate");
+          }
           setNavegationDirection(null);
+          numEventsCreated.current = 0;
+          lastCreatedEventId.current = null;
+          requiredGenerate.current = false;
         }
       } catch (error) {
         setErrorOnLoading(true);
@@ -178,12 +193,11 @@ const MeetEventDisplay = () => {
   }, [offset, limit, reloadEventDataTrigger]);
 
   useEffect(() => {
-    const lastIndex = count % limit;
-    const lastOffset = count - lastIndex;
-    const lastPage = ~~(count / limit);
-    setSelectedEventIndex(lastIndex);
+    const total_count = count + numEventsCreated.current - 1;
+    const lastIndex = total_count % limit;
+    const lastOffset = total_count - lastIndex;
+    const lastPage = ~~(total_count / limit);
     setPage(lastPage);
-    // On reload data once
     offset !== lastOffset
       ? setOffset(lastOffset)
       : setReloadEventDataTrigger((prev) => prev + 1);
@@ -193,13 +207,15 @@ const MeetEventDisplay = () => {
     setIsFormOpen(true);
   };
 
-  const handleNewEventCreated = () => {
+  const handleBackToEventsFromNewEvent = () => {
     setNewEventTrigger((prev) => prev + 1);
+    setIsFormOpen(false);
   };
 
   const handleBackToEvents = () => {
-    //Need to reload to the last event
-    setIsFormOpen(false);
+    setReloadEventDataTrigger((prev) => prev + 1);
+    setSelectedEventIndex(null);
+    setView("list");
   };
 
   const handleGenerateButtonOnEventDetails = () => {
@@ -242,14 +258,6 @@ const MeetEventDisplay = () => {
     } else {
       setSelectedEventIndex(index);
       setView("details");
-    }
-  };
-
-  const handleAddHeatsToNewEvent = () => {
-    if (selectedEventIndex === null) {
-      setView("list");
-    } else {
-      setView("generate");
     }
   };
 
@@ -323,14 +331,6 @@ const MeetEventDisplay = () => {
             onProcessCompletion={handleGenerateHeatProcessCompletion}
           />
         );
-      case "add":
-        return (
-          <AddEvent
-            onBack={handleBackToEvents}
-            onCreateHeats={handleAddHeatsToNewEvent}
-            onCreateEvent={handleNewEventCreated}
-          />
-        );
       case "results":
         return (
           <EventResults
@@ -402,9 +402,12 @@ const MeetEventDisplay = () => {
             />
             <Dialog open={isFormOpen} fullWidth>
               <AddEvent
-                onBack={handleBackToEvents}
-                onCreateHeats={handleAddHeatsToNewEvent}
-                onCreateEvent={handleNewEventCreated}
+                onBack={handleBackToEventsFromNewEvent}
+                setNumNewEvents={(num) => (numEventsCreated.current += num)}
+                setLastEventCreated={(id) => (lastCreatedEventId.current = id)}
+                setRequiredGenerate={(value) =>
+                  (requiredGenerate.current = value)
+                }
               />
             </Dialog>
           </>
