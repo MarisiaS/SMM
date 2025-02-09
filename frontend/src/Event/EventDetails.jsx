@@ -143,23 +143,25 @@ const EventDetails = ({
       );
     }
     if (numHeats === 0) {
-      <>
-        <Stack
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "16px",
-            width: "500px",
-            margin: "auto",
-          }}
-        >
-          <AlertBox
-            type="info"
-            message="This event has no heats yet."
-            actionButtons={actionButtonsNoHeats}
-          />
-        </Stack>
-      </>;
+      return (
+        <>
+          <Stack
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
+              width: "500px",
+              margin: "auto",
+            }}
+          >
+            <AlertBox
+              type="info"
+              message="This event has no heats yet."
+              actionButtons={actionButtonsNoHeats}
+            />
+          </Stack>
+        </>
+      );
     }
     return null;
   };
