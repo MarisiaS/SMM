@@ -14,38 +14,56 @@ const testData = [
   {
     id: 2,
     athlete_full_name: "Ana Gomez",
+    gender: "Girl",
+    age: "12",
   },
   {
     id: 10,
     athlete_full_name: "Anna Anderson",
+    gender: "Girl",
+    age: "12",
   },
   {
     id: 16,
     athlete_full_name: "Ava Wilson",
+    gender: "Girl",
+    age: "12",
   },
   {
     id: 4,
     athlete_full_name: "Elena Lopez",
+    gender: "Girl",
+    age: "12",
   },
   {
     id: 12,
     athlete_full_name: "Ellie Yuan",
+    gender: "Girl",
+    age: "12",
   },
   {
     id: 8,
     athlete_full_name: "Kyla Smith",
+    gender: "Girl",
+    age: "12",
   },
   {
     id: 6,
     athlete_full_name: "Laura Sanchez",
+    gender: "Girl",
+    age: "12",
   },
   {
     id: 15,
     athlete_full_name: "Olivia Davis",
+    gender: "Girl",
+    age: "12",
   },
   {
     id: 11,
     athlete_full_name: "Sofia Avila",
+    gender: "Girl",
+    age: "12",
   },
 ];
 
@@ -53,6 +71,16 @@ const columns = [
   {
     accessorKey: "athlete_full_name",
     header: "Athlete Name",
+    size: 150,
+  },
+  {
+    accessorKey: "gender",
+    header: "gender",
+    size: 150,
+  },
+  {
+    accessorKey: "age",
+    header: "Age",
     size: 150,
   },
 ];
@@ -78,6 +106,7 @@ const EnrollmentDisplay = () => {
   const handleAddEnrollment = () => {
     setView("enroll");
   };
+
   const actions = [
     {
       name: "Unenroll",
