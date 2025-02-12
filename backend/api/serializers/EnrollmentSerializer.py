@@ -31,9 +31,6 @@ class EnrollAthletesListSerializer(serializers.Serializer):
 
         already_enrolled = athlete_ids_set & enrolled_athletes_ids  # Intersection
 
-        print(set(value), set(enrolled_athletes_ids))
-        print(enrolled_athletes_ids, invalid_ids)
-
         if already_enrolled:
             raise serializers.ValidationError(
                 f"Athlete(s) already enrolled in this swim meet: {list(already_enrolled)}"
