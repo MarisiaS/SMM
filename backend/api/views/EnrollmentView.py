@@ -76,7 +76,6 @@ class MeetEnrolledAthletes(APIView):
         serializer = UnenrollAthleteSerializer(
             data=request.data, context={"meet_id": meet_id})
         if serializer.is_valid():
-            print(serializer.validated_data)
             athlete_id = serializer.validated_data['athlete_id']
             Enrollment.objects.filter(
                 swim_meet_id=meet_id, athlete_id=athlete_id).delete()
