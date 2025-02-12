@@ -73,12 +73,17 @@ class MeetEnrolledAthletes(APIView):
                    summary="Unenroll an Athlete from a specific swim meet",
                    description="Accepts an athlete ID already enrolled on the swim meet and unenrolls them")
     def patch(self, request, meet_id):
+        try:
+            swim_meet = SwimMeet.objects.get(id=meet_id)
+        except SwimMeet.DoesNotExist:
+            return Response({'error': 'Swim Meet not found'}, status=status.HTTP_404_NOT_FOUND)
+
         serializer = UnenrollAthleteSerializer(
             data=request.data, context={"meet_id": meet_id})
         if serializer.is_valid():
             athlete_id = serializer.validated_data['athlete_id']
             Enrollment.objects.filter(
-                swim_meet_id=meet_id, athlete_id=athlete_id).delete()
+                swim_meet_id=swim_meet, athlete_id=athlete_id).delete()
             return Response({"success": "Athlete unenrolled successfully"}, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
