@@ -48,16 +48,11 @@ class UnenrollAthleteSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 "Swim meet id is required for validation")
 
-        swim_meet = SwimMeet.objects.filter(id=swim_meet_id).first()
-
-        if not swim_meet:
-            raise serializers.ValidationError("Swim meet not found")
-
         athlete = Athlete.objects.filter(id=value).first()
         if not athlete:
             raise serializers.ValidationError("Athlete not found")
 
-        if not Enrollment.objects.filter(swim_meet=swim_meet, athlete=athlete).exists():
+        if not Enrollment.objects.filter(swim_meet=swim_meet_id, athlete=athlete).exists():
             raise serializers.ValidationError(
                 "Athlete is not enrolled in this swim meet")
         return value
