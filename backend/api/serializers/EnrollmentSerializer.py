@@ -16,7 +16,10 @@ class EnrollAthletesListSerializer(serializers.Serializer):
 
         # Check if all athletes_ids exist
         existing_athletes_ids = set(
-            Athlete.objects.values_list('id', flat=True))
+            Athlete.objects.filter(
+                id__in=athlete_ids_set).values_list('id', flat=True)
+        )
+
         invalid_ids = athlete_ids_set - existing_athletes_ids
 
         if invalid_ids:
