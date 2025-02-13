@@ -5,7 +5,6 @@ import NavBar from "./components/NavBar";
 import PrivateRoutes from "./utils/privateRoutes";
 import AthleteDisplay from "./Athlete/AthleteDisplay";
 import SwimMeetDisplay from "./SwimMeet/SwimMeetDisplay";
-import AddSwimMeet from "./SwimMeet/AddSwimMeet";
 import MeetEventDisplay from "./Event/MeetEventDisplay";
 import AddEvent from "./Event/AddEvent";
 import TestTabPanel from "./Tests/TestTabPanel";
@@ -42,7 +41,6 @@ function App() {
         <Route element={<NavBar menuOptions={menuOptions} />}>
           <Route path="/athletes" element={<AthleteDisplay />} />
           <Route path="/swim-meets" element={<SwimMeetDisplay />} />
-          <Route path="/add-swim-meet" element={<AddSwimMeet />} />
           <Route
             path="/swim-meets/:meetId/events"
             element={<MeetEventDisplay />}

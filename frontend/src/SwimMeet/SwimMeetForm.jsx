@@ -1,5 +1,5 @@
 import "../App.css";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Typography, Divider } from "@mui/material";
 import MyTextField from "../components/FormElements/MyTextField.jsx";
 import MyButton from "../components/FormElements/MyButton.jsx";
 import MyDatePicker from "../components/FormElements/MyDatePicker.jsx";
@@ -28,6 +28,18 @@ const SwimMeetForm = ({
   return (
     <form onSubmit={handleSubmit} className={"whiteBox"}>
       <Stack>
+        <Box>
+          <Typography
+            variant="subtitle1"
+            color="primary"
+            padding={0.5}
+            align="center"
+            style={{ fontWeight: 600 }}
+          >
+            CREATE A SWIM MEET
+          </Typography>
+        </Box>
+        <Divider sx={{ borderBottomWidth: 3 }}></Divider>
         <Box className={"itemBox"}>
           <MyTextField
             label={"Swim Meet Name"}

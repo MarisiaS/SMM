@@ -9,7 +9,7 @@ import AlertBox from "../components/Common/AlertBox.jsx";
 import { SmmApi } from "../SmmApi.jsx";
 import SwimMeetForm from "./SwimMeetForm.jsx";
 
-const AddSwimMeet = () => {
+const AddSwimMeet = ({ onCancel }) => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
@@ -85,7 +85,7 @@ const AddSwimMeet = () => {
   }, []);
 
   const handleCancel = () => {
-    navigate(`/swim-meets`);
+    onCancel();
   };
 
   const handleAddEvents = () => {
@@ -167,10 +167,16 @@ const AddSwimMeet = () => {
       );
     }
     return (
-      <div>
-        <div style={{ minHeight: !submitted ? "100px" : "0" }}></div>
+      <div
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Stack alignItems="center" justifyContent="space-between">
           <Stack alignItems="center" justifyContent="space-between">
+            <div style={{ minHeight: !submitted ? "100px" : "0" }}></div>
             {submitted && (
               <AlertBox
                 type={typeAlert}
@@ -190,6 +196,7 @@ const AddSwimMeet = () => {
               isValid={isValid}
             />
           </Stack>
+          <div style={{ minHeight: "60px" }}></div>
         </Stack>
       </div>
     );

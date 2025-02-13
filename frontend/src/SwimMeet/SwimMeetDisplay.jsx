@@ -5,7 +5,7 @@ import {
   Edit as EditIcon,
   EmojiEvents as RankingIcon,
 } from "@mui/icons-material";
-import { CircularProgress, Box, Stack } from "@mui/material";
+import { CircularProgress, Box, Stack, Dialog } from "@mui/material";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ import PaginationBar from "../components/Common/PaginationBar";
 import SearchBar from "../components/Common/SearchBar";
 import MyButton from "../components/FormElements/MyButton";
 import AthleteIcon from "../MyIcons/AthleteIcon.jsx";
+import AddSwimMeet from "./AddSwimMeet.jsx";
 
 const columns = [
   {
@@ -43,6 +44,7 @@ const columns = [
 const SwimMeetDisplay = () => {
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const navigate = useNavigate();
   //Controls the data
   const [data, setData] = useState([]);
@@ -55,7 +57,7 @@ const SwimMeetDisplay = () => {
   const [page, setPage] = useState(0); //search bar needs to restart this
 
   const handleEnrollmentClick = (id) => {
-    console.log("Go to Enrollment")
+    console.log("Go to Enrollment");
   };
 
   const handleDetailsClick = (id) => {
@@ -138,7 +140,11 @@ const SwimMeetDisplay = () => {
   }, [searchPar, offset, limit]);
 
   const handleAddNew = () => {
-    navigate("/add-swim-meet");
+    setIsFormOpen(true);
+  };
+
+  const handleCancelAddSwimMeet = () => {
+    setIsFormOpen(false);
   };
 
   const handleReload = () => {
@@ -210,6 +216,9 @@ const SwimMeetDisplay = () => {
           page={page}
           setPage={setPage}
         ></PaginationBar>
+        <Dialog open={isFormOpen} fullWidth>
+          <AddSwimMeet onCancel={handleCancelAddSwimMeet} />
+        </Dialog>
       </div>
     );
   };
