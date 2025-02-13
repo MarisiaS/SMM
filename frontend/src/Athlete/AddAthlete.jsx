@@ -157,10 +157,16 @@ const AddAthlete = ({
       );
     }
     return (
-      <>
-        {!submitted && <div style={{ minHeight: "100px" }} />}
+      <div
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
         <Stack alignItems="center" justifyContent="space-between">
           <Stack alignItems="center" justifyContent="space-between">
+            {!submitted && <div style={{ minHeight: "100px" }} />}
             {submitted && <AlertBox type={typeAlert} message={message} />}
           </Stack>
           <Stack alignItems="center" justifyContent="space-between">
@@ -172,8 +178,9 @@ const AddAthlete = ({
               isEditing={athleteToEditId ? true : false}
             />
           </Stack>
+          <div style={{ minHeight: "100px" }}></div>
         </Stack>
-      </>
+      </div>
     );
   };
 
