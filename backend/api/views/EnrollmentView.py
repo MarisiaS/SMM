@@ -16,13 +16,11 @@ class MeetEnrolledAthletes(APIView):
                    summary="List enrolled athletes on a swim meet",
                    description="Lists all the athletes enrolled on a specific meet, ordered alphabetically by name")
     def get(self, request, meet_id):
-        try:
-            swim_meet = SwimMeet.objects.get(id=meet_id)
-        except SwimMeet.DoesNotExist:
+        if not SwimMeet.objects.filter(id=meet_id).exists():
             return Response({'error': 'Swim Meet not found'}, status=status.HTTP_404_NOT_FOUND)
 
         athletes = Athlete.objects.filter(
-            athlete_swim_meets__swim_meet=swim_meet).order_by('first_name', 'last_name')
+            athlete_swim_meets__swim_meet=meet_id).order_by('first_name', 'last_name')
 
         serializer = AthleteSerializer(athletes, many=True)
         return Response(serializer.data)
@@ -34,9 +32,7 @@ class MeetEnrolledAthletes(APIView):
                    )
     @transaction.atomic
     def post(self, request, meet_id):
-        try:
-            swim_meet = SwimMeet.objects.get(id=meet_id)
-        except SwimMeet.DoesNotExist:
+        if not SwimMeet.objects.filter(id=meet_id).exists():
             return Response({'error': 'Swim Meet not found'}, status=status.HTTP_404_NOT_FOUND)
 
         athlete_ids = request.data.get('athlete_ids', [])
@@ -51,7 +47,7 @@ class MeetEnrolledAthletes(APIView):
             athlete_ids = serializer.validated_data['athlete_ids']
 
             enrollments = [Enrollment(
-                swim_meet=swim_meet, athlete_id=athlete_id) for athlete_id in athlete_ids]
+                swim_meet_id=meet_id, athlete_id=athlete_id) for athlete_id in athlete_ids]
             Enrollment.objects.bulk_create(enrollments)
 
             return Response({"success": "Athlete(s) enrolled successfully"}, status=status.HTTP_200_OK)
@@ -71,9 +67,7 @@ class MeetEnrolledAthletes(APIView):
                    summary="Unenroll an Athlete from a specific swim meet",
                    description="Accepts an athlete ID already enrolled on the swim meet and unenrolls them")
     def patch(self, request, meet_id):
-        try:
-            swim_meet = SwimMeet.objects.get(id=meet_id)
-        except SwimMeet.DoesNotExist:
+        if not SwimMeet.objects.filter(id=meet_id).exists():
             return Response({'error': 'Swim Meet not found'}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = UnenrollAthleteSerializer(
@@ -81,7 +75,7 @@ class MeetEnrolledAthletes(APIView):
         if serializer.is_valid():
             athlete_id = serializer.validated_data['athlete_id']
             Enrollment.objects.filter(
-                swim_meet_id=swim_meet, athlete_id=athlete_id).delete()
+                swim_meet_id=meet_id, athlete_id=athlete_id).delete()
             return Response({"success": "Athlete unenrolled successfully"}, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -95,12 +89,10 @@ class MeetUnenrolledAthletes(APIView):
         description="Returns a list of active athletes not enrolled on a specified swim meet, ordered alphabetically by name",
     )
     def get(self, request, meet_id):
-        try:
-            swim_meet = SwimMeet.objects.get(id=meet_id)
-        except SwimMeet.DoesNotExist:
+        if not SwimMeet.objects.filter(id=meet_id).exists():
             return Response({'error': 'Swim Meet not found'}, status=status.HTTP_404_NOT_FOUND)
         enrolled_athletes = Enrollment.objects.filter(
-            swim_meet=swim_meet).values_list("athlete_id", flat=True)
+            swim_meet=meet_id).values_list("athlete_id", flat=True)
         active_athletes = Athlete.objects.exclude(
             id__in=enrolled_athletes).order_by('first_name', 'last_name')
 
