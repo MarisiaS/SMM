@@ -21,11 +21,9 @@ class MeetEnrolledAthletes(APIView):
         except SwimMeet.DoesNotExist:
             return Response({'error': 'Swim Meet not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        enrollments = Enrollment.objects.filter(swim_meet=swim_meet).order_by(
-            'athlete__first_name', 'athlete__last_name'
-        )
-        athletes = [
-            enrollment.athlete for enrollment in enrollments if enrollment.athlete]
+        athletes = Athlete.objects.filter(
+            athlete_swim_meets__swim_meet=swim_meet).order_by('first_name', 'last_name')
+
         serializer = AthleteSerializer(athletes, many=True)
         return Response(serializer.data)
 
