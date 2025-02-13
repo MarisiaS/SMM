@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Enrollment, SwimMeet, Athlete
+from api.models import Enrollment, Athlete
 
 
 class EnrollAthletesListSerializer(serializers.Serializer):
@@ -48,11 +48,10 @@ class UnenrollAthleteSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 "Swim meet id is required for validation")
 
-        athlete = Athlete.objects.filter(id=value).first()
-        if not athlete:
+        if not Athlete.objects.filter(id=value).exists():
             raise serializers.ValidationError("Athlete not found")
 
-        if not Enrollment.objects.filter(swim_meet=swim_meet_id, athlete=athlete).exists():
+        if not Enrollment.objects.filter(swim_meet=swim_meet_id, athlete=value).exists():
             raise serializers.ValidationError(
                 "Athlete is not enrolled in this swim meet")
         return value
