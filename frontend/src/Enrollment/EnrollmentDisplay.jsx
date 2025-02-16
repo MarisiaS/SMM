@@ -2,6 +2,8 @@ import {
   Add as AddIcon,
   PersonRemove as UnenrollIcon,
 } from "@mui/icons-material";
+import { SmmApi } from "../SmmApi";
+import AlertBox from "../components/Common/AlertBox.jsx";
 import GenericTable from "../components/Common/GenericTable";
 import SearchBar from "../components/Common/SearchBar";
 import MyButton from "../components/FormElements/MyButton";
@@ -10,71 +12,15 @@ import { CircularProgress, Box, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 
-const testData = [
-  {
-    id: 2,
-    athlete_full_name: "Ana Gomez",
-    gender: "Girl",
-    age: "12",
-  },
-  {
-    id: 10,
-    athlete_full_name: "Anna Anderson",
-    gender: "Girl",
-    age: "12",
-  },
-  {
-    id: 16,
-    athlete_full_name: "Ava Wilson",
-    gender: "Girl",
-    age: "12",
-  },
-  {
-    id: 4,
-    athlete_full_name: "Elena Lopez",
-    gender: "Girl",
-    age: "12",
-  },
-  {
-    id: 12,
-    athlete_full_name: "Ellie Yuan",
-    gender: "Girl",
-    age: "12",
-  },
-  {
-    id: 8,
-    athlete_full_name: "Kyla Smith",
-    gender: "Girl",
-    age: "12",
-  },
-  {
-    id: 6,
-    athlete_full_name: "Laura Sanchez",
-    gender: "Girl",
-    age: "12",
-  },
-  {
-    id: 15,
-    athlete_full_name: "Olivia Davis",
-    gender: "Girl",
-    age: "12",
-  },
-  {
-    id: 11,
-    athlete_full_name: "Sofia Avila",
-    gender: "Girl",
-    age: "12",
-  },
-];
 
 const columns = [
   {
-    accessorKey: "athlete_full_name",
+    accessorKey: "full_name",
     header: "Athlete Name",
     size: 150,
   },
   {
-    accessorKey: "gender",
+    accessorKey: "gender_display",
     header: "gender",
     size: 150,
   },
@@ -89,7 +35,11 @@ const EnrollmentDisplay = () => {
   const { meetId } = useParams();
   const location = useLocation();
   const meetData = location.state?.meetData;
+  //Controls the data
+  const [enrollmentData, setEnrollmentData] = useState([]);
   // View states
+  const [loading, setLoading] = useState(false);
+  const [errorOnLoading, setErrorOnLoading] = useState(false);
   const [view, setView] = useState(null);
   //Use to control the search parameter
   const [searchPar, setSearchPar] = useState("");
@@ -107,6 +57,29 @@ const EnrollmentDisplay = () => {
     setView("enroll");
   };
 
+  useEffect(() => {
+    let ignore = false;
+    async function fetching() {
+      setLoading(true);
+      setErrorOnLoading(false);
+      try {
+        //Change to enrollment 
+        const json = await SmmApi.getAthleteList(searchPar, offset, limit);
+        if (!ignore) {
+          setEnrollmentData(json.results);
+          setCount(json.count);
+        }
+      } catch (error) {
+        setErrorOnLoading(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetching();
+    return () => {
+      ignore = true;
+    };
+  }, []);
   const actions = [
     {
       name: "Unenroll",
@@ -117,6 +90,35 @@ const EnrollmentDisplay = () => {
   ];
 
   const renderContent = () => {
+    if (loading) {
+      return (
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          style={{ height: "100px" }}
+        >
+          <CircularProgress />
+        </Stack>
+      );
+    }
+    if (errorOnLoading) {
+      return (
+        <Stack
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            width: "550px",
+            margin: "auto",
+          }}
+        >
+          <AlertBox
+            type="error"
+            message="We were unable to load the required data. Please try again."
+          />
+        </Stack>
+      );
+    }
     switch (view) {
       case "enroll":
         return <div> Here goes enrollment</div>;
@@ -141,7 +143,7 @@ const EnrollmentDisplay = () => {
                 ></SearchBar>
               </Box>
             </Stack>
-            <GenericTable data={testData} columns={columns} actions={actions} />
+            <GenericTable data={enrollmentData} columns={columns} actions={actions} />
           </>
         );
     }
