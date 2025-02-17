@@ -85,6 +85,7 @@ const EventResults = ({
   disableNext,
 }) => {
   const [resultsData, setResultsData] = useState({ main: [] });
+  const [hasResults, setHasResults] = useState(null);
   const [groupOptions, setGroupOptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
@@ -97,11 +98,19 @@ const EventResults = ({
   const [tabs, setTabs] = useState([]);
   const [selectedTab, setSelectedTab] = useState(0);
 
+  const checkEventHasResults = (data) => {
+    if (data.length === 0 || data.some((ele) => ele.heat_time === null)) {
+      return false;
+    }
+    return true;
+  };
+
   useEffect(() => {
     let ignore = false;
     async function fetching() {
       setLoading(true);
       setErrorOnLoading(false);
+      setHasResults(null);
       try {
         const [resultsResponse, groupFilterResponse] = await Promise.all([
           SmmApi.getEventResults(eventId),
@@ -109,6 +118,7 @@ const EventResults = ({
         ]);
         if (!ignore) {
           setResultsData({ main: resultsResponse });
+          setHasResults(checkEventHasResults(resultsResponse));
           setSelectedGroups([]);
           setLastSelectedGroupId(null);
           setSelectedTab(0);
@@ -243,13 +253,6 @@ const EventResults = ({
     setLastSelectedGroupId(null);
   };
 
-  const checkEventHasResults = (data) => {
-    if (data.length === 0 || data.some((ele) => ele.heat_time === null)) {
-      return false;
-    }
-    return true;
-  };
-
   const handleDownloadResultsForEvent = async () => {
     const payload = {
       group_ids: selectedGroups.filter((id) => id !== "placeholder"),
@@ -314,8 +317,17 @@ const EventResults = ({
       );
     }
 
-    const hasResults =
-      resultsData.main && checkEventHasResults(resultsData.main);
+    if (hasResults === null) {
+      return (
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          style={{ height: "100px" }}
+        >
+          <CircularProgress />
+        </Stack>
+      );
+    }
 
     if (hasResults) {
       return (
@@ -341,7 +353,7 @@ const EventResults = ({
     }
 
     if (!hasResults) {
-      <>
+      return (
         <Stack
           style={{
             display: "flex",
@@ -356,7 +368,7 @@ const EventResults = ({
             message={"This event does not have results yet"}
           />
         </Stack>
-      </>;
+      );
     }
 
     return null;
