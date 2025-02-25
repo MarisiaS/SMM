@@ -44,8 +44,8 @@ class EventTypeTestCase(TestCase):
 
     # def test_valid_stroke(self):
     #     with self.assertRaises(ValueError):
-    #         EventType.objects.create(distance="50", stroke="M", type="INDIVIDUAL")
+    #         EventType.objects.create(distance="50", stroke="arrg", type="INDIVIDUAL")
     #
     # def test_valid_type(self):
     #     with self.assertRaises(ValueError):
-    #         EventType.objects.create(distance="", stroke="M", type="bananas")
+    #         EventType.objects.create(distance="50", stroke="M", type="bananas")
