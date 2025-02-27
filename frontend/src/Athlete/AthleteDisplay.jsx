@@ -145,17 +145,6 @@ const AthleteDisplay = () => {
   ];
 
   const renderContent = () => {
-    if (loading) {
-      return (
-        <Stack
-          alignItems="center"
-          justifyContent="center"
-          style={{ height: "100px" }}
-        >
-          <CircularProgress />
-        </Stack>
-      );
-    }
     if (errorOnLoading) {
       return (
         <Stack
@@ -197,19 +186,32 @@ const AthleteDisplay = () => {
               ></SearchBar>
             </Box>
           </Stack>
-          <GenericTable
-            data={athleteData}
-            columns={columns}
-            actions={actions}
-          />
-          <PaginationBar
-            count={count}
-            setOffset={setOffset}
-            limit={limit}
-            setLimit={setLimit}
-            page={page}
-            setPage={setPage}
-          ></PaginationBar>
+          {loading && (
+            <Stack
+              alignItems="center"
+              justifyContent="center"
+              style={{ height: "100px" }}
+            >
+              <CircularProgress />
+            </Stack>
+          )}
+          {!loading && (
+            <>
+              <GenericTable
+                data={athleteData}
+                columns={columns}
+                actions={actions}
+              />
+              <PaginationBar
+                count={count}
+                setOffset={setOffset}
+                limit={limit}
+                setLimit={setLimit}
+                page={page}
+                setPage={setPage}
+              ></PaginationBar>
+            </>
+          )}
           <Dialog open={isFormOpen} fullWidth>
             <AddAthlete
               onCancel={handleCancelAddAthlete}
