@@ -8,10 +8,10 @@ import GenericTable from "../components/Common/GenericTable";
 import SearchBar from "../components/Common/SearchBar";
 import MyButton from "../components/FormElements/MyButton";
 import Title from "../components/Common/Title";
+import PaginationBar from "../components/Common/PaginationBar.jsx";
 import { CircularProgress, Box, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-
 
 const columns = [
   {
@@ -63,7 +63,7 @@ const EnrollmentDisplay = () => {
       setLoading(true);
       setErrorOnLoading(false);
       try {
-        //Change to enrollment 
+        //Change to enrollment
         const json = await SmmApi.getAthleteList(searchPar, offset, limit);
         if (!ignore) {
           setEnrollmentData(json.results);
@@ -90,17 +90,6 @@ const EnrollmentDisplay = () => {
   ];
 
   const renderContent = () => {
-    if (loading) {
-      return (
-        <Stack
-          alignItems="center"
-          justifyContent="center"
-          style={{ height: "100px" }}
-        >
-          <CircularProgress />
-        </Stack>
-      );
-    }
     if (errorOnLoading) {
       return (
         <Stack
@@ -143,7 +132,32 @@ const EnrollmentDisplay = () => {
                 ></SearchBar>
               </Box>
             </Stack>
-            <GenericTable data={enrollmentData} columns={columns} actions={actions} />
+            {loading && (
+              <Stack
+                alignItems="center"
+                justifyContent="center"
+                style={{ height: "100px" }}
+              >
+                <CircularProgress />
+              </Stack>
+            )}
+            {!loading && (
+              <>
+                <GenericTable
+                  data={enrollmentData}
+                  columns={columns}
+                  actions={actions}
+                />
+                <PaginationBar
+                  count={count}
+                  setOffset={setOffset}
+                  limit={limit}
+                  setLimit={setLimit}
+                  page={page}
+                  setPage={setPage}
+                ></PaginationBar>
+              </>
+            )}
           </>
         );
     }
