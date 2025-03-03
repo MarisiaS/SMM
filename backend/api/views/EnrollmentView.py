@@ -4,7 +4,6 @@ from drf_spectacular.utils import extend_schema, OpenApiExample, OpenApiParamete
 from api.models import Enrollment, SwimMeet, Athlete
 from api.serializers.EnrollmentSerializer import UnenrollAthleteSerializer, EnrollAthletesListSerializer
 from api.serializers.AthleteSerializer import AthleteSerializer
-from drf_spectacular.utils import extend_schema
 from rest_framework.response import Response
 from drf_spectacular.types import OpenApiTypes
 from django.db import transaction
