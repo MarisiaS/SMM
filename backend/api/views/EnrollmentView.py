@@ -40,7 +40,7 @@ class MeetEnrolledAthletes(GenericAPIView):
         ),
     ],
         summary="List enrolled athletes on a swim meet",
-        description="Lists all the athletes enrolled on a specific meet, ordered alphabetically by name")
+        description="Lists all the athletes enrolled on a specific meet, ordered alphabetically by first name and last name")
     def get(self, request, meet_id):
         if not SwimMeet.objects.filter(id=meet_id).exists():
             return Response({'error': 'Swim Meet not found'}, status=status.HTTP_404_NOT_FOUND)
