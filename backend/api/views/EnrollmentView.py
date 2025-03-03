@@ -16,7 +16,6 @@ from django.db.models.functions import Collate
 @extend_schema(tags=['Swim Meet - Enrollment'])
 class MeetEnrolledAthletes(GenericAPIView):
     serializer_class = AthleteSerializer
-    pagination_class = LimitOffsetPagination
     filter_backends = [SearchFilter]
     search_fields = ['first_name_search', 'last_name_search']
 
