@@ -79,7 +79,7 @@ const EnrollmentDisplay = () => {
     return () => {
       ignore = true;
     };
-  }, []);
+  }, [searchPar, offset, limit]);
   const actions = [
     {
       name: "Unenroll",
