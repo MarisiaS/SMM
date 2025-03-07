@@ -16,7 +16,7 @@ from django.db.models.functions import Collate
 class MeetEnrolledAthletes(GenericAPIView):
     serializer_class = AthleteSerializer
     filter_backends = [SearchFilter]
-    search_fields = ['first_name_search', 'last_name_search']
+    search_fields = ['^first_name_search', '^last_name_search']
 
     @extend_schema(methods=['GET'],
                    parameters=[
