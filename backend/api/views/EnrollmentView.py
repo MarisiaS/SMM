@@ -1,29 +1,65 @@
 from rest_framework import status
-from rest_framework.views import APIView
-from drf_spectacular.utils import extend_schema, OpenApiExample
+from rest_framework.generics import GenericAPIView
+from drf_spectacular.utils import extend_schema, OpenApiExample, OpenApiParameter
 from api.models import Enrollment, SwimMeet, Athlete
 from api.serializers.EnrollmentSerializer import UnenrollAthleteSerializer, EnrollAthletesListSerializer
 from api.serializers.AthleteSerializer import AthleteSerializer
-from drf_spectacular.utils import extend_schema
 from rest_framework.response import Response
+from drf_spectacular.types import OpenApiTypes
 from django.db import transaction
+from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.filters import SearchFilter
+from django.db.models.functions import Collate
 
 
 @extend_schema(tags=['Swim Meet - Enrollment'])
-class MeetEnrolledAthletes(APIView):
+class MeetEnrolledAthletes(GenericAPIView):
+    serializer_class = AthleteSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['^first_name_search', '^last_name_search']
 
     @extend_schema(methods=['GET'],
-                   summary="List enrolled athletes on a swim meet",
-                   description="Lists all the athletes enrolled on a specific meet, ordered alphabetically by name")
+                   parameters=[
+        OpenApiParameter(
+            name='search',
+            type=OpenApiTypes.STR,
+            location=OpenApiParameter.QUERY,
+            description='Search by first name or last name.',
+        ),
+        OpenApiParameter(
+            name='limit',
+            type=OpenApiTypes.INT,
+            location=OpenApiParameter.QUERY,
+            description='Number of results to return per page.',
+        ),
+        OpenApiParameter(
+            name='offset',
+            type=OpenApiTypes.INT,
+            location=OpenApiParameter.QUERY,
+            description='The initial index from which to return the results.',
+        ),
+    ],
+        summary="List enrolled athletes on a swim meet",
+        description="Lists all the athletes enrolled on a specific meet, ordered alphabetically by first name and last name")
     def get(self, request, meet_id):
         if not SwimMeet.objects.filter(id=meet_id).exists():
             return Response({'error': 'Swim Meet not found'}, status=status.HTTP_404_NOT_FOUND)
 
         athletes = Athlete.objects.filter(
-            athlete_swim_meets__swim_meet=meet_id).order_by('first_name', 'last_name')
+            athlete_swim_meets__swim_meet=meet_id
+        ).annotate(
+            first_name_search=Collate("first_name", "und-x-icu"),
+            last_name_search=Collate("last_name", "und-x-icu")
+        ).order_by('first_name', 'last_name')
 
-        serializer = AthleteSerializer(athletes, many=True)
-        return Response(serializer.data)
+        filtered_athletes = self.filter_queryset(athletes)
+
+        paginator = LimitOffsetPagination()
+        paginated_query_set = paginator.paginate_queryset(
+            filtered_athletes, request)
+
+        serializer = AthleteSerializer(paginated_query_set, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
     @extend_schema(methods=['POST'],
                    request=EnrollAthletesListSerializer,
@@ -82,7 +118,7 @@ class MeetEnrolledAthletes(APIView):
 
 
 @extend_schema(tags=['Swim Meet - Enrollment'])
-class MeetUnenrolledAthletes(APIView):
+class MeetUnenrolledAthletes(GenericAPIView):
 
     @extend_schema(
         summary="List active athletes not enrolled in a swim meet",
