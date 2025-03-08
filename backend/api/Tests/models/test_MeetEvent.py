@@ -26,4 +26,3 @@ class EventTypeTestCase(TestCase):
         with self.assertRaises(IntegrityError):
             MeetEvent.objects.create(swim_meet=self._swim_meet, group=self._group1,
                                      event_type=self._event_type1, num_event=44)
-
