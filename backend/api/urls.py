@@ -19,6 +19,8 @@ from api.views.EventResultView import EventResultView
 from api.views.download.DownloadHeats import DownloadAllHeatsByEvent, DownloadAllHeatsByMeet
 from api.views.download.DownloadResults import DownloadEventResults
 from api.views.download.DownloadResults import DownloadEventResultsForSwimMeet
+from api.views.EnrollmentView import MeetEnrolledAthletes, MeetUnenrolledAthletes
+
 
 from rest_framework.routers import SimpleRouter
 
@@ -31,7 +33,6 @@ router.register(r'session', SessionViewSet, basename='session')
 router.register(r'swimmeet', SwimMeetViewSet, basename='swimmeet')
 router.register(r'athlete', AthleteViewSet, basename='athlete')
 router.register(r'timerecord', TimeRecordViewSet, basename='timerecord')
-
 
 urlpatterns = [
     path("login/", TokenObtainPairView.as_view()),
@@ -62,7 +63,12 @@ urlpatterns = [
     path('download-all-event-results/<int:meet_id>/',
          DownloadEventResultsForSwimMeet.as_view(), name='download-all-events-results'),
     path('event_lane/update_heat_times/',
-         UpdateHeatTimeView.as_view(), name='update-heat-time')
+         UpdateHeatTimeView.as_view(), name='update-heat-time'),
+    path('meet_enroll/<int:meet_id>/',
+         MeetEnrolledAthletes.as_view(), name='meet-enroll'),
+    path('meet_unenrolled/<int:meet_id>/',
+         MeetUnenrolledAthletes.as_view(), name='meet-unenrolled-athletes'),
+
 ]
 
 urlpatterns += router.urls
