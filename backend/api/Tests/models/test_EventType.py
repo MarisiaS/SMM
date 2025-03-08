@@ -39,13 +39,3 @@ class EventTypeTestCase(TestCase):
     def test_unique_constraints(self):
         with self.assertRaises(IntegrityError):
             EventType.objects.create(distance=50, stroke="FLY", type="INDIVIDUAL")
-
-    # Failing Tests
-
-    # def test_valid_stroke(self):
-    #     with self.assertRaises(ValueError):
-    #         EventType.objects.create(distance="50", stroke="arrg", type="INDIVIDUAL")
-    #
-    # def test_valid_type(self):
-    #     with self.assertRaises(ValueError):
-    #         EventType.objects.create(distance="50", stroke="M", type="bananas")

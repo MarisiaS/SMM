@@ -44,13 +44,3 @@ class GroupTestCase(TestCase):
     def test_maxage_valid_number(self):
         with self.assertRaises(ValueError):
             Group.objects.create(gender="F", min_age=-5, max_age="P")
-
-    # Failing Tests
-    # def test_gender_valid(self):
-    #     with self.assertRaises(ValueError):
-    #         Group.objects.create(gender="Not", min_age=3, max_age=14)
-    #
-    # def test_minage_valid_age_range(self):
-    #     """test failing"""
-    #     with self.assertRaises(IntegrityError):
-    #         Group.objects.create(gender="F", min_age=15, max_age=10)
