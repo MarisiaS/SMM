@@ -417,7 +417,7 @@ export class SmmApi {
   }
 
   static async getSwimMeetEnrollment(meetId, search, offset, limit) {
-    let url = `${BASE_URL}/meet_enroll/${meetId}/`;
+    let url = `${BASE_URL}/meet_enroll/${meetId}/?`;
     const extraParams = new URLSearchParams();
 
     if (search) {
@@ -445,7 +445,7 @@ export class SmmApi {
   }
 
   static async deleteSwimMeetEnrollment(meetId, data) {
-    let res = await axios.patch(`${BASE_URL}/meet_enroll/${meetId}/`, data, {
+    return await axios.patch(`${BASE_URL}/meet_enroll/${meetId}/`, data, {
       headers: getConfig(),
     });
   }
