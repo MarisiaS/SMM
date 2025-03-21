@@ -90,7 +90,7 @@ const AddSwimMeet = () => {
 
   const handleAddEvents = () => {
     navigate(`/swim-meets/${lastSwimMeetData.id}/events`, {
-      state: { meetData: lastSwimMeetData },
+      state: { showAddEvent: true, meetData: lastSwimMeetData },
     });
   };
 

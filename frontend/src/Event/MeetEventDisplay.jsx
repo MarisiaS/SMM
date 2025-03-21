@@ -40,7 +40,7 @@ const MeetEventDisplay = () => {
   const [eventData, setEventData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(location.state?.showAddEvent ? true : false);
 
   // View states
   const [view, setView] = useState("list");
