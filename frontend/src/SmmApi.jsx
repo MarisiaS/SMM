@@ -74,10 +74,14 @@ export class SmmApi {
     });
   }
 
-  static async logout( ) {
-    return await axios.post(`${BASE_URL}/logout/`, {}, {
-      headers: getConfig(),
-    });
+  static async logout() {
+    return await axios.post(
+      `${BASE_URL}/logout/`,
+      {},
+      {
+        headers: getConfig(),
+      }
+    );
   }
 
   static async getSwimMeetList(search, offset, limit) {
@@ -304,7 +308,7 @@ export class SmmApi {
     });
     return res.data;
   }
-  
+
   static async downloadResultsForEvent(swimMeetName, eventName, eventId, data) {
     try {
       const response = await axios.post(
@@ -410,5 +414,46 @@ export class SmmApi {
     return await axios.patch(`${BASE_URL}/athlete/${athleteId}/`, data, {
       headers: getConfig(),
     });
+  }
+
+  static async getEnrolledAthletes(meetId, search, offset, limit) {
+    let url = `${BASE_URL}/meet_enroll/${meetId}/?`;
+    const extraParams = new URLSearchParams();
+
+    if (search) {
+      extraParams.set("search", search);
+    }
+    if (offset) {
+      extraParams.set("offset", offset);
+    }
+    if (limit) {
+      extraParams.set("limit", limit);
+    }
+
+    url += extraParams.toString();
+
+    let res = await axios.get(url, {
+      headers: getConfig(),
+    });
+    return res.data;
+  }
+
+  static async createEnrollment(meetId, data) {
+    return await axios.post(`${BASE_URL}/meet_enroll/${meetId}/`, data, {
+      headers: getConfig(),
+    });
+  }
+
+  static async deleteEnrolledAthlete(meetId, data) {
+    return await axios.patch(`${BASE_URL}/meet_enroll/${meetId}/`, data, {
+      headers: getConfig(),
+    });
+  }
+
+  static async getUnenrolledAthletes(meetId) {
+    let res = await axios.get(`${BASE_URL}/meet_unenrolled/${meetId}/`, {
+      headers: getConfig(),
+    });
+    return res.data;
   }
 }
