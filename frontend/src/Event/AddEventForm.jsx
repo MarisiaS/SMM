@@ -3,7 +3,13 @@ import { Box, Stack, Typography, Divider } from "@mui/material";
 import MyButton from "../components/FormElements/MyButton.jsx";
 import MySelect from "../components/FormElements/MySelect.jsx";
 
-const AddEventForm = ({ handleSubmit, control, handleCancel, options }) => {
+const AddEventForm = ({
+  handleSubmit,
+  control,
+  handleCancel,
+  options,
+  isValid,
+}) => {
   const { groups, eventTypes } = options;
 
   return (
@@ -41,7 +47,12 @@ const AddEventForm = ({ handleSubmit, control, handleCancel, options }) => {
         </Box>
       </Stack>
       <Stack className={"itemBox"}>
-        <MyButton key={"create"} label={"Create"} type={"submit"} />
+        <MyButton
+          key={"create"}
+          label={"Create"}
+          type={"submit"}
+          disabled={!isValid}
+        />
         <Box sx={{ marginTop: 2 }}></Box>
         <MyButton
           key={"cancel"}

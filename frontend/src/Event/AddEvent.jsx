@@ -25,7 +25,7 @@ const AddEvent = ({
     handleSubmit,
     control,
     reset,
-    formState: { isDirty },
+    formState: { isDirty, isValid },
   } = useForm({
     defaultValues: {
       group: "",
@@ -69,11 +69,6 @@ const AddEvent = ({
         if (!ignore) {
           setGroups(_groups);
           setEventTypes(_eventTypes);
-
-          reset({
-            event_type: _eventTypes[0]?.id || "",
-            group: _groups[0]?.id || "",
-          });
         }
       } catch (error) {
         setErrorOnLoading(true);
@@ -121,10 +116,6 @@ const AddEvent = ({
       }
     }
     setSubmitted(true);
-    reset({
-      group: groups[0]?.id || "",
-      event_type: eventTypes[0]?.id || "",
-    });
   };
 
   let actionButtonsErrorOnLoading = [
@@ -187,6 +178,7 @@ const AddEvent = ({
               control={control}
               handleCancel={onBack}
               options={{ groups, eventTypes }}
+              isValid={isValid}
             />
           </Stack>
           <div style={{ minHeight: "100px" }}></div>
