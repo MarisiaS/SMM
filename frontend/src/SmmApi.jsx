@@ -416,7 +416,7 @@ export class SmmApi {
     });
   }
 
-  static async getSwimMeetEnrollment(meetId, search, offset, limit) {
+  static async getEnrolledAthletes(meetId, search, offset, limit) {
     let url = `${BASE_URL}/meet_enroll/${meetId}/?`;
     const extraParams = new URLSearchParams();
 
@@ -438,19 +438,19 @@ export class SmmApi {
     return res.data;
   }
 
-  static async createSwimMeetEnrollment(meetId, data) {
+  static async createEnrollment(meetId, data) {
     return await axios.post(`${BASE_URL}/meet_enroll/${meetId}/`, data, {
       headers: getConfig(),
     });
   }
 
-  static async deleteSwimMeetEnrollment(meetId, data) {
+  static async deleteEnrolledAthlete(meetId, data) {
     return await axios.patch(`${BASE_URL}/meet_enroll/${meetId}/`, data, {
       headers: getConfig(),
     });
   }
 
-  static async getPotentialSwimMeetEnrollments(meetId) {
+  static async getUnenrolledAthletes(meetId) {
     let res = await axios.get(`${BASE_URL}/meet_unenrolled/${meetId}/`, {
       headers: getConfig(),
     });
