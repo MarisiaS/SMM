@@ -64,7 +64,7 @@ const EnrollmentDisplay = () => {
       setErrorOnLoading(false);
       try {
         //Change to enrollment
-        const json = await SmmApi.getAthleteList(searchPar, offset, limit);
+        const json = await SmmApi.getEnrolledAthletes(meetId,searchPar, offset, limit);
         if (!ignore) {
           setEnrollmentData(json.results);
           setCount(json.count);
