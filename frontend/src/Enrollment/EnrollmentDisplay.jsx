@@ -147,6 +147,7 @@ const EnrollmentDisplay = () => {
                   data={enrollmentData}
                   columns={columns}
                   actions={actions}
+                  notRecordsMessage = {"No athletes are currently enrolled in this swim meet."}
                 />
                 <PaginationBar
                   count={count}
