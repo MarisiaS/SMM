@@ -35,7 +35,7 @@ class AthleteSeedTimeView(APIView):
             description='The initial index from which to return the results.',
         ),
     ],
-        summary="Retrieve a list of eligible athletes for a specific event along with their seed times")
+        summary="Retrieve the list of athletes enrolled in the swim meet, including their corresponding seed times for the given event.")
     def get(self, request, event_id):
         try:
             event_instance = MeetEvent.objects.get(id=event_id)
