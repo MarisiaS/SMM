@@ -18,11 +18,10 @@ class AthleteSerializer(serializers.ModelSerializer):
 
     def get_age(self, obj):
         """Calculate age from date_of_birth."""
-        if obj.date_of_birth:
-            today = timezone.now().date()
-            return today.year - obj.date_of_birth.year - (
-                (today.month, today.day) < (obj.date_of_birth.month, obj.date_of_birth.day)
-            )
+        today = timezone.now().date()
+        return today.year - obj.date_of_birth.year - (
+            (today.month, today.day) < (obj.date_of_birth.month, obj.date_of_birth.day)
+        )
 
 
     # Validate that the date is not in the future
