@@ -155,6 +155,11 @@ const SwimMeetDisplay = () => {
     { label: "Reload", onClick: handleReload },
   ];
 
+  let messageNoRecords =
+    searchPar === ""
+      ? "No swim meets have been scheduled yet"
+      : "No swim meets match your search";
+
   const renderContent = () => {
     if (errorOnLoading) {
       return (
@@ -206,7 +211,12 @@ const SwimMeetDisplay = () => {
         )}
         {!loading && (
           <>
-            <GenericTable data={data} columns={columns} actions={actions} />
+            <GenericTable
+              data={data}
+              columns={columns}
+              actions={actions}
+              notRecordsMessage={messageNoRecords}
+            />
             <PaginationBar
               count={count}
               setOffset={setOffset}
