@@ -17,6 +17,7 @@ import TestResults from "./Tests/TestResults";
 import TestMultiSelectWithTags from "./Tests/TestMultiSelectWithTags";
 import PoolIcon from '@mui/icons-material/Pool';
 import AthleteIcon from "./MyIcons/AthleteIcon";
+import EnrollmentDisplay from "./Enrollment/EnrollmentDisplay";
 
 function App() {
   const NotFound = () => {
@@ -44,6 +45,10 @@ function App() {
           <Route
             path="/swim-meets/:meetId/events"
             element={<MeetEventDisplay />}
+          />
+          <Route
+            path="/swim-meets/:meetId/enrollment"
+            element={<EnrollmentDisplay />}
           />
           <Route path="/add-event/:meetId" element={<AddEvent />} />
         </Route>
