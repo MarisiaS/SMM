@@ -58,7 +58,6 @@ const EnrollmentDisplay = () => {
   };
 
   const handleAddEnrollment = () => {
-    //setView("enroll");
     setIsFormOpen(true);
   };
 
@@ -77,7 +76,6 @@ const EnrollmentDisplay = () => {
       setLoading(true);
       setErrorOnLoading(false);
       try {
-        //Change to enrollment
         const json = await SmmApi.getEnrolledAthletes(
           meetId,
           searchPar,
