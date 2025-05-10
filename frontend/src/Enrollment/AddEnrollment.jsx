@@ -53,17 +53,15 @@ const AddEnrollment = ({ meetId, onBack, onProcessCompletion }) => {
   //State to manage search on selectTables
   const [availableSearchTerm, setAvailableSearchTerm] = useState("");
   const [selectedSearchTerm, setSelectedSearchTerm] = useState("");
-  //State to manage change to step 2 of process
-  const [areAthletesSelected, setAreAthletesSelected] = useState(false);
-  //State to manage Heat Creation (step 3 of process)
-  const [heatsCreated, setHeatsCreated] = useState(false);
-  const [errorCreateHeat, setErrorCreateHeat] = useState(false);
+  //State to manage Enrollment Creation
+  const [enrollmentCreated, setEnrollmentCreated] = useState(false);
+  const [errorCreateEnrollment, setErrorCreateEnrollment] = useState(false);
 
   // AlertBox variables
-  let typeAlertCreateHeats = errorCreateHeat ? "error" : "success";
-  let messageCreateHeats = errorCreateHeat
-    ? errorCreateHeat
-    : "Heats created successfully!";
+  let typeAlertCreateEnrollment = errorCreateEnrollment ? "error" : "success";
+  let messageCreateEnrollment = errorCreateEnrollment
+    ? errorCreateEnrollment
+    : "Enrollment created successfully!";
 
   useEffect(() => {
     let ignore = false;
@@ -90,25 +88,25 @@ const AddEnrollment = ({ meetId, onBack, onProcessCompletion }) => {
   //Event Handlers
 
   const handleAddEnrollment = async (selectedAthletes) => {
-    setErrorCreateHeat(false);
-    let heatCreationSuccessful = false;
+    setErrorCreateEnrollment(false);
+    let enrollmentCreationSuccessful = false;
     try {
-      const response = await SmmApi.createHeats(eventId, {
-        athletes: selectedAthletes,
+      const athleteIds = selectedAthletes.map((athlete) => athlete.id);
+      const response = await SmmApi.createEnrollment(meetId, {
+        athlete_ids: athleteIds,
       });
-      heatCreationSuccessful = true;
+      enrollmentCreationSuccessful = true;
     } catch (error) {
-      setErrorCreateHeat(
-        "Unable to Create Heats, an unexpected error occurred. Please try again!"
+      setErrorCreateEnrollment(
+        "Unable to complete the enrollment, an unexpected error occurred. Please try again!"
       );
     }
-    setHeatsCreated(true);
+    setEnrollmentCreated(true);
     setTimeout(() => {
-      if (heatCreationSuccessful) {
-        //This will reload the events data and switch to show the details of the given event
-        onProcessCompletion(eventId);
+      if (enrollmentCreationSuccessful) {
+        onBack();
       }
-      setHeatsCreated(false);
+      setEnrollmentCreated(false);
     }, 2000);
   };
 
@@ -117,6 +115,7 @@ const AddEnrollment = ({ meetId, onBack, onProcessCompletion }) => {
       label: "Confirm Enrollment",
       icon: <BuildIcon />,
       onClick: () => handleAddEnrollment(selectedAthletes),
+      disabled: selectedAthletes.length === 0,
     },
     {
       label: "Back to Enrollment",
@@ -153,9 +152,7 @@ const AddEnrollment = ({ meetId, onBack, onProcessCompletion }) => {
     handleClearSearch();
     setSelectedAthletes((prevSelectedAthletes) => {
       const allAthletes = [...prevSelectedAthletes, ...availableAthletes];
-      return allAthletes.sort((a, b) =>
-        a.full_name.localeCompare(b.full_name)
-      );
+      return allAthletes.sort((a, b) => a.full_name.localeCompare(b.full_name));
     });
     setAvailableAthletes([]);
     setSelectedLeftAthletes({});
@@ -166,9 +163,7 @@ const AddEnrollment = ({ meetId, onBack, onProcessCompletion }) => {
     handleClearSearch();
     setAvailableAthletes((prevAvailableAthletes) => {
       const allAthletes = [...prevAvailableAthletes, ...selectedAthletes];
-      return allAthletes.sort((a, b) =>
-        a.full_name.localeCompare(b.full_name)
-      );
+      return allAthletes.sort((a, b) => a.full_name.localeCompare(b.full_name));
     });
     setSelectedAthletes([]);
     setSelectedLeftAthletes({});
@@ -288,6 +283,14 @@ const AddEnrollment = ({ meetId, onBack, onProcessCompletion }) => {
             />
           </Box>
         </Box>
+        <Dialog open={enrollmentCreated} fullWidth>
+          <DialogContent style={{ padding: "24px" }}>
+            <AlertBox
+              type={typeAlertCreateEnrollment}
+              message={messageCreateEnrollment}
+            />
+          </DialogContent>
+        </Dialog>
       </>
     );
   };
