@@ -21,7 +21,7 @@ const columns = [
   },
   {
     accessorKey: "gender_display",
-    header: "gender",
+    header: "Gender",
     size: 150,
   },
   {
