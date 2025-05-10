@@ -90,7 +90,6 @@ const AthleteDisplay = () => {
     lastCreatedAthleteId.current = null;
   };
 
-
   const handleEditClick = (row) => {
     if (searchBarRef.current) {
       searchBarRef.current.clearSearch();
@@ -107,7 +106,7 @@ const AthleteDisplay = () => {
       onClick: handleEditClick,
       tip: "Edit Athlete",
     },
-  ]; 
+  ];
 
   useEffect(() => {
     let ignore = false;
@@ -143,6 +142,11 @@ const AthleteDisplay = () => {
   let actionButtonsErrorOnLoading = [
     { label: "Reload", onClick: handleReload },
   ];
+
+  let messageNoRecords =
+    searchPar === ""
+      ? "No athletes have been added yet"
+      : "No athletes match your search";
 
   const renderContent = () => {
     if (errorOnLoading) {
@@ -201,6 +205,7 @@ const AthleteDisplay = () => {
                 data={athleteData}
                 columns={columns}
                 actions={actions}
+                notRecordsMessage={messageNoRecords}
               />
               <PaginationBar
                 count={count}
