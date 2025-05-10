@@ -1,13 +1,10 @@
 import {
   ContentPaste as BackIcon,
   Build as BuildIcon,
-  Checklist as ChecklistIcon,
-  Edit as EditIcon,
   KeyboardDoubleArrowLeft as LeftAllIcon,
   NavigateBefore as LeftIcon,
   KeyboardDoubleArrowRight as RightAllIcon,
   NavigateNext as RightIcon,
-  Timer as TimeIcon,
 } from "@mui/icons-material";
 import {
   CircularProgress,
