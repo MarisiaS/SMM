@@ -57,7 +57,9 @@ const SwimMeetDisplay = () => {
   const [page, setPage] = useState(0); //search bar needs to restart this
 
   const handleEnrollmentClick = (id) => {
-    console.log("Go to Enrollment");
+    navigate(`/swim-meets/${data[id].id}/enrollment`, {
+      state: { meetData: data[id] },
+    });
   };
 
   const handleDetailsClick = (id) => {
