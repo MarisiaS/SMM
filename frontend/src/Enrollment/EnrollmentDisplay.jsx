@@ -9,7 +9,8 @@ import SearchBar from "../components/Common/SearchBar";
 import MyButton from "../components/FormElements/MyButton";
 import Title from "../components/Common/Title";
 import PaginationBar from "../components/Common/PaginationBar.jsx";
-import { CircularProgress, Box, Stack } from "@mui/material";
+import AddEnrollment from "./AddEnrollment.jsx";
+import { CircularProgress, Box, Stack, Dialog } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 
@@ -40,9 +41,12 @@ const EnrollmentDisplay = () => {
   // View states
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
-  const [view, setView] = useState(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
   //Use to control the search parameter
   const [searchPar, setSearchPar] = useState("");
+  const [reloadEnrollmentDataTrigger, setReloadEnrollmentDataTrigger] =
+    useState(0);
   //Variables needed for the pagination bar
   const [count, setCount] = useState(0);
   const [offset, setOffset] = useState(0); //search bar needs to restart this
@@ -54,7 +58,12 @@ const EnrollmentDisplay = () => {
   };
 
   const handleAddEnrollment = () => {
-    setView("enroll");
+    setIsFormOpen(true);
+  };
+
+  const handleBackToEnrollment = () => {
+    setReloadEnrollmentDataTrigger((prev) => prev + 1);
+    setIsFormOpen(false);
   };
 
   useEffect(() => {
@@ -63,8 +72,12 @@ const EnrollmentDisplay = () => {
       setLoading(true);
       setErrorOnLoading(false);
       try {
-        //Change to enrollment
-        const json = await SmmApi.getEnrolledAthletes(meetId,searchPar, offset, limit);
+        const json = await SmmApi.getEnrolledAthletes(
+          meetId,
+          searchPar,
+          offset,
+          limit
+        );
         if (!ignore) {
           setEnrollmentData(json.results);
           setCount(json.count);
@@ -79,7 +92,7 @@ const EnrollmentDisplay = () => {
     return () => {
       ignore = true;
     };
-  }, [searchPar, offset, limit]);
+  }, [searchPar, offset, limit, reloadEnrollmentDataTrigger]);
 
   const actions = [
     {
@@ -114,60 +127,69 @@ const EnrollmentDisplay = () => {
         </Stack>
       );
     }
-    switch (view) {
-      case "enroll":
-        return <div> Here goes enrollment</div>;
-      default:
-        return (
+    return (
+      <>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Box sx={{ marginLeft: 5 }}>
+            <MyButton label={"Enroll"} onClick={handleAddEnrollment}>
+              <AddIcon />
+            </MyButton>
+          </Box>
+          <Box className={"searchBox"} sx={{ marginRight: 5 }}>
+            <SearchBar
+              setSearchPar={setSearchPar}
+              setOffset={setOffset}
+              setPage={setPage}
+            ></SearchBar>
+          </Box>
+        </Stack>
+        {loading && (
+          <Stack
+            alignItems="center"
+            justifyContent="center"
+            style={{ height: "100px" }}
+          >
+            <CircularProgress />
+          </Stack>
+        )}
+        {!loading && (
           <>
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
+            <GenericTable
+              data={enrollmentData}
+              columns={columns}
+              actions={actions}
+              notRecordsMessage={messageNoRecords}
+            />
+            <PaginationBar
+              count={count}
+              setOffset={setOffset}
+              limit={limit}
+              setLimit={setLimit}
+              page={page}
+              setPage={setPage}
+            ></PaginationBar>
+            <Dialog
+              open={isFormOpen}
+              fullWidth
+              maxWidth={false}
+              PaperProps={{
+                sx: {
+                  width: "90vw",
+                  maxWidth: "none",
+                  overflowX: "hidden",
+                },
+              }}
             >
-              <Box sx={{ marginLeft: 5 }}>
-                <MyButton label={"Enroll"} onClick={handleAddEnrollment}>
-                  <AddIcon />
-                </MyButton>
-              </Box>
-              <Box className={"searchBox"} sx={{ marginRight: 5 }}>
-                <SearchBar
-                  setSearchPar={setSearchPar}
-                  setOffset={setOffset}
-                  setPage={setPage}
-                ></SearchBar>
-              </Box>
-            </Stack>
-            {loading && (
-              <Stack
-                alignItems="center"
-                justifyContent="center"
-                style={{ height: "100px" }}
-              >
-                <CircularProgress />
-              </Stack>
-            )}
-            {!loading && (
-              <>
-                <GenericTable
-                  data={enrollmentData}
-                  columns={columns}
-                  actions={actions}
-                  notRecordsMessage = {messageNoRecords}
-                />
-                <PaginationBar
-                  count={count}
-                  setOffset={setOffset}
-                  limit={limit}
-                  setLimit={setLimit}
-                  page={page}
-                  setPage={setPage}
-                ></PaginationBar>
-              </>
-            )}
+              <AddEnrollment meetId={meetId} onBack={handleBackToEnrollment} />
+            </Dialog>
           </>
-        );
-    }
+        )}
+      </>
+    );
   };
   return (
     <div>
