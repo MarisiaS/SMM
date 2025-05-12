@@ -2,9 +2,22 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
-import { Box, IconButton, Tooltip, useTheme } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Tooltip,
+  useTheme,
+  Typography,
+} from "@mui/material";
 
-const GenericTable = ({ data, columns, actions, notRecordsMessage, enableSearch, getRowStyle }) => {
+const GenericTable = ({
+  data,
+  columns,
+  actions,
+  notRecordsMessage,
+  enableSearch,
+  getRowStyle,
+}) => {
   const enableActions = actions;
   const theme = useTheme();
   const table = useMaterialReactTable({
@@ -22,16 +35,26 @@ const GenericTable = ({ data, columns, actions, notRecordsMessage, enableSearch,
     enableSorting: false,
     enableRowActions: enableActions,
     positionActionsColumn: "last",
-    initialState: { density: "compact", showGlobalFilter: enableSearch ? enableSearch : false },
+    initialState: {
+      density: "compact",
+      showGlobalFilter: enableSearch ? enableSearch : false,
+    },
     enableTopToolbar: enableSearch ? enableSearch : false,
     enableToolbarInternalActions: false,
     enableBottomToolbar: false,
     enableColumnActions: false,
     enablePagination: false,
-    localization: {
-      noRecordsToDisplay: notRecordsMessage,
+    renderEmptyRowsFallback: () => {
+      return (<Box sx={{ textAlign: "center", padding: 1 }}>
+      <Typography
+        variant={"h8"}
+        component="div"
+        sx={{ color: "text.secondary", fontStyle: "italic" }}
+      >
+        {notRecordsMessage}
+      </Typography>
+    </Box>)
     },
-
     renderRowActions: ({ row }) => (
       <Box>
         {actions &&
