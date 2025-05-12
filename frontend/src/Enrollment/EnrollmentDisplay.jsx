@@ -80,6 +80,7 @@ const EnrollmentDisplay = () => {
       ignore = true;
     };
   }, [searchPar, offset, limit]);
+
   const actions = [
     {
       name: "Unenroll",
@@ -88,6 +89,11 @@ const EnrollmentDisplay = () => {
       tip: "Unenroll Athlete",
     },
   ];
+
+  let messageNoRecords =
+    searchPar === ""
+      ? "No athletes are currently enrolled in this swim meet."
+      : "No athlete match your search";
 
   const renderContent = () => {
     if (errorOnLoading) {
@@ -147,7 +153,7 @@ const EnrollmentDisplay = () => {
                   data={enrollmentData}
                   columns={columns}
                   actions={actions}
-                  notRecordsMessage = {"No athletes are currently enrolled in this swim meet."}
+                  notRecordsMessage = {messageNoRecords}
                 />
                 <PaginationBar
                   count={count}
