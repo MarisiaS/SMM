@@ -38,7 +38,7 @@ const selectedColumns = [
   },
 ];
 
-const AddEnrollment = ({ meetId, onBack, onProcessCompletion }) => {
+const AddEnrollment = ({ meetId, onBack, setChangeEnrollment }) => {
   //States to manage table data
   const [availableAthletes, setAvailableAthletes] = useState([]);
   const [selectedAthletes, setSelectedAthletes] = useState([]);
@@ -99,6 +99,7 @@ const AddEnrollment = ({ meetId, onBack, onProcessCompletion }) => {
         `Successfully enrolled ${num_added} ${athleteNoun} in the swim meet.`
       );
       enrollmentCreationSuccessful = true;
+      setChangeEnrollment(true);
     } catch (error) {
       setErrorCreateEnrollment(
         "Unable to complete the enrollment, an unexpected error occurred. Please try again!"

@@ -11,7 +11,7 @@ import Title from "../components/Common/Title";
 import PaginationBar from "../components/Common/PaginationBar.jsx";
 import AddEnrollment from "./AddEnrollment.jsx";
 import { CircularProgress, Box, Stack, Dialog } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation, useParams } from "react-router-dom";
 
 const columns = [
@@ -45,8 +45,10 @@ const EnrollmentDisplay = () => {
 
   //Use to control the search parameter
   const [searchPar, setSearchPar] = useState("");
+  const searchBarRef = useRef(null);
   const [reloadEnrollmentDataTrigger, setReloadEnrollmentDataTrigger] =
     useState(0);
+  const changeEnrollment = useRef(false);
   //Variables needed for the pagination bar
   const [count, setCount] = useState(0);
   const [offset, setOffset] = useState(0); //search bar needs to restart this
@@ -62,7 +64,17 @@ const EnrollmentDisplay = () => {
   };
 
   const handleBackToEnrollment = () => {
-    setReloadEnrollmentDataTrigger((prev) => prev + 1);
+    if (changeEnrollment.current) {
+      if (searchPar !== "") {
+        if (searchBarRef.current) {
+          searchBarRef.current.clearSearch();
+        }
+        setSearchPar("");
+      } else {
+        setReloadEnrollmentDataTrigger((prev) => prev + 1);
+      }
+      changeEnrollment.current = false;
+    }
     setIsFormOpen(false);
   };
 
@@ -141,6 +153,7 @@ const EnrollmentDisplay = () => {
           </Box>
           <Box className={"searchBox"} sx={{ marginRight: 5 }}>
             <SearchBar
+              ref={searchBarRef}
               setSearchPar={setSearchPar}
               setOffset={setOffset}
               setPage={setPage}
@@ -184,7 +197,13 @@ const EnrollmentDisplay = () => {
                 },
               }}
             >
-              <AddEnrollment meetId={meetId} onBack={handleBackToEnrollment} />
+              <AddEnrollment
+                meetId={meetId}
+                onBack={handleBackToEnrollment}
+                setChangeEnrollment={(value) =>
+                  (changeEnrollment.current = value)
+                }
+              />
             </Dialog>
           </>
         )}
