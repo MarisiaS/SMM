@@ -209,7 +209,7 @@ const MeetEventDisplay = () => {
     setIsFormOpen(true);
   };
 
-  const handleOnEnrollAthletesOnGenerateHeats = (id) => {
+  const handleOnEnrollAthletesOnGenerateHeats = () => {
     console.log("Opening athlete enrollment interface...");
   };
 
