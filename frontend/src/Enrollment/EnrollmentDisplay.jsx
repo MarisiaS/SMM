@@ -45,7 +45,6 @@ const EnrollmentDisplay = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isUnenrollOpen, setIsUnenrollOpen] = useState(false);
   const [athleteToUnenroll, setAthleteToUnenroll] = useState("");
-
   //Use to control the search parameter
   const [searchPar, setSearchPar] = useState("");
   const searchBarRef = useRef(null);
@@ -59,7 +58,6 @@ const EnrollmentDisplay = () => {
   const [page, setPage] = useState(0); //search bar needs to restart this
 
   const handleUnenrollmentClick = (row) => {
-    console.log(enrollmentData[row]);
     setAthleteToUnenroll(enrollmentData[row]);
     setIsUnenrollOpen(true);
   };

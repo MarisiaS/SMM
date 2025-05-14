@@ -36,12 +36,12 @@ const Unenroll = ({ athlete, meetId, onBack, setChangeEnrollment }) => {
 
   return (
     <div
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Stack alignItems="center" justifyContent="space-between">
         <Stack alignItems="center" justifyContent="space-between">
           {!submitted && <div style={{ minHeight: "100px" }} />}
@@ -69,7 +69,9 @@ const Unenroll = ({ athlete, meetId, onBack, setChangeEnrollment }) => {
                 align="center"
                 style={{ fontWeight: 300 }}
               >
-                Please confirm if you want to unenroll <strong>{athlete.full_name}</strong> from the swim meet, or click Cancel to keep them enrolled.
+                Please confirm if you want to unenroll{" "}
+                <strong>{athlete.full_name}</strong> from the swim meet, or
+                click Cancel to keep them enrolled.
               </Typography>
             </Box>
           </Stack>
