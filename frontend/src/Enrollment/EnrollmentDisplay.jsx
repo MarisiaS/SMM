@@ -13,6 +13,7 @@ import AddEnrollment from "./AddEnrollment.jsx";
 import { CircularProgress, Box, Stack, Dialog } from "@mui/material";
 import { useEffect, useState, useRef } from "react";
 import { useLocation, useParams } from "react-router-dom";
+import Unenroll from "./Unenroll.jsx";
 
 const columns = [
   {
@@ -42,6 +43,8 @@ const EnrollmentDisplay = () => {
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isUnenrollOpen, setIsUnenrollOpen] = useState(false);
+  const [athleteToUnenroll, setAthleteToUnenroll] = useState("");
 
   //Use to control the search parameter
   const [searchPar, setSearchPar] = useState("");
@@ -55,12 +58,30 @@ const EnrollmentDisplay = () => {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0); //search bar needs to restart this
 
-  const handleUnEnrollmentClick = (id) => {
-    console.log("Unenroll", id);
+  const handleUnenrollmentClick = (row) => {
+    console.log(enrollmentData[row]);
+    setAthleteToUnenroll(enrollmentData[row]);
+    setIsUnenrollOpen(true);
   };
 
   const handleAddEnrollment = () => {
     setIsFormOpen(true);
+  };
+
+  const handleCancelUnenrollment = () => {
+    if (changeEnrollment.current) {
+      if (searchPar !== "") {
+        if (searchBarRef.current) {
+          searchBarRef.current.clearSearch();
+        }
+        setSearchPar("");
+      } else {
+        setReloadEnrollmentDataTrigger((prev) => prev + 1);
+      }
+      changeEnrollment.current = false;
+    }
+    setAthleteToUnenroll("");
+    setIsUnenrollOpen(false);
   };
 
   const handleBackToEnrollment = () => {
@@ -110,7 +131,7 @@ const EnrollmentDisplay = () => {
     {
       name: "Unenroll",
       icon: <UnenrollIcon />,
-      onClick: handleUnEnrollmentClick,
+      onClick: handleUnenrollmentClick,
       tip: "Unenroll Athlete",
     },
   ];
@@ -200,6 +221,24 @@ const EnrollmentDisplay = () => {
               <AddEnrollment
                 meetId={meetId}
                 onBack={handleBackToEnrollment}
+                setChangeEnrollment={(value) =>
+                  (changeEnrollment.current = value)
+                }
+              />
+            </Dialog>
+            <Dialog
+              open={isUnenrollOpen}
+              fullWidth
+              PaperProps={{
+                sx: {
+                  overflowY: "hidden",
+                },
+              }}
+            >
+              <Unenroll
+                athlete={athleteToUnenroll}
+                meetId={meetId}
+                onBack={handleCancelUnenrollment}
                 setChangeEnrollment={(value) =>
                   (changeEnrollment.current = value)
                 }
