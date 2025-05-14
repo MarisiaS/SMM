@@ -26,6 +26,7 @@ import SelectTable from "../components/Common/SelectTable.jsx";
 import MyIconButton from "../components/FormElements/MyIconButton.jsx";
 import { formatTime } from "../utils/helperFunctions.js";
 import UpdateSeedTime from "./UpdateSeedTime.jsx";
+import AthleteIcon from "../MyIcons/AthleteIcon.jsx";
 
 // Constants for table columns
 const availableColumns = [
@@ -70,7 +71,13 @@ const confirmSeedTimeColumns = [
   },
 ];
 
-const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
+const GenerateHeats = ({
+  eventName,
+  eventId,
+  onBack,
+  onProcessCompletion,
+  onEnrollAthletes,
+}) => {
   //States to manage table data
   const [availableAthletes, setAvailableAthletes] = useState([]);
   const [selectedAthletes, setSelectedAthletes] = useState([]);
@@ -263,6 +270,14 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
     setSelectedLeftAthletes({});
   };
 
+  let actionButtonNoAthletes = [
+    {
+      label: "Enroll Athletes",
+      onClick: onEnrollAthletes,
+      icon: <AthleteIcon />,
+    },
+  ];
+
   const renderContent = () => {
     if (loading) {
       return (
@@ -292,6 +307,27 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
             message="We were unable to load the required data. Please try again."
           />
         </Stack>
+      );
+    }
+    if (availableAthletes.length === 0) {
+      return (
+        <>
+          <Stack
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
+              width: "650px",
+              margin: "auto",
+            }}
+          >
+            <AlertBox
+              type="info"
+              message="No athletes are currently enrolled in this swim meet."
+              actionButtons={actionButtonNoAthletes}
+            />
+          </Stack>
+        </>
       );
     }
 
