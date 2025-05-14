@@ -40,7 +40,9 @@ const MeetEventDisplay = () => {
   const [eventData, setEventData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
-  const [isFormOpen, setIsFormOpen] = useState(location.state?.showAddEvent ? true : false);
+  const [isFormOpen, setIsFormOpen] = useState(
+    location.state?.showAddEvent ? true : false
+  );
 
   // View states
   const [view, setView] = useState("list");
@@ -207,6 +209,10 @@ const MeetEventDisplay = () => {
     setIsFormOpen(true);
   };
 
+  const handleOnEnrollAthletesOnGenerateHeats = (id) => {
+    console.log("Opening athlete enrollment interface...");
+  };
+
   const handleBackToEventsFromNewEvent = () => {
     setNewEventTrigger((prev) => prev + 1);
     setIsFormOpen(false);
@@ -329,6 +335,7 @@ const MeetEventDisplay = () => {
             eventId={currentEvent.id}
             onBack={handleBackToEvents}
             onProcessCompletion={handleGenerateHeatProcessCompletion}
+            onEnrollAthletes={handleOnEnrollAthletesOnGenerateHeats}
           />
         );
       case "results":
