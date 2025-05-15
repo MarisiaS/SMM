@@ -103,7 +103,11 @@ class MeetEnrolledAthletes(GenericAPIView):
                        },
                    )],
                    summary="Unenroll an Athlete from a specific swim meet",
-                   description="Accepts an athlete ID already enrolled on the swim meet and unenrolls them")
+                   description=(
+        "Removes an athlete from a specific swim meet. "
+        "The athlete must already be enrolled and must not have competed in any events within the meet. "
+        "All associated heat entries will be deleted if eligible."
+    ))
     def patch(self, request, meet_id):
         if not SwimMeet.objects.filter(id=meet_id).exists():
             return Response({'error': 'Swim Meet not found'}, status=status.HTTP_404_NOT_FOUND)
