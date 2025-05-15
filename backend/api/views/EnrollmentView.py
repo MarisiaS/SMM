@@ -11,6 +11,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.filters import SearchFilter
 from django.db.models.functions import Collate
 from datetime import timedelta
+from django.db.models import Q
 
 
 @extend_schema(tags=['Swim Meet - Enrollment'])
@@ -106,27 +107,37 @@ class MeetEnrolledAthletes(GenericAPIView):
     def patch(self, request, meet_id):
         if not SwimMeet.objects.filter(id=meet_id).exists():
             return Response({'error': 'Swim Meet not found'}, status=status.HTTP_404_NOT_FOUND)
+
         serializer = UnenrollAthleteSerializer(
-            data=request.data, context={"meet_id": meet_id})        
-        if serializer.is_valid():
-            athlete_id = serializer.validated_data['athlete_id']
-            swim_meet_events = MeetEvent.objects.filter(swim_meet_id=meet_id)
-            try:
-                with transaction.atomic():
-                    for event in swim_meet_events:
-                        heats = Heat.objects.filter(
-                            athlete_id=athlete_id, event_id=event.id)
-                        for heat in heats:
-                            if heat.heat_time not in [timedelta(days=300), None]:
-                                raise Exception(
-                                    'Athlete cannot be unenrolled because they have already competed.')
-                        heats.delete()
-                    Enrollment.objects.filter(
-                        swim_meet_id=meet_id, athlete_id=athlete_id).delete()
-            except Exception as e:
-                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            data=request.data, context={"meet_id": meet_id})
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        athlete_id = serializer.validated_data['athlete_id']
+
+        try:
+            with transaction.atomic():
+                heats = Heat.objects.filter(
+                    athlete_id=athlete_id,
+                    event__swim_meet_id=meet_id
+                )
+
+                has_competed = heats.filter(
+                    ~Q(heat_time__isnull=True) & ~Q(
+                        heat_time=timedelta(days=300))
+                ).exists()
+                if has_competed:
+                    raise Exception(
+                        'Athlete cannot be unenrolled because they have already competed.')
+                heats.delete()
+                Enrollment.objects.filter(
+                    swim_meet_id=meet_id, athlete_id=athlete_id
+                ).delete()
             return Response({"success": "Athlete unenrolled successfully"}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @extend_schema(tags=['Swim Meet - Enrollment'])
