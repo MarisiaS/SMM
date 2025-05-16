@@ -191,7 +191,7 @@ const EnrollmentDisplay = () => {
               maxWidth={false}
               PaperProps={{
                 sx: {
-                  width: "90vw",
+                  width: "75vw",
                   maxWidth: "none",
                   overflowX: "hidden",
                 },

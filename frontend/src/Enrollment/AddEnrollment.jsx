@@ -33,7 +33,7 @@ const availableColumns = [
 const selectedColumns = [
   {
     accessorKey: "full_name",
-    header: "Selected Athletes",
+    header: "Athletes to Enroll",
     size: 150,
   },
 ];
@@ -283,7 +283,7 @@ const AddEnrollment = ({ meetId, onBack, setChangeEnrollment }) => {
               notRecordsMessage={"No athletes selected."}
               searchTerm={selectedSearchTerm}
               setSearchTerm={setSelectedSearchTerm}
-              labels={["Athletes Selected", "Athlete"]}
+              labels={["Athletes to Enroll", "Athlete"]}
             />
           </Box>
         </Box>
@@ -307,6 +307,7 @@ const AddEnrollment = ({ meetId, onBack, setChangeEnrollment }) => {
         enableNavigationButtons={false}
       ></ItemPaginationBar>
       {renderContent()}
+      <div style={{ minHeight: "50px" }}></div>
     </div>
   );
 };
