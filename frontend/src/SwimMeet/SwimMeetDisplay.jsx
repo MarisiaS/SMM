@@ -7,7 +7,7 @@ import {
 } from "@mui/icons-material";
 import { CircularProgress, Box, Stack, Dialog } from "@mui/material";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { SmmApi } from "../SmmApi";
 import AlertBox from "../components/Common/AlertBox.jsx";
@@ -48,13 +48,32 @@ const SwimMeetDisplay = () => {
   const navigate = useNavigate();
   //Controls the data
   const [data, setData] = useState([]);
+  const lastCreatedSwimMeetId = useRef(null);
+  const numSwimMeetsCreated = useRef(0);
+  const [renderTrigger, setRenderTrigger] = useState(0);
   //Use to control the search parameter
   const [searchPar, setSearchPar] = useState("");
+  const searchBarRef = useRef(null);
   //Variables needed for the pagination bar
   const [count, setCount] = useState(0);
   const [offset, setOffset] = useState(0); //search bar needs to restart this
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0); //search bar needs to restart this
+
+  const handleAddNew = () => {
+    if (searchBarRef.current) {
+      searchBarRef.current.clearSearch();
+    }
+    setSearchPar("");
+    setIsFormOpen(true);
+  };
+
+  const handleCancelAddSwimMeet = () => {
+    if (lastCreatedSwimMeetId.current) {
+      refreshDataForLastCreatedSwimMeet();
+    }
+    setIsFormOpen(false);
+  };
 
   const handleEnrollmentClick = (id) => {
     navigate(`/swim-meets/${data[id].id}/enrollment`, {
@@ -113,6 +132,32 @@ const SwimMeetDisplay = () => {
     },
   ];
 
+  const refreshDataForLastCreatedSwimMeet = async () => {
+    try {
+      const json = await SmmApi.getSwimMeetList(
+        "",
+        0,
+        count + numSwimMeetsCreated.current
+      );
+      const indexSwimMeet = json.results.findIndex(
+        (item) => item.id === lastCreatedSwimMeetId.current
+      );
+      if (indexSwimMeet !== -1) {
+        const newPage = Math.floor(indexSwimMeet / limit);
+        if (offset != newPage * limit) {
+          setOffset(newPage * limit);
+        } else {
+          setRenderTrigger((prev) => prev + 1);
+        }
+        setPage(newPage);
+      }
+    } catch (error) {
+      setErrorOnLoading(true);
+    }
+    numSwimMeetsCreated.current = 0;
+    lastCreatedSwimMeetId.current = null;
+  };
+
   useEffect(() => {
     let ignore = false;
     async function fetching() {
@@ -139,15 +184,7 @@ const SwimMeetDisplay = () => {
     return () => {
       ignore = true;
     };
-  }, [searchPar, offset, limit]);
-
-  const handleAddNew = () => {
-    setIsFormOpen(true);
-  };
-
-  const handleCancelAddSwimMeet = () => {
-    setIsFormOpen(false);
-  };
+  }, [searchPar, offset, limit, renderTrigger]);
 
   const handleReload = () => {
     navigate(0);
@@ -183,56 +220,65 @@ const SwimMeetDisplay = () => {
       );
     }
     return (
-      <div>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <Box sx={{ marginLeft: 5 }}>
-            <MyButton label={"Swim Meet"} onClick={handleAddNew}>
-              <AddIcon />
-            </MyButton>
-          </Box>
-          <Box className={"searchBox"} sx={{ marginRight: 5 }}>
-            <SearchBar
-              setSearchPar={setSearchPar}
-              setOffset={setOffset}
-              setPage={setPage}
-            ></SearchBar>
-          </Box>
-        </Stack>
-        {loading && (
+      <>
+        <div>
           <Stack
+            direction="row"
             alignItems="center"
-            justifyContent="center"
-            style={{ height: "100px" }}
+            justifyContent="space-between"
           >
-            <CircularProgress />
+            <Box sx={{ marginLeft: 5 }}>
+              <MyButton label={"Swim Meet"} onClick={handleAddNew}>
+                <AddIcon />
+              </MyButton>
+            </Box>
+            <Box className={"searchBox"} sx={{ marginRight: 5 }}>
+              <SearchBar
+                ref={searchBarRef}
+                setSearchPar={setSearchPar}
+                setOffset={setOffset}
+                setPage={setPage}
+              ></SearchBar>
+            </Box>
           </Stack>
-        )}
-        {!loading && (
-          <>
-            <GenericTable
-              data={data}
-              columns={columns}
-              actions={actions}
-              notRecordsMessage={messageNoRecords}
+          {loading && (
+            <Stack
+              alignItems="center"
+              justifyContent="center"
+              style={{ height: "100px" }}
+            >
+              <CircularProgress />
+            </Stack>
+          )}
+          {!loading && (
+            <>
+              <GenericTable
+                data={data}
+                columns={columns}
+                actions={actions}
+                notRecordsMessage={messageNoRecords}
+              />
+              <PaginationBar
+                count={count}
+                setOffset={setOffset}
+                limit={limit}
+                setLimit={setLimit}
+                page={page}
+                setPage={setPage}
+              ></PaginationBar>
+            </>
+          )}
+          <Dialog open={isFormOpen} fullWidth>
+            <AddSwimMeet
+              onCancel={handleCancelAddSwimMeet}
+              setLastSwimMeetCreated={(id) =>
+                (lastCreatedSwimMeetId.current = id)
+              }
+              setNumNewSwimMeets={(num) => (numSwimMeetsCreated.current += num)}
             />
-            <PaginationBar
-              count={count}
-              setOffset={setOffset}
-              limit={limit}
-              setLimit={setLimit}
-              page={page}
-              setPage={setPage}
-            ></PaginationBar>
-            <Dialog open={isFormOpen} fullWidth>
-              <AddSwimMeet onCancel={handleCancelAddSwimMeet} />
-            </Dialog>
-          </>
-        )}
-      </div>
+          </Dialog>
+        </div>
+      </>
     );
   };
 
