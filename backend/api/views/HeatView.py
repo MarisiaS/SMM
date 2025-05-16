@@ -103,7 +103,7 @@ class HeatBatchView(APIView):
             enrolled_athlete_ids = set(
                 enrolled_athletes.values_list('id', flat=True))
             if not request_athlete_ids.issubset(enrolled_athlete_ids):
-                return Response({'error': 'One or more athletes are not enroll in the swim meet.'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'error': 'One or more athletes are not enrolled in the swim meet.'}, status=status.HTTP_400_BAD_REQUEST)
 
             # Validate group
             group_athletes = filter_by_group(
