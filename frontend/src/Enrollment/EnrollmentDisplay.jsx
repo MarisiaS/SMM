@@ -41,7 +41,7 @@ const EnrollmentDisplay = () => {
   // View states
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isAddEnrollmentOpen, setIsAddEnrollmentOpen] = useState(location.state?.showAddEnrollment ? true : false);
 
   //Use to control the search parameter
   const [searchPar, setSearchPar] = useState("");
@@ -60,7 +60,7 @@ const EnrollmentDisplay = () => {
   };
 
   const handleAddEnrollment = () => {
-    setIsFormOpen(true);
+    setIsAddEnrollmentOpen(true);
   };
 
   const handleBackToEnrollment = () => {
@@ -75,7 +75,7 @@ const EnrollmentDisplay = () => {
       }
       changeEnrollment.current = false;
     }
-    setIsFormOpen(false);
+    setIsAddEnrollmentOpen(false);
   };
 
   useEffect(() => {
@@ -186,7 +186,7 @@ const EnrollmentDisplay = () => {
               setPage={setPage}
             ></PaginationBar>
             <Dialog
-              open={isFormOpen}
+              open={isAddEnrollmentOpen}
               fullWidth
               maxWidth={false}
               PaperProps={{
