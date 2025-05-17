@@ -10,14 +10,21 @@ export default function AlertBox({ type, message, actionButtons }) {
         variant="outlined"
         severity={type}
         className={"myForm"}
-        style={{ width: "100%" }}
+        style={{ width: "100%", margin: "auto"}}
         action={
-          actionButtons &&
-          actionButtons.map((button, index) => (
-            <MyButton key={index} label={button.label} onClick={button.onClick}>
-              {button.icon}
-            </MyButton>
-          ))
+          actionButtons && (
+            <Stack direction="row" spacing={0.5}>
+              {actionButtons.map((button, index) => (
+                <MyButton
+                  key={index}
+                  label={button.label}
+                  onClick={button.onClick}
+                >
+                  {button.icon}
+                </MyButton>
+              ))}
+            </Stack>
+          )
         }
       >
         {message}

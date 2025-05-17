@@ -45,7 +45,7 @@ const availableColumns = [
 const selectedColumns = [
   {
     accessorKey: "athlete_full_name",
-    header: "Selected Athletes",
+    header: "Athletes to Compete",
     size: 150,
   },
   {
@@ -357,7 +357,7 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
                 notRecordsMessage={"No athletes selected."}
                 searchTerm={selectedSearchTerm}
                 setSearchTerm={setSelectedSearchTerm}
-                labels={["Athletes Selected", "Athlete"]}
+                labels={["Athletes to Compete", "Athlete"]}
               />
             </Box>
           </Box>
