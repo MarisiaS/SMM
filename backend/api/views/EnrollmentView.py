@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from drf_spectacular.utils import extend_schema, OpenApiExample, OpenApiParameter
-from api.models import Enrollment, SwimMeet, Athlete, MeetEvent, Heat
+from api.models import Enrollment, SwimMeet, Athlete, Heat
 from api.serializers.EnrollmentSerializer import UnenrollAthleteSerializer, EnrollAthletesListSerializer
 from api.serializers.AthleteSerializer import AthleteSerializer
 from rest_framework.response import Response
