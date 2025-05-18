@@ -94,7 +94,18 @@ const AddSwimMeet = ({ onCancel }) => {
     });
   };
 
+  const handleAddEnrollment = () => {
+    navigate(`/swim-meets/${lastSwimMeetData.id}/enrollment`, {
+      state: { showAddEnrollment: true, meetData: lastSwimMeetData },
+    });
+  };
+
   let actionButtonsSuccess = [
+    {
+      label: "enroll",
+      onClick: handleAddEnrollment,
+      icon: <AddIcon />,
+    },
     { label: "events", onClick: handleAddEvents, icon: <AddIcon /> },
   ];
 
