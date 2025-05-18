@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from drf_spectacular.utils import extend_schema, OpenApiExample, OpenApiParameter
-from api.models import Enrollment, SwimMeet, Athlete
+from api.models import Enrollment, SwimMeet, Athlete, Heat
 from api.serializers.EnrollmentSerializer import UnenrollAthleteSerializer, EnrollAthletesListSerializer
 from api.serializers.AthleteSerializer import AthleteSerializer
 from rest_framework.response import Response
@@ -10,6 +10,8 @@ from django.db import transaction
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.filters import SearchFilter
 from django.db.models.functions import Collate
+from datetime import timedelta
+from django.db.models import Q
 
 
 @extend_schema(tags=['Swim Meet - Enrollment'])
@@ -101,20 +103,45 @@ class MeetEnrolledAthletes(GenericAPIView):
                        },
                    )],
                    summary="Unenroll an Athlete from a specific swim meet",
-                   description="Accepts an athlete ID already enrolled on the swim meet and unenrolls them")
+                   description=(
+        "Removes an athlete from a specific swim meet. "
+        "The athlete must already be enrolled and must not have competed in any events within the meet. "
+        "All associated heat entries will be deleted if eligible."
+    ))
     def patch(self, request, meet_id):
         if not SwimMeet.objects.filter(id=meet_id).exists():
             return Response({'error': 'Swim Meet not found'}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = UnenrollAthleteSerializer(
             data=request.data, context={"meet_id": meet_id})
-        if serializer.is_valid():
-            athlete_id = serializer.validated_data['athlete_id']
-            Enrollment.objects.filter(
-                swim_meet_id=meet_id, athlete_id=athlete_id).delete()
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        athlete_id = serializer.validated_data['athlete_id']
+
+        try:
+            with transaction.atomic():
+                heats = Heat.objects.filter(
+                    athlete_id=athlete_id,
+                    event__swim_meet_id=meet_id
+                )
+
+                has_competed = heats.filter(
+                    ~Q(heat_time__isnull=True) & ~Q(
+                        heat_time=timedelta(days=300))
+                ).exists()
+                if has_competed:
+                    raise Exception(
+                        'Athlete cannot be unenrolled because they have already competed.')
+                heats.delete()
+                Enrollment.objects.filter(
+                    swim_meet_id=meet_id, athlete_id=athlete_id
+                ).delete()
             return Response({"success": "Athlete unenrolled successfully"}, status=status.HTTP_200_OK)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @extend_schema(tags=['Swim Meet - Enrollment'])
