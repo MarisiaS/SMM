@@ -326,7 +326,7 @@ const GenerateHeats = ({
           >
             <AlertBox
               type="info"
-              message="No athletes are currently enrolled in this swim meet."
+              message="There are currently no athletes available to participate in this event. Please enroll athletes to continue."
               actionButtons={actionButtonNoAthletes}
             />
           </Stack>
