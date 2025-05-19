@@ -164,7 +164,7 @@ class MeetUnenrolledAthletes(GenericAPIView):
 
 
 @extend_schema(tags=['Swim Meet - Enrollment'])
-class Unenrollability(GenericAPIView):
+class MeetAthleteUnenrollCheck(GenericAPIView):
 
     @extend_schema(methods=['GET'],
                    summary="Check if an athlete can be unenrolled from a swim meet.",
