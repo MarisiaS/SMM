@@ -96,6 +96,8 @@ const GenerateHeats = ({
   //State to manage Heat Creation (step 3 of process)
   const [heatsCreated, setHeatsCreated] = useState(false);
   const [errorCreateHeat, setErrorCreateHeat] = useState(false);
+  //State to manage No Enrrolled athletes for event message
+  const [athletesCount, setAthletesCount] = useState(0);
 
   const label = "Event " + eventName;
 
@@ -114,6 +116,7 @@ const GenerateHeats = ({
         const athletes_json = await SmmApi.getSeedTimes(eventId);
         if (!ignore) {
           setAvailableAthletes(athletes_json);
+          setAthletesCount(athletes_json.length);
         }
       } catch (error) {
         setErrorOnLoading(true);
@@ -309,7 +312,7 @@ const GenerateHeats = ({
         </Stack>
       );
     }
-    if (availableAthletes.length === 0) {
+    if (!loading && athletesCount === 0) {
       return (
         <>
           <Stack
