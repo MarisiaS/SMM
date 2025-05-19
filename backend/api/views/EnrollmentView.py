@@ -161,3 +161,30 @@ class MeetUnenrolledAthletes(GenericAPIView):
 
         serializer = AthleteSerializer(active_athletes, many=True)
         return Response(serializer.data)
+
+
+@extend_schema(tags=['Swim Meet - Enrollment'])
+class Unenrollability(GenericAPIView):
+
+    @extend_schema(methods=['GET'],
+                   summary="Check if an athlete can be unenrolled from a swim meet.",
+                   description="Returns `true` if the specified athlete has no recorded heat times "
+                   "in any event of the given swim meet, meaning they can be safely unenrolled. "
+                   "Returns `false` if the athlete has participated (i.e., has a heat time), "
+                   "in which case unenrollment is not allowed.")
+    def get(self, request, meet_id, athlete_id):
+        if not SwimMeet.objects.filter(id=meet_id).exists():
+            return Response({'error': 'Swim Meet not found'}, status=status.HTTP_404_NOT_FOUND)
+        if not Athlete.objects.filter(id=athlete_id).exists():
+            return Response({'error': 'Athlete not found'}, status=status.HTTP_404_NOT_FOUND)
+        if not Enrollment.objects.filter(swim_meet_id=meet_id, athlete_id=athlete_id).exists():
+            return Response({'error': 'Athlete not enrolled to given meet'}, status=status.HTTP_404_NOT_FOUND)
+
+        has_competed = Heat.objects.filter(
+            athlete_id=athlete_id,
+            event__swim_meet_id=meet_id
+        ).filter(
+            ~Q(heat_time__isnull=True) & ~Q(heat_time=timedelta(days=300))
+        ).exists()
+
+        return Response({'can_unenroll': not has_competed}, status=status.HTTP_200_OK)
