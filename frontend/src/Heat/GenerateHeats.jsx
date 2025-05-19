@@ -326,7 +326,7 @@ const GenerateHeats = ({
           >
             <AlertBox
               type="info"
-              message="There are currently no athletes available to participate in this event. Please enroll athletes to continue."
+              message="There are currently no athletes available to participate in this event. Please enroll athletes before generating heats for this event."
               actionButtons={actionButtonNoAthletes}
             />
           </Stack>
