@@ -19,7 +19,7 @@ from api.views.EventResultView import EventResultView
 from api.views.download.DownloadHeats import DownloadAllHeatsByEvent, DownloadAllHeatsByMeet
 from api.views.download.DownloadResults import DownloadEventResults
 from api.views.download.DownloadResults import DownloadEventResultsForSwimMeet
-from api.views.EnrollmentView import MeetEnrolledAthletes, MeetUnenrolledAthletes
+from api.views.EnrollmentView import MeetEnrolledAthletes, MeetUnenrolledAthletes, MeetAthleteUnenrollCheck
 
 
 from rest_framework.routers import SimpleRouter
@@ -68,6 +68,8 @@ urlpatterns = [
          MeetEnrolledAthletes.as_view(), name='meet-enroll'),
     path('meet_unenrolled/<int:meet_id>/',
          MeetUnenrolledAthletes.as_view(), name='meet-unenrolled-athletes'),
+    path('meet_unenrolled/<int:meet_id>/<int:athlete_id>/',
+         MeetAthleteUnenrollCheck.as_view(), name='unenroll-check'),
 
 ]
 
