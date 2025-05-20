@@ -71,7 +71,9 @@ const MeetEventDisplay = () => {
   };
 
   const handleDetailsClick = (id) => {
-    setSelectedEventIndex(Number(id));
+    if (selectedEventIndex === null) {
+      setSelectedEventIndex(Number(id));
+    }
     setView("details");
   };
 
@@ -356,6 +358,7 @@ const MeetEventDisplay = () => {
             onNext={handleNextEvent}
             disablePrevious={isFirstEvent}
             disableNext={isLastEvent}
+            onHeats={handleDetailsClick}
           />
         );
       default:
