@@ -64,7 +64,6 @@ const SwimMeetDisplay = () => {
     if (searchBarRef.current) {
       searchBarRef.current.clearSearch();
     }
-    setSearchPar("");
     setIsFormOpen(true);
   };
 
@@ -96,7 +95,9 @@ const SwimMeetDisplay = () => {
   };
 
   const handleRankingClick = () => {
-    console.log("Ranking ...");
+    navigate(`/swim-meets/${data[id].id}/events`, {
+      state: { meetData: data[id], showRanking: true },
+    });
   };
 
   const actions = [
