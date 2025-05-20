@@ -80,7 +80,9 @@ const MeetEventDisplay = () => {
   };
 
   const handleRankingClick = (id) => {
-    setSelectedEventIndex(Number(id));
+    if (selectedEventIndex === null) {
+      setSelectedEventIndex(Number(id));
+    }
     setView("results");
   };
 
@@ -327,6 +329,7 @@ const MeetEventDisplay = () => {
             onNext={handleNextEvent}
             onGenerate={handleGenerateButtonOnEventDetails}
             onDownload={handleDownloadDetailsForEvent}
+            onRancking={handleRankingClick}
             disablePrevious={isFirstEvent}
             disableNext={isLastEvent}
           />
