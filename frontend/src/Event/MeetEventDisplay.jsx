@@ -329,7 +329,7 @@ const MeetEventDisplay = () => {
             onNext={handleNextEvent}
             onGenerate={handleGenerateButtonOnEventDetails}
             onDownload={handleDownloadDetailsForEvent}
-            onRancking={handleRankingClick}
+            onRanking={handleRankingClick}
             disablePrevious={isFirstEvent}
             disableNext={isLastEvent}
           />
