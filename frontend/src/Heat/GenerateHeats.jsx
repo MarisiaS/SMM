@@ -26,6 +26,7 @@ import SelectTable from "../components/Common/SelectTable.jsx";
 import MyIconButton from "../components/FormElements/MyIconButton.jsx";
 import { formatTime } from "../utils/helperFunctions.js";
 import UpdateSeedTime from "./UpdateSeedTime.jsx";
+import AthleteIcon from "../MyIcons/AthleteIcon.jsx";
 
 // Constants for table columns
 const availableColumns = [
@@ -70,7 +71,13 @@ const confirmSeedTimeColumns = [
   },
 ];
 
-const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
+const GenerateHeats = ({
+  eventName,
+  eventId,
+  onBack,
+  onProcessCompletion,
+  onEnrollAthletes,
+}) => {
   //States to manage table data
   const [availableAthletes, setAvailableAthletes] = useState([]);
   const [selectedAthletes, setSelectedAthletes] = useState([]);
@@ -83,12 +90,13 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
   const [availableSearchTerm, setAvailableSearchTerm] = useState("");
   const [selectedSearchTerm, setSelectedSearchTerm] = useState("");
   //State to manage change to step 2 of process
-  const [areAthletesSelected, setAreAthletesSelected] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [athleteToUpdate, setAthleteToUpdate] = useState({});
   //State to manage Heat Creation (step 3 of process)
   const [heatsCreated, setHeatsCreated] = useState(false);
   const [errorCreateHeat, setErrorCreateHeat] = useState(false);
+
+  const [view, setView] = useState(null);
 
   const label = "Event " + eventName;
 
@@ -107,6 +115,11 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
         const athletes_json = await SmmApi.getSeedTimes(eventId);
         if (!ignore) {
           setAvailableAthletes(athletes_json);
+          if (athletes_json.length === 0) {
+            setView("enrollmentAlert");
+          } else {
+            setView("selectAthletes");
+          }
         }
       } catch (error) {
         setErrorOnLoading(true);
@@ -122,7 +135,11 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
 
   //Event Handlers
   const handleCurrentStep = () => {
-    setAreAthletesSelected(!areAthletesSelected);
+    if (view === "selectAthletes") {
+      setView("confirmSeedTimes");
+    } else {
+      setView("selectAthletes");
+    }
   };
 
   const handleGenerateHeats = async (selectedAthletes) => {
@@ -179,15 +196,18 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
       label: "Create Heats",
       icon: <BuildIcon />,
       onClick: () => handleGenerateHeats(selectedAthletes),
-      visible: areAthletesSelected,
+      visible: view === "confirmSeedTimes",
     },
     {
-      label: areAthletesSelected
-        ? "Back To Select Athletes"
-        : "Confirm Seed Times",
-      icon: areAthletesSelected ? <ChecklistIcon /> : <TimeIcon />,
+      label:
+        view === "confirmSeedTimes"
+          ? "Back To Select Athletes"
+          : "Confirm Seed Times",
+      icon: view === "confirmSeedTimes" ? <ChecklistIcon /> : <TimeIcon />,
       onClick: handleCurrentStep,
-      disabled: !areAthletesSelected ? selectedAthletes.length === 0 : false,
+      visible: view === "selectAthletes" || view === "confirmSeedTimes",
+      disabled:
+        view === "selectAthletes" ? selectedAthletes.length === 0 : false,
     },
     {
       label: "Back to Events",
@@ -263,6 +283,14 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
     setSelectedLeftAthletes({});
   };
 
+  let actionButtonNoAthletes = [
+    {
+      label: "Enroll Athletes",
+      onClick: onEnrollAthletes,
+      icon: <AthleteIcon />,
+    },
+  ];
+
   const renderContent = () => {
     if (loading) {
       return (
@@ -294,103 +322,126 @@ const GenerateHeats = ({ eventName, eventId, onBack, onProcessCompletion }) => {
         </Stack>
       );
     }
-
-    if (!areAthletesSelected) {
-      return (
-        <>
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ gap: "25px", width: "100%", height: "auto", margin: "2px" }}
-          >
-            <Box flex="1" sx={{ maxWidth: "45%", flexGrow: 1 }}>
-              <SelectTable
-                data={availableAthletes}
-                columns={availableColumns}
-                selection={selectedRightAthletes}
-                rowSelection={selectedRightAthletes}
-                setRowSelection={setSelectedRightAthletes}
-                notRecordsMessage={"No athletes available."}
-                searchTerm={availableSearchTerm}
-                setSearchTerm={setAvailableSearchTerm}
-                labels={["Athletes Available", "Athlete"]}
-              />
-            </Box>
-
-            <Box display="flex" flexDirection="column" alignItems="center">
-              <MyIconButton
-                onClick={onRightSelected}
-                disabled={Object.keys(selectedRightAthletes).length === 0}
-              >
-                <RightIcon />
-              </MyIconButton>
-
-              <MyIconButton
-                onClick={onRightAll}
-                disabled={availableAthletes.length === 0}
-              >
-                <RightAllIcon />
-              </MyIconButton>
-
-              <MyIconButton
-                onClick={onLeftAll}
-                disabled={selectedAthletes.length === 0}
-              >
-                <LeftAllIcon />
-              </MyIconButton>
-
-              <MyIconButton
-                onClick={onLeftSelected}
-                disabled={Object.keys(selectedLeftAthletes).length === 0}
-              >
-                <LeftIcon />
-              </MyIconButton>
-            </Box>
-
-            <Box flex="1" sx={{ maxWidth: "45%", flexGrow: 1 }}>
-              <SelectTable
-                data={selectedAthletes}
-                columns={selectedColumns}
-                rowSelection={selectedLeftAthletes}
-                setRowSelection={setSelectedLeftAthletes}
-                notRecordsMessage={"No athletes selected."}
-                searchTerm={selectedSearchTerm}
-                setSearchTerm={setSelectedSearchTerm}
-                labels={["Athletes to Compete", "Athlete"]}
-              />
-            </Box>
-          </Box>
-        </>
-      );
-    }
-    return (
-      <>
-        <div>
-          <GenericTable
-            data={selectedAthletes}
-            columns={confirmSeedTimeColumns}
-            actions={actions}
-          />
-          <Dialog open={isFormOpen} fullWidth>
-            <UpdateSeedTime
-              eventId={eventId}
-              athlete={selectedAthletes[athleteToUpdate]}
-              onUpdate={handleUpdateSeedTime}
-              onCancel={() => setIsFormOpen(false)}
-            />
-          </Dialog>
-          <Dialog open={heatsCreated} fullWidth>
-            <DialogContent style={{ padding: "24px" }}>
+    switch (view) {
+      case "enrollmentAlert":
+        return (
+          <>
+            <Stack
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px",
+                width: "650px",
+                margin: "auto",
+              }}
+            >
               <AlertBox
-                type={typeAlertCreateHeats}
-                message={messageCreateHeats}
+                type="info"
+                message="There are currently no athletes available to participate in this event. Please enroll athletes before generating heats for this event."
+                actionButtons={actionButtonNoAthletes}
               />
-            </DialogContent>
-          </Dialog>
-        </div>
-      </>
-    );
+            </Stack>
+          </>
+        );
+      case "selectAthletes":
+        return (
+          <>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ gap: "25px", width: "100%", height: "auto", margin: "2px" }}
+            >
+              <Box flex="1" sx={{ maxWidth: "45%", flexGrow: 1 }}>
+                <SelectTable
+                  data={availableAthletes}
+                  columns={availableColumns}
+                  selection={selectedRightAthletes}
+                  rowSelection={selectedRightAthletes}
+                  setRowSelection={setSelectedRightAthletes}
+                  notRecordsMessage={"No athletes available."}
+                  searchTerm={availableSearchTerm}
+                  setSearchTerm={setAvailableSearchTerm}
+                  labels={["Athletes Available", "Athlete"]}
+                />
+              </Box>
+
+              <Box display="flex" flexDirection="column" alignItems="center">
+                <MyIconButton
+                  onClick={onRightSelected}
+                  disabled={Object.keys(selectedRightAthletes).length === 0}
+                >
+                  <RightIcon />
+                </MyIconButton>
+
+                <MyIconButton
+                  onClick={onRightAll}
+                  disabled={availableAthletes.length === 0}
+                >
+                  <RightAllIcon />
+                </MyIconButton>
+
+                <MyIconButton
+                  onClick={onLeftAll}
+                  disabled={selectedAthletes.length === 0}
+                >
+                  <LeftAllIcon />
+                </MyIconButton>
+
+                <MyIconButton
+                  onClick={onLeftSelected}
+                  disabled={Object.keys(selectedLeftAthletes).length === 0}
+                >
+                  <LeftIcon />
+                </MyIconButton>
+              </Box>
+
+              <Box flex="1" sx={{ maxWidth: "45%", flexGrow: 1 }}>
+                <SelectTable
+                  data={selectedAthletes}
+                  columns={selectedColumns}
+                  rowSelection={selectedLeftAthletes}
+                  setRowSelection={setSelectedLeftAthletes}
+                  notRecordsMessage={"No athletes selected."}
+                  searchTerm={selectedSearchTerm}
+                  setSearchTerm={setSelectedSearchTerm}
+                  labels={["Athletes to Compete", "Athlete"]}
+                />
+              </Box>
+            </Box>
+          </>
+        );
+      case "confirmSeedTimes":
+        return (
+          <>
+            <div>
+              <GenericTable
+                data={selectedAthletes}
+                columns={confirmSeedTimeColumns}
+                actions={actions}
+              />
+              <Dialog open={isFormOpen} fullWidth>
+                <UpdateSeedTime
+                  eventId={eventId}
+                  athlete={selectedAthletes[athleteToUpdate]}
+                  onUpdate={handleUpdateSeedTime}
+                  onCancel={() => setIsFormOpen(false)}
+                />
+              </Dialog>
+              <Dialog open={heatsCreated} fullWidth>
+                <DialogContent style={{ padding: "24px" }}>
+                  <AlertBox
+                    type={typeAlertCreateHeats}
+                    message={messageCreateHeats}
+                  />
+                </DialogContent>
+              </Dialog>
+            </div>
+          </>
+        );
+      default:
+        return <div></div>;
+    }
   };
 
   return (

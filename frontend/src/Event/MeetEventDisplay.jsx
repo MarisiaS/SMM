@@ -8,7 +8,7 @@ import {
 } from "@mui/icons-material";
 import { CircularProgress, Box, Stack, Dialog } from "@mui/material";
 import { useEffect, useState, useRef } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import GenerateHeats from "../Heat/GenerateHeats.jsx";
 import { SmmApi } from "../SmmApi.jsx";
 import AlertBox from "../components/Common/AlertBox.jsx";
@@ -36,11 +36,14 @@ const columns = [
 const MeetEventDisplay = () => {
   const { meetId } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const meetData = location.state?.meetData;
   const [eventData, setEventData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
-  const [isFormOpen, setIsFormOpen] = useState(location.state?.showAddEvent ? true : false);
+  const [isFormOpen, setIsFormOpen] = useState(
+    location.state?.showAddEvent ? true : false
+  );
 
   // View states
   const [view, setView] = useState("list");
@@ -207,6 +210,12 @@ const MeetEventDisplay = () => {
     setIsFormOpen(true);
   };
 
+  const handleOnEnrollAthletesOnGenerateHeats = () => {
+    navigate(`/swim-meets/${meetId}/enrollment`, {
+      state: { meetData: meetData },
+    });
+  };
+
   const handleBackToEventsFromNewEvent = () => {
     setNewEventTrigger((prev) => prev + 1);
     setIsFormOpen(false);
@@ -329,6 +338,7 @@ const MeetEventDisplay = () => {
             eventId={currentEvent.id}
             onBack={handleBackToEvents}
             onProcessCompletion={handleGenerateHeatProcessCompletion}
+            onEnrollAthletes={handleOnEnrollAthletesOnGenerateHeats}
           />
         );
       case "results":
