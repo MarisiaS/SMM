@@ -70,7 +70,7 @@ const MeetEventDisplay = () => {
     setView("generate");
   };
 
-  const handleDetailsClick = (id) => {
+  const handleHeatsClick = (id) => {
     if (selectedEventIndex === null) {
       setSelectedEventIndex(Number(id));
     }
@@ -132,7 +132,7 @@ const MeetEventDisplay = () => {
     {
       name: "Heats Details",
       icon: <HeatIcon />,
-      onClick: handleDetailsClick,
+      onClick: handleHeatsClick,
       tip: "Go to Heats",
       visible: (row) => row.original.total_num_heats > 0,
     },
@@ -358,7 +358,7 @@ const MeetEventDisplay = () => {
             onNext={handleNextEvent}
             disablePrevious={isFirstEvent}
             disableNext={isLastEvent}
-            onHeats={handleDetailsClick}
+            onHeats={handleHeatsClick}
           />
         );
       default:
