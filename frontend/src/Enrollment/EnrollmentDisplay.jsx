@@ -69,21 +69,23 @@ const EnrollmentDisplay = () => {
   };
 
   const handleBackToEnrollment = () => {
-    if (changeEnrollment.current) {
-      if (isAddEnrollmentOpen) {
-        if (searchPar !== "") {
-          if (searchBarRef.current) {
-            searchBarRef.current.clearSearch();
-          }
-          setSearchPar("");
-        } else {
-          setReloadEnrollmentDataTrigger((prev) => prev + 1);
-        }
+    if (!changeEnrollment.current) {
+      setIsAddEnrollmentOpen(false);
+      setIsUnenrollOpen(false);
+      return;
+    }
+  
+    if (isAddEnrollmentOpen) {
+      if (searchPar !== "" && searchBarRef.current) {
+        searchBarRef.current.clearSearch();
+        setSearchPar("");
       } else {
         setReloadEnrollmentDataTrigger((prev) => prev + 1);
       }
-      changeEnrollment.current = false;
+    } else {
+      setReloadEnrollmentDataTrigger((prev) => prev + 1);
     }
+    changeEnrollment.current = false;
     setIsAddEnrollmentOpen(false);
     setIsUnenrollOpen(false);
   };
