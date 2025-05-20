@@ -95,9 +95,6 @@ const SwimMeetDisplay = () => {
   };
 
   const handleRankingClick = () => {
-    navigate(`/swim-meets/${data[id].id}/events`, {
-      state: { meetData: data[id], showRanking: true },
-    });
   };
 
   const actions = [
