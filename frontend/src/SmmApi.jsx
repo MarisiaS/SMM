@@ -456,4 +456,11 @@ export class SmmApi {
     });
     return res.data;
   }
+
+  static async getAthleteUnenrollCheck(meetId, athleteId) {
+    let res = await axios.get(`${BASE_URL}/meet_unenrolled/${meetId}/${athleteId}`, {
+      headers: getConfig(),
+    });
+    return res.data;
+  }
 }
