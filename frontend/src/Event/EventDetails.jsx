@@ -22,7 +22,7 @@ const EventDetails = ({
   onNext,
   onGenerate,
   onDownload,
-  onRancking,
+  onRanking,
   disablePrevious,
   disableNext,
 }) => {
@@ -73,9 +73,9 @@ const EventDetails = ({
       onClick: onBack,
     },
     {
-      label: "Go to results",
+      label: "Show Results",
       icon: <RankingIcon />,
-      onClick: onRancking,
+      onClick: onRanking,
     },
     {
       label: "Download Details",
