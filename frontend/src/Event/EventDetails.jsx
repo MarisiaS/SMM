@@ -76,6 +76,7 @@ const EventDetails = ({
       label: "Show Results",
       icon: <RankingIcon />,
       onClick: onRanking,
+      disabled: numHeats === 0,
     },
     {
       label: "Download Details",
