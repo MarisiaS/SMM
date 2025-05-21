@@ -21,7 +21,7 @@ class LaneBatchView(APIView):
         # Get num_lanes
         try:
             swim_meet_instance = event_instance.swim_meet
-            num_lanes = swim_meet_instance.site.num_lanes
+            num_lanes = swim_meet_instance.num_lanes
         except:
             return Response({'error': 'Not able to retrieve number of lanes'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -77,7 +77,7 @@ class LaneDetailView(APIView):
         # Get number of lanes on the event
         try:
             swim_meet_instance = event_instance.swim_meet
-            num_lanes = swim_meet_instance.site.num_lanes
+            num_lanes = swim_meet_instance.num_lanes
         except:
             return Response({'error': 'Not able to retrieve number of lanes'}, status=status.HTTP_404_NOT_FOUND)
 
