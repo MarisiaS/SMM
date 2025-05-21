@@ -24,9 +24,9 @@ class HeatBatchView(APIView):
         # Get num_lanes
         try:
             swim_meet_instance = event_instance.swim_meet
-            num_lanes = swim_meet_instance.site.num_lanes
+            num_lanes = swim_meet_instance.num_lanes
         except:
-            return Response({'error': 'Number of lanes not found for the swim meet site.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Number of lanes not found for the swim meet.'}, status=status.HTTP_404_NOT_FOUND)
 
         max_num_heat = event_instance.total_num_heats
 
@@ -80,10 +80,10 @@ class HeatBatchView(APIView):
         # Get num_lanes
         try:
             swim_meet_instance = event_instance.swim_meet
-            num_lanes = swim_meet_instance.site.num_lanes
+            num_lanes = swim_meet_instance.num_lanes
 
         except:
-            return Response({'error': 'Number of lanes not found for the swim meet site.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Number of lanes not found for the swim meet.'}, status=status.HTTP_404_NOT_FOUND)
 
         # Get group_id
         try:
@@ -148,9 +148,9 @@ class HeatDetailView(APIView):
         # Get number of lanes on the event
         try:
             swim_meet_instance = event_instance.swim_meet
-            num_lanes = swim_meet_instance.site.num_lanes
+            num_lanes = swim_meet_instance.num_lanes
         except:
-            return Response({'error': 'Number of lanes not found for the swim meet site.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Number of lanes not found for the swim meet.'}, status=status.HTTP_404_NOT_FOUND)
 
         # Get number of heats on the event
         max_num_heat = event_instance.total_num_heats
