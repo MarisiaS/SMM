@@ -73,7 +73,7 @@ const EventDetails = ({
       onClick: onBack,
     },
     {
-      label: "Show Results",
+      label: "Show Ranking",
       icon: <RankingIcon />,
       onClick: onRanking,
       disabled: numHeats === 0,
