@@ -76,7 +76,7 @@ const Unenroll = ({ athlete, meetId, onBack, setChangeEnrollment }) => {
     }, 2000);
   };
 
-  const AthleteHeader = () => (
+  const Header = () => (
     <>
       <Box>
         <Typography
@@ -86,7 +86,7 @@ const Unenroll = ({ athlete, meetId, onBack, setChangeEnrollment }) => {
           align="center"
           sx={{ fontWeight: 600 }}
         >
-          UNENROLL {athlete.full_name.toUpperCase()}
+          UNENROLL
         </Typography>
       </Box>
       <Divider sx={{ borderBottomWidth: 3 }} />
@@ -94,28 +94,36 @@ const Unenroll = ({ athlete, meetId, onBack, setChangeEnrollment }) => {
   );
 
   const AthleteMessage = ({ text }) => (
-    <Box className="itemBox">
-      <Typography
-        variant="caption"
-        color="primary"
-        padding={0.5}
-        align="left"
-        sx={{ fontWeight: 300 }}
-      >
-        {text}
-      </Typography>
-    </Box>
+    <>
+      <Box>
+        <Typography variant="subtitle1" padding={1} align="center" color="primary">
+          {athlete.full_name}
+        </Typography>
+      </Box>
+      <Box>
+        <Typography
+          variant="caption"
+          color="primary"
+          padding={0.5}
+          align="left"
+          sx={{ fontWeight: 300 }}
+        >
+          {text}
+        </Typography>
+      </Box>
+    </>
   );
 
   const renderButtons = (canConfirm = false) => (
     <Stack className="itemBox">
-      {canConfirm ? 
+      {canConfirm ? (
         <>
           <MyButton key="confirm" label="Confirm" onClick={handleUnenroll} />
           <Box sx={{ marginTop: 2 }} />
         </>
-        : <Box sx={{ marginTop: 8 }} />
-      }
+      ) : (
+        <Box sx={{ marginTop: 8 }} />
+      )}
       <MyButton key="cancel" label="Cancel" onClick={onBack} />
     </Stack>
   );
@@ -183,10 +191,10 @@ const Unenroll = ({ athlete, meetId, onBack, setChangeEnrollment }) => {
         </Stack>
         <Stack className="whiteBox">
           <Stack>
-            <AthleteHeader />
+            <Header />
             <AthleteMessage text={contentMessage} />
           </Stack>
-          {renderButtons(allowConfirm)}
+          <Stack>{renderButtons(allowConfirm)}</Stack>
         </Stack>
         <div style={{ minHeight: "100px" }} />
       </Stack>
