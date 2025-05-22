@@ -74,11 +74,10 @@ const EnrollmentDisplay = () => {
       setIsUnenrollOpen(false);
       return;
     }
-  
+
     if (isAddEnrollmentOpen) {
       if (searchPar !== "" && searchBarRef.current) {
         searchBarRef.current.clearSearch();
-        setSearchPar("");
       } else {
         setReloadEnrollmentDataTrigger((prev) => prev + 1);
       }
