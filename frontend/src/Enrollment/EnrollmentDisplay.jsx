@@ -75,12 +75,8 @@ const EnrollmentDisplay = () => {
       return;
     }
 
-    if (isAddEnrollmentOpen) {
-      if (searchPar !== "" && searchBarRef.current) {
-        searchBarRef.current.clearSearch();
-      } else {
-        setReloadEnrollmentDataTrigger((prev) => prev + 1);
-      }
+    if (isAddEnrollmentOpen && searchPar !== "" && searchBarRef.current) {
+      searchBarRef.current.clearSearch();
     } else {
       setReloadEnrollmentDataTrigger((prev) => prev + 1);
     }
