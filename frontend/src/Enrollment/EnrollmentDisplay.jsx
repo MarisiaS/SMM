@@ -10,6 +10,7 @@ import MyButton from "../components/FormElements/MyButton";
 import Title from "../components/Common/Title";
 import PaginationBar from "../components/Common/PaginationBar.jsx";
 import AddEnrollment from "./AddEnrollment.jsx";
+import Unenroll from "./Unenroll.jsx";
 import { CircularProgress, Box, Stack, Dialog } from "@mui/material";
 import { useEffect, useState, useRef } from "react";
 import { useLocation, useParams } from "react-router-dom";
@@ -41,8 +42,11 @@ const EnrollmentDisplay = () => {
   // View states
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
-  const [isAddEnrollmentOpen, setIsAddEnrollmentOpen] = useState(location.state?.showAddEnrollment ? true : false);
-
+  const [isAddEnrollmentOpen, setIsAddEnrollmentOpen] = useState(
+    location.state?.showAddEnrollment ? true : false
+  );
+  const [isUnenrollOpen, setIsUnenrollOpen] = useState(false);
+  const [athleteToUnenroll, setAthleteToUnenroll] = useState("");
   //Use to control the search parameter
   const [searchPar, setSearchPar] = useState("");
   const searchBarRef = useRef(null);
@@ -55,8 +59,9 @@ const EnrollmentDisplay = () => {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0); //search bar needs to restart this
 
-  const handleUnEnrollmentClick = (id) => {
-    console.log("Unenroll", id);
+  const handleUnenrollmentClick = (row) => {
+    setAthleteToUnenroll(enrollmentData[row]);
+    setIsUnenrollOpen(true);
   };
 
   const handleAddEnrollment = () => {
@@ -64,18 +69,20 @@ const EnrollmentDisplay = () => {
   };
 
   const handleBackToEnrollment = () => {
-    if (changeEnrollment.current) {
-      if (searchPar !== "") {
-        if (searchBarRef.current) {
-          searchBarRef.current.clearSearch();
-        }
-        setSearchPar("");
-      } else {
-        setReloadEnrollmentDataTrigger((prev) => prev + 1);
-      }
-      changeEnrollment.current = false;
+    if (!changeEnrollment.current) {
+      setIsAddEnrollmentOpen(false);
+      setIsUnenrollOpen(false);
+      return;
     }
+
+    if (isAddEnrollmentOpen && searchPar !== "" && searchBarRef.current) {
+      searchBarRef.current.clearSearch();
+    } else {
+      setReloadEnrollmentDataTrigger((prev) => prev + 1);
+    }
+    changeEnrollment.current = false;
     setIsAddEnrollmentOpen(false);
+    setIsUnenrollOpen(false);
   };
 
   useEffect(() => {
@@ -110,7 +117,7 @@ const EnrollmentDisplay = () => {
     {
       name: "Unenroll",
       icon: <UnenrollIcon />,
-      onClick: handleUnEnrollmentClick,
+      onClick: handleUnenrollmentClick,
       tip: "Unenroll Athlete",
     },
   ];
@@ -198,6 +205,24 @@ const EnrollmentDisplay = () => {
               }}
             >
               <AddEnrollment
+                meetId={meetId}
+                onBack={handleBackToEnrollment}
+                setChangeEnrollment={(value) =>
+                  (changeEnrollment.current = value)
+                }
+              />
+            </Dialog>
+            <Dialog
+              open={isUnenrollOpen}
+              fullWidth
+              PaperProps={{
+                sx: {
+                  overflowY: "hidden",
+                },
+              }}
+            >
+              <Unenroll
+                athlete={athleteToUnenroll}
                 meetId={meetId}
                 onBack={handleBackToEnrollment}
                 setChangeEnrollment={(value) =>
