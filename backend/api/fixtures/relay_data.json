@@ -1,0 +1,88 @@
+[
+    {
+      "model": "api.relay",
+      "pk": 1,
+      "fields": {
+        "event": 17
+      }
+    },
+    {
+        "model": "api.relay",
+        "pk": 2,
+        "fields": {
+          "event": 18
+        }
+    },
+    {
+      "model": "api.relaymember",
+      "pk": 1,
+      "fields": {
+        "relay": 1,
+        "athlete": 1,
+        "order": 1
+      }
+    },
+    {
+      "model": "api.relaymember",
+      "pk": 2,
+      "fields": {
+        "relay": 1,
+        "athlete": 2,
+        "order": 2
+      }
+    },
+    {
+      "model": "api.relaymember",
+      "pk": 3,
+      "fields": {
+        "relay": 1,
+        "athlete": 3,
+        "order": 3
+      }
+    },
+    {
+      "model": "api.relaymember",
+      "pk": 4,
+      "fields": {
+        "relay": 1,
+        "athlete": 4,
+        "order": 4
+      }
+    },
+    {
+        "model": "api.relaymember",
+        "pk": 5,
+        "fields": {
+          "relay": 2,
+          "athlete": 6,
+          "order": 1
+        }
+      },
+      {
+        "model": "api.relaymember",
+        "pk": 6,
+        "fields": {
+          "relay": 2,
+          "athlete": 8,
+          "order": 2
+        }
+      },
+      {
+        "model": "api.relaymember",
+        "pk": 7,
+        "fields": {
+          "relay": 2,
+          "athlete": 10,
+          "order": 3
+        }
+      },
+      {
+        "model": "api.relaymember",
+        "pk": 8,
+        "fields": {
+          "relay": 2,
+          "athlete": 11,
+          "order": 4
+        }
+      }
+]
