@@ -25,7 +25,7 @@
         "model": "api.swimmeet",
         "pk": 3,
         "fields": {
-            "name": "Spring Swim Meet 2",
+            "name": "Relays Swim Meet",
             "date": "2024-04-16",
             "time": "17:00:00",
             "site": 1,

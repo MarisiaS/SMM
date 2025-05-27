@@ -158,5 +158,45 @@
             "event_type": 3,
             "num_event": 11
             }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 17,
+        "fields": {
+            "swim_meet": 3,
+            "group": 3,
+            "event_type": 2,
+            "num_event": 1
+            }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 18,
+        "fields": {
+            "swim_meet": 3,
+            "group": 1,
+            "event_type": 2,
+            "num_event": 2
+            }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 19,
+        "fields": {
+            "swim_meet": 3,
+            "group": 3,
+            "event_type": 9,
+            "num_event": 3
+            }
+    },
+    {
+        "model": "api.meetevent",
+        "pk": 20,
+        "fields": {
+            "swim_meet": 3,
+            "group": 2,
+            "event_type": 9,
+            "num_event": 4
+            }
     }
 ]
