@@ -241,7 +241,7 @@ class Relay(models.Model):
 
     @property
     def name(self):
-        members = self.relay_members.order_by(
+        members = self.members.order_by(
             'order').select_related('athlete')
         return " ".join(
             f"{m.athlete.first_name}{m.athlete.last_name[0]}"
