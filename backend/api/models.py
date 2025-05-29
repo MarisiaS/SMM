@@ -233,3 +233,41 @@ class Enrollment(models.Model):
             models.UniqueConstraint(
                 fields=['swim_meet', 'athlete'], name='unique_swim_meet_athlete')
         ]
+
+
+class Relay(models.Model):
+    event = models.ForeignKey(
+        MeetEvent, on_delete=models.CASCADE, limit_choices_to={'event_type__type': 'RELAY'}, related_name='relays')
+    seed_time = models.DurationField(blank=True, null=True)
+
+    @property
+    def name(self):
+        members = self.members.order_by(
+            'order').select_related('athlete')
+        return " ".join(
+            f"{m.athlete.first_name}{m.athlete.last_name[0]}"
+            for m in members
+        )
+
+class RelayMember(models.Model):
+    relay = models.ForeignKey(Relay, on_delete=models.CASCADE, related_name="members")
+    athlete = models.ForeignKey(Athlete, on_delete=models.CASCADE)
+    order = models.PositiveSmallIntegerField()
+
+    class Meta:
+        unique_together = ('relay', 'order')
+
+class RelayHeat(models.Model):
+    event = models.ForeignKey(
+        MeetEvent, on_delete=models.CASCADE, limit_choices_to={'event_type__type': 'RELAY'}, related_name='relay_heats')
+    relay = models.OneToOneField(
+        Relay, on_delete=models.SET_NULL, blank=True, null=True, related_name='assigned_heat')
+    lane_num = models.PositiveSmallIntegerField()
+    heat_time = models.DurationField(blank=True, null=True)
+    num_heat = models.PositiveSmallIntegerField()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['event', 'lane_num', 'num_heat'], name='unique_relay_event_lane_heat'),
+        ]
