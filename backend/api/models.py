@@ -238,6 +238,7 @@ class Enrollment(models.Model):
 class Relay(models.Model):
     event = models.ForeignKey(
         MeetEvent, on_delete=models.CASCADE, limit_choices_to={'event_type__type': 'RELAY'}, related_name='relays')
+    seed_time = models.DurationField(blank=True, null=True)
 
     @property
     def name(self):
@@ -262,7 +263,6 @@ class RelayHeat(models.Model):
     relay = models.OneToOneField(
         Relay, on_delete=models.SET_NULL, blank=True, null=True, related_name='assigned_heat')
     lane_num = models.PositiveSmallIntegerField()
-    seed_time = models.DurationField(blank=True, null=True)
     heat_time = models.DurationField(blank=True, null=True)
     num_heat = models.PositiveSmallIntegerField()
 
