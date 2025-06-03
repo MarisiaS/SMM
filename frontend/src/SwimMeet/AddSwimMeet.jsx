@@ -9,7 +9,11 @@ import AlertBox from "../components/Common/AlertBox.jsx";
 import { SmmApi } from "../SmmApi.jsx";
 import SwimMeetForm from "./SwimMeetForm.jsx";
 
-const AddSwimMeet = ({ onCancel }) => {
+const AddSwimMeet = ({
+  onCancel,
+  setLastSwimMeetCreated,
+  setNumNewSwimMeets
+}) => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorOnLoading, setErrorOnLoading] = useState(false);
@@ -112,7 +116,6 @@ const AddSwimMeet = ({ onCancel }) => {
   let actionButtons = error ? [] : actionButtonsSuccess;
 
   const submission = async (data) => {
-    console.log(data);
     const time = dayjs(data.time).format("HH:mm");
     //To get an error use this date
     //const date = dayjs(data.date);
@@ -130,6 +133,8 @@ const AddSwimMeet = ({ onCancel }) => {
         date: dayjs(response.data.date).format("MM/DD/YYYY"),
       };
       setLastSwimMeetData(formattedResponse);
+      setNumNewSwimMeets(1);
+      setLastSwimMeetCreated(response.data.id);
     } catch (error) {
       setError(true);
     }
