@@ -70,8 +70,10 @@ const MeetEventDisplay = () => {
     setView("generate");
   };
 
-  const handleDetailsClick = (id) => {
-    setSelectedEventIndex(Number(id));
+  const handleHeatsClick = (id) => {
+    if (selectedEventIndex === null) {
+      setSelectedEventIndex(Number(id));
+    }
     setView("details");
   };
 
@@ -80,7 +82,9 @@ const MeetEventDisplay = () => {
   };
 
   const handleRankingClick = (id) => {
-    setSelectedEventIndex(Number(id));
+    if (selectedEventIndex === null) {
+      setSelectedEventIndex(Number(id));
+    }
     setView("results");
   };
 
@@ -128,7 +132,7 @@ const MeetEventDisplay = () => {
     {
       name: "Heats Details",
       icon: <HeatIcon />,
-      onClick: handleDetailsClick,
+      onClick: handleHeatsClick,
       tip: "Go to Heats",
       visible: (row) => row.original.total_num_heats > 0,
     },
@@ -327,6 +331,7 @@ const MeetEventDisplay = () => {
             onNext={handleNextEvent}
             onGenerate={handleGenerateButtonOnEventDetails}
             onDownload={handleDownloadDetailsForEvent}
+            onRanking={handleRankingClick}
             disablePrevious={isFirstEvent}
             disableNext={isLastEvent}
           />
@@ -353,6 +358,7 @@ const MeetEventDisplay = () => {
             onNext={handleNextEvent}
             disablePrevious={isFirstEvent}
             disableNext={isLastEvent}
+            onHeats={handleHeatsClick}
           />
         );
       default:

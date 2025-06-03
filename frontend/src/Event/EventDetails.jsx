@@ -2,6 +2,7 @@ import {
   ContentPaste as BackIcon,
   Build as BuildIcon,
   Download as DownloadIcon,
+  EmojiEvents as RankingIcon,
 } from "@mui/icons-material";
 import { CircularProgress, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -21,6 +22,7 @@ const EventDetails = ({
   onNext,
   onGenerate,
   onDownload,
+  onRanking,
   disablePrevious,
   disableNext,
 }) => {
@@ -69,6 +71,12 @@ const EventDetails = ({
       label: "Back to events",
       icon: <BackIcon />,
       onClick: onBack,
+    },
+    {
+      label: "Show Ranking",
+      icon: <RankingIcon />,
+      onClick: onRanking,
+      disabled: numHeats === 0,
     },
     {
       label: "Download Details",

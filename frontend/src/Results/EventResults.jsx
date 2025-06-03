@@ -1,6 +1,7 @@
 import {
   ContentPaste as BackIcon,
   Download as DownloadIcon,
+  FormatAlignCenter as HeatIcon,
 } from "@mui/icons-material";
 import { CircularProgress, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -83,6 +84,7 @@ const EventResults = ({
   onNext,
   disablePrevious,
   disableNext,
+  onHeats,
 }) => {
   const [resultsData, setResultsData] = useState({ main: [] });
   const [hasResults, setHasResults] = useState(null);
@@ -277,6 +279,11 @@ const EventResults = ({
       label: "Back to events",
       icon: <BackIcon />,
       onClick: onBack,
+    },
+    {
+      label: "Show Heats",
+      icon: <HeatIcon />,
+      onClick: onHeats,
     },
     {
       label: "Download Results",
