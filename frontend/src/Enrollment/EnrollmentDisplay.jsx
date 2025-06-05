@@ -1,6 +1,7 @@
 import {
   Add as AddIcon,
   PersonRemove as UnenrollIcon,
+  Build as BuildIcon,
 } from "@mui/icons-material";
 import { SmmApi } from "../SmmApi";
 import AlertBox from "../components/Common/AlertBox.jsx";
@@ -13,7 +14,7 @@ import AddEnrollment from "./AddEnrollment.jsx";
 import Unenroll from "./Unenroll.jsx";
 import { CircularProgress, Box, Stack, Dialog } from "@mui/material";
 import { useEffect, useState, useRef } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 
 const columns = [
   {
@@ -36,6 +37,7 @@ const columns = [
 const EnrollmentDisplay = () => {
   const { meetId } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const meetData = location.state?.meetData;
   //Controls the data
   const [enrollmentData, setEnrollmentData] = useState([]);
@@ -67,7 +69,12 @@ const EnrollmentDisplay = () => {
   const handleAddEnrollment = () => {
     setIsAddEnrollmentOpen(true);
   };
-
+  const handleGoToEvents = () => {
+    console.log("Go To Events");
+    navigate(`/swim-meets/${meetId}/events`, {
+      state: { meetData: meetData },
+    });
+  };
   const handleBackToEnrollment = () => {
     if (!changeEnrollment.current) {
       setIsAddEnrollmentOpen(false);
@@ -153,11 +160,24 @@ const EnrollmentDisplay = () => {
           alignItems="center"
           justifyContent="space-between"
         >
-          <Box sx={{ marginLeft: 5 }}>
-            <MyButton label={"Enroll"} onClick={handleAddEnrollment}>
-              <AddIcon />
-            </MyButton>
-          </Box>
+          <Stack
+            sx={{ marginLeft: 5 }}
+            direction="row"
+            alignItems="center"
+            spacing={2}
+          >
+            <Box sx={{ marginLeft: 5 }}>
+              <MyButton label={"Enroll"} onClick={handleAddEnrollment}>
+                <AddIcon />
+              </MyButton>
+            </Box>
+            <Box sx={{ marginLeft: 5 }}>
+              <MyButton label={"Go To Events"} onClick={handleGoToEvents}>
+                <BuildIcon />
+              </MyButton>
+            </Box>
+          </Stack>
+
           <Box className={"searchBox"} sx={{ marginRight: 5 }}>
             <SearchBar
               ref={searchBarRef}
