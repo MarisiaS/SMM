@@ -1,7 +1,7 @@
 import {
   Add as AddIcon,
   PersonRemove as UnenrollIcon,
-  Build as BuildIcon,
+  ContentPaste as DetailsIcon,
 } from "@mui/icons-material";
 import { SmmApi } from "../SmmApi";
 import AlertBox from "../components/Common/AlertBox.jsx";
@@ -173,7 +173,7 @@ const EnrollmentDisplay = () => {
             </Box>
             <Box sx={{ marginLeft: 5 }}>
               <MyButton label={"Go To Events"} onClick={handleGoToEvents}>
-                <BuildIcon />
+                <DetailsIcon />
               </MyButton>
             </Box>
           </Stack>
