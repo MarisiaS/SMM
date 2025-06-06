@@ -28,12 +28,32 @@ const availableColumns = [
     header: "Available Athletes",
     size: 150,
   },
+  {
+    accessorKey: "gender_display",
+    header: "Gender",
+    size: 150,
+  },
+  {
+    accessorKey: "age",
+    header: "Age",
+    size: 150,
+  },
 ];
 
 const selectedColumns = [
   {
     accessorKey: "full_name",
     header: "Athletes to Enroll",
+    size: 150,
+  },
+  {
+    accessorKey: "gender_display",
+    header: "Gender",
+    size: 150,
+  },
+  {
+    accessorKey: "age",
+    header: "Age",
     size: 150,
   },
 ];
@@ -93,8 +113,8 @@ const AddEnrollment = ({ meetId, onBack, setChangeEnrollment }) => {
       const response = await SmmApi.createEnrollment(meetId, {
         athlete_ids: athleteIds,
       });
-      const num_added= athleteIds.length;
-      const athleteNoun = num_added === 1 ? "athlete": "athletes";
+      const num_added = athleteIds.length;
+      const athleteNoun = num_added === 1 ? "athlete" : "athletes";
       setErrorCreateEnrollment(
         `Successfully enrolled ${num_added} ${athleteNoun} in the swim meet.`
       );
